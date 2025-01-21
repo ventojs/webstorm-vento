@@ -222,9 +222,9 @@ object AttributeUtil {
             return false
         }
 
-        // Make sure we have an attribute that looks like it's Alpine
+        // Make sure we have an attribute that looks like it's Vento
         val attributeName = attribute.name
-        if (!isAlpineAttributeName(attributeName)) {
+        if (!isVentoAttributeName(attributeName)) {
             return false
         }
 
@@ -255,7 +255,7 @@ object AttributeUtil {
         return !tag.name.startsWith("x-")
     }
 
-    private fun isAlpineAttributeName(name: String): Boolean {
+    private fun isVentoAttributeName(name: String): Boolean {
         return name.startsWith("x-") || name.startsWith("@") || name.startsWith(':')
     }
 

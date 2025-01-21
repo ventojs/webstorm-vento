@@ -6,13 +6,9 @@ import javax.swing.JComponent
 class VentoSettingsConfigurable : Configurable {
     private var mySettingsComponent: VentoSettingsComponent? = null
 
-    override fun getDisplayName(): String {
-        return "Vento.js"
-    }
+    override fun getDisplayName(): String = "Vento.js"
 
-    override fun getPreferredFocusedComponent(): JComponent? {
-        return mySettingsComponent?.preferredFocusedComponent
-    }
+    override fun getPreferredFocusedComponent(): JComponent? = mySettingsComponent?.preferredFocusedComponent
 
     override fun createComponent(): JComponent? {
         mySettingsComponent = VentoSettingsComponent()
@@ -21,7 +17,6 @@ class VentoSettingsConfigurable : Configurable {
 
     override fun isModified(): Boolean {
         val settings: VentoSettingsState = VentoSettingsState.Companion.instance
-
         return mySettingsComponent?.showGutterIconsStatus != settings.showGutterIcons
     }
 

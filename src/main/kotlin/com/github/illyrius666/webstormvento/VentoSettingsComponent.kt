@@ -8,7 +8,7 @@ import javax.swing.JPanel
 class VentoSettingsComponent {
     val panel: JPanel
 
-    private val myShowGutterIconsStatus = JBCheckBox("Show Alpine gutter icons? ")
+    private val myShowGutterIconsStatus = JBCheckBox("Show Vento gutter icons? ")
 
     val preferredFocusedComponent: JComponent
         get() = myShowGutterIconsStatus

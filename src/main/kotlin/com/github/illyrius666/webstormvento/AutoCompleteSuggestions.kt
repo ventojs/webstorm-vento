@@ -23,32 +23,22 @@ class AutoCompleteSuggestions(val htmlTag: HtmlTag, val partialAttribute: String
 
     private fun addDirectives() {
         for (directive in AttributeUtil.directives) {
-            if (tagName != "template" && isTemplateDirective(directive)) {
-                continue
-            }
+            if (tagName != "template" && isTemplateDirective(directive)) continue
 
             descriptors.add(AttributeInfo(directive))
 
-            if ("x-model" == directive) {
-                addModifiers(directive, AttributeUtil.modelModifiers)
-            }
+            if ("x-model" == directive) addModifiers(directive, AttributeUtil.modelModifiers)
 
-            if ("x-intersect" == directive) {
-                addModifiers(directive, AttributeUtil.intersectModifiers)
-            }
+            if ("x-intersect" == directive) addModifiers(directive, AttributeUtil.intersectModifiers)
         }
     }
 
     private fun addPrefixes() {
-        for (prefix in AttributeUtil.xmlPrefixes) {
-            descriptors.add(AttributeInfo(prefix))
-        }
+        for (prefix in AttributeUtil.xmlPrefixes) descriptors.add(AttributeInfo(prefix))
     }
 
     private fun addDerivedAttributes() {
-        if (!AttributeUtil.isEvent(partialAttribute) && !AttributeUtil.isBound(partialAttribute)) {
-            return
-        }
+        if (!AttributeUtil.isEvent(partialAttribute) && !AttributeUtil.isBound(partialAttribute)) return
 
         for (descriptor in getDefaultHtmlAttributes(htmlTag)) {
             if (descriptor.name.startsWith("on")) {
@@ -105,9 +95,7 @@ class AutoCompleteSuggestions(val htmlTag: HtmlTag, val partialAttribute: String
     }
 
     private fun addModifiers(modifiableDirective: String, modifiers: Array<String>) {
-        if (!partialAttribute.startsWith(modifiableDirective)) {
-            return
-        }
+        if (!partialAttribute.startsWith(modifiableDirective)) return
 
         var withExistingModifiers = partialAttribute
 

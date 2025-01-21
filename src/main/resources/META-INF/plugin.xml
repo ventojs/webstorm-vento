@@ -23,7 +23,7 @@
         <typedHandler implementation="com.github.illyrius666.webstormvento.AutoPopupHandler"/>
         <completion.contributor language="HTML"
                                 implementationClass="com.github.illyrius666.webstormvento.VentoCompletionContributor"
-                                id="AlpineCompletionContributor"/>
+                                id="VentoCompletionContributor"/>
         <codeInsight.lineMarkerProvider language="HTML"
                                         implementationClass="com.github.illyrius666.webstormvento.VentoLineMarkerProvider"/>
         <applicationService serviceImplementation="com.github.illyrius666.webstormvento.VentoSettingsState"/>

@@ -10,13 +10,9 @@ import com.intellij.util.xmlb.XmlSerializerUtil
 class VentoSettingsState : PersistentStateComponent<VentoSettingsState?> {
     var showGutterIcons = true
 
-    override fun getState(): VentoSettingsState? {
-        return this
-    }
+    override fun getState(): VentoSettingsState? = this
 
-    override fun loadState(state: VentoSettingsState) {
-        XmlSerializerUtil.copyBean(state, this)
-    }
+    override fun loadState(state: VentoSettingsState) = XmlSerializerUtil.copyBean(state, this)
 
     companion object {
         val instance: VentoSettingsState

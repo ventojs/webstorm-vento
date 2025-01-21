@@ -3,7 +3,7 @@ package com.github.illyrius666.webstormvento
 @Suppress("MemberVisibilityCanBePrivate")
 class AttributeInfo(val attribute: String) {
     private val typeTexts = hashMapOf<String, String>(
-        "x-data" to "New Alpine.js component scope",
+        "x-data" to "New Vento.js component scope",
         "x-init" to "Run on initialization",
         "x-show" to "Toggles 'display: none'",
         "x-model" to "Add two-way binding",
@@ -22,9 +22,9 @@ class AttributeInfo(val attribute: String) {
         "x-transition:leave-start" to "Transition classes for start of leaving phase",
         "x-transition:leave-end" to "Transition classes for end of leaving phase",
         "x-effect" to "Add reactive effect",
-        "x-ignore" to "Ignore DOM node in Alpine.js",
+        "x-ignore" to "Ignore DOM node in Vento.js",
         "x-spread" to "Bind reusable directives",
-        "x-cloak" to "Hide while Alpine is initializing",
+        "x-cloak" to "Hide while Vento is initializing",
         "x-teleport" to "Teleport template to another DOM node",
         "x-on" to "Add listener",
         "x-bind" to "Bind an attribute",
@@ -50,7 +50,7 @@ class AttributeInfo(val attribute: String) {
     }
 
     @Suppress("ComplexCondition")
-    fun isAlpine(): Boolean {
+    fun isVento(): Boolean {
         return this.isEvent() || this.isBound() || this.isTransition() || this.isDirective() || this.isWizard()
     }
 
@@ -103,24 +103,14 @@ class AttributeInfo(val attribute: String) {
         if (attribute.startsWith("x-wizard:")) {
             return "x-wizard:"
         }
-
         return ""
     }
 
     @Suppress("ReturnCount")
-    private fun buildTypeText(): String {
-        if (isEvent()) {
-            return "'$name' listener"
-        }
-
-        if (isBound()) {
-            return "Bind '$name' attribute"
-        }
-
-        if (isTransition()) {
-            return "CSS classes for '$name' transition phase"
-        }
-
-        return typeTexts.getOrDefault(attribute, "Alpine.js")
+    private fun buildTypeText(): String = when {
+        isEvent() -> "'$name' listener"
+        isBound() -> "Bind '$name' attribute"
+        isTransition() -> "CSS classes for '$name' transition phase"
+        else -> typeTexts.getOrDefault(attribute, "Vento.js")
     }
 }

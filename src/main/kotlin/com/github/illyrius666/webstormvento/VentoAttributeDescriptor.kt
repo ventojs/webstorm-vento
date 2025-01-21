@@ -17,23 +17,17 @@ class VentoAttributeDescriptor(
 
     override fun getIcon() = Vento.ICON
 
-    override fun getTypeName(): String {
-        return info.typeText
-    }
+    override fun getTypeName(): String = info.typeText
 
     override fun init(psiElement: PsiElement) {}
 
     override fun isRequired(): Boolean = false
 
-    override fun hasIdType(): Boolean {
-        return name == "id"
-    }
+    override fun hasIdType(): Boolean = name == "id"
 
     override fun hasIdRefType(): Boolean = false
 
-    override fun isEnumerated(): Boolean {
-        return !info.hasValue()
-    }
+    override fun isEnumerated(): Boolean = !info.hasValue()
 
     override fun getDeclaration(): PsiElement? = xmlTag
 

@@ -18,18 +18,14 @@ class VentoAttributeCompletionProvider() : CompletionProvider<CompletionParamete
     ) {
         val position = parameters.position
 
-        if (HTMLLanguage.INSTANCE !in position.containingFile.viewProvider.languages) {
-            return
-        }
+        if (HTMLLanguage.INSTANCE !in position.containingFile.viewProvider.languages) return
 
         val attribute = position.parent as? XmlAttribute ?: return
         val xmlTag = attribute.parent as? HtmlTag ?: return
 
         val partialAttribute = StringUtil.trimEnd(attribute.name, CompletionUtilCore.DUMMY_IDENTIFIER_TRIMMED)
 
-        if (partialAttribute.isEmpty()) {
-            return
-        }
+        if (partialAttribute.isEmpty()) return
 
         val suggestions = AutoCompleteSuggestions(xmlTag, partialAttribute)
 

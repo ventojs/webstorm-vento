@@ -10,9 +10,7 @@ import com.intellij.psi.xml.XmlAttribute
 import javax.swing.Icon
 
 class VentoLineMarkerProvider : RelatedItemLineMarkerProvider() {
-    override fun getIcon(): Icon {
-        return Vento.ICON
-    }
+    override fun getIcon(): Icon = Vento.ICON
 
     override fun collectNavigationMarkers(
         element: PsiElement,
@@ -26,7 +24,7 @@ class VentoLineMarkerProvider : RelatedItemLineMarkerProvider() {
 
             val builder = NavigationGutterIconBuilder.create(Vento.ICON)
                 .setTarget(token)
-                .setTooltipText("Alpine.js directive")
+                .setTooltipText("Vento.js directive")
 
             result.add(builder.createLineMarkerInfo(token))
         }

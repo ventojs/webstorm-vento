@@ -11,20 +11,15 @@ import com.intellij.psi.html.HtmlTag
 class AutoPopupHandler : TypedHandlerDelegate() {
     @Suppress("ReturnCount")
     override fun checkAutoPopup(charTyped: Char, project: Project, editor: Editor, file: PsiFile): Result {
-        if (LookupManager.getActiveLookup(editor) != null) {
-            return Result.CONTINUE
-        }
+        if (LookupManager.getActiveLookup(editor) != null) return Result.CONTINUE
 
         val element = file.findElementAt(editor.caretModel.offset)
-        if (element?.parent !is HtmlTag) {
-            return Result.CONTINUE
-        }
+        if (element?.parent !is HtmlTag) return Result.CONTINUE
 
         if (charTyped == '@' || charTyped == ':' || charTyped == '.') {
             AutoPopupController.getInstance(project).scheduleAutoPopup(editor)
             return Result.STOP
         }
-
         return Result.CONTINUE
     }
 }

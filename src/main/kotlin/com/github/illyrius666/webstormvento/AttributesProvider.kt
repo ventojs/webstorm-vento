@@ -6,19 +6,14 @@ import com.intellij.xml.XmlAttributeDescriptor
 import com.intellij.xml.XmlAttributeDescriptorsProvider
 
 class AttributesProvider : XmlAttributeDescriptorsProvider {
-    override fun getAttributeDescriptors(xmlTag: XmlTag): Array<XmlAttributeDescriptor> {
-        return emptyArray()
-    }
+    override fun getAttributeDescriptors(xmlTag: XmlTag): Array<XmlAttributeDescriptor> = emptyArray()
 
     @Suppress("ReturnCount")
     override fun getAttributeDescriptor(name: String, xmlTag: XmlTag): XmlAttributeDescriptor? {
         if (xmlTag.descriptor !is HtmlElementDescriptorImpl) return null
         val info = AttributeInfo(name)
 
-        if (info.isAlpine()) {
-            return VentoAttributeDescriptor(name, xmlTag)
-        }
-
+        if (info.isVento()) return VentoAttributeDescriptor(name, xmlTag)
         return null
     }
 }

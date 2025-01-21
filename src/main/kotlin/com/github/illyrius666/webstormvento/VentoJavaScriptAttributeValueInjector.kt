@@ -28,16 +28,16 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
                 
             """.trimIndent()
 
-        val alpineWizardState =
+        val ventoWizardState =
             """
-                class AlpineWizardStep {
+                class VentoWizardStep {
                 	/** @type {HTMLElement} */ el;
                 	/** @type {string} */ title;
                 	/** @type {boolean} */ is_applicable;
                 	/** @type {boolean} */ is_complete;
                 }
 
-                class AlpineWizardProgress {
+                class VentoWizardProgress {
                 	/** @type {number} */ current;
                 	/** @type {number} */ total;
                 	/** @type {number} */ complete;
@@ -47,11 +47,11 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
                 	/** @type {number} */ percentage_float;
                 }
 
-                class AlpineWizardMagic {
-                	/** @returns {AlpineWizardStep} */ current() {}
-                	/** @returns {AlpineWizardStep|null} */ next() {}
-                	/** @returns {AlpineWizardStep|null} */ previous() {}
-                	/** @returns {AlpineWizardProgress} */ progress() {}
+                class VentoWizardMagic {
+                	/** @returns {VentoWizardStep} */ current() {}
+                	/** @returns {VentoWizardStep|null} */ next() {}
+                	/** @returns {VentoWizardStep|null} */ previous() {}
+                	/** @returns {VentoWizardProgress} */ progress() {}
                 	/** @returns {boolean} */ isFirst() {}
                 	/** @returns {boolean} */ isNotFirst() {}
                 	/** @returns {boolean} */ isLast() {}
@@ -67,7 +67,7 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
                 	/** @returns {void} */ back() {}
                 }
 
-                /** @type {AlpineWizardMagic} */
+                /** @type {VentoWizardMagic} */
                 let ${'$'}wizard;
                 
             """.trimIndent()
@@ -213,7 +213,7 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
         } else if ("x-init" == directive) {
             // We want x-init to skip the directive wrapping
         } else {
-            context.left += "__ALPINE_DIRECTIVE(\n"
+            context.left += "__VENTO_DIRECTIVE(\n"
             context.right += "\n)"
         }
 
@@ -241,7 +241,7 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
             if (null != data) {
                 val (prefix, suffix) = context
                 context.left =
-                    "$globalState\n$alpineWizardState\nlet ${'$'}data = $data;\nwith (${'$'}data) {\n\n$prefix"
+                    "$globalState\n$ventoWizardState\nlet ${'$'}data = $data;\nwith (${'$'}data) {\n\n$prefix"
                 context.right = "$suffix\n\n}"
             }
         }
