@@ -1,3 +1,0 @@
-package com.github.illyrius666.webstormvento
-
-class VentoParserDefinition
