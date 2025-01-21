@@ -3,16 +3,14 @@
     <id>com.github.illyrius666.webstormvento</id>
     <name>WebStorm-Vento</name>
     <vendor>illyrius666</vendor>
-
     <depends>com.intellij.modules.platform</depends>
-
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
+    <depends>JavaScript</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.illyrius666.webstormvento.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <fileTypeFactory implementation="com.github.illyrius666.webstormvento.VentoFileTypeFactory"/>
+        <lang.parserDefinition language="Vento"
+                               implementationClass="com.github.illyrius666.webstormvento.VentoParserDefinition"/>
     </extensions>
-
-    <applicationListeners>
-        <listener class="com.github.illyrius666.webstormvento.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
+    <actions>
+        <!-- Define actions here -->
+    </actions>
 </idea-plugin>
