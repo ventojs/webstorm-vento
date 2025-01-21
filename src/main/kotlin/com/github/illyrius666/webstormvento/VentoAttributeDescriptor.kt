@@ -15,7 +15,7 @@ class VentoAttributeDescriptor(
 
     private val info: AttributeInfo = AttributeInfo(name)
 
-    override fun getIcon() = Alpine.ICON
+    override fun getIcon() = Vento.ICON
 
     override fun getTypeName(): String {
         return info.typeText

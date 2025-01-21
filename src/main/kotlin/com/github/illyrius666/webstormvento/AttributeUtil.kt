@@ -2,21 +2,15 @@ package com.github.illyrius666.webstormvento
 
 import com.intellij.psi.html.HtmlTag
 import com.intellij.psi.impl.source.html.dtd.HtmlAttributeDescriptorImpl
-import com.intellij.psi.impl.source.html.dtd.HtmlElementDescriptorImpl
-import com.intellij.psi.impl.source.html.dtd.HtmlNSDescriptorImpl
 import com.intellij.psi.xml.XmlAttribute
 import com.intellij.psi.xml.XmlAttributeValue
-import com.intellij.psi.xml.XmlTag
-import com.intellij.xml.XmlAttributeDescriptor
 
 object AttributeUtil {
-    private val validAttributes = mutableMapOf<String, Array<AttributeInfo>>()
-
     val xmlPrefixes = arrayOf(
         "x-on",
         "x-bind",
         "x-transition",
-        "x-wizard", // glhd/alpine-wizard pacakge
+        "x-wizard",
     )
 
     val directives = arrayOf(
@@ -86,10 +80,6 @@ object AttributeUtil {
         "throttle",
         "duration",
         "delay",
-    )
-
-    val numericModifiers = arrayOf(
-        "scale",
     )
 
     val transitionModifiers = arrayOf(
@@ -202,10 +192,6 @@ object AttributeUtil {
         return templateDirectives.contains(directive)
     }
 
-    fun getValidAttributesWithInfo(xmlTag: HtmlTag): Array<AttributeInfo> {
-        return validAttributes.getOrPut(xmlTag.name) { buildValidAttributes(xmlTag) }
-    }
-
     fun isEvent(attribute: String): Boolean {
         for (prefix in eventPrefixes) {
             if (attribute.startsWith(prefix)) {
@@ -275,39 +261,5 @@ object AttributeUtil {
 
     private fun shouldInjectJavaScript(name: String): Boolean {
         return !name.startsWith("x-transition:") && "x-mask" != name && "x-modelable" != name
-    }
-
-    private fun buildValidAttributes(htmlTag: HtmlTag): Array<AttributeInfo> {
-        val descriptors = mutableListOf<AttributeInfo>()
-
-        for (directive in directives) {
-            if (htmlTag.name != "template" && isTemplateDirective(directive)) {
-                continue
-            }
-
-            descriptors.add(AttributeInfo(directive))
-        }
-
-        for (descriptor in getDefaultHtmlAttributes(htmlTag)) {
-            if (descriptor.name.startsWith("on")) {
-                val event = descriptor.name.substring(2)
-                for (prefix in eventPrefixes) {
-                    descriptors.add(AttributeInfo(prefix + event))
-                }
-            } else {
-                for (prefix in bindPrefixes) {
-                    descriptors.add(AttributeInfo(prefix + descriptor.name))
-                }
-            }
-        }
-
-        return descriptors.toTypedArray()
-    }
-
-    private fun getDefaultHtmlAttributes(xmlTag: XmlTag): Array<out XmlAttributeDescriptor> {
-        val tagDescriptor = xmlTag.descriptor as? HtmlElementDescriptorImpl
-        val descriptor = tagDescriptor ?: HtmlNSDescriptorImpl.guessTagForCommonAttributes(xmlTag)
-
-        return (descriptor as? HtmlElementDescriptorImpl)?.getDefaultAttributeDescriptors(xmlTag) ?: emptyArray()
     }
 }

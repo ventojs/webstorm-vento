@@ -6,8 +6,7 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 
-//FIX: this.
-@State(name = "com.github.inxilpro.intellijalpine.AppSettingsState", storages = [Storage("IntellijAlpine.xml")])
+@State(name = "com.github.illyrius666.webstormvento.AppSettingsState", storages = [Storage("WebStormVento.xml")])
 class VentoSettingsState : PersistentStateComponent<VentoSettingsState?> {
     var showGutterIcons = true
 

@@ -45,7 +45,7 @@ class VentoAttributeCompletionProvider() : CompletionProvider<CompletionParamete
             var elementBuilder = LookupElementBuilder
                 .create(text)
                 .withCaseSensitivity(false)
-                .withIcon(Alpine.ICON)
+                .withIcon(Vento.ICON)
                 .withTypeText(it.typeText)
 
             if (it.hasValue() && !it.canBePrefix()) {

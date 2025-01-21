@@ -1,0 +1,35 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.illyrius666.webstormvento</id>
+
+    <name>Vento.js Support</name>
+
+    <vendor url="https://github.com/illyrius666">
+        illyrius666
+    </vendor>
+
+    <!-- Product and plugin compatibility requirements -->
+    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.xml</depends>
+    <depends>JavaScript</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- com.jetbrains.php.blade.psi.BladePsiLanguageInjectionHost -->
+        <multiHostInjector implementation="com.github.illyrius666.webstormvento.VentoJavaScriptAttributeValueInjector"/>
+        <xml.attributeDescriptorsProvider implementation="com.github.illyrius666.webstormvento.AttributesProvider"/>
+        <xml.xmlExtension implementation="com.github.illyrius666.webstormvento.XmlExtension"/>
+        <typedHandler implementation="com.github.illyrius666.webstormvento.AutoPopupHandler"/>
+        <completion.contributor language="HTML"
+                                implementationClass="com.github.illyrius666.webstormvento.VentoCompletionContributor"
+                                id="AlpineCompletionContributor"/>
+        <codeInsight.lineMarkerProvider language="HTML"
+                                        implementationClass="com.github.illyrius666.webstormvento.VentoLineMarkerProvider"/>
+        <applicationService serviceImplementation="com.github.illyrius666.webstormvento.VentoSettingsState"/>
+        <applicationConfigurable parentId="Settings.JavaScript"
+                                 instance="com.github.illyrius666.webstormvento.VentoSettingsConfigurable"
+                                 id="com.github.illyrius666.webstormvento.VentoSettingsConfigurable"
+                                 displayName="Vento.js"/>
+    </extensions>
+</idea-plugin>
