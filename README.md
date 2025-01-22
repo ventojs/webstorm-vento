@@ -26,7 +26,6 @@
 - [Code of Conduct][code_of_conduct_url]
 - [Contributing][contributing_url]
 - [License][license_url]
-- [Security][security_url]
 
 ## About The Project
 
@@ -76,6 +75,5 @@ Plugin based on the [IntelliJ Platform Plugin Template][template].
 [license_url]: https://github.com/ventojs/webstorm-vento?tab=AGPL-3.0-1-ov-file
 [roadmap_shield_url]: https://img.shields.io/badge/Roadmap-Click%20Me!-purple.svg?style=for-the-badge
 [roadmap_url]: https://github.com/orgs/ventojs/projects/4
-[security_url]: https://github.com/ventojs/webstorm-vento?tab=security-ov-file
 [template]: https://github.com/JetBrains/intellij-platform-plugin-template
 [docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
