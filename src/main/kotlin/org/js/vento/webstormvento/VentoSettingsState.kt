@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Óscar Otero
+ * All rights reserved.
+ */
+
 package org.js.vento.webstormvento
 
 import com.intellij.openapi.application.ApplicationManager
@@ -6,7 +11,7 @@ import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.util.xmlb.XmlSerializerUtil
 
-@State(name = "com.github.illyrius666.webstormvento.AppSettingsState", storages = [Storage("WebStormVento.xml")])
+@State(name = "org.js.vento.webstormvento.AppSettingsState", storages = [Storage("WebStormVento.xml")])
 class VentoSettingsState : PersistentStateComponent<VentoSettingsState?> {
     var showGutterIcons = true
 
