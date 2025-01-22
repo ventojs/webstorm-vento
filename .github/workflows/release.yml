@@ -12,8 +12,6 @@ permissions:
   packages: write
 
 jobs:
-
-  # Prepare and publish the plugin to JetBrains Marketplace repository
   release:
     name: Publish Plugin
     runs-on: ubuntu-latest
@@ -21,9 +19,8 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-
-      # Check out the current repository
-      - name: Fetch Sources
+      - id: checkout
+        name: Checkout
         uses: actions/checkout@v4
         with:
           ref: ${{ github.event.release.tag_name }}

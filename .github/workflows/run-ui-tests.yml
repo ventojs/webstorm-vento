@@ -16,7 +16,6 @@ permissions:
   packages: write
 
 jobs:
-
   testUI:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -34,9 +33,8 @@ jobs:
             runIde: ./gradlew runIdeForUiTests &
 
     steps:
-
-      # Check out the current repository
-      - name: Fetch Sources
+      - id: checkout
+        name: Checkout
         uses: actions/checkout@v4
 
       # Set up Java environment for the next steps
