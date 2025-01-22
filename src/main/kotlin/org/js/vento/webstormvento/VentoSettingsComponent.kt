@@ -1,4 +1,4 @@
-package com.github.illyrius666.webstormvento
+package org.js.vento.webstormvento
 
 import com.intellij.ui.components.JBCheckBox
 import com.intellij.util.ui.FormBuilder

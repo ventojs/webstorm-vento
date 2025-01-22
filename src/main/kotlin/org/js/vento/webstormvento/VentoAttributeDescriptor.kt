@@ -1,4 +1,4 @@
-package com.github.illyrius666.webstormvento
+package org.js.vento.webstormvento
 
 import com.intellij.psi.PsiElement
 import com.intellij.psi.meta.PsiPresentableMetaData

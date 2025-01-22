@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>com.github.illyrius666.webstormvento</id>
+    <id>org.js.vento.webstormvento</id>
 
     <name>Vento.js Support</name>
 
@@ -17,19 +17,19 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- com.jetbrains.php.blade.psi.BladePsiLanguageInjectionHost -->
-        <multiHostInjector implementation="com.github.illyrius666.webstormvento.VentoJavaScriptAttributeValueInjector"/>
-        <xml.attributeDescriptorsProvider implementation="com.github.illyrius666.webstormvento.AttributesProvider"/>
-        <xml.xmlExtension implementation="com.github.illyrius666.webstormvento.XmlExtension"/>
-        <typedHandler implementation="com.github.illyrius666.webstormvento.AutoPopupHandler"/>
+        <multiHostInjector implementation="org.js.vento.webstormvento.VentoJavaScriptAttributeValueInjector"/>
+        <xml.attributeDescriptorsProvider implementation="org.js.vento.webstormvento.AttributesProvider"/>
+        <xml.xmlExtension implementation="org.js.vento.webstormvento.XmlExtension"/>
+        <typedHandler implementation="org.js.vento.webstormvento.AutoPopupHandler"/>
         <completion.contributor language="HTML"
-                                implementationClass="com.github.illyrius666.webstormvento.VentoCompletionContributor"
+                                implementationClass="org.js.vento.webstormvento.VentoCompletionContributor"
                                 id="VentoCompletionContributor"/>
         <codeInsight.lineMarkerProvider language="HTML"
-                                        implementationClass="com.github.illyrius666.webstormvento.VentoLineMarkerProvider"/>
-        <applicationService serviceImplementation="com.github.illyrius666.webstormvento.VentoSettingsState"/>
+                                        implementationClass="org.js.vento.webstormvento.VentoLineMarkerProvider"/>
+        <applicationService serviceImplementation="org.js.vento.webstormvento.VentoSettingsState"/>
         <applicationConfigurable parentId="Settings.JavaScript"
-                                 instance="com.github.illyrius666.webstormvento.VentoSettingsConfigurable"
-                                 id="com.github.illyrius666.webstormvento.VentoSettingsConfigurable"
+                                 instance="org.js.vento.webstormvento.VentoSettingsConfigurable"
+                                 id="org.js.vento.webstormvento.VentoSettingsConfigurable"
                                  displayName="Vento.js"/>
     </extensions>
 </idea-plugin>

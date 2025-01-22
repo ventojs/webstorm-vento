@@ -1,4 +1,4 @@
-package com.github.illyrius666.webstormvento
+package org.js.vento.webstormvento
 
 import com.intellij.lang.html.HTMLLanguage
 import com.intellij.openapi.util.TextRange

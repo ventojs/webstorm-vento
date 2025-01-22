@@ -1,4 +1,4 @@
-package com.github.illyrius666.webstormvento
+package org.js.vento.webstormvento
 
 @Suppress("MemberVisibilityCanBePrivate")
 class AttributeInfo(val attribute: String) {

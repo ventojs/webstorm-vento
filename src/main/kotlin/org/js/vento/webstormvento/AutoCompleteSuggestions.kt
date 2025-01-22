@@ -1,11 +1,11 @@
-package com.github.illyrius666.webstormvento
+package org.js.vento.webstormvento
 
-import com.github.illyrius666.webstormvento.AttributeUtil.isTemplateDirective
 import com.intellij.psi.html.HtmlTag
 import com.intellij.psi.impl.source.html.dtd.HtmlElementDescriptorImpl
 import com.intellij.psi.impl.source.html.dtd.HtmlNSDescriptorImpl
 import com.intellij.psi.xml.XmlTag
 import com.intellij.xml.XmlAttributeDescriptor
+import org.js.vento.webstormvento.AttributeUtil.isTemplateDirective
 
 class AutoCompleteSuggestions(val htmlTag: HtmlTag, val partialAttribute: String) {
 
