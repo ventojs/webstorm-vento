@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.intellij.deps.jflex:jflex:1.9.2")
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })

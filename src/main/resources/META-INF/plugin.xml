@@ -3,7 +3,6 @@
   ~ All rights reserved.
   -->
 
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>org.js.vento.webstormvento</id>
 
@@ -13,28 +12,12 @@
         ventojs
     </vendor>
 
-    <!-- Product and plugin compatibility requirements -->
-    <!-- https://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- com.jetbrains.php.blade.psi.BladePsiLanguageInjectionHost -->
-        <multiHostInjector implementation="org.js.vento.webstormvento.VentoJavaScriptAttributeValueInjector"/>
-        <xml.attributeDescriptorsProvider implementation="org.js.vento.webstormvento.AttributesProvider"/>
-        <xml.xmlExtension implementation="org.js.vento.webstormvento.XmlExtension"/>
-        <typedHandler implementation="org.js.vento.webstormvento.AutoPopupHandler"/>
-        <completion.contributor language="HTML"
-                                implementationClass="org.js.vento.webstormvento.VentoCompletionContributor"
-                                id="VentoCompletionContributor"/>
-        <codeInsight.lineMarkerProvider language="HTML"
-                                        implementationClass="org.js.vento.webstormvento.VentoLineMarkerProvider"/>
-        <applicationService serviceImplementation="org.js.vento.webstormvento.VentoSettingsState"/>
-        <applicationConfigurable parentId="Settings.JavaScript"
-                                 instance="org.js.vento.webstormvento.VentoSettingsConfigurable"
-                                 id="org.js.vento.webstormvento.VentoSettingsConfigurable"
-                                 displayName="Vento.js"/>
+        <parserDefinition implementation="org.js.vento.webstormvento.VentoParserDefinition"/>
     </extensions>
 </idea-plugin>

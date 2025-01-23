@@ -5,7 +5,6 @@
 
 package org.js.vento.webstormvento
 
-import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
@@ -16,10 +15,6 @@ import com.intellij.psi.tree.IElementType
  * that you can later expand to properly handle your Vento grammar.
  */
 class VentoParser : PsiParser {
-    override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
-        val rootMarker = builder.mark()
-        while (!builder.eof()) builder.advanceLexer()
-        rootMarker.done(root)
-        return builder.treeBuilt
-    }
+    override fun parse(root: IElementType, builder: PsiBuilder) =
+        builder.mark().apply { while (!builder.eof()) builder.advanceLexer() }.done(root).run { builder.treeBuilt }
 }
