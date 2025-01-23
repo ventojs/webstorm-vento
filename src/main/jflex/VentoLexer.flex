@@ -3,13 +3,12 @@
  | Lexer specification for the Vento language using JFlex                    |
  *---------------------------------------------------------------------------*/
 
-%%
 
-%{
-    import com.intellij.psi.tree.IElementType;
-    import org.js.vento.webstormvento.VentoTypes;
-    import java_cup.runtime.Symbol;
-%}
+import org.js.vento.webstormvento.VentoTypes;
+import java_cup.runtime.Symbol;
+
+
+%%
 
 %class VentoLexer
 %unicode

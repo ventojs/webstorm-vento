@@ -13,6 +13,9 @@ package org.js.vento.webstormvento;// DO NOT EDIT
  *---------------------------------------------------------------------------*/
 
 
+import java_cup.runtime.Symbol;
+
+
 @SuppressWarnings("fallthrough")
 class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
 
@@ -334,11 +337,6 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
         offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
         return result;
     }
-
-    /* user code: */
-    import com.intellij.psi.tree.IElementType;
-    import org.js.vento.webstormvento.VentoTypes;
-    import java_cup.runtime.Symbol;
 
     private static int zzUnpackAttribute(String packed, int offset, int[] result) {
         int i = 0;       /* index in packed string  */
