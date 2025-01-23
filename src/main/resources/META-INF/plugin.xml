@@ -18,6 +18,7 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <parserDefinition implementation="org.js.vento.webstormvento.VentoParserDefinition"/>
+        <lang.parserDefinition language="Vento"
+                               implementationClass="org.js.vento.webstormvento.VentoParserDefinition"/>
     </extensions>
 </idea-plugin>

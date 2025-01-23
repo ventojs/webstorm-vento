@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="major refactoring">
-      <change afterPath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" afterDir="false" />
+    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="some implementing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParser.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -110,7 +105,7 @@
       <workItem from="1737622500099" duration="1128000" />
       <workItem from="1737623649683" duration="291000" />
       <workItem from="1737623954293" duration="472000" />
-      <workItem from="1737624443597" duration="5538000" />
+      <workItem from="1737624443597" duration="5775000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -152,7 +147,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737628436805</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="some implementing">
+      <option name="closed" value="true" />
+      <created>1737630106835</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1737630106835</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -179,7 +182,8 @@
     <MESSAGE value="fix build script" />
     <MESSAGE value="some refactoring" />
     <MESSAGE value="major refactoring" />
-    <option name="LAST_COMMIT_MESSAGE" value="major refactoring" />
+    <MESSAGE value="some implementing" />
+    <option name="LAST_COMMIT_MESSAGE" value="some implementing" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
