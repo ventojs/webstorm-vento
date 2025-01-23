@@ -53,17 +53,4 @@ intellijPlatform {
     pluginVerification { ides { recommended() } }
 }
 
-grammarKit {
-    jflexRelease.set("1.9.2")
-    grammarKitRelease.set("2023.3")
-}
-
-tasks {
-    wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() }
-    generateParser {
-        sourceFile = file("src/main/jflex/VentoLexer.flex")
-        targetRootOutputDir = file("src/main/kotlin/org/js/vento/webstormvento")
-    }
-}
-
-sourceSets["main"].java.srcDirs("src/main/gen")
+tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }
