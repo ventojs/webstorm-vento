@@ -16,9 +16,7 @@ class AttributesProvider : XmlAttributeDescriptorsProvider {
     @Suppress("ReturnCount")
     override fun getAttributeDescriptor(name: String, xmlTag: XmlTag): XmlAttributeDescriptor? {
         if (xmlTag.descriptor !is HtmlElementDescriptorImpl) return null
-        val info = AttributeInfo(name)
-
-        if (info.isVento()) return VentoAttributeDescriptor(name, xmlTag)
+        if (AttributeInfo(name).isVento()) return VentoAttributeDescriptor(name, xmlTag)
         return null
     }
 }

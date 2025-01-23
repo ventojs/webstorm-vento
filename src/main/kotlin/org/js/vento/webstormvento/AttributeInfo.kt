@@ -5,7 +5,6 @@
 
 package org.js.vento.webstormvento
 
-@Suppress("MemberVisibilityCanBePrivate")
 class AttributeInfo(val attribute: String) {
     private val typeTexts = hashMapOf<String, String>(
         "x-data" to "New Vento.js component scope",
@@ -54,64 +53,38 @@ class AttributeInfo(val attribute: String) {
         typeText = buildTypeText()
     }
 
-    @Suppress("ComplexCondition")
-    fun isVento(): Boolean {
-        return this.isEvent() || this.isBound() || this.isTransition() || this.isDirective() || this.isWizard()
-    }
+    fun isVento(): Boolean =
+        this.isEvent() || this.isBound() || this.isTransition() || this.isDirective() || this.isWizard()
 
-    fun isEvent(): Boolean {
-        return "@" == prefix || "x-on:" == prefix
-    }
+    fun isEvent(): Boolean = "@" == prefix || "x-on:" == prefix
 
-    fun isBound(): Boolean {
-        return ":" == prefix || "x-bind:" == prefix
-    }
+    fun isBound(): Boolean = ":" == prefix || "x-bind:" == prefix
 
-    fun isTransition(): Boolean {
-        return "x-transition:" == prefix
-    }
+    fun isTransition(): Boolean = "x-transition:" == prefix
 
-    fun isDirective(): Boolean {
-        return AttributeUtil.directives.contains(name)
-    }
+    fun isDirective(): Boolean = AttributeUtil.directives.contains(name)
 
-    fun isWizard(): Boolean {
-        return "x-wizard:" == prefix
-    }
+    fun isWizard(): Boolean = "x-wizard:" == prefix
 
-    fun hasValue(): Boolean {
-        return "x-cloak" != name && "x-ignore" != name
-    }
+    fun hasValue(): Boolean = "x-cloak" != name && "x-ignore" != name
 
-    fun canBePrefix(): Boolean {
-        return "x-bind" == name || "x-transition" == name || "x-on" == name || "x-wizard" == name
-    }
+    fun canBePrefix(): Boolean = "x-bind" == name || "x-transition" == name || "x-on" == name || "x-wizard" == name
 
-    @Suppress("ReturnCount")
     private fun extractPrefix(): String {
         for (eventPrefix in AttributeUtil.eventPrefixes) {
-            if (attribute.startsWith(eventPrefix)) {
-                return eventPrefix
-            }
+            if (attribute.startsWith(eventPrefix)) return eventPrefix
         }
 
         for (bindPrefix in AttributeUtil.bindPrefixes) {
-            if (attribute.startsWith(bindPrefix)) {
-                return bindPrefix
-            }
+            if (attribute.startsWith(bindPrefix)) return bindPrefix
         }
 
-        if (attribute.startsWith("x-transition:")) {
-            return "x-transition:"
-        }
+        if (attribute.startsWith("x-transition:")) return "x-transition:"
 
-        if (attribute.startsWith("x-wizard:")) {
-            return "x-wizard:"
-        }
+        if (attribute.startsWith("x-wizard:")) return "x-wizard:"
         return ""
     }
 
-    @Suppress("ReturnCount")
     private fun buildTypeText(): String = when {
         isEvent() -> "'$name' listener"
         isBound() -> "Bind '$name' attribute"

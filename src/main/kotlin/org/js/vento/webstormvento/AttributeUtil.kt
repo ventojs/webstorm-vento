@@ -199,21 +199,15 @@ object AttributeUtil {
 
     fun isEvent(attribute: String): Boolean {
         for (prefix in eventPrefixes) {
-            if (attribute.startsWith(prefix)) {
-                return true
-            }
+            if (attribute.startsWith(prefix)) return true
         }
-
         return false
     }
 
     fun isBound(attribute: String): Boolean {
         for (prefix in bindPrefixes) {
-            if (attribute.startsWith(prefix)) {
-                return true
-            }
+            if (attribute.startsWith(prefix)) return true
         }
-
         return false
     }
 
@@ -223,25 +217,17 @@ object AttributeUtil {
 
         // Make sure we have an HTML tag (and not a Blade <x- tag)
         val tag = attribute.parent as? HtmlTag ?: return false
-        if (!isValidHtmlTag(tag)) {
-            return false
-        }
+        if (!isValidHtmlTag(tag)) return false
 
         // Make sure we have an attribute that looks like it's Vento
         val attributeName = attribute.name
-        if (!isVentoAttributeName(attributeName)) {
-            return false
-        }
+        if (!isVentoAttributeName(attributeName)) return false
 
         // Make sure it's a valid Attribute to operate on
-        if (!isValidAttribute(attribute)) {
-            return false
-        }
+        if (!isValidAttribute(attribute)) return false
 
         // Make sure it's an attribute that is parsed as JavaScript
-        if (!shouldInjectJavaScript(attributeName)) {
-            return false
-        }
+        if (!shouldInjectJavaScript(attributeName)) return false
 
         return true
     }

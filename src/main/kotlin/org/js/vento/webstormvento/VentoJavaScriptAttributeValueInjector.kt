@@ -135,12 +135,8 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
     }
 
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, host: PsiElement) {
-        if (host !is XmlAttributeValue) {
-            return
-        }
-        if (!AttributeUtil.isValidInjectionTarget(host)) {
-            return
-        }
+        if (host !is XmlAttributeValue) return
+        if (!AttributeUtil.isValidInjectionTarget(host)) return
 
         val attribute = host.parent as? XmlAttribute ?: return
         val attributeName = attribute.name
@@ -164,13 +160,10 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
                 prefix += "__PHP_CALL()"
             }
         }
-
         registrar.doneInjecting()
     }
 
-    override fun elementsToInjectIn(): List<Class<out PsiElement>> {
-        return listOf(XmlAttributeValue::class.java)
-    }
+    override fun elementsToInjectIn(): List<Class<out PsiElement>> = listOf(XmlAttributeValue::class.java)
 
     private fun getJavaScriptRanges(host: XmlAttributeValue, content: String): List<TextRange> {
         val valueRange = ElementManipulators.getValueTextRange(host)
@@ -196,13 +189,9 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
     private fun getPrefixAndSuffix(directive: String, host: XmlAttributeValue): Pair<String, String> {
         val context = MutablePair(globalMagics, "")
 
-        if ("x-data" != directive) {
-            context.left = addTypingToCoreMagics(host) + context.left
-        }
+        if ("x-data" != directive) context.left = addTypingToCoreMagics(host) + context.left
 
-        if ("x-spread" == directive) {
-            context.right += "()"
-        }
+        if ("x-spread" == directive) context.right += "()"
 
         if (AttributeUtil.isEvent(directive)) {
             context.left += addTypingToEventMagics(directive)
@@ -279,7 +268,6 @@ class VentoJavaScriptAttributeValueInjector : MultiHostInjector {
             }
             typedCoreMagics = typedCoreMagics.replace("{rootType}", elType)
         }
-
         return typedCoreMagics
     }
 

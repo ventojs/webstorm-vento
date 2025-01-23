@@ -22,16 +22,13 @@ class VentoLineMarkerProvider : RelatedItemLineMarkerProvider() {
         result: MutableCollection<in RelatedItemLineMarkerInfo<*>?>
     ) {
         if (!VentoSettingsState.Companion.instance.showGutterIcons) return
-
         if (element is XmlAttribute && element.descriptor is VentoAttributeDescriptor) {
-
             val token = PsiTreeUtil.getChildOfType(element, XmlTokenImpl::class.java) ?: return
-
-            val builder = NavigationGutterIconBuilder.create(Vento.ICON)
-                .setTarget(token)
-                .setTooltipText("Vento.js directive")
-
-            result.add(builder.createLineMarkerInfo(token))
+            result.add(
+                NavigationGutterIconBuilder.create(Vento.ICON)
+                    .setTarget(token)
+                    .setTooltipText("Vento.js directive").createLineMarkerInfo(token)
+            )
         }
     }
 }
