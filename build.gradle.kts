@@ -3,9 +3,6 @@
  * All rights reserved.
  */
 
-import org.jetbrains.changelog.markdownToHTML
-import org.jetbrains.intellij.platform.gradle.TestFrameworkType
-
 plugins {
     id("java")
     alias(libs.plugins.kotlin)
@@ -23,34 +20,19 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.junit)
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
         pluginVerifier()
         zipSigner()
-        testFramework(TestFrameworkType.Platform)
     }
 }
 
 intellijPlatform {
     pluginConfiguration {
         version = providers.gradleProperty("pluginVersion")
-        description = providers.fileContents(layout.projectDirectory.file("README.md")).asText.map {
-            val start = "<!-- Plugin description -->"
-            val end = "<!-- Plugin description end -->"
-            with(it.lines()) {
-                if (!containsAll(
-                        listOf(
-                            start,
-                            end
-                        )
-                    )
-                ) throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
-                subList(indexOf(start) + 1, indexOf(end)).joinToString("\n").let(::markdownToHTML)
-            }
-        }
+        description = providers.gradleProperty("pluginDescription")
         ideaVersion {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
             untilBuild = providers.gradleProperty("pluginUntilBuild")
