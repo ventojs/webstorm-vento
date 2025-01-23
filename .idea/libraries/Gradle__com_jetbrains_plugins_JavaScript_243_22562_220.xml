@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jetbrains.plugins:JavaScript:243.22562.220" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.jetbrains.plugins" artifactId="JavaScript" version="243.22562.220" baseVersion="243.22562.220" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/b46e8d0669e0a5b32c830481c678a636/transformed/JavaScript-243.22562.220/javascript-plugin/lib/javascript-plugin.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
