@@ -15,8 +15,7 @@
 %{
     // Imports and additional code can be placed here
     import com.intellij.psi.tree.IElementType;
-    import org.js.vento.webstormvento.psi.VentoTypes;
-    import org.js.vento.webstormvento.VentoTypes.*;
+    import org.js.vento.webstormvento.VentoTypes;
     import java_cup.runtime.Symbol;
 %}
 
@@ -25,6 +24,10 @@ NUMBER = [0-9]+(\.[0-9]+)?
 STRING = \"([^\"\\]|\\.)*\"
 WHITESPACE = [ \t\r\n]+
 COMMENT = \/\*(.|\n)*?\*\/ | \/\/.*
+PURE_JS = \{\{>[^}]*\}\}
+VENTO_CODE = \{\{(?!#|>)[^}]*\}\}
+COMMENTED_CODE = \{\{#[^}]*#\}\}
+FRONT_MATTER = \-\-\-[\s\S]*?\-\-\-
 
 %%
 
@@ -32,7 +35,15 @@ COMMENT = \/\*(.|\n)*?\*\/ | \/\/.*
 
     {WHITESPACE}              { /* Skip whitespace */ }
 
-    {COMMENT}                 { /* Handle comments */ return new Symbol(VentoTypes.COMMENT); }
+    {FRONT_MATTER}            { /* Handle front matters */ return new Symbol(VentoTypes.FRONT_MATTER, yytext()); }
+
+    {COMMENT}                 { /* Handle comments */ return new Symbol(VentoTypes.COMMENT, yytext()); }
+
+    {COMMENTED_CODE}         { /* Handle commented Vento code */ return new Symbol(VentoTypes.COMMENTED_CODE, yytext()); }
+
+    {PURE_JS}                { /* Handle pure JavaScript code */ return new Symbol(VentoTypes.PURE_JS, yytext()); }
+
+    {VENTO_CODE}              { /* Handle Vento-specific code */ return new Symbol(VentoTypes.VENTO_CODE, yytext()); }
 
     "if"                      { return new Symbol(VentoTypes.IF); }
     "else"                    { return new Symbol(VentoTypes.ELSE); }

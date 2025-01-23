@@ -7,6 +7,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.2.1"
+    id("org.xbib.gradle.plugin.jflex") version "3.0.2"
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -51,6 +52,17 @@ intellijPlatform {
             .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
     pluginVerification { ides { recommended() } }
+}
+
+sourceSets {
+    main {
+        jflex {
+            srcDirs += files("src/main/jflex")
+        }
+        java {
+            srcDirs += files("${layout.buildDirectory}/my-generated-sources/jflex")
+        }
+    }
 }
 
 tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }

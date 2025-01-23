@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="correctly registered the parserdef into the plugin.xml" />
+    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="correctly registered the parserdef into the plugin.xml">
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jetbrains_plugins_JavaScript_243_22562_220.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Gradle__com_jetbrains_plugins_JavaScript_243_22562_220.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,20 +71,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "code.cleanup.on.save": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "rearrange.code.on.save": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateKotlinClassDialog.RecentsKey">
       <recent name="org.js.vento.webstormvento" />
@@ -103,6 +110,7 @@
       <workItem from="1737623649683" duration="291000" />
       <workItem from="1737623954293" duration="472000" />
       <workItem from="1737624443597" duration="5802000" />
+      <workItem from="1737634416788" duration="1955000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
