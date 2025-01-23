@@ -4,14 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="fix build script">
+    <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="some refactoring">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoElementImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoElementType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoFile.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoFileType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLanguage.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexerAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParserDefinition.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoPsiElementImpl.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoTokenType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoTypes.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeInfo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeInfo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeUtil.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeUtil.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributesProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributesProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoJavaScriptAttributeValueInjector.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoJavaScriptAttributeValueInjector.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLineMarkerProvider.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLineMarkerProvider.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoSettingsConfigurable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoSettingsConfigurable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeInfo.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributeUtil.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AttributesProvider.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AutoCompleteSuggestions.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/AutoPopupHandler.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/Vento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/Vento.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoAttributeCompletionProvider.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoAttributeDescriptor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoCompletionContributor.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoJavaScriptAttributeValueInjector.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLineMarkerProvider.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoSettingsComponent.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoSettingsConfigurable.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoSettingsState.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/XmlExtension.kt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +46,14 @@
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Kotlin Object" />
+        <option value="Kotlin Class" />
+      </list>
+    </option>
   </component>
   <component name="FormatOnSaveOptions">
     <option name="myRunOnSave" value="true" />
@@ -57,7 +86,9 @@
   &quot;associatedIndex&quot;: 3
 }</component>
   <component name="ProjectId" id="2s1UItp5eMNBEgxodqh2H5H8W0i" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -76,6 +107,11 @@
     "settings.editor.selected.configurable": "advanced.settings"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CreateKotlinClassDialog.RecentsKey">
+      <recent name="org.js.vento.webstormvento" />
+    </key>
+  </component>
   <component name="RunManager" selected="Gradle.Run Plugin" />
   <component name="SharedIndexes">
     <attachedChunks>
@@ -95,7 +131,7 @@
       <workItem from="1737622500099" duration="1128000" />
       <workItem from="1737623649683" duration="291000" />
       <workItem from="1737623954293" duration="472000" />
-      <workItem from="1737624443597" duration="1532000" />
+      <workItem from="1737624443597" duration="3903000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -121,7 +157,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737625134229</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="some refactoring">
+      <option name="closed" value="true" />
+      <created>1737626073409</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1737626073409</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,7 +190,8 @@
     <MESSAGE value="cleanup part 2" />
     <MESSAGE value="fix copyright .idea" />
     <MESSAGE value="fix build script" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix build script" />
+    <MESSAGE value="some refactoring" />
+    <option name="LAST_COMMIT_MESSAGE" value="some refactoring" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

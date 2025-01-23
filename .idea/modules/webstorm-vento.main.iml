@@ -83,5 +83,6 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="groovy-3.0.22.jar" level="project" />
   </component>
 </module>
