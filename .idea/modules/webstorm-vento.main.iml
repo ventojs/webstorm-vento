@@ -34,58 +34,60 @@
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_21">
-    <output url="file://$MODULE_DIR$/../../build/classes/kotlin/main" />
+    <output url="file://$MODULE_DIR$/../../build/classes/java/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/main">
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/kotlin" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../../src/main/gen" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="21" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:grammar-kit:2023.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.intellij.deps.jflex:jflex:1.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.jetbrains.intellij.deps.jflex:jflex:1.9.2" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: idea:ideaIC:win:2023.3.8">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/annotations.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/ant/lib/ant.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/app.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/app-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/bouncy-castle.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/byte-buddy-agent.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/error-prone-annotations.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/external-system-rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/externalProcess-rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/forms_rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/groovy.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/grpc.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/idea_rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/intellij-coverage-agent-1.0.738.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/intellij-test-discovery.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/jps-model.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/jsch-agent.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/lib.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/lib-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/modules.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/platform-loader.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/product-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/protobuf.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/rd.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/stats.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/util.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/util-8.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/6d069958c6ec534b805fef622347c8e8/transformed/ideaIC-2023.3.8-win/lib/util_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/annotations.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/ant/lib/ant.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/app.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/app-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/bouncy-castle.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/byte-buddy-agent.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/error-prone-annotations.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/external-system-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/externalProcess-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/forms_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/groovy.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/grpc.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/idea_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/intellij-coverage-agent-1.0.738.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/intellij-test-discovery.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/jps-model.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/jsch-agent.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/lib.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/lib-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/modules.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/platform-loader.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/product-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/protobuf.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/rd.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/stats.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/util.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/util-8.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/95e86322495f4162e65e3f4e1197da3b/transformed/ideaIC-2023.3.8-win/lib/util_rt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
     <orderEntry type="library" scope="PROVIDED" name="Gradle: com.jetbrains.plugins:JavaScript:243.22562.220" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.ant:ant:1.10.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk7:2.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:2.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.ant:ant:1.10.13" level="project" />
-    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apache.ant:ant-launcher:1.10.13" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.apache.ant:ant-launcher:1.10.13" level="project" />
   </component>
 </module>

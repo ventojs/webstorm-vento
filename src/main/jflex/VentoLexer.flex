@@ -5,6 +5,12 @@
 
 %%
 
+%{
+    import com.intellij.psi.tree.IElementType;
+    import org.js.vento.webstormvento.VentoTypes;
+    import java_cup.runtime.Symbol;
+%}
+
 %class VentoLexer
 %unicode
 %cup
@@ -12,20 +18,15 @@
 %function next_token
 %type java_cup.runtime.Symbol
 
-%{
-    // Imports and additional code can be placed here
-    import com.intellij.psi.tree.IElementType;
-    import org.js.vento.webstormvento.VentoTypes;
-    import java_cup.runtime.Symbol;
-%}
+%state MACRO_START
+%state VENTO_ELEMENT_STATE
 
 IDENTIFIER = [a-zA-Z_][a-zA-Z0-9_]*
 NUMBER = [0-9]+(\.[0-9]+)?
 STRING = \"([^\"\\]|\\.)*\"
 WHITESPACE = [ \t\r\n]+
-COMMENT = \/\*(.|\n)*?\*\/ | \/\/.*
+COMMENT = \/\*[^]*?\*\/ | \/\/.*
 PURE_JS = \{\{>[^}]*\}\}
-VENTO_CODE = \{\{(?!#|>)[^}]*\}\}
 COMMENTED_CODE = \{\{#[^}]*#\}\}
 FRONT_MATTER = \-\-\-[\s\S]*?\-\-\-
 
@@ -39,11 +40,11 @@ FRONT_MATTER = \-\-\-[\s\S]*?\-\-\-
 
     {COMMENT}                 { /* Handle comments */ return new Symbol(VentoTypes.COMMENT, yytext()); }
 
-    {COMMENTED_CODE}         { /* Handle commented Vento code */ return new Symbol(VentoTypes.COMMENTED_CODE, yytext()); }
+    {COMMENTED_CODE}          { /* Handle commented Vento code */ return new Symbol(VentoTypes.COMMENTED_CODE, yytext()); }
 
-    {PURE_JS}                { /* Handle pure JavaScript code */ return new Symbol(VentoTypes.PURE_JS, yytext()); }
+    {PURE_JS}                 { /* Handle pure JavaScript code */ return new Symbol(VentoTypes.PURE_JS, yytext()); }
 
-    {VENTO_CODE}              { /* Handle Vento-specific code */ return new Symbol(VentoTypes.VENTO_CODE, yytext()); }
+    "{{"                      { /* Enter MACRO_START state when '{{' is encountered */ yybegin(MACRO_START); }
 
     "if"                      { return new Symbol(VentoTypes.IF); }
     "else"                    { return new Symbol(VentoTypes.ELSE); }
@@ -66,4 +67,34 @@ FRONT_MATTER = \-\-\-[\s\S]*?\-\-\-
     "}"                       { return new Symbol(VentoTypes.RBRACE); }
 
     .                         { /* Handle any other character */ return new Symbol(VentoTypes.ERROR, yytext()); }
+}
+
+<MACRO_START> {
+
+    ">"                        { /* Handle PURE_JS */
+                                 yybegin(YYINITIAL);
+                                 return new Symbol(VentoTypes.PURE_JS, "{{>" + yytext());
+                               }
+
+    "#"                        { /* Handle COMMENTED_CODE */
+                                 yybegin(YYINITIAL);
+                                 return new Symbol(VentoTypes.COMMENTED_CODE, "{{#" + yytext());
+                               }
+
+    [^#>]                      { /* Enter VENTO_ELEMENT_STATE for other '{{' patterns */
+                                 yybegin(VENTO_ELEMENT_STATE);
+                                 yycharat = yycharat; /* Placeholder if needed */
+                               }
+}
+
+<VENTO_ELEMENT_STATE> {
+
+    "}}"                       { /* End of VENTO_ELEMENT */
+                                 yybegin(YYINITIAL);
+                                 return new Symbol(VentoTypes.VENTO_ELEMENT, yytext());
+                               }
+
+    [^}]+                      { /* Collect content inside VENTO_ELEMENT */ /* You can accumulate the text as needed */ }
+
+    .                          { /* Handle any other character */ return new Symbol(VentoTypes.ERROR, yytext()); }
 }

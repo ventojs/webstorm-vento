@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: org.jetbrains:grammar-kit:2023.3" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="org.jetbrains" artifactId="grammar-kit" version="2023.3" baseVersion="2023.3" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/grammar-kit/2023.3/d6145274ff592607224d4832d30b95570b0d0e55/grammar-kit-2023.3.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.jetbrains/grammar-kit/2023.3/74c4b84713b8b89264fd77fc0fe0dae89f6a9b62/grammar-kit-2023.3-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

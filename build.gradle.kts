@@ -7,7 +7,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.2.1"
-    id("org.xbib.gradle.plugin.jflex") version "3.0.2"
+    id("org.jetbrains.grammarkit") version "2022.3.2.2"
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -22,7 +22,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.intellij.deps.jflex:jflex:1.9.2")
     intellijPlatform {
         create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
@@ -54,15 +53,17 @@ intellijPlatform {
     pluginVerification { ides { recommended() } }
 }
 
-sourceSets {
-    main {
-        jflex {
-            srcDirs += files("src/main/jflex")
-        }
-        java {
-            srcDirs += files("${layout.buildDirectory}/my-generated-sources/jflex")
-        }
+grammarKit {
+    jflexRelease.set("1.9.2")
+    grammarKitRelease.set("2023.3")
+}
+
+tasks {
+    wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() }
+    generateParser {
+        sourceFile = file("src/main/jflex/VentoLexer.flex")
+        targetRootOutputDir = file("src/main/kotlin/org/js/vento/webstormvento")
     }
 }
 
-tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }
+sourceSets["main"].java.srcDirs("src/main/gen")
