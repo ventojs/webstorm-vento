@@ -47,7 +47,7 @@
 
 - Manually:
 
-  Download the [latest release](https://github.com/illyrius666/WebStorm-Vento/releases/latest) and install it manually using
+  Download the [latest release](https://github.com/ventojs/webstorm-vento/releases/latest) and install it manually using
   <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
 
 
