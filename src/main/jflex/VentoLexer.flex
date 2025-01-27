@@ -5,6 +5,7 @@
 
 import org.js.vento.webstormvento.VentoTypes;
 import java_cup.runtime.Symbol;
+import jflex.core.sym;
 
 %%
 

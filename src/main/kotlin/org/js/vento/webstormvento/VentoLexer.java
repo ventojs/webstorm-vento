@@ -14,10 +14,11 @@ package org.js.vento.webstormvento;// DO NOT EDIT
 
 
 import java_cup.runtime.Symbol;
+import jflex.core.sym;
 
 
 @SuppressWarnings("fallthrough")
-class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
+class VentoLexer implements java_cup.runtime.Scanner {
 
     /**
      * This character denotes the end of file.
@@ -41,7 +42,7 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
             0, 0, 1, 1, 2, 2
     };
     private static final String ZZ_CMAP_TOP_PACKED_0 =
-            "\1\0\37\u0100\1\u0200\267\u0100\10\u0300\u1020\u0100";
+            "\1\0\37Ā\1Ȁ\267Ā\10̀ဠĀ";
     /**
      * Top-level table for translating characters to character classes
      */
@@ -54,7 +55,7 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
                     "\1\17\1\22\1\23\1\17\1\24\1\25\2\17\1\26" +
                     "\1\17\1\27\1\30\2\17\1\31\1\32\1\33\1\34" +
                     "\1\17\1\35\3\17\1\36\1\0\1\37\7\0\1\3" +
-                    "\u01a2\0\2\3\326\0\u0100\3";
+                    "Ƣ\0\2\3\326\0Ā\3";
     /**
      * Second-level tables for translating characters to character classes
      */
@@ -73,14 +74,14 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static final int[] ZZ_ACTION = zzUnpackAction();
     private static final String ZZ_ROWMAP_PACKED_0 =
             "\0\0\0\40\0\100\0\140\0\200\0\240\0\140\0\140" +
-                    "\0\300\0\340\0\u0100\0\140\0\140\0\u0120\0\u0140\0\u0160" +
-                    "\0\u0180\0\u01a0\0\u01c0\0\u01e0\0\140\0\140\0\140\0\140" +
-                    "\0\u0200\0\u0220\0\240\0\140\0\u0240\0\u0260\0\u0280\0\u02a0" +
-                    "\0\u02c0\0\u02e0\0\u0300\0\u0320\0\u0120\0\u0340\0\u0360\0\u0380" +
-                    "\0\140\0\u03a0\0\u03c0\0\u02c0\0\u03e0\0\u0120\0\u0400\0\u0420" +
-                    "\0\u0440\0\u0460\0\u0480\0\u04a0\0\u0280\0\u0120\0\u04c0\0\u04e0" +
-                    "\0\u0500\0\u0520\0\u0540\0\u0560\0\u0580\0\u05a0\0\u0120\0\u05c0" +
-                    "\0\140\0\u0560\0\u05e0\0\u0120\0\140\0\u0600\0\u0120";
+                    "\0\300\0\340\0Ā\0\140\0\140\0Ġ\0ŀ\0Š" +
+                    "\0ƀ\0Ơ\0ǀ\0Ǡ\0\140\0\140\0\140\0\140" +
+                    "\0Ȁ\0Ƞ\0\240\0\140\0ɀ\0ɠ\0ʀ\0ʠ" +
+                    "\0ˀ\0ˠ\0̀\0̠\0Ġ\0̀\0͠\0\u0380" +
+                    "\0\140\0Π\0π\0ˀ\0Ϡ\0Ġ\0Ѐ\0Р" +
+                    "\0р\0Ѡ\0Ҁ\0Ҡ\0ʀ\0Ġ\0Ӏ\0Ӡ" +
+                    "\0Ԁ\0Ԡ\0Հ\0ՠ\0ր\0֠\0Ġ\0׀" +
+                    "\0\140\0ՠ\0נ\0Ġ\0\140\0\u0600\0Ġ";
     /**
      * Translates a state to a row index in the transition table
      */
@@ -161,10 +162,6 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
      */
     private java.io.Reader zzReader;
     /**
-     * Current state of the DFA.
-     */
-    private int zzState;
-    /**
      * Current lexical state.
      */
     private int zzLexicalState = YYINITIAL;
@@ -203,53 +200,31 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
      */
     private int zzFinalHighSurrogate = 0;
     /**
-     * Number of newlines encountered up to the start of the matched text.
-     */
-    @SuppressWarnings("unused")
-    private int yyline;
-    /**
-     * Number of characters from the last newline up to the start of the matched text.
-     */
-    @SuppressWarnings("unused")
-    private int yycolumn;
-    /**
-     * Number of characters up to the start of the matched text.
-     */
-    @SuppressWarnings("unused")
-    private long yychar;
-    /**
-     * Whether the scanner is currently at the beginning of a line.
-     */
-    @SuppressWarnings("unused")
-    private boolean zzAtBOL = true;
-    /**
      * Whether the user-EOF-code has already been executed.
      */
     private boolean zzEOFDone;
 
     /**
      * Creates a new scanner
-     *
-     * @param in the java.io.Reader to read input from.
      */
-    VentoLexer(java.io.Reader in) {
-        this.zzReader = in;
+    VentoLexer() {
+        this.zzReader = null;
     }
 
     private static int[] zzUnpackcmap_top() {
         int[] result = new int[4352];
         int offset = 0;
-        offset = zzUnpackcmap_top(ZZ_CMAP_TOP_PACKED_0, offset, result);
+        zzUnpackcmap_top(offset, result);
         return result;
     }
 
-    private static int zzUnpackcmap_top(String packed, int offset, int[] result) {
+    private static int zzUnpackcmap_top(int offset, int[] result) {
         int i = 0;       /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length();
+        int l = VentoLexer.ZZ_CMAP_TOP_PACKED_0.length();
         while (i < l) {
-            int count = packed.charAt(i++);
-            int value = packed.charAt(i++);
+            int count = VentoLexer.ZZ_CMAP_TOP_PACKED_0.charAt(i++);
+            int value = VentoLexer.ZZ_CMAP_TOP_PACKED_0.charAt(i++);
             do result[j++] = value; while (--count > 0);
         }
         return j;
@@ -258,17 +233,17 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static int[] zzUnpackcmap_blocks() {
         int[] result = new int[1024];
         int offset = 0;
-        offset = zzUnpackcmap_blocks(ZZ_CMAP_BLOCKS_PACKED_0, offset, result);
+        zzUnpackcmap_blocks(offset, result);
         return result;
     }
 
-    private static int zzUnpackcmap_blocks(String packed, int offset, int[] result) {
+    private static int zzUnpackcmap_blocks(int offset, int[] result) {
         int i = 0;       /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length();
+        int l = VentoLexer.ZZ_CMAP_BLOCKS_PACKED_0.length();
         while (i < l) {
-            int count = packed.charAt(i++);
-            int value = packed.charAt(i++);
+            int count = VentoLexer.ZZ_CMAP_BLOCKS_PACKED_0.charAt(i++);
+            int value = VentoLexer.ZZ_CMAP_BLOCKS_PACKED_0.charAt(i++);
             do result[j++] = value; while (--count > 0);
         }
         return j;
@@ -277,17 +252,17 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static int[] zzUnpackAction() {
         int[] result = new int[71];
         int offset = 0;
-        offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
+        zzUnpackAction(offset, result);
         return result;
     }
 
-    private static int zzUnpackAction(String packed, int offset, int[] result) {
+    private static int zzUnpackAction(int offset, int[] result) {
         int i = 0;       /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length();
+        int l = VentoLexer.ZZ_ACTION_PACKED_0.length();
         while (i < l) {
-            int count = packed.charAt(i++);
-            int value = packed.charAt(i++);
+            int count = VentoLexer.ZZ_ACTION_PACKED_0.charAt(i++);
+            int value = VentoLexer.ZZ_ACTION_PACKED_0.charAt(i++);
             do result[j++] = value; while (--count > 0);
         }
         return j;
@@ -296,17 +271,17 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static int[] zzUnpackRowMap() {
         int[] result = new int[71];
         int offset = 0;
-        offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
+        zzUnpackRowMap(offset, result);
         return result;
     }
 
-    private static int zzUnpackRowMap(String packed, int offset, int[] result) {
+    private static int zzUnpackRowMap(int offset, int[] result) {
         int i = 0;  /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length() - 1;
+        int l = VentoLexer.ZZ_ROWMAP_PACKED_0.length() - 1;
         while (i < l) {
-            int high = packed.charAt(i++) << 16;
-            result[j++] = high | packed.charAt(i++);
+            int high = VentoLexer.ZZ_ROWMAP_PACKED_0.charAt(i++) << 16;
+            result[j++] = high | VentoLexer.ZZ_ROWMAP_PACKED_0.charAt(i++);
         }
         return j;
     }
@@ -314,17 +289,17 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static int[] zzUnpacktrans() {
         int[] result = new int[1568];
         int offset = 0;
-        offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
+        zzUnpacktrans(offset, result);
         return result;
     }
 
-    private static int zzUnpacktrans(String packed, int offset, int[] result) {
+    private static int zzUnpacktrans(int offset, int[] result) {
         int i = 0;       /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length();
+        int l = VentoLexer.ZZ_TRANS_PACKED_0.length();
         while (i < l) {
-            int count = packed.charAt(i++);
-            int value = packed.charAt(i++);
+            int count = VentoLexer.ZZ_TRANS_PACKED_0.charAt(i++);
+            int value = VentoLexer.ZZ_TRANS_PACKED_0.charAt(i++);
             value--;
             do result[j++] = value; while (--count > 0);
         }
@@ -334,17 +309,17 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     private static int[] zzUnpackAttribute() {
         int[] result = new int[71];
         int offset = 0;
-        offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
+        zzUnpackAttribute(offset, result);
         return result;
     }
 
-    private static int zzUnpackAttribute(String packed, int offset, int[] result) {
+    private static int zzUnpackAttribute(int offset, int[] result) {
         int i = 0;       /* index in packed string  */
         int j = offset;  /* index in unpacked array */
-        int l = packed.length();
+        int l = VentoLexer.ZZ_ATTRIBUTE_PACKED_0.length();
         while (i < l) {
-            int count = packed.charAt(i++);
-            int value = packed.charAt(i++);
+            int count = VentoLexer.ZZ_ATTRIBUTE_PACKED_0.charAt(i++);
+            int value = VentoLexer.ZZ_ATTRIBUTE_PACKED_0.charAt(i++);
             do result[j++] = value; while (--count > 0);
         }
         return j;
@@ -506,17 +481,29 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
     /**
      * Resets the input position.
      */
-    private final void yyResetPosition() {
-        zzAtBOL = true;
+    private void yyResetPosition() {
+        /**
+         * Whether the scanner is currently at the beginning of a line.
+         */
+        boolean zzAtBOL = true;
         zzAtEOF = false;
         zzCurrentPos = 0;
         zzMarkedPos = 0;
         zzStartRead = 0;
         zzEndRead = 0;
         zzFinalHighSurrogate = 0;
-        yyline = 0;
-        yycolumn = 0;
-        yychar = 0L;
+        /**
+         * Number of newlines encountered up to the start of the matched text.
+         */
+        int yyline = 0;
+        /**
+         * Number of characters from the last newline up to the start of the matched text.
+         */
+        int yycolumn = 0;
+        /**
+         * Number of characters up to the start of the matched text.
+         */
+        long yychar = 0L;
     }
 
     /**
@@ -634,7 +621,10 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
 
             zzCurrentPosL = zzCurrentPos = zzStartRead = zzMarkedPosL;
 
-            zzState = ZZ_LEXSTATE[zzLexicalState];
+            /**
+             * Current state of the DFA.
+             */
+            int zzState = ZZ_LEXSTATE[zzLexicalState];
 
             // set up zzAction for empty match case:
             int zzAttributes = zzAttrL[zzState];
@@ -700,178 +690,95 @@ class VentoLexer implements java_cup.runtime.Scanner, java_cup.runtime.Scanner {
                         return new Symbol(VentoTypes.ERROR, yytext());
                     }
                     // fall through
-                    case 30:
+                    case 30, 58, 57, 56, 55, 54, 53, 52, 51, 50, 49, 48, 47, 46, 45, 44, 43, 42, 41, 40, 39, 38, 37, 36,
+                         35, 34, 33, 32, 31:
                         break;
                     case 2: { /* Skip whitespace */
                     }
-                    // fall through
-                    case 31:
-                        break;
                     case 3: {
                         return new Symbol(VentoTypes.MULTIPLY);
                     }
-                    // fall through
-                    case 32:
-                        break;
                     case 4: {
                         return new Symbol(VentoTypes.PLUS);
                     }
-                    // fall through
-                    case 33:
-                        break;
                     case 5: {
                         return new Symbol(VentoTypes.MINUS);
                     }
-                    // fall through
-                    case 34:
-                        break;
                     case 6: {
                         return new Symbol(VentoTypes.DIVIDE);
                     }
-                    // fall through
-                    case 35:
-                        break;
                     case 7: {
                         return new Symbol(VentoTypes.NUMBER, yytext());
                     }
-                    // fall through
-                    case 36:
-                        break;
                     case 8: {
                         return new Symbol(VentoTypes.SEMICOLON);
                     }
-                    // fall through
-                    case 37:
-                        break;
                     case 9: {
                         return new Symbol(VentoTypes.EQUALS);
                     }
-                    // fall through
-                    case 38:
-                        break;
                     case 10: {
                         return new Symbol(VentoTypes.IDENTIFIER, yytext());
                     }
-                    // fall through
-                    case 39:
-                        break;
                     case 11: {
                         return new Symbol(VentoTypes.LBRACE);
                     }
-                    // fall through
-                    case 40:
-                        break;
                     case 12: {
                         return new Symbol(VentoTypes.RBRACE);
                     }
-                    // fall through
-                    case 41:
-                        break;
                     case 13: { /* Enter VENTO_ELEMENT_STATE for other '{{' patterns */
                         yybegin(VENTO_ELEMENT_STATE);
                         yycharat = yycharat; /* Placeholder if needed */
                     }
-                    // fall through
-                    case 42:
-                        break;
                     case 14: { /* Handle COMMENTED_CODE */
                         yybegin(YYINITIAL);
                         return new Symbol(VentoTypes.COMMENTED_CODE, "{{#" + yytext());
                     }
-                    // fall through
-                    case 43:
-                        break;
                     case 15: { /* Handle PURE_JS */
                         yybegin(YYINITIAL);
                         return new Symbol(VentoTypes.PURE_JS, "{{>" + yytext());
                     }
-                    // fall through
-                    case 44:
-                        break;
                     case 16: { /* Collect content inside VENTO_ELEMENT */ /* You can accumulate the text as needed */
                     }
-                    // fall through
-                    case 45:
-                        break;
                     case 17: {
                         return new Symbol(VentoTypes.STRING, yytext());
                     }
-                    // fall through
-                    case 46:
-                        break;
                     case 18: { /* Handle comments */
                         return new Symbol(VentoTypes.COMMENT, yytext());
                     }
-                    // fall through
-                    case 47:
-                        break;
                     case 19: {
                         return new Symbol(VentoTypes.IF);
                     }
-                    // fall through
-                    case 48:
-                        break;
                     case 20: { /* Enter MACRO_START state when '{{' is encountered */
                         yybegin(MACRO_START);
                     }
-                    // fall through
-                    case 49:
-                        break;
                     case 21: { /* End of VENTO_ELEMENT */
                         yybegin(YYINITIAL);
                         return new Symbol(VentoTypes.VENTO_ELEMENT, yytext());
                     }
-                    // fall through
-                    case 50:
-                        break;
                     case 22: {
                         return new Symbol(VentoTypes.FOR);
                     }
-                    // fall through
-                    case 51:
-                        break;
                     case 23: {
                         return new Symbol(VentoTypes.ELSE);
                     }
-                    // fall through
-                    case 52:
-                        break;
                     case 24: {
                         return new Symbol(VentoTypes.WHILE);
                     }
-                    // fall through
-                    case 53:
-                        break;
                     case 25: { /* Handle pure JavaScript code */
                         return new Symbol(VentoTypes.PURE_JS, yytext());
                     }
-                    // fall through
-                    case 54:
-                        break;
                     case 26: { /* Handle front matters */
                         return new Symbol(VentoTypes.FRONT_MATTER, yytext());
                     }
-                    // fall through
-                    case 55:
-                        break;
                     case 27: {
                         return new Symbol(VentoTypes.RETURN);
                     }
-                    // fall through
-                    case 56:
-                        break;
                     case 28: { /* Handle commented Vento code */
                         return new Symbol(VentoTypes.COMMENTED_CODE, yytext());
                     }
-                    // fall through
-                    case 57:
-                        break;
                     case 29: {
                         return new Symbol(VentoTypes.FUNCTION);
                     }
-                    // fall through
-                    case 58:
-                        break;
                     default:
                         zzScanError(ZZ_NO_MATCH);
                 }

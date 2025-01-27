@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="updated the lexer to fix issues reported by the IDE in there">
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexerAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexerAdapter.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,6 +39,11 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -42,6 +52,9 @@
     &quot;assignee&quot;: &quot;illyrius666&quot;
   }
 }</component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="430d0b5f-0aef-48c1-a335-bc3abb7106af" />
+  </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ventojs/webstorm-vento.git&quot;,
@@ -55,7 +68,7 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -68,27 +81,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Gradle.Run Verifications.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "code.cleanup.on.save": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "C:/Users/admin/IdeaProjects/webstorm-vento/libs/jflex-full-1.9.1.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Global Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "rearrange.code.on.save": "true",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Gradle.Run Verifications.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;code.cleanup.on.save&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;dev&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/admin/IdeaProjects/webstorm-vento/libs/jflex-full-1.9.1.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Global Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;rearrange.code.on.save&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\admin\IdeaProjects\webstorm-vento\src\main\kotlin\org\js\vento\webstormvento" />
@@ -102,11 +116,11 @@
       <recent name="org.js.vento.webstormvento" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Run Verifications" />
+  <component name="RunManager" selected="Gradle.Run Plugin" />
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.117" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
       </set>
     </attachedChunks>
   </component>
@@ -124,6 +138,9 @@
       <workItem from="1737624443597" duration="5802000" />
       <workItem from="1737634416788" duration="1985000" />
       <workItem from="1737637015471" duration="3621000" />
+      <workItem from="1737971154323" duration="228000" />
+      <workItem from="1737972033765" duration="415000" />
+      <workItem from="1737972485390" duration="266000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />

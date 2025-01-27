@@ -13,4 +13,4 @@ import com.intellij.lexer.FlexLexer
  * It assumes there's a generated Java class named VentoLexer
  * from a corresponding .flex file (VentoLexer.flex).
  */
-class VentoLexerAdapter : FlexAdapter(VentoLexer(null) as FlexLexer)
+class VentoLexerAdapter : FlexAdapter(VentoLexer() as FlexLexer)
