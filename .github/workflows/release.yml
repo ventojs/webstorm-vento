@@ -34,7 +34,7 @@ jobs:
 
       # Setup Gradle
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@aa23778d2dc6f6556fcc7164e99babbd8c3134e4
+        uses: gradle/actions/setup-gradle@6f067c110c242f9a29eee9abf43ae03d808fc243
 
       # Set environment variables
       - name: Export Properties
