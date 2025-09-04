@@ -8,6 +8,7 @@ package org.js.vento.webstormvento
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.FlexLexer
 
+
 /**
  * Adapts the Flex-based VentoLexer for use in the IntelliJ Platform.
  * It assumes there's a generated Java class named VentoLexer

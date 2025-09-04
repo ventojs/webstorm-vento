@@ -2,6 +2,7 @@
  | VentoLexer.flex                                                            |
  | Lexer specification for the Vento language using JFlex for WebStorm IDE      |
  *---------------------------------------------------------------------------*/
+package org.js.vento.webstormvento;
 
 import org.js.vento.webstormvento.VentoTypes;
 import java_cup.runtime.Symbol;
@@ -9,11 +10,12 @@ import java_cup.runtime.Symbol;
 %%
 
 %class VentoLexer
+%public
 %unicode
-%cup
-%implements java_cup.runtime.Scanner
-%function next_token
-%type java_cup.runtime.Symbol
+%implements com.intellij.lexer.FlexLexer
+%function advance
+%type com.intellij.psi.tree.IElementType
+
 
 %state MACRO_START
 %state VENTO_ELEMENT_STATE
@@ -26,7 +28,9 @@ IDENTIFIER = [a-zA-Z_][a-zA-Z0-9_]*
 NUMBER = [0-9]+(\.[0-9]+)?
 STRING = \"([^\"\\]|\\.)*\"
 WHITESPACE = [ \t\r\n]+
-COMMENT = /\*[^]*?\*/ | //.*
+LINE_COMMENT   = "//".*
+BLOCK_COMMENT  = "/*" [^*]* \*+ ([^/*] [^*]* \*+)* "*/"
+COMMENT        = {LINE_COMMENT} | {BLOCK_COMMENT}
 PURE_JS_START = \{\{>
 COMMENTED_CODE_START = \{\{#
 FRONT_MATTER_START = \-\-\-
@@ -34,13 +38,13 @@ FRONT_MATTER_END = \-\-\-
 TEMPLATE_TAG_START = \{\{(-)?
 TEMPLATE_TAG_END = (-)?\}\}
 
-/* Keywords in Vento */
-KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+function|import|from|export|await)\b
+/* keywords (list them explicitly; no \b, no \s) */
+KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" | "function" | "import" | "from" | "export" | "await"
 
 %%
 
 <YYINITIAL> {
-    {WHITESPACE}              { /* Skip whitespace */ }
+    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
 
     /* Handle front matter */
     {FRONT_MATTER_START}      {
@@ -50,7 +54,7 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
 
     /* Handle comments */
     {COMMENT}                 {
-        return new Symbol(VentoTypes.COMMENT, yytext());
+        return VentoTypes.COMMENT;
     }
 
     /* Handle commented Vento code */
@@ -62,7 +66,7 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
     /* Handle pure JavaScript code */
     {PURE_JS_START}           {
         yybegin(PURE_JS);
-        return new Symbol(VentoTypes.PURE_JS_START, yytext());
+        return VentoTypes.PURE_JS_START;
     }
 
     /* Handle template tags */
@@ -71,36 +75,36 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
         /* Enter MACRO_START state when '{{' or '{{-' is encountered */
     }
 
-    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD, yytext()); }
+    {KEYWORD}                 { return VentoTypes.KEYWORD; }
 
-    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER, yytext()); }
-    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER, yytext()); }
-    {STRING}                  { return new Symbol(VentoTypes.STRING, yytext()); }
+    {IDENTIFIER}              { return VentoTypes.IDENTIFIER; }
+    {NUMBER}                  { return VentoTypes.NUMBER; }
+    {STRING}                  { return VentoTypes.STRING; }
 
     /* Operators and punctuation */
-    "="                       { return new Symbol(VentoTypes.EQUALS); }
-    "+"                       { return new Symbol(VentoTypes.PLUS); }
-    "-"                       { return new Symbol(VentoTypes.MINUS); }
-    "*"                       { return new Symbol(VentoTypes.MULTIPLY); }
-    "/"                       { return new Symbol(VentoTypes.DIVIDE); }
-    ";"                       { return new Symbol(VentoTypes.SEMICOLON); }
-    "{"                       { return new Symbol(VentoTypes.LBRACE); }
-    "}"                       { return new Symbol(VentoTypes.RBRACE); }
+    "="                       { return VentoTypes.EQUALS; }
+    "+"                       { return VentoTypes.PLUS; }
+    "-"                       { return VentoTypes.MINUS; }
+    "*"                       { return VentoTypes.MULTIPLY; }
+    "/"                       { return VentoTypes.DIVIDE; }
+    ";"                       { return VentoTypes.SEMICOLON; }
+    "{"                       { return VentoTypes.LBRACE; }
+    "}"                       { return VentoTypes.RBRACE; }
 
     .                         { /* Handle any other character as error */
-        return new Symbol(VentoTypes.ERROR, yytext());
+        return VentoTypes.ERROR;
     }
 }
 
 <MACRO_START> {
     ">"                        {
         yybegin(PURE_JS);
-        return new Symbol(VentoTypes.PURE_JS_START, "{{>" );
+        return VentoTypes.PURE_JS_START;
     }
 
     "#"                        {
         yybegin(COMMENTED_CODE);
-        return new Symbol(VentoTypes.COMMENTED_CODE_START, "{{#");
+        return VentoTypes.COMMENTED_CODE_START;
     }
 
     [a-zA-Z_-]                 {
@@ -113,33 +117,33 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
 <VENTO_ELEMENT_STATE> {
     "}}"                       {
         yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.TEMPLATE_TAG_END, "}}");
+        return VentoTypes.TEMPLATE_TAG_END;
     }
 
-    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD, yytext()); }
-    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER, yytext()); }
-    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER, yytext()); }
-    {STRING}                  { return new Symbol(VentoTypes.STRING, yytext()); }
+    {KEYWORD}                 { return VentoTypes.KEYWORD; }
+    {IDENTIFIER}              { return VentoTypes.IDENTIFIER; }
+    {NUMBER}                  { return VentoTypes.NUMBER; }
+    {STRING}                  { return VentoTypes.STRING; }
 
     /* Operators and punctuation */
-    "="                       { return new Symbol(VentoTypes.EQUALS); }
-    "+"                       { return new Symbol(VentoTypes.PLUS); }
-    "-"                       { return new Symbol(VentoTypes.MINUS); }
-    "*"                       { return new Symbol(VentoTypes.MULTIPLY); }
-    "/"                       { return new Symbol(VentoTypes.DIVIDE); }
-    ";"                       { return new Symbol(VentoTypes.SEMICOLON); }
-    "{"                       { return new Symbol(VentoTypes.LBRACE); }
-    "}"                       { return new Symbol(VentoTypes.RBRACE); }
+    "="                       { return VentoTypes.EQUALS; }
+    "+"                       { return VentoTypes.PLUS; }
+    "-"                       { return VentoTypes.MINUS; }
+    "*"                       { return VentoTypes.MULTIPLY; }
+    "/"                       { return VentoTypes.DIVIDE; }
+    ";"                       { return VentoTypes.SEMICOLON; }
+    "{"                       { return VentoTypes.LBRACE; }
+    "}"                       { return VentoTypes.RBRACE; }
 
     .                         { /* Handle any other character as error */
-        return new Symbol(VentoTypes.ERROR, yytext());
+        return VentoTypes.ERROR;
     }
 }
 
 <PURE_JS> {
     "}}"                       {
         yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.PURE_JS_END, "}}");
+        return VentoTypes.PURE_JS_END;
     }
 
     /* Consume all characters inside Pure JS block */
@@ -149,7 +153,7 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
 <COMMENTED_CODE> {
     "#}}"                      {
         yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.COMMENTED_CODE_END, "#}}");
+        return VentoTypes.COMMENTED_CODE_END;
     }
 
     /* Consume all characters inside commented code block */
@@ -159,7 +163,7 @@ KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+f
 <FRONT_MATTER_STATE> {
     {FRONT_MATTER_END}         {
         yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.FRONT_MATTER_END, "---");
+        return VentoTypes.FRONT_MATTER_END;
     }
 
     /* Consume YAML front matter content */

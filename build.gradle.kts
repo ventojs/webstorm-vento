@@ -20,6 +20,32 @@ repositories {
     intellijPlatform { defaultRepositories() }
 }
 
+// Configure source sets to include generated sources
+sourceSets {
+    main {
+        java.srcDirs("src/main/gen")
+    }
+}
+
+// Configure GrammarKit to generate the lexer
+tasks {
+    generateLexer {
+        sourceFile.set(file("src/main/jflex/VentoLexer.flex"))
+        targetOutputDir.set(file("src/main/gen/org/js/vento/webstormvento"))
+        purgeOldFiles.set(true)
+    }
+
+    // Ensure lexer is generated and moved before compilation
+    compileKotlin {
+        dependsOn(generateLexer)
+    }
+
+    compileJava {
+        dependsOn(generateLexer)
+    }
+}
+
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     intellijPlatform {
@@ -54,3 +80,12 @@ intellijPlatform {
 }
 
 tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }
+
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+}
+
+tasks.withType<Copy> {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

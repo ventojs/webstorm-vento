@@ -6,7 +6,8 @@
 <idea-plugin>
     <id>org.js.vento.webstormvento</id>
 
-    <name>Vento.js Support</name>
+    <name>Vento JS Support</name>
+    <description>Vento.js static genreation template support</description>
 
     <vendor url="https://github.com/ventojs">
         ventojs
