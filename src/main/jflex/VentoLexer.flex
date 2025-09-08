@@ -6,16 +6,17 @@ package org.js.vento.webstormvento;
 
 import org.js.vento.webstormvento.VentoTypes;
 import java_cup.runtime.Symbol;
+import jflex.core.sym;
+
 
 %%
 
 %class VentoLexer
 %public
 %unicode
-%implements com.intellij.lexer.FlexLexer
-%function advance
-%type com.intellij.psi.tree.IElementType
-
+%cup
+%function next_token
+%type java_cup.runtime.Symbol
 
 %state MACRO_START
 %state VENTO_ELEMENT_STATE
@@ -41,10 +42,22 @@ TEMPLATE_TAG_END = (-)?\}\}
 /* keywords (list them explicitly; no \b, no \s) */
 KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" | "function" | "import" | "from" | "export" | "await"
 
+%{
+  // Add this method definition in the user code section
+  private void yyclose() throws java.io.IOException {
+    // Add any cleanup code you need here
+    // For a basic lexer, this can often be empty
+    if (zzReader != null) {
+      zzReader.close();
+    }
+  }
+%}
+
+
 %%
 
 <YYINITIAL> {
-    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
+    {WHITESPACE}              { /* Skip whitespace */ }
 
     /* Handle front matter */
     {FRONT_MATTER_START}      {
@@ -54,7 +67,7 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 
     /* Handle comments */
     {COMMENT}                 {
-        return VentoTypes.COMMENT;
+        return new Symbol(VentoTypes.COMMENT.getIndex(), yytext());
     }
 
     /* Handle commented Vento code */
@@ -66,7 +79,7 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
     /* Handle pure JavaScript code */
     {PURE_JS_START}           {
         yybegin(PURE_JS);
-        return VentoTypes.PURE_JS_START;
+        return new Symbol(VentoTypes.PURE_JS_START.getIndex(), yytext());
     }
 
     /* Handle template tags */
@@ -75,36 +88,36 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
         /* Enter MACRO_START state when '{{' or '{{-' is encountered */
     }
 
-    {KEYWORD}                 { return VentoTypes.KEYWORD; }
+    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD.getIndex(), yytext()); }
 
-    {IDENTIFIER}              { return VentoTypes.IDENTIFIER; }
-    {NUMBER}                  { return VentoTypes.NUMBER; }
-    {STRING}                  { return VentoTypes.STRING; }
+    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER.getIndex(), yytext()); }
+    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER.getIndex(), yytext()); }
+    {STRING}                  { return new Symbol(VentoTypes.STRING.getIndex(), yytext()); }
 
     /* Operators and punctuation */
-    "="                       { return VentoTypes.EQUALS; }
-    "+"                       { return VentoTypes.PLUS; }
-    "-"                       { return VentoTypes.MINUS; }
-    "*"                       { return VentoTypes.MULTIPLY; }
-    "/"                       { return VentoTypes.DIVIDE; }
-    ";"                       { return VentoTypes.SEMICOLON; }
-    "{"                       { return VentoTypes.LBRACE; }
-    "}"                       { return VentoTypes.RBRACE; }
+    "="                       { return new Symbol(VentoTypes.EQUALS.getIndex()); }
+    "+"                       { return new Symbol(VentoTypes.PLUS.getIndex()); }
+    "-"                       { return new Symbol(VentoTypes.MINUS.getIndex()); }
+    "*"                       { return new Symbol(VentoTypes.MULTIPLY.getIndex()); }
+    "/"                       { return new Symbol(VentoTypes.DIVIDE.getIndex()); }
+    ";"                       { return new Symbol(VentoTypes.SEMICOLON.getIndex()); }
+    "{"                       { return new Symbol(VentoTypes.LBRACE.getIndex()); }
+    "}"                       { return new Symbol(VentoTypes.RBRACE.getIndex()); }
 
     .                         { /* Handle any other character as error */
-        return VentoTypes.ERROR;
+        return new Symbol(VentoTypes.ERROR.getIndex(), yytext());
     }
 }
 
 <MACRO_START> {
     ">"                        {
         yybegin(PURE_JS);
-        return VentoTypes.PURE_JS_START;
+        return new Symbol(VentoTypes.PURE_JS_START.getIndex(), "{{>" );
     }
 
     "#"                        {
         yybegin(COMMENTED_CODE);
-        return VentoTypes.COMMENTED_CODE_START;
+        return new Symbol(VentoTypes.COMMENTED_CODE_START.getIndex(), "{{#");
     }
 
     [a-zA-Z_-]                 {
@@ -117,33 +130,33 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 <VENTO_ELEMENT_STATE> {
     "}}"                       {
         yybegin(YYINITIAL);
-        return VentoTypes.TEMPLATE_TAG_END;
+        return new Symbol(VentoTypes.TEMPLATE_TAG_END.getIndex(), "}}");
     }
 
-    {KEYWORD}                 { return VentoTypes.KEYWORD; }
-    {IDENTIFIER}              { return VentoTypes.IDENTIFIER; }
-    {NUMBER}                  { return VentoTypes.NUMBER; }
-    {STRING}                  { return VentoTypes.STRING; }
+    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD.getIndex(), yytext()); }
+    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER.getIndex(), yytext()); }
+    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER.getIndex(), yytext()); }
+    {STRING}                  { return new Symbol(VentoTypes.STRING.getIndex(), yytext()); }
 
     /* Operators and punctuation */
-    "="                       { return VentoTypes.EQUALS; }
-    "+"                       { return VentoTypes.PLUS; }
-    "-"                       { return VentoTypes.MINUS; }
-    "*"                       { return VentoTypes.MULTIPLY; }
-    "/"                       { return VentoTypes.DIVIDE; }
-    ";"                       { return VentoTypes.SEMICOLON; }
-    "{"                       { return VentoTypes.LBRACE; }
-    "}"                       { return VentoTypes.RBRACE; }
+    "="                       { return new Symbol(VentoTypes.EQUALS.getIndex()); }
+    "+"                       { return new Symbol(VentoTypes.PLUS.getIndex()); }
+    "-"                       { return new Symbol(VentoTypes.MINUS.getIndex()); }
+    "*"                       { return new Symbol(VentoTypes.MULTIPLY.getIndex()); }
+    "/"                       { return new Symbol(VentoTypes.DIVIDE.getIndex()); }
+    ";"                       { return new Symbol(VentoTypes.SEMICOLON.getIndex()); }
+    "{"                       { return new Symbol(VentoTypes.LBRACE.getIndex()); }
+    "}"                       { return new Symbol(VentoTypes.RBRACE.getIndex()); }
 
     .                         { /* Handle any other character as error */
-        return VentoTypes.ERROR;
+        return new Symbol(VentoTypes.ERROR.getIndex(), yytext());
     }
 }
 
 <PURE_JS> {
     "}}"                       {
         yybegin(YYINITIAL);
-        return VentoTypes.PURE_JS_END;
+        return new Symbol(VentoTypes.PURE_JS_END.getIndex(), "}}");
     }
 
     /* Consume all characters inside Pure JS block */
@@ -153,7 +166,7 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 <COMMENTED_CODE> {
     "#}}"                      {
         yybegin(YYINITIAL);
-        return VentoTypes.COMMENTED_CODE_END;
+        return new Symbol(VentoTypes.COMMENTED_CODE_END.getIndex(), "#}}");
     }
 
     /* Consume all characters inside commented code block */
@@ -163,7 +176,7 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 <FRONT_MATTER_STATE> {
     {FRONT_MATTER_END}         {
         yybegin(YYINITIAL);
-        return VentoTypes.FRONT_MATTER_END;
+        return new Symbol(VentoTypes.FRONT_MATTER_END.getIndex(), "---");
     }
 
     /* Consume YAML front matter content */

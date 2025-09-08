@@ -15,6 +15,4 @@ import com.intellij.lang.Language
  *
  * @constructor Creates an instance of [VentoLanguage] with the specified language ID.
  */
-object VentoLanguage : Language("Vento") {
-    private fun readResolve(): Any = VentoLanguage
-}
+object VentoLanguage : Language("Vento")
