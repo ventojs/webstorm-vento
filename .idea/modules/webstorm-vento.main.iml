@@ -46,7 +46,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains:grammar-kit:2022.3.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.jetbrains.intellij.deps.jflex:jflex:1.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:2.1.0" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.vbmacher:java-cup-runtime:11b-20160615-1" level="project" />
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: idea:ideaIU:aarch64:2025.1.4.1">
         <CLASSES>

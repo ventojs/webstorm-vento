@@ -91,12 +91,9 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;illyrius666&quot;
-  }
-}</component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {}
+}]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/zenwork/webstorm-vento.git",
@@ -125,7 +122,7 @@
     <option name="myRunOnSave" value="true" />
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="AISelfReview" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -369,7 +366,7 @@
       <workItem from="1756848717227" duration="34000" />
       <workItem from="1756848782151" duration="90000" />
       <workItem from="1756848958594" duration="23000" />
-      <workItem from="1756849357977" duration="38654000" />
+      <workItem from="1756849357977" duration="48079000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -459,7 +456,23 @@
       <option name="project" value="LOCAL" />
       <updated>1757013374166</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="First test running although failing&#10;&#10;- using CUP dependency to have a functioning lexer&#10;- this goes against intellij recommendations&#10;- I don't know how to use CUP. Jetbrains tutorial does not cover this.&#10;- original code relied on CUP">
+      <option name="closed" value="true" />
+      <created>1757351842387</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1757351842387</updated>
+    </task>
+    <task id="LOCAL-00013" summary="First test passing&#10;&#10;- lexer capturing content of commented code">
+      <option name="closed" value="true" />
+      <created>1757371803685</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1757371803685</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -492,7 +505,9 @@
     <MESSAGE value="moved VentoLexer to the main package, need to create a .run config for it/ add it to the tasks in build config" />
     <MESSAGE value="updated the lexer to fix issues reported by the IDE in there" />
     <MESSAGE value="Initial compilation and build changes&#10;&#10;- adapted plugin configuration so that dependency on JavaScript plugin is working&#10;- made lexer code gen a build-time task&#10;- adapted lexer file so it will compile&#10;- plugin passes Verification&#10;- plugin runs but seems to do nothing :-(&#10;- Current setup only works in Intellij Ultimate Edition. This is necessary, I think, to work with the JavaScript plugin, which is only available in Ultimate Edition." />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial compilation and build changes&#10;&#10;- adapted plugin configuration so that dependency on JavaScript plugin is working&#10;- made lexer code gen a build-time task&#10;- adapted lexer file so it will compile&#10;- plugin passes Verification&#10;- plugin runs but seems to do nothing :-(&#10;- Current setup only works in Intellij Ultimate Edition. This is necessary, I think, to work with the JavaScript plugin, which is only available in Ultimate Edition." />
+    <MESSAGE value="First test running although failing&#10;&#10;- using CUP dependency to have a functioning lexer&#10;- this goes against intellij recommendations&#10;- I don't know how to use CUP. Jetbrains tutorial does not cover this.&#10;- original code relied on CUP" />
+    <MESSAGE value="First test passing&#10;&#10;- lexer capturing content of commented code" />
+    <option name="LAST_COMMIT_MESSAGE" value="First test passing&#10;&#10;- lexer capturing content of commented code" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
@@ -500,10 +515,10 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/gen/org/js/vento/webstormvento/VentoLexer.java</url>
-          <line>356</line>
-          <option name="timeStamp" value="2" />
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/test/kotlin/org/js/vento/webstormvento/LexerTestCase.kt</url>
+          <line>24</line>
+          <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

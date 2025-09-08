@@ -33,8 +33,6 @@ tasks {
         sourceFile.set(file("src/main/jflex/VentoLexer.flex"))
         targetOutputDir.set(file("src/main/gen/org/js/vento/webstormvento"))
         purgeOldFiles.set(true)
-        // Ensure we're generating a standalone lexer without Java CUP dependency
-        skeleton.set(file("idea-flex.skeleton"))
 
     }
 
@@ -57,8 +55,6 @@ tasks {
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
-    // Add Java CUP runtime if needed
-    implementation("com.github.vbmacher:java-cup-runtime:11b-20160615-1")
 
     // JUnit 5 (Jupiter) for tests
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
