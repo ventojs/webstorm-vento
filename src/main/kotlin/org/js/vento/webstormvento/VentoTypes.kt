@@ -23,6 +23,9 @@ object VentoTypes {
     var PURE_JS_END: IElementType = VentoTokenType("VENTO_PURE_JS_END")
 
     @JvmField
+    var TEMPLATE_TAG_START: IElementType = VentoTokenType("VENTO_TEMPLATE_TAG_START")
+
+    @JvmField
     var TEMPLATE_TAG_END: IElementType = VentoTokenType("VENTO_TEMPLATE_TAG_END")
 
     @JvmField

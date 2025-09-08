@@ -5,6 +5,8 @@
 
 package org.js.vento.webstormvento
 
+import com.intellij.lexer.FlexLexer
+import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
 import junit.framework.TestCase
 
@@ -22,16 +24,18 @@ class LexerTestCase(name: String) : TestCase(name) {
         val vto = " {{# console.log('Hello World') #}} "
         lexer.reset(vto, 0, vto.length, 0)
 
-        var tokenType = lexer.advance()
+        assertEquals("capture commented code", "{{", nextTypeAndTExt(lexer, vto).second)
+        assertEquals("capture commented code", "#", nextTypeAndTExt(lexer, vto).second)
+        assertEquals("capture commented code", " console.log('Hello World') ", nextTypeAndTExt(lexer, vto).second)
+        assertEquals("capture commented code", "#}}", nextTypeAndTExt(lexer, vto).second)
 
+    }
+
+    private fun nextTypeAndTExt(lexer: FlexLexer, vto: String): Pair<IElementType?, String> {
+        var tokenType = lexer.advance()
         val tokenStart = lexer.tokenStart
         val tokenEnd = lexer.tokenEnd
         val tokenText = vto.substring(tokenStart, tokenEnd)
-
-        assertEquals("capture commented code", " console.log('Hello World') ", tokenText)
-
-        tokenType = lexer.advance()
-
-
+        return Pair(tokenType, tokenText)
     }
 }
