@@ -31,7 +31,7 @@ jobs:
 
       # Validate wrapper
       - name: Gradle Wrapper Validation
-        uses: gradle/actions/wrapper-validation@76d3b998d4cef76a821dbcee71a9172ce986bb30
+        uses: gradle/actions/wrapper-validation@ed408507eac070d1f99cc633dbcf757c94c7933a
 
       # Set up Java environment for the next steps
       - name: Setup Java
@@ -42,7 +42,7 @@ jobs:
 
       # Setup Gradle
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@76d3b998d4cef76a821dbcee71a9172ce986bb30
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a
 
       # Set environment variables
       - name: Export Properties
@@ -109,7 +109,7 @@ jobs:
 
       # Setup Gradle
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@76d3b998d4cef76a821dbcee71a9172ce986bb30
+        uses: gradle/actions/setup-gradle@ed408507eac070d1f99cc633dbcf757c94c7933a
 
       # Cache Plugin Verifier IDEs
       - name: Setup Plugin Verifier IDEs Cache
