@@ -6,6 +6,11 @@ build
 /.idea/highlightedFiles.xml
 /.idea/jsLibraryMappings.xml
 /.idea/inspectionProfiles/Project_Default.xml
+/.idea/workspace.xml
+/.idea/tasks.xml
+/.idea/usage.statistics.xml
+/.idea/shelf/
+
 
 /idea-flex.skeleton
 

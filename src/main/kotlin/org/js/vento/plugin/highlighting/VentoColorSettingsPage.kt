@@ -1,4 +1,4 @@
-package org.js.vento.plugin.highlighting;
+package org.js.vento.plugin.highlighting
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
@@ -12,7 +12,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
     companion object {
 
         val DESCRIPTORS: Array<AttributesDescriptor> = arrayOf<AttributesDescriptor>(
-            AttributesDescriptor("Comment", VentoSyntaxHighlighter.COMMENTED_CODE_CONTENT)
+            AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CODE_CONTENT)
         )
     }
 
@@ -26,8 +26,8 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String {
         return """
-        {{# commented_code #}}
-        {{#- commented_code -#}}
+        {{# comment #}}
+        {{#- trimmed comment -#}}
         """.trimIndent()
     }
 
