@@ -94,6 +94,17 @@
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
   "lastFilter": {}
 }]]></component>
+  <component name="GitHubPullRequestState"><![CDATA[{
+  "prStates": [
+    {
+      "id": {
+        "id": "PR_kwDOPp_cuc6neq6V",
+        "number": 1
+      },
+      "lastSeen": 1757372933819
+    }
+  ]
+}]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/zenwork/webstorm-vento.git",
@@ -209,7 +220,7 @@
       <recent name="org.js.vento.webstormvento" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.webstorm-vento [test]">
+  <component name="RunManager" selected="Gradle.Tests in 'webstorm-vento.test'">
     <configuration name="Tests in 'webstorm-vento.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -334,9 +345,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.Tests in 'webstorm-vento.test'" />
         <item itemvalue="Gradle.webstorm-vento [test]" />
         <item itemvalue="Gradle.webstorm-vento [clean]" />
-        <item itemvalue="Gradle.Tests in 'webstorm-vento.test'" />
         <item itemvalue="Gradle.webstorm-vento [generateLexer]" />
         <item itemvalue="Gradle.webstorm-vento [buildPlugin]" />
       </list>
@@ -376,7 +387,7 @@
       <workItem from="1756848717227" duration="34000" />
       <workItem from="1756848782151" duration="90000" />
       <workItem from="1756848958594" duration="23000" />
-      <workItem from="1756849357977" duration="48757000" />
+      <workItem from="1756849357977" duration="56052000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -490,7 +501,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757372186535</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="First test passing&#10;&#10;- lexer capturing content of commented code">
+      <option name="closed" value="true" />
+      <created>1757372873010</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1757372873010</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -529,17 +548,6 @@
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/test/kotlin/org/js/vento/webstormvento/LexerTestCase.kt</url>
-          <line>24</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

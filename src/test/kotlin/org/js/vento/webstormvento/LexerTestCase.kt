@@ -10,32 +10,58 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
 import junit.framework.TestCase
 
+
 class LexerTestCase(name: String) : TestCase(name) {
 
-    fun testLexer() {
-        // Use the VentoLexerAdapter instead of direct VentoLexer instantiation
+    private lateinit var lexer: FlexLexer
+
+    override fun setUp() {
+        super.setUp()
         val lexer = SlowOperations.knownIssue("IDEA-000000").use {
             VentoLexerAdapter.createTestLexer()
         }
-
-        // Add actual test assertions here
         assertNotNull("Lexer should not be null", lexer)
+        this.lexer = lexer
+    }
 
-        val vto = " {{# console.log('Hello World') #}} "
-        lexer.reset(vto, 0, vto.length, 0)
+    fun testLexerWithCommentedCode() {
 
-        assertEquals("capture commented code", "{{", nextTypeAndTExt(lexer, vto).second)
-        assertEquals("capture commented code", "#", nextTypeAndTExt(lexer, vto).second)
-        assertEquals("capture commented code", " console.log('Hello World') ", nextTypeAndTExt(lexer, vto).second)
-        assertEquals("capture commented code", "#}}", nextTypeAndTExt(lexer, vto).second)
+        lexAndTest(
+            " {{# console.log('Hello World') #}} ",
+            arrayOf("{{#", " console.log('Hello World') ", "#}}")
+        )
 
     }
 
-    private fun nextTypeAndTExt(lexer: FlexLexer, vto: String): Pair<IElementType?, String> {
+    fun testLexerWithTrimmedCommentedCode() {
+
+        lexAndTest(
+            " {{#- This is a comment -#}} ",
+            arrayOf("{{#-", " This is a comment ", "-#}}")
+        )
+
+    }
+
+    private fun lexAndTest(template: String, tokens: Array<String>) {
+        initLexer(template)
+        tokens.forEach { expected ->
+            var token = getNext(lexer, template)
+            assertEquals(expected, token.second)
+        }
+    }
+
+    private fun initLexer(string: String) {
+        lexer.apply {
+            reset(string, 0, string.length, 0)
+        }
+    }
+
+    private fun getNext(lexer: FlexLexer, vto: String): Pair<IElementType?, String> {
         var tokenType = lexer.advance()
         val tokenStart = lexer.tokenStart
         val tokenEnd = lexer.tokenEnd
         val tokenText = vto.substring(tokenStart, tokenEnd)
         return Pair(tokenType, tokenText)
     }
+
 }

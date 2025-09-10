@@ -38,10 +38,16 @@ object VentoTypes {
     var COMMENTED_CODE_START: IElementType = VentoTokenType("VENTO_COMMENTED_CODE_START")
 
     @JvmField
+    var TRIMMED_COMMENTED_CODE_START: IElementType = VentoTokenType("VENTO_TRIMMED_COMMENTED_CODE_START")
+
+    @JvmField
     var COMMENTED_CODE_CONTENT: IElementType = VentoTokenType("VENTO_COMMENTED_CODE_CONTENT")
 
     @JvmField
     var COMMENTED_CODE_END: IElementType = VentoTokenType("VENTO_COMMENTED_CODE_END")
+
+    @JvmField
+    var TRIMMED_COMMENTED_CODE_END: IElementType = VentoTokenType("VENTO_TRIMMED_COMMENTED_CODE_END")
 
     @JvmField
     var RBRACE: IElementType = VentoTokenType("VENTO_RBRACE")

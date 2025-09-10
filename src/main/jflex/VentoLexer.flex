@@ -35,6 +35,7 @@ BLOCK_COMMENT  = "/*" [^*]* \*+ ([^/*] [^*]* \*+)* "*/"
 COMMENT        = {LINE_COMMENT} | {BLOCK_COMMENT}
 PURE_JS_START = \{\{>
 COMMENTED_CODE_START = \{\{#
+TRIMMED_COMMENTED_CODE_START = \{\{#-
 FRONT_MATTER_START = \-\-\-
 FRONT_MATTER_END = \-\-\-
 TEMPLATE_TAG_START = \{\{(-)?
@@ -59,9 +60,13 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 
 <YYINITIAL> {
     {WHITESPACE}              { /* Skip whitespace */ }
-    {TEMPLATE_TAG_START}    {
-          yybegin(TEMPLATE_SWITCH);
-          return VentoTypes.TEMPLATE_TAG_START;
+    {COMMENTED_CODE_START}    {
+          yybegin(COMMENTED_CODE);
+          return VentoTypes.COMMENTED_CODE_START;
+      }
+    {TRIMMED_COMMENTED_CODE_START}    {
+                yybegin(COMMENTED_CODE);
+                return VentoTypes.TRIMMED_COMMENTED_CODE_START;
       }
 }
 
@@ -74,9 +79,13 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 }
 
 <COMMENTED_CODE> {
-    [^#{]+ { return VentoTypes.COMMENTED_CODE_CONTENT; }
+    [^-#{]+ { return VentoTypes.COMMENTED_CODE_CONTENT; }
     "#}}" {
-          yybegin(YYINITIAL);
+        yybegin(YYINITIAL);
         return VentoTypes.COMMENTED_CODE_END;
+      }
+    "-#}}" {
+         yybegin(YYINITIAL);
+         return VentoTypes.TRIMMED_COMMENTED_CODE_END;
       }
 }
