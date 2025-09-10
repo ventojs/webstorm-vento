@@ -27,5 +27,5 @@ object VentoFileType : LanguageFileType(VentoLanguage) {
 
     @Suppress("UnstableApiUsage")
     override fun getDefaultExtension(): @NlsSafe String = "vto"
-    override fun getIcon(): Icon? = Vento.ICON
+    override fun getIcon(): Icon = Vento.ICON
 }

@@ -33,5 +33,7 @@
         <lang.syntaxHighlighterFactory
                 language="Vento"
                 implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
     </extensions>
 </idea-plugin>
