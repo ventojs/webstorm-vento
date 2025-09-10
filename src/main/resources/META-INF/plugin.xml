@@ -19,7 +19,15 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+        <!-- Register the file type first -->
+        <fileType name="Vento File"
+                  implementationClass="org.js.vento.webstormvento.VentoFileType"
+                  fieldName="INSTANCE"
+                  language="Vento"
+                  extensions="vto"/>
+
         <lang.parserDefinition language="Vento"
-                               implementationClass="org.js.vento.webstormvento.VentoParserDefinition"/>
+                               implementationClass="org.js.vento.webstormvento.VentoParserDefinition"
+        />
     </extensions>
 </idea-plugin>

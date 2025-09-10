@@ -220,7 +220,7 @@
       <recent name="org.js.vento.webstormvento" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Tests in 'webstorm-vento.test'">
+  <component name="RunManager" selected="Gradle.Run Plugin">
     <configuration name="Tests in 'webstorm-vento.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -387,7 +387,7 @@
       <workItem from="1756848717227" duration="34000" />
       <workItem from="1756848782151" duration="90000" />
       <workItem from="1756848958594" duration="23000" />
-      <workItem from="1756849357977" duration="56052000" />
+      <workItem from="1756849357977" duration="57334000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -509,7 +509,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757372873010</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Implementing more tests&#10;&#10;- lexer capturing content of trimmed commented code">
+      <option name="closed" value="true" />
+      <created>1757518328983</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1757518328983</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -544,7 +552,8 @@
     <MESSAGE value="Initial compilation and build changes&#10;&#10;- adapted plugin configuration so that dependency on JavaScript plugin is working&#10;- made lexer code gen a build-time task&#10;- adapted lexer file so it will compile&#10;- plugin passes Verification&#10;- plugin runs but seems to do nothing :-(&#10;- Current setup only works in Intellij Ultimate Edition. This is necessary, I think, to work with the JavaScript plugin, which is only available in Ultimate Edition." />
     <MESSAGE value="First test running although failing&#10;&#10;- using CUP dependency to have a functioning lexer&#10;- this goes against intellij recommendations&#10;- I don't know how to use CUP. Jetbrains tutorial does not cover this.&#10;- original code relied on CUP" />
     <MESSAGE value="First test passing&#10;&#10;- lexer capturing content of commented code" />
-    <option name="LAST_COMMIT_MESSAGE" value="First test passing&#10;&#10;- lexer capturing content of commented code" />
+    <MESSAGE value="Implementing more tests&#10;&#10;- lexer capturing content of trimmed commented code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implementing more tests&#10;&#10;- lexer capturing content of trimmed commented code" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
