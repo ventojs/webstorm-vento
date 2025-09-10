@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin
 
 import com.intellij.lang.Language
 

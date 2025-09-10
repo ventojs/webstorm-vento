@@ -1,9 +1,4 @@
-/*
- * Copyright (c) 2023 Óscar Otero
- * All rights reserved.
- */
-
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode

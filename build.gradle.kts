@@ -31,7 +31,7 @@ sourceSets {
 tasks {
     generateLexer {
         sourceFile.set(file("src/main/jflex/VentoLexer.flex"))
-        targetOutputDir.set(file("src/main/gen/org/js/vento/webstormvento"))
+        targetOutputDir.set(file("src/main/gen/org/js/vento/plugin/lexer"))
         purgeOldFiles.set(true)
 
     }

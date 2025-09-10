@@ -9,6 +9,7 @@ import com.intellij.lexer.FlexLexer
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
 import junit.framework.TestCase
+import org.js.vento.plugin.lexer.VentoLexerAdapter
 
 
 class LexerTestCase(name: String) : TestCase(name) {

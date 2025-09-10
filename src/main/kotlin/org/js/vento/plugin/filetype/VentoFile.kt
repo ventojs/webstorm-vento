@@ -3,11 +3,11 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
-
+package org.js.vento.plugin.filetype
 
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.psi.FileViewProvider
+import org.js.vento.plugin.VentoLanguage
 
 /**
  * Represents a Vento file in the IDE.

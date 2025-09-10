@@ -5,17 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e0536b87-8d9f-42ef-819e-690aaa3d1cb1" name="Changes" comment="updated the lexer to fix issues reported by the IDE in there">
-      <change afterPath="$PROJECT_DIR$/.idea/highlightedFiles.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.main.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/webstorm-vento.test.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/filetype/VentoFile.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/filetype/VentoFileType.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/highlighting/VentoSyntaxHighlighter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/highlighting/VentoSyntaxHighlighterFactory.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/lexer/VentoLexerAdapter.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/lexer/VentoTypes.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/jflex/VentoLexer.flex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/Vento.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/Vento.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoElementImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoElementImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoElementType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoElementType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoFile.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoFileType.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLanguage.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoLanguage.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoLexerAdapter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoParser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoParserDefinition.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoParserDefinition.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoPsiElementImpl.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoPsiElementImpl.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoTokenType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/plugin/VentoTokenType.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/org/js/vento/webstormvento/VentoTypes.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/plugin.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/org/js/vento/webstormvento/LexerTestCase.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/kotlin/org/js/vento/webstormvento/LexerTestCase.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +88,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Object" />
+        <option value="Class" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -91,41 +104,41 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {}
-}]]></component>
-  <component name="GitHubPullRequestState"><![CDATA[{
-  "prStates": [
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {}
+}</component>
+  <component name="GitHubPullRequestState">{
+  &quot;prStates&quot;: [
     {
-      "id": {
-        "id": "PR_kwDOPp_cuc6neq6V",
-        "number": 1
+      &quot;id&quot;: {
+        &quot;id&quot;: &quot;PR_kwDOPp_cuc6neq6V&quot;,
+        &quot;number&quot;: 1
       },
-      "lastSeen": 1757372933819
+      &quot;lastSeen&quot;: 1757372933819
     }
   ]
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/zenwork/webstorm-vento.git",
-    "accountId": "a9661bea-b1c6-4e18-9338-449115b33419"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/zenwork/webstorm-vento.git&quot;,
+    &quot;accountId&quot;: &quot;a9661bea-b1c6-4e18-9338-449115b33419&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "zenwork",
-    "repository": "webstorm-vento"
+    &quot;owner&quot;: &quot;zenwork&quot;,
+    &quot;repository&quot;: &quot;webstorm-vento&quot;
   }
-}]]></component>
+}</component>
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="$USER_HOME$/.gradle/wrapper/dists/gradle-8.12-bin/cetblhg4pflnnks72fxwobvgv/gradle-8.12" javaHome="$USER_HOME$/.asdf/installs/java/zulu-21.30.15" gradleVersion="8.12" />
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="LogFilters">
     <option name="FILTER_ERRORS" value="false" />
     <option name="FILTER_WARNINGS" value="false" />
@@ -178,6 +191,7 @@
     "git-widget-placeholder": "#1 on clean__up",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
+    "last_directory_selection": "/Users/flo/dev/explore/webstorm-vento/src/main/kotlin/org/js/vento/webstormvento",
     "last_opened_file_path": "/Users/flo/dev/explore/webstorm-vento",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -190,7 +204,7 @@
     "project.structure.side.proportion": "0.2",
     "rearrange.code.on.save": "true",
     "run.code.analysis.last.selected.profile": "pProject Default",
-    "settings.editor.selected.configurable": "ml.llm.LLMConfigurable",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.HTML",
     "to.speed.mode.migration.done": "true",
     "vue.rearranger.settings.migration": "true"
   },
@@ -217,6 +231,9 @@
       <recent name="org.js.vento.webstormvento" />
     </key>
     <key name="K2MoveDeclarationsDialog.RECENT_PACKAGE_KEY">
+      <recent name="org.js.vento.plugin.lexer" />
+      <recent name="org.js.vento.plugin.filetype" />
+      <recent name="org.js.vento.plugin.syntax" />
       <recent name="org.js.vento.webstormvento" />
     </key>
   </component>
@@ -346,17 +363,18 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.Tests in 'webstorm-vento.test'" />
-        <item itemvalue="Gradle.webstorm-vento [test]" />
         <item itemvalue="Gradle.webstorm-vento [clean]" />
-        <item itemvalue="Gradle.webstorm-vento [generateLexer]" />
         <item itemvalue="Gradle.webstorm-vento [buildPlugin]" />
+        <item itemvalue="Gradle.webstorm-vento [test]" />
+        <item itemvalue="Gradle.webstorm-vento [generateLexer]" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.25557.131" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26199.7" />
+        <option value="bundled-js-predefined-d6986cc7102b-9c94529fcfe0-JavaScript-IU-252.26199.7" />
       </set>
     </attachedChunks>
   </component>
@@ -387,7 +405,9 @@
       <workItem from="1756848717227" duration="34000" />
       <workItem from="1756848782151" duration="90000" />
       <workItem from="1756848958594" duration="23000" />
-      <workItem from="1756849357977" duration="57334000" />
+      <workItem from="1756849357977" duration="58406000" />
+      <workItem from="1757520561699" duration="450000" />
+      <workItem from="1757521048560" duration="3413000" />
     </task>
     <task id="LOCAL-00001" summary="cleanup part 2">
       <option name="closed" value="true" />
@@ -517,7 +537,15 @@
       <option name="project" value="LOCAL" />
       <updated>1757518328983</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Plugin recognises the *.vto file type.">
+      <option name="closed" value="true" />
+      <created>1757519577198</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1757519577198</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -553,7 +581,8 @@
     <MESSAGE value="First test running although failing&#10;&#10;- using CUP dependency to have a functioning lexer&#10;- this goes against intellij recommendations&#10;- I don't know how to use CUP. Jetbrains tutorial does not cover this.&#10;- original code relied on CUP" />
     <MESSAGE value="First test passing&#10;&#10;- lexer capturing content of commented code" />
     <MESSAGE value="Implementing more tests&#10;&#10;- lexer capturing content of trimmed commented code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Implementing more tests&#10;&#10;- lexer capturing content of trimmed commented code" />
+    <MESSAGE value="Plugin recognises the *.vto file type." />
+    <option name="LAST_COMMIT_MESSAGE" value="Plugin recognises the *.vto file type." />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />

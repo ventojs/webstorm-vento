@@ -3,13 +3,12 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 import com.intellij.lexer.FlexAdapter
 import com.intellij.lexer.FlexLexer
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.util.SlowOperations
-
 
 /**
  * Adapts the Flex-based VentoLexer for use in the IntelliJ Platform.

@@ -2,7 +2,7 @@
  | VentoLexer.flex                                                            |
  | Lexer specification for the Vento language using JFlex for WebStorm IDE      |
  *---------------------------------------------------------------------------*/
-package org.js.vento.webstormvento;
+package org.js.vento.plugin.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
@@ -61,9 +61,9 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
 <YYINITIAL> {
     {WHITESPACE}              { /* Skip whitespace */ }
     {COMMENTED_CODE_START}    {
-          yybegin(COMMENTED_CODE);
-          return VentoTypes.COMMENTED_CODE_START;
-      }
+              yybegin(COMMENTED_CODE);
+              return VentoTypes.COMMENTED_CODE_START;
+          }
     {TRIMMED_COMMENTED_CODE_START}    {
                 yybegin(COMMENTED_CODE);
                 return VentoTypes.TRIMMED_COMMENTED_CODE_START;
@@ -89,3 +89,6 @@ KEYWORD = "for" | "of" | "if" | "else" | "include" | "set" | "layout" | "echo" |
          return VentoTypes.TRIMMED_COMMENTED_CODE_END;
       }
 }
+
+/* Fallback rule - this is crucial to prevent null returns */
+[^]                           { return VentoTypes.ERROR; }

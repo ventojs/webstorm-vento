@@ -3,12 +3,11 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
-
 
 /**
  * Defines token and element types for the Vento language.

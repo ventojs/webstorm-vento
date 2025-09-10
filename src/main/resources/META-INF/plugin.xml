@@ -21,13 +21,17 @@
     <extensions defaultExtensionNs="com.intellij">
         <!-- Register the file type first -->
         <fileType name="Vento File"
-                  implementationClass="org.js.vento.webstormvento.VentoFileType"
+                  implementationClass="org.js.vento.plugin.filetype.VentoFileType"
                   fieldName="INSTANCE"
                   language="Vento"
                   extensions="vto"/>
 
         <lang.parserDefinition language="Vento"
-                               implementationClass="org.js.vento.webstormvento.VentoParserDefinition"
+                               implementationClass="org.js.vento.plugin.VentoParserDefinition"
         />
+
+        <lang.syntaxHighlighterFactory
+                language="Vento"
+                implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
     </extensions>
 </idea-plugin>

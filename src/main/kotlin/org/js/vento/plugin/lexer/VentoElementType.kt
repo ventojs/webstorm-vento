@@ -3,9 +3,10 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.VentoLanguage
 
 /**
  * Represents an element type for the Vento language.
