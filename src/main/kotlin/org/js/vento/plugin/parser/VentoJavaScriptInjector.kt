@@ -1,4 +1,4 @@
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin.parser
 
 import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.lang.injection.MultiHostRegistrar

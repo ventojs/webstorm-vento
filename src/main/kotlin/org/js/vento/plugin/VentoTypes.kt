@@ -1,13 +1,11 @@
-/*
- * Copyright (c) 2023 Óscar Otero
- * All rights reserved.
- */
-
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.lexer.VentoElementImpl
+import org.js.vento.plugin.lexer.VentoElementType
+import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
 
 /**
  * Defines token and element types for the Vento language.

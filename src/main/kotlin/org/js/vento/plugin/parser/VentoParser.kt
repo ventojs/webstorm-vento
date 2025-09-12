@@ -1,10 +1,10 @@
-package org.js.vento.plugin
+package org.js.vento.plugin.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.lexer.VentoTypes
+import org.js.vento.plugin.VentoTypes
 
 class VentoParser : PsiParser {
 

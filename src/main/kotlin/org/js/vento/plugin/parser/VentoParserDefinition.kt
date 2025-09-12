@@ -1,9 +1,4 @@
-/*
- * Copyright (c) 2023 Óscar Otero
- * All rights reserved.
- */
-
-package org.js.vento.plugin
+package org.js.vento.plugin.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
@@ -15,9 +10,10 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
+import org.js.vento.plugin.VentoLanguage
+import org.js.vento.plugin.VentoTypes
 import org.js.vento.plugin.filetype.VentoFile
 import org.js.vento.plugin.lexer.VentoLexerAdapter
-import org.js.vento.plugin.lexer.VentoTypes
 
 /**
  * Defines how Vento files are parsed, including which lexer to use,

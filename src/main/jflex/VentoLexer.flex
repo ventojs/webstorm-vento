@@ -6,6 +6,7 @@ package org.js.vento.plugin.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
+import org.js.vento.plugin.VentoTypes;
 %%
 
 %public

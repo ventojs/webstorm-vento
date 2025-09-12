@@ -1,7 +1,6 @@
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin
 
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.VentoLanguage
 
 /**
  * Represents a token type for the Vento language.

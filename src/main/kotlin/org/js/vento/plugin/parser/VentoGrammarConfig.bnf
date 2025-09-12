@@ -1,13 +1,13 @@
 {
-  parserClass="org.js.vento.plugin.VentoParser"
+  parserClass="org.js.vento.plugin.parser.VentoParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
   psiClassPrefix="Vento"
   psiImplClassSuffix="Impl"
   psiPackage="org.js.vento.plugin.psi"
   psiImplPackage="org.js.vento.plugin.psi.impl"
-  elementTypeHolderClass="org.js.vento.plugin.lexer.VentoTypes"
+  elementTypeHolderClass="org.js.vento.plugin.VentoTypes"
   elementTypeClass="org.js.vento.plugin.lexer.VentoElementType"
-  tokenTypeClass="org.js.vento.plugin.lexer.VentoTokenType"
+  tokenTypeClass="org.js.vento.plugin.VentoTokenType"
   
   tokens=[
     JAVASCRIPT_START='regexp:\{\{'
@@ -35,3 +35,14 @@ commentBlock ::= (COMMENTED_START COMMENTED_CONTENT? COMMENTED_END) |
                  (TRIMMED_COMMENTED_START COMMENTED_CONTENT? TRIMMED_COMMENTED_END) {
   pin=1
 }
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {
+  pin=3
+  recoverWhile="recover_property"
+  mixin="org.intellij.sdk.language.psi.impl.SimpleNamedElementImpl"
+  implements="org.intellij.sdk.language.psi.SimpleNamedElement"
+  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}
+private recover_property ::= !(KEY|SEPARATOR|COMMENT)
+
+

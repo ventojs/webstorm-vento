@@ -1,10 +1,11 @@
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.LiteralTextEscaper
 
 import com.intellij.psi.PsiLanguageInjectionHost
+import org.js.vento.plugin.VentoPsiElementImpl
 
 class VentoJavaScriptPsiElement(node: ASTNode) : VentoPsiElementImpl(node), PsiLanguageInjectionHost {
 

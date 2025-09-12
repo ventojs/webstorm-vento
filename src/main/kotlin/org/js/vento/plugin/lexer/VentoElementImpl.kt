@@ -6,6 +6,7 @@
 package org.js.vento.plugin.lexer
 
 import com.intellij.lang.ASTNode
+import org.js.vento.plugin.VentoPsiElementImpl
 
 /**
  * Concrete implementation of a PSI element for the Vento language.

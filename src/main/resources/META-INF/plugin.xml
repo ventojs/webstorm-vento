@@ -27,7 +27,7 @@
                   extensions="vto"/>
 
         <lang.parserDefinition language="Vento"
-                               implementationClass="org.js.vento.plugin.VentoParserDefinition"
+                               implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"
         />
 
         <lang.syntaxHighlighterFactory
@@ -37,7 +37,7 @@
         <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
 
 
-        <multiHostInjector implementation="org.js.vento.plugin.lexer.VentoJavaScriptInjector"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
 
     </extensions>
 </idea-plugin>

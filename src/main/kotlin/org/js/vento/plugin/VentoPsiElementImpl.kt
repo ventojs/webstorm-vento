@@ -1,4 +1,4 @@
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
