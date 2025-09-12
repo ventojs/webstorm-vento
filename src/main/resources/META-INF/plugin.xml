@@ -35,5 +35,9 @@
                 implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
 
         <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
+
+
+        <multiHostInjector implementation="org.js.vento.plugin.lexer.VentoJavaScriptInjector"/>
+
     </extensions>
 </idea-plugin>

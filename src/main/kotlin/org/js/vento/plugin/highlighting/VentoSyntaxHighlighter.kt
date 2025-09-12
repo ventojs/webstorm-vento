@@ -11,7 +11,6 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.highlighting.VentoTextAttributes.Companion.VENTO_COMMENT
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 import org.js.vento.plugin.lexer.VentoTypes
 
@@ -25,11 +24,13 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
 
         val highlight = when (type) {
-            VentoTypes.COMMENTED_CODE_START -> COMMENTED_CODE_START
-            VentoTypes.COMMENTED_CODE_END -> COMMENTED_CODE_END
-            VentoTypes.TRIMMED_COMMENTED_CODE_START -> TRIMMED_COMMENTED_CODE_START
-            VentoTypes.TRIMMED_COMMENTED_CODE_END -> TRIMMED_COMMENTED_CODE_END
-            VentoTypes.COMMENTED_CODE_CONTENT -> COMMENTED_CODE_CONTENT
+            VentoTypes.COMMENTED_START -> COMMENT
+            VentoTypes.COMMENTED_END -> COMMENT
+            VentoTypes.TRIMMED_COMMENTED_START -> COMMENT
+            VentoTypes.TRIMMED_COMMENTED_END -> COMMENT
+            VentoTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
+            VentoTypes.JAVASCRIPT_START -> JAVASCRIPT
+            VentoTypes.JAVASCRIPT_END -> JAVASCRIPT
             else -> null
         }
 
@@ -45,27 +46,23 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
-        val COMMENTED_CODE_START =
+        val COMMENT =
             createTextAttributesKey(
-                "VENTO_COMMENTED_CODE_START",
+                "VENTO_COMMENTED",
+                DefaultLanguageHighlighterColors.DOC_COMMENT
+            )
+
+        val COMMENTED_CONTENT =
+            createTextAttributesKey(
+                "VENTO_COMMENT",
+                DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP
+            )
+
+        val JAVASCRIPT =
+            createTextAttributesKey(
+                "VENTO_JAVASCRIPT",
                 DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
             )
-        val COMMENTED_CODE_END =
-            createTextAttributesKey(
-                "VENTO_COMMENTED_CODE_END",
-                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
-            )
-        val TRIMMED_COMMENTED_CODE_START =
-            createTextAttributesKey(
-                "VENTO_TRIMMED_COMMENTED_CODE_START",
-                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
-            )
-        val TRIMMED_COMMENTED_CODE_END =
-            createTextAttributesKey(
-                "VENTO_TRIMMED_COMMENTED_CODE_END",
-                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
-            )
-        val COMMENTED_CODE_CONTENT = VENTO_COMMENT
 
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
 

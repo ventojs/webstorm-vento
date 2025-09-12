@@ -9,10 +9,11 @@ import org.js.vento.plugin.Vento
 import javax.swing.Icon
 
 class VentoColorSettingsPage : ColorSettingsPage {
-    companion object {
-
+    object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> = arrayOf<AttributesDescriptor>(
-            AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CODE_CONTENT)
+            AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
+            AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
+            AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
         )
     }
 
@@ -28,6 +29,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
         return """
         {{# comment #}}
         {{#- trimmed comment -#}}
+        {{ console.log('Hello World') }}
         """.trimIndent()
     }
 
@@ -37,7 +39,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
     }
 
     override fun getAttributeDescriptors(): Array<AttributesDescriptor> {
-        return DESCRIPTORS
+        return Util.DESCRIPTORS
     }
 
     override fun getColorDescriptors(): Array<ColorDescriptor> {

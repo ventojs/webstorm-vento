@@ -43,10 +43,19 @@ class LexerTestCase(name: String) : TestCase(name) {
 
     }
 
+    fun testLexerWithJavascriptCode() {
+
+        lexAndTest(
+            " {{ if(true){console.log('Hello World')} }} ",
+            arrayOf("{{", " if(true){console.log('Hello World')} ", "}}")
+        )
+
+    }
+
     private fun lexAndTest(template: String, tokens: Array<String>) {
         initLexer(template)
         tokens.forEach { expected ->
-            var token = getNext(lexer, template)
+            val token = getNext(lexer, template)
             assertEquals(expected, token.second)
         }
     }
@@ -58,7 +67,7 @@ class LexerTestCase(name: String) : TestCase(name) {
     }
 
     private fun getNext(lexer: FlexLexer, vto: String): Pair<IElementType?, String> {
-        var tokenType = lexer.advance()
+        val tokenType = lexer.advance()
         val tokenStart = lexer.tokenStart
         val tokenEnd = lexer.tokenEnd
         val tokenText = vto.substring(tokenStart, tokenEnd)

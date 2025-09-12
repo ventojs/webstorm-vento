@@ -1,0 +1,37 @@
+{
+  parserClass="org.js.vento.plugin.VentoParser"
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+  psiClassPrefix="Vento"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.js.vento.plugin.psi"
+  psiImplPackage="org.js.vento.plugin.psi.impl"
+  elementTypeHolderClass="org.js.vento.plugin.lexer.VentoTypes"
+  elementTypeClass="org.js.vento.plugin.lexer.VentoElementType"
+  tokenTypeClass="org.js.vento.plugin.lexer.VentoTokenType"
+  
+  tokens=[
+    JAVASCRIPT_START='regexp:\{\{'
+    JAVASCRIPT_END='regexp:\}\}'
+    JAVASCRIPT_ELEMENT='regexp:[^}]+(}[^}])*'
+    COMMENTED_START='regexp:\{\{#'
+    COMMENTED_END='regexp:#\}\}'
+    TRIMMED_COMMENTED_START='regexp:\{\{#-'
+    TRIMMED_COMMENTED_END='regexp:-#\}\}'
+    COMMENTED_CONTENT='regexp:[^-#{]+'
+    ERROR='regexp:.'
+  ]
+}
+
+ventoFile ::= item*
+
+private item ::= javascriptBlock | commentBlock | ERROR
+
+javascriptBlock ::= JAVASCRIPT_START JAVASCRIPT_ELEMENT JAVASCRIPT_END {
+  pin=1
+  mixin="org.js.vento.plugin.psi.VentoJavaScriptPsiElement"
+}
+
+commentBlock ::= (COMMENTED_START COMMENTED_CONTENT? COMMENTED_END) | 
+                 (TRIMMED_COMMENTED_START COMMENTED_CONTENT? TRIMMED_COMMENTED_END) {
+  pin=1
+}
