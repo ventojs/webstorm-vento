@@ -19,6 +19,9 @@ class VentoColorSettingsPage : ColorSettingsPage {
             AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
             AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
             AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
+            AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
+            AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
+            AttributesDescriptor("Variable symbol", VentoSyntaxHighlighter.VARIABLE_PIPES),
         )
     }
 
@@ -35,6 +38,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
         {{# comment #}}
         {{#- trimmed comment -#}}
         {{> console.log('Hello World') }}
+        {{ variable || "default" }}
         """.trimIndent()
     }
 

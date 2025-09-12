@@ -25,11 +25,13 @@ import org.js.vento.plugin.VentoTypes;
 %state SCRIPT_CONTENT
 %state FRONT_MATTER_STATE
 %state TEMPLATE_SWITCH
+%state VARIABLE_CONTENT
 
 WHITESPACE = [ \t\r\n]+
 COMMENT_START = \{\{#
 TRIMMED_COMMENT_START = \{\{#-
 JAVASCRIPT_START = \{\{>
+VARIABLE_START = \{\{
 
 %{
   private void yyclose() throws java.io.IOException {
@@ -61,8 +63,22 @@ JAVASCRIPT_START = \{\{>
         return VentoTypes.JAVASCRIPT_START;
     }
 
+    {VARIABLE_START}    {
+        yybegin(VARIABLE_CONTENT);
+        return VentoTypes.VARIABLE_START;
+    }
 
 }
+
+<VARIABLE_CONTENT> {
+    \|\| {return VentoTypes.VARIABLE_PIPES;}
+    ([^}\|]|"}"[^}\|])+ { return VentoTypes.VARIABLE_ELEMENT; }
+    "}}" {
+       yybegin(YYINITIAL);
+       return VentoTypes.VARIABLE_END;
+    }
+}
+
 
 <SCRIPT_CONTENT> {
    ([^}]|"}"[^}])+ { return VentoTypes.JAVASCRIPT_ELEMENT; }

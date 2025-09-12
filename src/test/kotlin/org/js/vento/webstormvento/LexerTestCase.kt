@@ -25,7 +25,7 @@ class LexerTestCase(name: String) : TestCase(name) {
         this.lexer = lexer
     }
 
-    fun testLexerWithCommentedCode() {
+    fun `test lexing comment`() {
 
         lexAndTest(
             " {{# console.log('Hello World') #}} ",
@@ -34,7 +34,7 @@ class LexerTestCase(name: String) : TestCase(name) {
 
     }
 
-    fun testLexerWithTrimmedCommentedCode() {
+    fun `test lexing trimmed comment `() {
 
         lexAndTest(
             " {{#- This is a comment -#}} ",
@@ -43,13 +43,39 @@ class LexerTestCase(name: String) : TestCase(name) {
 
     }
 
-    fun testLexerWithJavascriptCode() {
+    fun `test lexing javascript`() {
 
         lexAndTest(
             " {{> if(true){console.log('Hello World')} }} ",
             arrayOf("{{>", " if(true){console.log('Hello World')} ", "}}")
         )
 
+    }
+
+    fun `test lexing multiline javascript`() {
+
+        lexAndTest(
+            """ 
+            {{> if(true){
+                   console.log('Hello World')
+                } }} 
+            """,
+            arrayOf(
+                "{{>",
+                """ if(true){
+                   console.log('Hello World')
+                } """,
+                "}}"
+            )
+        )
+    }
+
+    fun `test lexing variables`() {
+        lexAndTest("{{ variable }}", arrayOf("{{", " variable ", "}}"))
+    }
+
+    fun `test lexing variables with pipes`() {
+        lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable ", "||", " \"default\" ", "}}"))
     }
 
     private fun lexAndTest(template: String, tokens: Array<String>) {

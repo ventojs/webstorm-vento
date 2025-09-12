@@ -23,70 +23,37 @@ object VentoTypes {
     var COMMENTED_START: IElementType = VentoTokenType("VENTO_COMMENTED_START")
 
     @JvmField
-    var TRIMMED_COMMENTED_START: IElementType = VentoTokenType("VENTO_TRIMMED_COMMENTED_START")
-
-    @JvmField
-    var COMMENTED_CONTENT: IElementType = VentoTokenType("VENTO_COMMENTED_CONTENT")
-
-    @JvmField
     var COMMENTED_END: IElementType = VentoTokenType("VENTO_COMMENTED_END")
+
+    @JvmField
+    var TRIMMED_COMMENTED_START: IElementType = VentoTokenType("VENTO_TRIMMED_COMMENTED_START")
 
     @JvmField
     var TRIMMED_COMMENTED_END: IElementType = VentoTokenType("VENTO_TRIMMED_COMMENTED_END")
 
     @JvmField
+    var COMMENTED_CONTENT: IElementType = VentoTokenType("VENTO_COMMENTED_CONTENT")
+
+    @JvmField
     var JAVASCRIPT_START: IElementType = VentoTokenType("VENTO_JAVASCRIPT_START")
+
+    @JvmField
+    val JAVASCRIPT_ELEMENT = VentoElementType("VENTO_JAVASCRIPT_ELEMENT")
 
     @JvmField
     var JAVASCRIPT_END: IElementType = VentoTokenType("VENTO_JAVASCRIPT_END")
 
+    @JvmField
+    var VARIABLE_START: IElementType = VentoTokenType("VENTO_VARIABLE_START")
 
-    /*    @JvmField
-        var FRONT_MATTER_END: IElementType = VentoTokenType("VENTO_FRONT_MATTER_END")
+    @JvmField
+    val VARIABLE_ELEMENT = VentoTokenType("VENTO_VARIABLE_ELEMENT")
 
+    @JvmField
+    val VARIABLE_PIPES = VentoElementType("VENTO_VARIABLE_PIPES")
 
-        @JvmField
-        var TEMPLATE_TAG_START: IElementType = VentoTokenType("VENTO_TEMPLATE_TAG_START")
-
-        @JvmField
-        var TEMPLATE_TAG_END: IElementType = VentoTokenType("VENTO_TEMPLATE_TAG_END")
-
-        @JvmField
-        var KEYWORD: IElementType = VentoTokenType("VENTO_KEYWORD")
-
-        @JvmField
-        var PURE_JS_START: IElementType = VentoTokenType("VENTO_PURE_JS_START")
-
-
-        @JvmField
-        var RBRACE: IElementType = VentoTokenType("VENTO_RBRACE")
-
-        @JvmField
-        var LBRACE: IElementType = VentoTokenType("VENTO_LBRACE")
-
-        @JvmField
-        var IDENTIFIER: IElementType = VentoTokenType("VENTO_IDENTIFIER")
-
-        @JvmField
-        var EQUALS: IElementType = VentoTokenType("VENTO_EQUALS")
-
-        @JvmField
-        var SEMICOLON: IElementType = VentoTokenType("VENTO_SEMICOLON")
-
-        @JvmField
-        var NUMBER: IElementType = VentoTokenType("VENTO_NUMBER")
-
-        @JvmField
-        var DIVIDE: IElementType = VentoTokenType("VENTO_DIVIDE")
-
-        @JvmField
-        var MINUS: IElementType = VentoTokenType("VENTO_MINUS")
-
-        @JvmField
-        var PLUS: IElementType = VentoTokenType("VENTO_PLUS")
-
-        @JvmField
-        var MULTIPLY: IElementType = VentoTokenType("VENTO_MULTIPLY")*/
+    @JvmField
+    var VARIABLE_END: IElementType = VentoTokenType("VENTO_VARIABLE_END")
 
     @JvmField
     var ERROR = VentoTokenType("VENTO_ERROR")
@@ -99,9 +66,6 @@ object VentoTypes {
 
     @JvmField
     val VENTO_ELEMENT = VentoElementType("VENTO_ELEMENT")
-
-    @JvmField
-    val JAVASCRIPT_ELEMENT = VentoElementType("VENTO_JAVASCRIPT_ELEMENT")
 
 
     /**

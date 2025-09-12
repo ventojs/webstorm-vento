@@ -31,6 +31,10 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
             VentoTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
             VentoTypes.JAVASCRIPT_START -> JAVASCRIPT
             VentoTypes.JAVASCRIPT_END -> JAVASCRIPT
+            VentoTypes.VARIABLE_START -> VARIABLE
+            VentoTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
+            VentoTypes.VARIABLE_PIPES -> VARIABLE_PIPES
+            VentoTypes.VARIABLE_END -> VARIABLE
             else -> null
         }
 
@@ -62,6 +66,24 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
             createTextAttributesKey(
                 "VENTO_JAVASCRIPT",
                 DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
+            )
+
+        val VARIABLE =
+            createTextAttributesKey(
+                "VENTO_VARIABLE",
+                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
+            )
+
+        val VARIABLE_ELEMENT =
+            createTextAttributesKey(
+                "VENTO_VARIABLE_ELEMENT",
+                DefaultLanguageHighlighterColors.GLOBAL_VARIABLE
+            )
+
+        val VARIABLE_PIPES =
+            createTextAttributesKey(
+                "VENTO_VARIABLE_PIPES",
+                DefaultLanguageHighlighterColors.KEYWORD
             )
 
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
