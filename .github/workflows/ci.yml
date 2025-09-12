@@ -29,6 +29,8 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
         with:
+          # Pin the Gradle version used by the action (including post-step cleanup) to avoid Gradle 9 incompatibility
+          gradle-version: 8.12
           # Enable GitHub Actions caching of the Gradle User Home (wrapper, dependencies, and build cache)
           cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork }}
           gradle-home-cache-cleanup: true
