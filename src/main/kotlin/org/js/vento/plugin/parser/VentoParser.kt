@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Óscar Otero
+ * All rights reserved.
+ */
+
 package org.js.vento.plugin.parser
 
 import com.intellij.lang.ASTNode

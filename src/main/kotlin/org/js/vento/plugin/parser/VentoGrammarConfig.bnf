@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Óscar Otero
+ * All rights reserved.
+ */
+
 {
   parserClass="org.js.vento.plugin.parser.VentoParser"
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
