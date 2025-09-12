@@ -1,6 +1,11 @@
 name: Plugin CI
 
+permissions:
+  contents: read
+  actions: write
+
 on:
+  push:
   pull_request:
     types: [ opened, synchronize, reopened ]
   workflow_dispatch:
@@ -25,7 +30,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3
         with:
           # Enable GitHub Actions caching of the Gradle User Home (wrapper, dependencies, and build cache)
-          cache-read-only: ${{ github.event_name == 'pull_request' }}
+          cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork }}
           gradle-home-cache-cleanup: true
 
       - name: Run tests
