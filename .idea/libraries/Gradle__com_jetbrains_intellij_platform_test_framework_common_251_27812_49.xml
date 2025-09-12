@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jetbrains.intellij.platform:test-framework-common:251.27812.49" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.jetbrains.intellij.platform" artifactId="test-framework-common" version="251.27812.49" baseVersion="251.27812.49" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.platform/test-framework-common/251.27812.49/2695e773b78051d77418ac9fea9fb8fb43695cc7/test-framework-common-251.27812.49.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.platform/test-framework-common/251.27812.49/2ed2ae4aa3206afa04172e58a9f362b2d418947a/test-framework-common-251.27812.49-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

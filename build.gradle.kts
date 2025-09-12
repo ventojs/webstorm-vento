@@ -2,6 +2,7 @@
  * Copyright (c) 2023 Óscar Otero
  * All rights reserved.
  */
+import org.jetbrains.intellij.platform.gradle.TestFrameworkType
 
 plugins {
     id("java")
@@ -74,6 +75,12 @@ dependencies {
         pluginVerifier()
         zipSigner()
     }
+
+    intellijPlatform {
+        testFramework(TestFrameworkType.Platform)
+    }
+
+    testImplementation("junit:junit:4.13.2")
 }
 
 intellijPlatform {

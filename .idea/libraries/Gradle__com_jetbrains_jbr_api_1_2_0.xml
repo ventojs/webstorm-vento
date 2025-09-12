@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jetbrains:jbr-api:1.2.0" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.jetbrains" artifactId="jbr-api" version="1.2.0" baseVersion="1.2.0" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains/jbr-api/1.2.0/44f6689e8b4e81001f45e504717e2ae759f4eb8d/jbr-api-1.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains/jbr-api/1.2.0/54d8320e272fd9ccf275ec1ae22e4254bf669ace/jbr-api-1.2.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

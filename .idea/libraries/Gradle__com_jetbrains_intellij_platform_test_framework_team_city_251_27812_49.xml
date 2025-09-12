@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jetbrains.intellij.platform:test-framework-team-city:251.27812.49" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.jetbrains.intellij.platform" artifactId="test-framework-team-city" version="251.27812.49" baseVersion="251.27812.49" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.platform/test-framework-team-city/251.27812.49/1c48f8982e468d23f9f5a11043d94969ffd09910/test-framework-team-city-251.27812.49.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.platform/test-framework-team-city/251.27812.49/58538a66096035bef1fb7466a55a0914fc9483ac/test-framework-team-city-251.27812.49-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

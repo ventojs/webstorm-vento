@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2023 Óscar Otero
+ * All rights reserved.
+ */
+
 package org.js.vento.plugin.highlighting
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
@@ -29,7 +34,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
         return """
         {{# comment #}}
         {{#- trimmed comment -#}}
-        {{ console.log('Hello World') }}
+        {{> console.log('Hello World') }}
         """.trimIndent()
     }
 

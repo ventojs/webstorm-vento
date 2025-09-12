@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.jetbrains.intellij.tools:tests-bootstrap:251.27812.49" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="com.jetbrains.intellij.tools" artifactId="tests-bootstrap" version="251.27812.49" baseVersion="251.27812.49" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.tools/tests-bootstrap/251.27812.49/d92a25006745db8d04119ce0408ca0b712110e34/tests-bootstrap-251.27812.49.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.jetbrains.intellij.tools/tests-bootstrap/251.27812.49/940a104a30502888c93f4faaed1ac522f25752a8/tests-bootstrap-251.27812.49-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

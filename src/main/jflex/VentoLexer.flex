@@ -29,7 +29,7 @@ import org.js.vento.plugin.VentoTypes;
 WHITESPACE = [ \t\r\n]+
 COMMENT_START = \{\{#
 TRIMMED_COMMENT_START = \{\{#-
-JAVASCRIPT_START = \{\{
+JAVASCRIPT_START = \{\{>
 
 %{
   private void yyclose() throws java.io.IOException {
@@ -46,22 +46,19 @@ JAVASCRIPT_START = \{\{
 
     {WHITESPACE}              { /* Skip whitespace */ }
 
-    (\r?\n)?\{\{     { yybegin(SCRIPT_CONTENT);    return VentoTypes.JAVASCRIPT_START; }
-    {JAVASCRIPT_START}    {
-        yybegin(SCRIPT_CONTENT);
-        return VentoTypes.JAVASCRIPT_START;
+    {TRIMMED_COMMENT_START}    {
+        yybegin(COMMENTED_CONTENT);
+        return VentoTypes.TRIMMED_COMMENTED_START;
     }
 
-    (\r?\n)?\{\{    { yybegin(COMMENTED_CONTENT); return VentoTypes.COMMENTED_START; }
     {COMMENT_START}    {
         yybegin(COMMENTED_CONTENT);
         return VentoTypes.COMMENTED_START;
     }
 
-    (\r?\n)?\{\{#    { yybegin(COMMENTED_CONTENT); return VentoTypes.TRIMMED_COMMENTED_START; }
-    {TRIMMED_COMMENT_START}    {
-        yybegin(COMMENTED_CONTENT);
-        return VentoTypes.TRIMMED_COMMENTED_START;
+    {JAVASCRIPT_START}    {
+        yybegin(SCRIPT_CONTENT);
+        return VentoTypes.JAVASCRIPT_START;
     }
 
 

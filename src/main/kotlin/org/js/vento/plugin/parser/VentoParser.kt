@@ -29,9 +29,7 @@ class VentoParser : PsiParser {
 
         when (tokenType) {
             VentoTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
-            VentoTypes.COMMENTED_START, VentoTypes.TRIMMED_COMMENTED_START -> parseCommentElement(builder)
             else -> {
-                // Handle regular content or other elements
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(VentoTypes.VENTO_ELEMENT)
@@ -40,7 +38,6 @@ class VentoParser : PsiParser {
     }
 
     private fun parseJavaScriptElement(builder: PsiBuilder) {
-        println("parseJavaScriptElement")
         val marker = builder.mark()
 
         if (builder.tokenType == VentoTypes.JAVASCRIPT_START) {
@@ -58,24 +55,4 @@ class VentoParser : PsiParser {
         marker.done(VentoTypes.JAVASCRIPT_ELEMENT)
     }
 
-    private fun parseCommentElement(builder: PsiBuilder) {
-        val marker = builder.mark()
-
-        // Consume comment start token
-        builder.advanceLexer()
-
-        // Consume comment content
-        if (builder.tokenType == VentoTypes.COMMENTED_CONTENT) {
-            builder.advanceLexer()
-        }
-
-        // Consume comment end token
-        if (builder.tokenType == VentoTypes.COMMENTED_END ||
-            builder.tokenType == VentoTypes.TRIMMED_COMMENTED_END
-        ) {
-            builder.advanceLexer()
-        }
-
-        marker.done(VentoTypes.VENTO_ELEMENT)
-    }
 }

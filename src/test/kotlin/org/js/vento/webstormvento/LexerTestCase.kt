@@ -46,8 +46,8 @@ class LexerTestCase(name: String) : TestCase(name) {
     fun testLexerWithJavascriptCode() {
 
         lexAndTest(
-            " {{ if(true){console.log('Hello World')} }} ",
-            arrayOf("{{", " if(true){console.log('Hello World')} ", "}}")
+            " {{> if(true){console.log('Hello World')} }} ",
+            arrayOf("{{>", " if(true){console.log('Hello World')} ", "}}")
         )
 
     }
