@@ -14,6 +14,8 @@ import com.intellij.lang.ASTNode
  *
  * @param node The AST node corresponding to this PSI element.
  */
-open class VentoPsiElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
+open class VentoPsiElementImpl(
+    node: ASTNode,
+) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "VentoPsiElement: ${node.elementType}"
 }

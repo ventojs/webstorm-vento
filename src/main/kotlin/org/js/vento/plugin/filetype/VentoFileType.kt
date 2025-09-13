@@ -23,9 +23,11 @@ import javax.swing.Icon
  */
 object VentoFileType : LanguageFileType(VentoLanguage) {
     override fun getName(): @NonNls String = "Vento File"
+
     override fun getDescription(): @NlsContexts.Label String = "Vento template file"
 
     @Suppress("UnstableApiUsage")
     override fun getDefaultExtension(): @NlsSafe String = "vto"
+
     override fun getIcon(): Icon = Vento.ICON
 }

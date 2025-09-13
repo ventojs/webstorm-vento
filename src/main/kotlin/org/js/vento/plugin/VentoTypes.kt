@@ -18,7 +18,6 @@ import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
  * and any custom element types for the PSI structure.
  */
 object VentoTypes {
-
     @JvmField
     var COMMENTED_START: IElementType = VentoTokenType("VENTO_COMMENTED_START")
 
@@ -76,7 +75,6 @@ object VentoTypes {
     @JvmField
     val EMPTY_LINE = VentoTokenType("VENTO_EMPTY_LINE")
 
-
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -91,5 +89,4 @@ object VentoTypes {
             }
         }
     }
-
 }

@@ -16,10 +16,9 @@ import com.intellij.util.SlowOperations
  * from a corresponding .flex file (VentoLexer.flex).
  */
 class VentoLexerAdapter : FlexAdapter(createLexer()) {
-
     companion object {
-        fun createLexer(): FlexLexer {
-            return try {
+        fun createLexer(): FlexLexer =
+            try {
                 // Allow slow operations temporarily if we need to initialize the lexer
                 // This is safe during lexer creation as it's typically done during plugin initialization
                 SlowOperations.knownIssue("IDEA-000000").use {
@@ -31,14 +30,17 @@ class VentoLexerAdapter : FlexAdapter(createLexer()) {
                     VentoLexer(null) as FlexLexer
                 }
             }
-        }
 
         // Public method for testing purposes
         fun createTestLexer(): FlexLexer = createLexer()
-
     }
 
-    override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
+    override fun start(
+        buffer: CharSequence,
+        startOffset: Int,
+        endOffset: Int,
+        initialState: Int,
+    ) {
         // Ensure we're not blocking the EDT during lexer operations
         if (ApplicationManager.getApplication().isDispatchThread) {
             // If we're on EDT and this might be slow, wrap in a known issue allowance

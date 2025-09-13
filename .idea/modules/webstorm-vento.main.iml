@@ -49,32 +49,32 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: idea:ideaIU:aarch64:2025.1.4.1">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/annotations.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/app.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/app-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/bouncy-castle.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/external-system-rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/externalProcess-rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/forms_rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/groovy.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/idea_rt.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/intellij-test-discovery.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/jps-model.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/jsch-agent.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/kotlinx-coroutines-slf4j-1.8.0-intellij.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/lib.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/lib-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/opentelemetry.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/platform-loader.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/product.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/product-client.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/protobuf.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/rd.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/stats.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/trove.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util-8.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/cdd12c8dd8009c00cdd045b8415ba3fb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/annotations.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/app.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/app-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/bouncy-castle.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/external-system-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/externalProcess-rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/forms_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/groovy.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/idea_rt.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/intellij-test-discovery.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/jps-model.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/jsch-agent.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/kotlinx-coroutines-slf4j-1.8.0-intellij.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/lib.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/lib-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/opentelemetry.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/platform-loader.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/product.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/product-client.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/protobuf.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/rd.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/stats.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/trove.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util-8.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/2d0e6164d61e9cafc50e54e06f52dccb/transformed/ideaIU-2025.1.4.1-aarch64/lib/util_rt.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -83,8 +83,8 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library name="Gradle: com.jetbrains.plugins:JavaScript:251.27812.49">
         <CLASSES>
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/bbc408e6ba05c88202ff756f7166c0b1/transformed/JavaScript-251.27812.49/javascript-plugin/lib/javascript-frontback.jar!/" />
-          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/bbc408e6ba05c88202ff756f7166c0b1/transformed/JavaScript-251.27812.49/javascript-plugin/lib/javascript-plugin.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/d327898be9cc85f0f70b0b326537bb54/transformed/JavaScript-251.27812.49/javascript-plugin/lib/javascript-frontback.jar!/" />
+          <root url="jar://$USER_HOME$/.gradle/caches/8.12/transforms/d327898be9cc85f0f70b0b326537bb54/transformed/JavaScript-251.27812.49/javascript-plugin/lib/javascript-plugin.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

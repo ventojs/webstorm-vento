@@ -10,5 +10,5 @@ trim_trailing_whitespace = true
 indent_style = space
 indent_size = 4
 
-[*Test.kt,*TestCase.kt]
+[**/*Test*.kt,**/*TestCase*.kt,**/test/**/*.kt]
 ktlint_standard_function-naming = disabled

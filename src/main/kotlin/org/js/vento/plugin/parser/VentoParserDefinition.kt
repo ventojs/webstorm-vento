@@ -48,10 +48,16 @@ import org.js.vento.plugin.lexer.VentoLexerAdapter
  */
 class VentoParserDefinition : ParserDefinition {
     override fun createLexer(project: Project?): Lexer = VentoLexerAdapter()
+
     override fun createParser(project: Project?): PsiParser = VentoParser()
+
     override fun getFileNodeType(): IFileElementType = IFileElementType(VentoLanguage)
+
     override fun getCommentTokens(): TokenSet = TokenSet.create(VentoTypes.COMMENT)
+
     override fun getStringLiteralElements(): TokenSet = TokenSet.create(VentoTypes.STRING)
+
     override fun createElement(node: ASTNode): PsiElement = VentoTypes.Factory.createElement(node)
+
     override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 }

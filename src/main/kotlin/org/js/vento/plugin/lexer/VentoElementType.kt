@@ -12,4 +12,6 @@ import org.js.vento.plugin.VentoLanguage
  * Represents an element type for the Vento language.
  * Typically used for syntax/AST nodes in the PSI tree.
  */
-class VentoElementType(debugName: String) : IElementType(debugName, VentoLanguage)
+class VentoElementType(
+    debugName: String,
+) : IElementType(debugName, VentoLanguage)

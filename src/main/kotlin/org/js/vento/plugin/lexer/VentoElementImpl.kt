@@ -15,6 +15,8 @@ import org.js.vento.plugin.VentoPsiElementImpl
  *
  * @param node The AST node corresponding to this PSI element.
  */
-class VentoElementImpl(node: ASTNode) : VentoPsiElementImpl(node) {
+class VentoElementImpl(
+    node: ASTNode,
+) : VentoPsiElementImpl(node) {
     override fun toString(): String = "VentoElement: ${node.elementType}"
 }

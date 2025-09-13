@@ -38,8 +38,10 @@ import org.js.vento.plugin.VentoTypes
  * - `VentoJavaScriptInjector` for handling JavaScript code injection in parsed elements.
  */
 class VentoParser : PsiParser {
-
-    override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
+    override fun parse(
+        root: IElementType,
+        builder: PsiBuilder,
+    ): ASTNode {
         val rootMarker = builder.mark()
 
         while (!builder.eof()) {
@@ -80,5 +82,4 @@ class VentoParser : PsiParser {
 
         marker.done(VentoTypes.JAVASCRIPT_ELEMENT)
     }
-
 }
