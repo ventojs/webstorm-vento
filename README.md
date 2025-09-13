@@ -59,12 +59,11 @@ IntelliJ Ultimate and WebStorm IDEs.
 
 > [!WARRNING]
 > **NOT YET RELEASED TO MARKETPLACE**
->
-> * Installing from a download:
-    >
-* Download from Github Releases, or from the Marketplace, or build it yourself.
->    * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
-       > disk...</kbd>
+
+* Installing from a download:
+    * Download from Github Releases, or from the Marketplace, or build it yourself.
+    * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
+      disk...</kbd>
 
 ## Usage
 
@@ -107,7 +106,7 @@ Most of the following steps are provided automatically when gradle is used to bu
 ##### clearing caches
 
 > [!TIP]
-> The Jetbrains SDK depends on a lot of majical dependencies to be able to run it's own IDE's in development mode. So
+> The Jetbrains SDK depends on a lot of magical dependencies to be able to run its own IDE's in development mode. So
 > sometimes there is no choice but to use the nuclear option to get a clean slate. This is likely to happen if you start
 > switching the platform being targeted by the plugin in `gradle.properties` or if you change the version of the
 > Jetbrains
