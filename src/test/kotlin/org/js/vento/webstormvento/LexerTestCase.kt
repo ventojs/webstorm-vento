@@ -28,8 +28,7 @@ class LexerTestCase(name: String) : TestCase(name) {
     fun `test lexing comment`() {
 
         lexAndTest(
-            " {{# console.log('Hello World') #}} ",
-            arrayOf("{{#", " console.log('Hello World') ", "#}}")
+            " {{# console.log('Hello World') #}} ", arrayOf(" ", "{{#", " console.log('Hello World') ", "#}}", " ")
         )
 
     }
@@ -37,8 +36,7 @@ class LexerTestCase(name: String) : TestCase(name) {
     fun `test lexing trimmed comment `() {
 
         lexAndTest(
-            " {{#- This is a comment -#}} ",
-            arrayOf("{{#-", " This is a comment ", "-#}}")
+            " {{#- This is a comment -#}} ", arrayOf(" ", "{{#-", " This is a comment ", "-#}}", " ")
         )
 
     }
@@ -47,7 +45,7 @@ class LexerTestCase(name: String) : TestCase(name) {
 
         lexAndTest(
             " {{> if(true){console.log('Hello World')} }} ",
-            arrayOf("{{>", " if(true){console.log('Hello World')} ", "}}")
+            arrayOf(" ", "{{>", " if(true){console.log('Hello World')} ", "}}", " ")
         )
 
     }
@@ -59,13 +57,11 @@ class LexerTestCase(name: String) : TestCase(name) {
             {{> if(true){
                    console.log('Hello World')
                 } }} 
-            """,
-            arrayOf(
+            """.trimIndent(), arrayOf(
                 "{{>",
                 """ if(true){
-                   console.log('Hello World')
-                } """,
-                "}}"
+       console.log('Hello World')
+    } """, "}}", " "
             )
         )
     }
@@ -97,27 +93,41 @@ class LexerTestCase(name: String) : TestCase(name) {
         <h2>Hello {{ username || "unknown" }}! </h2>
         <p>There a many cool things to read here</p>
     </body>
-</html>"""
+</html>
+
+"""
         )
     }
 
 
     private fun lexAndTest(template: String, tokens: Array<String>) {
-        initLexer(template)
-        tokens.forEach { expected ->
-            val token = getNext(lexer, template)
-            assertEquals(expected, token.second)
+        var passed = false
+        try {
+            initLexer(template)
+            tokens.forEach { expected ->
+                val token = getNext(lexer, template)
+                assertEquals(expected, token.second)
+            }
+            passed = true
+        } finally {
+            if (!passed) lexAndPrint(template)
+
         }
     }
 
     private fun lexAndPrint(template: String) {
         initLexer(template)
+        println("-".repeat(30))
+        println("Template:")
+        println("-".repeat(30))
+        println(template)
+        println("-".repeat(30))
+        println("Tokens:")
+        println("-".repeat(30))
         do {
             val token: Pair<IElementType?, String> = getNext(lexer, template)
             println(
-                "token: " +
-                        "${token.first}(${token.first?.index})".padEnd(40, ' ') +
-                        " = ${token.second}"
+                "token: " + "${token.first}(${token.first?.index})".padEnd(40, ' ') + " = [${token.second}]"
             )
         } while (lexer.tokenEnd < template.length)
 

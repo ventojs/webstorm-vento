@@ -7,6 +7,7 @@ package org.js.vento.plugin.lexer;
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import org.js.vento.plugin.VentoTypes;
+import static com.intellij.psi.TokenType.WHITE_SPACE;
 %%
 
 %public
@@ -57,9 +58,9 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 <YYINITIAL> {
 
 
-    {WHITESPACE}              { /* Skip whitespace */ }
 
-    {EMPTY_LINE}                { return VentoTypes.EMPTY_LINE; }
+    {EMPTY_LINE}              { return VentoTypes.EMPTY_LINE; }
+    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE;}
     {HTML_TAG}                { return VentoTypes.HTML_TAG; }
     {TEXT}                    { return VentoTypes.TEXT; }
 
