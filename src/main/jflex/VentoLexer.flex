@@ -26,12 +26,22 @@ import org.js.vento.plugin.VentoTypes;
 %state FRONT_MATTER_STATE
 %state TEMPLATE_SWITCH
 %state VARIABLE_CONTENT
+%state EOF
+
+%{
+    // Ensure we handle EOF properly
+    private boolean atEof = false;
+%}
+
 
 WHITESPACE = [ \t\r\n]+
 COMMENT_START = \{\{#
 TRIMMED_COMMENT_START = \{\{#-
 JAVASCRIPT_START = \{\{>
 VARIABLE_START = \{\{
+HTML_TAG = <[/!]?[a-zA-Z][a-zA-Z0-9\-_]*(\s+[a-zA-Z\-_][a-zA-Z0-9\-_]*(\s*=\s*("[^"]*"|'[^']*'|[^"'<>\/\s]+))?)*\s*\/?>
+TEXT=[^<{]+
+EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 %{
   private void yyclose() throws java.io.IOException {
@@ -46,7 +56,12 @@ VARIABLE_START = \{\{
 
 <YYINITIAL> {
 
+
     {WHITESPACE}              { /* Skip whitespace */ }
+
+    {EMPTY_LINE}                { return VentoTypes.EMPTY_LINE; }
+    {HTML_TAG}                { return VentoTypes.HTML_TAG; }
+    {TEXT}                    { return VentoTypes.TEXT; }
 
     {TRIMMED_COMMENT_START}    {
         yybegin(COMMENTED_CONTENT);
@@ -67,6 +82,8 @@ VARIABLE_START = \{\{
         yybegin(VARIABLE_CONTENT);
         return VentoTypes.VARIABLE_START;
     }
+
+    [^] { return VentoTypes.ERROR; }
 
 }
 
@@ -103,4 +120,11 @@ VARIABLE_START = \{\{
     }
 }
 
-[^] { return VentoTypes.ERROR; }
+// CRITICAL: Handle EOF explicitly
+<<EOF>>             {
+    if (!atEof) {
+        atEof = true;
+        return null;
+    }
+    return null;
+}

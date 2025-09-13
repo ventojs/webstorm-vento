@@ -46,6 +46,8 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
             VentoTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
             VentoTypes.VARIABLE_PIPES -> VARIABLE_PIPES
             VentoTypes.VARIABLE_END -> VARIABLE
+            VentoTypes.TEXT -> TEXT
+            VentoTypes.HTML_TAG -> HTML
             else -> null
         }
 
@@ -95,6 +97,18 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
             createTextAttributesKey(
                 "VENTO_VARIABLE_PIPES",
                 DefaultLanguageHighlighterColors.KEYWORD
+            )
+
+        val TEXT =
+            createTextAttributesKey(
+                "VENTO_TEXT",
+                DefaultLanguageHighlighterColors.STATIC_FIELD
+            )
+
+        val HTML =
+            createTextAttributesKey(
+                "VENTO_HTML",
+                DefaultLanguageHighlighterColors.MARKUP_TAG
             )
 
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)

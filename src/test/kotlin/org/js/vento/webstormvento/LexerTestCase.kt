@@ -78,12 +78,49 @@ class LexerTestCase(name: String) : TestCase(name) {
         lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable ", "||", " \"default\" ", "}}"))
     }
 
+
+    fun `test lexing html `() {
+        lexAndTest("hello <span>world</span>", arrayOf("hello ", "<span>", "world", "</span>"))
+    }
+
+    fun `test lexing page `() {
+        lexAndPrint(
+            """<!DOCTYPE html>
+<html>
+    <head>
+        {{# This is a sample web page #}}
+        {{#- trimmed comment -#}}
+        {{> console.log('Hello World') }}
+    </head>
+    <body>
+        <h1>My Blog</h1>
+        <h2>Hello {{ username || "unknown" }}! </h2>
+        <p>There a many cool things to read here</p>
+    </body>
+</html>"""
+        )
+    }
+
+
     private fun lexAndTest(template: String, tokens: Array<String>) {
         initLexer(template)
         tokens.forEach { expected ->
             val token = getNext(lexer, template)
             assertEquals(expected, token.second)
         }
+    }
+
+    private fun lexAndPrint(template: String) {
+        initLexer(template)
+        do {
+            val token: Pair<IElementType?, String> = getNext(lexer, template)
+            println(
+                "token: " +
+                        "${token.first}(${token.first?.index})".padEnd(40, ' ') +
+                        " = ${token.second}"
+            )
+        } while (lexer.tokenEnd < template.length)
+
     }
 
     private fun initLexer(string: String) {

@@ -29,6 +29,8 @@ class VentoColorSettingsPage : ColorSettingsPage {
             AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
             AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
             AttributesDescriptor("Variable symbol", VentoSyntaxHighlighter.VARIABLE_PIPES),
+            AttributesDescriptor("Text", VentoSyntaxHighlighter.TEXT),
+            AttributesDescriptor("HTML", VentoSyntaxHighlighter.HTML),
         )
     }
 
@@ -41,12 +43,19 @@ class VentoColorSettingsPage : ColorSettingsPage {
     }
 
     override fun getDemoText(): String {
-        return """
-        {{# comment #}}
+        return """<!DOCTYPE html>
+<html>
+    <head>
+        {{# This is a sample web page #}}
         {{#- trimmed comment -#}}
         {{> console.log('Hello World') }}
-        {{ variable || "default" }}
-        """.trimIndent()
+    </head>
+    <body>
+        <h1>My Blog</h1>
+        <h2>Hello {{ username || "unknown" }}! </h2>
+        <p>There a many cool things to read here</p>
+    </body>
+</html>""".trimIndent()
     }
 
 

@@ -67,6 +67,15 @@ object VentoTypes {
     @JvmField
     val VENTO_ELEMENT = VentoElementType("VENTO_ELEMENT")
 
+    @JvmField
+    val HTML_TAG = VentoTokenType("VENTO_HTML_TAG")
+
+    @JvmField
+    val TEXT = VentoTokenType("VENTO_HTML_TAG")
+
+    @JvmField
+    val EMPTY_LINE = VentoTokenType("VENTO_EMPTY_LINE")
+
 
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
