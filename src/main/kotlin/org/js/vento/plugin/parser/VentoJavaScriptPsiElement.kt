@@ -12,6 +12,15 @@ import com.intellij.psi.LiteralTextEscaper
 import com.intellij.psi.PsiLanguageInjectionHost
 import org.js.vento.plugin.VentoPsiElementImpl
 
+
+/**
+ * Represents a PSI element for JavaScript blocks in Vento templates.
+ * This class is a specific implementation of `VentoPsiElementImpl` and implements
+ * `PsiLanguageInjectionHost` to enable language injection for JavaScript code.
+ *
+ * @constructor Creates a new instance with the given AST node.
+ * @param node The AST node associated with this PSI element.
+ */
 class VentoJavaScriptPsiElement(node: ASTNode) : VentoPsiElementImpl(node), PsiLanguageInjectionHost {
 
     override fun isValidHost(): Boolean = true

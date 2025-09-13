@@ -21,8 +21,30 @@ import org.js.vento.plugin.filetype.VentoFile
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 
 /**
- * Defines how Vento files are parsed, including which lexer to use,
- * how to create the PSI tree, and how to recognize comments or strings.
+ * Defines the parser for Vento files, integrating key components such as Lexer, Parser, and PSI elements.
+ * This class is responsible for enabling IntelliJ Platform-based IDEs to understand and process Vento files
+ * by providing the necessary infrastructure for tokenization, parsing, and PSI tree construction.
+ *
+ * Responsibilities:
+ * - Provides the lexer implementation to tokenize Vento code.
+ * - Supplies the parser for generating the syntax tree from tokenized input.
+ * - Defines the file type and high-level PSI structure for Vento files.
+ * - Specifies token sets for comments and string literals in Vento syntax.
+ * - Maps syntax tree nodes to PSI elements for further IDE analysis and operations.
+ *
+ * Key methods:
+ * - `createLexer`: Returns the lexer adapter for tokenizing Vento files.
+ * - `createParser`: Returns the parser responsible for constructing the syntax tree.
+ * - `getFileNodeType`: Specifies the file element type for the root of the syntax tree.
+ * - `getCommentTokens`: Provides the token types considered as comments in Vento.
+ * - `getStringLiteralElements`: Provides the token types considered as string literals in Vento.
+ * - `createElement`: Converts AST nodes into specific PSI elements.
+ * - `createFile`: Creates the file-level PSI element for Vento files.
+ *
+ * See also:
+ * - `VentoLexerAdapter` for handling tokenization.
+ * - `VentoParser` for parsing logic and syntax tree generation.
+ * - `PsiFile`, `PsiElement`, `TokenSet` for IntelliJ PSI structure.
  */
 class VentoParserDefinition : ParserDefinition {
     override fun createLexer(project: Project?): Lexer = VentoLexerAdapter()

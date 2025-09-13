@@ -14,7 +14,18 @@ import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoTypes
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 
-
+/**
+ * Handles syntax highlighting for the Vento language in the IntelliJ Platform.
+ *
+ * This class is responsible for defining the colorful representation of various
+ * Vento language constructs in the editor, such as comments, JavaScript blocks,
+ * and variable elements. It extends the `SyntaxHighlighterBase` class to implement
+ * custom highlighting behavior tailored to the Vento language.
+ *
+ * Key functionalities:
+ * - Provides a lexer for tokenizing Vento code.
+ * - Maps token types to their respective highlighting attributes.
+ */
 class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer {

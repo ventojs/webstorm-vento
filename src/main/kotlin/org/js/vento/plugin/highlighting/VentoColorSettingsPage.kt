@@ -13,6 +13,13 @@ import com.intellij.openapi.options.colors.ColorSettingsPage
 import org.js.vento.plugin.Vento
 import javax.swing.Icon
 
+/**
+ * Represents the color settings page for the Vento language plugin. This class integrates with the IntelliJ
+ * IDEA's `ColorSettingsPage` interface to define syntax highlighting and customizable attributes for the Vento language.
+ *
+ * The class provides configuration options for highlighting different language constructs such as comments,
+ * JavaScript blocks, and variables. It defines display attributes and their respective association with Vento syntax elements.
+ */
 class VentoColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> = arrayOf<AttributesDescriptor>(
