@@ -32,35 +32,39 @@
 `webstorm-vento` is the plugin which integrates the [Vento Template Engine](https://vento.js.org/) with JetBrain's
 IntelliJ Ultimate and WebStorm IDEs.
 
-### <span style="color:red">Note to plugin users</span>
+> [!IMPORTANT]
+> ### Note to plugin users
+>
+> * This plugin is in the early stages of development.
+> * The plugin is not yet available on the JetBrains Marketplace, but you can use the provided GitHub releases or build
+    it yourself. (see: [Installation](#installation) below)
+> * Using the plugin depends on the presence of the Jetbrains JavaScript & TypeScript plug-in in your IDE. It is
+    available by default in Webstorm (including with the free none-commercial license) but **not** in the community
+    edition of IntelliJ IDEA.
 
-* This plugin is in the early stages of development.
-* The plugin is not yet available on the JetBrains Marketplace, but you can use the provided GitHub releases or build it
-  yourself. (see: [Installation](#installation) below)
-* Using the plugin depends on the presence of the Jetbrains JavaScript &
-  TypeScript plug-in in your IDE. It is available by default
-  in Webstorm (including with the free none-commercial license) but **not** in the community edition of IntelliJ IDEA.
-
-### <span style="color:red">Note to plugin developers:</span>
-
-* You can use IntelliJ Community or Ultimate edition for development.
-* Installing the built plugin in Webstorm works.
-* Targeting Webstorm at build and testing time is not yet working.
+> [!IMPORTANT]
+> ### Note to plugin developers:
+>
+> * You can use IntelliJ Community or Ultimate edition for development.
+> * Installing the built plugin in Webstorm works.
+> * Targeting Webstorm at build and testing time is not yet working.
 
 ## Installation
 
-* <span style="color:gray">Using JetBrains Marketplace (Not yet available):</span>
-    * <span style="color:gray">In the IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>
+* Using JetBrains Marketplace (Not yet available):
+    * In the IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>
       Marketplace</kbd> > <kbd>Search for " WebStorm-Vento"</kbd> > <kbd>Install</kbd>
-      </span>
-    * <span style="color:gray">On the Go to [JetBrains Marketplace](https://plugins.jetbrains.com/) search for "
+    * On the Go to [JetBrains Marketplace](https://plugins.jetbrains.com/) search for "
       WebStorm-Vento", download and install it.
-      </span>
 
-* Installing from a download:
-    * Download from Github Releases, or from the Marketplace, or build it yourself.
-    * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
-      disk...</kbd>
+> [!WARRNING]
+> **NOT YET RELEASED TO MARKETPLACE**
+>
+> * Installing from a download:
+    >
+* Download from Github Releases, or from the Marketplace, or build it yourself.
+>    * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
+       > disk...</kbd>
 
 ## Usage
 
@@ -102,10 +106,12 @@ Most of the following steps are provided automatically when gradle is used to bu
 
 ##### clearing caches
 
-The Jetbrains SDK depends on a lot of majical dependencies to be able to run it's own IDE's in development mode. So
-sometimes there is no choice but to use the nuclear option to get a clean slate. This is likely to happen if you start
-switching the platform being targeted by the plugin in `gradle.properties` or if you change the version of the Jetbrains
-SDK in `build.gradle.kts`.
+> [!TIP]
+> The Jetbrains SDK depends on a lot of majical dependencies to be able to run it's own IDE's in development mode. So
+> sometimes there is no choice but to use the nuclear option to get a clean slate. This is likely to happen if you start
+> switching the platform being targeted by the plugin in `gradle.properties` or if you change the version of the
+> Jetbrains
+> SDK in `build.gradle.kts`.
 
 ```bash
 ./gradlew --stop          ## stop the gradle daemon
