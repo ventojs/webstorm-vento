@@ -4,8 +4,6 @@ run-name: "Vento CI/CD"
 on:
   push:
     branches: [ main ]
-    paths:
-      - "src/**"
   workflow_dispatch:
 
 permissions:
@@ -134,7 +132,7 @@ jobs:
   # If accepted and published, release workflow would be triggered
   releaseDraft:
     name: Release draft
-    if: github.event_name != 'pull_request'
+    if: github.event_name == 'push'
     needs: [ build, verify ]
     runs-on: ubuntu-latest
     permissions:
