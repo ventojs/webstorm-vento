@@ -53,7 +53,7 @@ class VentoJavaScriptPsiElement(node: ASTNode) : VentoPsiElementImpl(node), PsiL
         // Remove the {{ and }} delimiters from the range
         val text = this.text
         val start = when {
-            text.indexOf("{{>") > 0 -> text.indexOf("{{>") + 3
+            text.indexOf("{{>") > -1 -> text.indexOf("{{>") + 3
             else -> 0
         }
         val end = if (text.endsWith("}}")) text.length - 2 else text.length

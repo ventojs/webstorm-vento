@@ -43,19 +43,22 @@ class VentoColorSettingsPage : ColorSettingsPage {
     }
 
     override fun getDemoText(): String {
-        return """<!DOCTYPE html>
+        return """
+<!DOCTYPE html>
 <html>
     <head>
         {{# This is a sample web page #}}
         {{#- trimmed comment -#}}
+
         {{> console.log('Hello World') }}
     </head>
     <body>
         <h1>My Blog</h1>
         <h2>Hello {{ username || "unknown" }}! </h2>
-        <p>There a many cool things to read here</p>
+        <p>There are many cool things to read here</p>
     </body>
-</html>""".trimIndent()
+</html>
+""".trimIndent()
     }
 
 
