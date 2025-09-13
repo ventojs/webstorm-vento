@@ -19,25 +19,27 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Register the file type first -->
+
         <fileType name="Vento File"
                   implementationClass="org.js.vento.plugin.filetype.VentoFileType"
                   fieldName="INSTANCE"
                   language="Vento"
                   extensions="vto"/>
 
-        <lang.parserDefinition language="Vento"
-                               implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"
+        <lang.parserDefinition
+                language="Vento"
+                implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"
         />
 
         <lang.syntaxHighlighterFactory
                 language="Vento"
                 implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
 
-        <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
+        <colorSettingsPage
+                implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
 
-
-        <multiHostInjector implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
+        <multiHostInjector
+                implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
 
     </extensions>
 </idea-plugin>
