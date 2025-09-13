@@ -49,10 +49,10 @@ class LexerTestCase(
 
     fun `test lexing multiline javascript`() {
         lexAndTest(
-            """ 
+            """
             {{> if(true){
                    console.log('Hello World')
-                } }} 
+                } }}
             """.trimIndent(),
             arrayOf(
                 "{{>",

@@ -37,6 +37,9 @@ jobs:
           cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork }}
           gradle-home-cache-cleanup: true
 
+      - name: Run ktlint
+        run: ./gradlew --no-daemon ktlintCheck
+
       - name: Run tests
         run: ./gradlew --no-daemon clean test
 

@@ -78,6 +78,10 @@ Most of the following steps are provided automatically when gradle is used to bu
 * Gradle <code>v8.12</code>
 * Jetbrains JavaScript & TypeScript plug-in <code>v251.27812.49</code>
 
+#### Recommended
+
+* install ktlint and the prePushHook to make sure your code is formatted correctly.
+
 #### Build
 
 * Clone the repository
