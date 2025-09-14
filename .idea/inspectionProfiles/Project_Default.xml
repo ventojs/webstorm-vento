@@ -1,0 +1,13 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="ES6PreferShortImport" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="HtmlDeprecatedAttribute" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="JSUndeclaredVariable" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="JSUnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="TypeScriptJSXUnresolvedComponent" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="TypeScriptUMDGlobal" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="TypeScriptUnresolvedReference" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+    <inspection_tool class="TypeScriptValidateJSTypes" enabled="true" level="ERROR" enabled_by_default="true" editorAttributes="WRONG_REFERENCES_ATTRIBUTES" />
+  </profile>
+</component>

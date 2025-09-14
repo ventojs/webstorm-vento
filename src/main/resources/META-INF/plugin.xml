@@ -1,12 +1,13 @@
 <!--
-  ~ Copyright (c) 2023 Óscar Otero
+  ~ Copyright (c) 2025 Florian Hehlen & Óscar Otero
   ~ All rights reserved.
   -->
 
 <idea-plugin>
     <id>org.js.vento.webstormvento</id>
 
-    <name>Vento.js Support</name>
+    <name>Vento JS Support</name>
+    <description>Vento.js static genreation template support</description>
 
     <vendor url="https://github.com/ventojs">
         ventojs
@@ -18,7 +19,27 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <lang.parserDefinition language="Vento"
-                               implementationClass="org.js.vento.webstormvento.VentoParserDefinition"/>
+
+        <fileType name="Vento File"
+                  implementationClass="org.js.vento.plugin.filetype.VentoFileType"
+                  fieldName="INSTANCE"
+                  language="Vento"
+                  extensions="vto"/>
+
+        <lang.parserDefinition
+                language="Vento"
+                implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"
+        />
+
+        <lang.syntaxHighlighterFactory
+                language="Vento"
+                implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
+
+        <colorSettingsPage
+                implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
+
+        <multiHostInjector
+                implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
+
     </extensions>
 </idea-plugin>

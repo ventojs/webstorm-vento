@@ -2,166 +2,130 @@
  | VentoLexer.flex                                                            |
  | Lexer specification for the Vento language using JFlex for WebStorm IDE      |
  *---------------------------------------------------------------------------*/
+package org.js.vento.plugin.lexer;
 
-import org.js.vento.webstormvento.VentoTypes;
-import java_cup.runtime.Symbol;
-
+import com.intellij.lexer.FlexLexer;
+import com.intellij.psi.tree.IElementType;
+import org.js.vento.plugin.VentoTypes;
+import static com.intellij.psi.TokenType.WHITE_SPACE;
 %%
 
+%public
 %class VentoLexer
+%implements FlexLexer
+%function advance
+%type IElementType
 %unicode
-%cup
-%implements java_cup.runtime.Scanner
-%function next_token
-%type java_cup.runtime.Symbol
+
+
 
 %state MACRO_START
 %state VENTO_ELEMENT_STATE
 %state PURE_JS
-%state COMMENTED_CODE
+%state COMMENTED_CONTENT
+%state SCRIPT_CONTENT
 %state FRONT_MATTER_STATE
+%state TEMPLATE_SWITCH
+%state VARIABLE_CONTENT
+%state EOF
 
-/* Definitions of token patterns */
-IDENTIFIER = [a-zA-Z_][a-zA-Z0-9_]*
-NUMBER = [0-9]+(\.[0-9]+)?
-STRING = \"([^\"\\]|\\.)*\"
+%{
+    // Ensure we handle EOF properly
+    private boolean atEof = false;
+%}
+
+
 WHITESPACE = [ \t\r\n]+
-COMMENT = /\*[^]*?\*/ | //.*
-PURE_JS_START = \{\{>
-COMMENTED_CODE_START = \{\{#
-FRONT_MATTER_START = \-\-\-
-FRONT_MATTER_END = \-\-\-
-TEMPLATE_TAG_START = \{\{(-)?
-TEMPLATE_TAG_END = (-)?\}\}
+COMMENT_START = \{\{#
+TRIMMED_COMMENT_START = \{\{#-
+JAVASCRIPT_START = \{\{>
+VARIABLE_START = \{\{
+HTML_TAG = <[/!]?[a-zA-Z][a-zA-Z0-9\-_]*(\s+[a-zA-Z\-_][a-zA-Z0-9\-_]*(\s*=\s*("[^"]*"|'[^']*'|[^"'<>\/\s]+))?)*\s*\/?>
+TEXT=[^<{]+
+EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
-/* Keywords in Vento */
-KEYWORD = \b(for|of|if|else\s+if|else|include|set|layout|echo|function|async\s+function|import|from|export|await)\b
+%{
+  private void yyclose() throws java.io.IOException {
+    if (zzReader != null) {
+      zzReader.close();
+    }
+  }
+%}
+
 
 %%
 
 <YYINITIAL> {
-    {WHITESPACE}              { /* Skip whitespace */ }
 
-    /* Handle front matter */
-    {FRONT_MATTER_START}      {
-        yybegin(FRONT_MATTER_STATE);
-        /* Capture the start of front matter */
+
+
+    {EMPTY_LINE}              { return VentoTypes.EMPTY_LINE; }
+    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE;}
+    {HTML_TAG}                { return VentoTypes.HTML_TAG; }
+    {TEXT}                    { return VentoTypes.TEXT; }
+
+    {TRIMMED_COMMENT_START}    {
+        yybegin(COMMENTED_CONTENT);
+        return VentoTypes.TRIMMED_COMMENTED_START;
     }
 
-    /* Handle comments */
-    {COMMENT}                 {
-        return new Symbol(VentoTypes.COMMENT, yytext());
+    {COMMENT_START}    {
+        yybegin(COMMENTED_CONTENT);
+        return VentoTypes.COMMENTED_START;
     }
 
-    /* Handle commented Vento code */
-    {COMMENTED_CODE_START}    {
-        yybegin(COMMENTED_CODE);
-        /* Capture the start of commented code */
+    {JAVASCRIPT_START}    {
+        yybegin(SCRIPT_CONTENT);
+        return VentoTypes.JAVASCRIPT_START;
     }
 
-    /* Handle pure JavaScript code */
-    {PURE_JS_START}           {
-        yybegin(PURE_JS);
-        return new Symbol(VentoTypes.PURE_JS_START, yytext());
+    {VARIABLE_START}    {
+        yybegin(VARIABLE_CONTENT);
+        return VentoTypes.VARIABLE_START;
     }
 
-    /* Handle template tags */
-    {TEMPLATE_TAG_START}      {
-        yybegin(MACRO_START);
-        /* Enter MACRO_START state when '{{' or '{{-' is encountered */
-    }
+    [^] { return VentoTypes.ERROR; }
 
-    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD, yytext()); }
+}
 
-    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER, yytext()); }
-    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER, yytext()); }
-    {STRING}                  { return new Symbol(VentoTypes.STRING, yytext()); }
-
-    /* Operators and punctuation */
-    "="                       { return new Symbol(VentoTypes.EQUALS); }
-    "+"                       { return new Symbol(VentoTypes.PLUS); }
-    "-"                       { return new Symbol(VentoTypes.MINUS); }
-    "*"                       { return new Symbol(VentoTypes.MULTIPLY); }
-    "/"                       { return new Symbol(VentoTypes.DIVIDE); }
-    ";"                       { return new Symbol(VentoTypes.SEMICOLON); }
-    "{"                       { return new Symbol(VentoTypes.LBRACE); }
-    "}"                       { return new Symbol(VentoTypes.RBRACE); }
-
-    .                         { /* Handle any other character as error */
-        return new Symbol(VentoTypes.ERROR, yytext());
+<VARIABLE_CONTENT> {
+    \|\| {return VentoTypes.VARIABLE_PIPES;}
+    ([^}\|]|"}"[^}\|])+ { return VentoTypes.VARIABLE_ELEMENT; }
+    "}}" {
+       yybegin(YYINITIAL);
+       return VentoTypes.VARIABLE_END;
     }
 }
 
-<MACRO_START> {
-    ">"                        {
-        yybegin(PURE_JS);
-        return new Symbol(VentoTypes.PURE_JS_START, "{{>" );
-    }
 
-    "#"                        {
-        yybegin(COMMENTED_CODE);
-        return new Symbol(VentoTypes.COMMENTED_CODE_START, "{{#");
-    }
-
-    [a-zA-Z_-]                 {
-        yybegin(VENTO_ELEMENT_STATE);
-        /* Handle other template tags */
-        /* You can return a specific token if needed */
-    }
+<SCRIPT_CONTENT> {
+   ([^}]|"}"[^}])+ { return VentoTypes.JAVASCRIPT_ELEMENT; }
+   "}}" {
+       yybegin(YYINITIAL);
+       return VentoTypes.JAVASCRIPT_END;
+   }
 }
 
-<VENTO_ELEMENT_STATE> {
-    "}}"                       {
+<COMMENTED_CONTENT> {
+
+    [^-#{]+ { return VentoTypes.COMMENTED_CONTENT; }
+
+    "#}}" {
         yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.TEMPLATE_TAG_END, "}}");
+        return VentoTypes.COMMENTED_END;
     }
 
-    {KEYWORD}                 { return new Symbol(VentoTypes.KEYWORD, yytext()); }
-    {IDENTIFIER}              { return new Symbol(VentoTypes.IDENTIFIER, yytext()); }
-    {NUMBER}                  { return new Symbol(VentoTypes.NUMBER, yytext()); }
-    {STRING}                  { return new Symbol(VentoTypes.STRING, yytext()); }
-
-    /* Operators and punctuation */
-    "="                       { return new Symbol(VentoTypes.EQUALS); }
-    "+"                       { return new Symbol(VentoTypes.PLUS); }
-    "-"                       { return new Symbol(VentoTypes.MINUS); }
-    "*"                       { return new Symbol(VentoTypes.MULTIPLY); }
-    "/"                       { return new Symbol(VentoTypes.DIVIDE); }
-    ";"                       { return new Symbol(VentoTypes.SEMICOLON); }
-    "{"                       { return new Symbol(VentoTypes.LBRACE); }
-    "}"                       { return new Symbol(VentoTypes.RBRACE); }
-
-    .                         { /* Handle any other character as error */
-        return new Symbol(VentoTypes.ERROR, yytext());
+    "-#}}" {
+        yybegin(YYINITIAL);
+        return VentoTypes.TRIMMED_COMMENTED_END;
     }
 }
 
-<PURE_JS> {
-    "}}"                       {
-        yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.PURE_JS_END, "}}");
+// CRITICAL: Handle EOF explicitly
+<<EOF>>             {
+    if (!atEof) {
+        atEof = true;
+        return null;
     }
-
-    /* Consume all characters inside Pure JS block */
-    .|\n                       { /* You can accumulate JavaScript content or tokenize further if needed */ }
-}
-
-<COMMENTED_CODE> {
-    "#}}"                      {
-        yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.COMMENTED_CODE_END, "#}}");
-    }
-
-    /* Consume all characters inside commented code block */
-    .|\n                       { /* Handle commented code content */ }
-}
-
-<FRONT_MATTER_STATE> {
-    {FRONT_MATTER_END}         {
-        yybegin(YYINITIAL);
-        return new Symbol(VentoTypes.FRONT_MATTER_END, "---");
-    }
-
-    /* Consume YAML front matter content */
-    .|\n                       { /* You can process YAML content or tokenize further if needed */ }
+    return null;
 }

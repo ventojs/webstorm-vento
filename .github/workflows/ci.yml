@@ -1,0 +1,47 @@
+name: Plugin CI
+
+permissions:
+  contents: read
+  actions: write
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Test and Verify Plugin
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          # Pin the Gradle version used by the action (including post-step cleanup) to avoid Gradle 9 incompatibility
+          gradle-version: 8.12
+          # Enable GitHub Actions caching of the Gradle User Home (wrapper, dependencies, and build cache)
+          cache-read-only: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.fork }}
+          gradle-home-cache-cleanup: true
+
+      - name: Run ktlint
+        run: ./gradlew --no-daemon ktlintCheck
+
+      - name: Run tests
+        run: ./gradlew --no-daemon clean test
+
+      - name: Run Plugin Verification
+        run: ./gradlew --no-daemon verifyPlugin
