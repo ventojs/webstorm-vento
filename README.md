@@ -70,7 +70,7 @@ IntelliJ Ultimate and WebStorm IDEs.
 
 #### Dependencies
 
-Most of the following steps are provided automatically when Gradle is used to build the plugin.
+Most of the following dependencies are provided automatically when Gradle is used to build the plugin.
 
 * Vento <code> >= v2</code>
 * Deno <code> >= v2.3</code>
@@ -81,7 +81,8 @@ Most of the following steps are provided automatically when Gradle is used to bu
 
 #### Recommended
 
-* install ktlint and the prePushHook to make sure your code is formatted correctly.
+* install [ktlint](https://pinterest.github.io/ktlint/latest/install/setup/) and the prePushHook to make sure your code
+  is formatted correctly.
 
 #### Build
 
