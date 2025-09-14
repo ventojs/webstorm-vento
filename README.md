@@ -53,15 +53,16 @@ IntelliJ Ultimate and WebStorm IDEs.
 
 * Using JetBrains Marketplace (Not yet available):
     * In the IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>
-      Marketplace</kbd> > <kbd>Search for " WebStorm-Vento"</kbd> > <kbd>Install</kbd>
-    * On the Go to [JetBrains Marketplace](https://plugins.jetbrains.com/) search for "
-      WebStorm-Vento", download and install it.
+      Marketplace</kbd> > <kbd>Search for "WebStorm-Vento"</kbd> > <kbd>Install</kbd>
+    * On the Go to [JetBrains Marketplace](https://plugins.jetbrains.com/) search for "WebStorm-Vento", then download
+      and
+      install it.
 
-> [!WARRNING]
+> [!WARNING]
 > **NOT YET RELEASED TO MARKETPLACE**
 
 * Installing from a download:
-    * Download from Github Releases, or from the Marketplace, or build it yourself.
+    * Download from GitHub Releases, or from the Marketplace, or build it yourself.
     * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
       disk...</kbd>
 
@@ -69,7 +70,7 @@ IntelliJ Ultimate and WebStorm IDEs.
 
 #### Dependencies
 
-Most of the following steps are provided automatically when gradle is used to build the plugin.
+Most of the following steps are provided automatically when Gradle is used to build the plugin.
 
 * Vento <code> >= v2</code>
 * Deno <code> >= v2.3</code>

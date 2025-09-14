@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Óscar Otero
+ * Copyright (c) 2025 Florian Hehlen & Óscar Otero
  * All rights reserved.
  */
 
@@ -13,7 +13,7 @@
   elementTypeHolderClass="org.js.vento.plugin.VentoTypes"
   elementTypeClass="org.js.vento.plugin.lexer.VentoElementType"
   tokenTypeClass="org.js.vento.plugin.VentoTokenType"
-  
+
   tokens=[
     JAVASCRIPT_START='regexp:\{\{'
     JAVASCRIPT_END='regexp:\}\}'
@@ -36,7 +36,7 @@ javascriptBlock ::= JAVASCRIPT_START JAVASCRIPT_ELEMENT JAVASCRIPT_END {
   mixin="org.js.vento.plugin.psi.VentoJavaScriptPsiElement"
 }
 
-commentBlock ::= (COMMENTED_START COMMENTED_CONTENT? COMMENTED_END) | 
+commentBlock ::= (COMMENTED_START COMMENTED_CONTENT? COMMENTED_END) |
                  (TRIMMED_COMMENTED_START COMMENTED_CONTENT? TRIMMED_COMMENTED_END) {
   pin=1
 }

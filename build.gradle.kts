@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Óscar Otero
+ * Copyright (c) 2025 Florian Hehlen & Óscar Otero
  * All rights reserved.
  */
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
