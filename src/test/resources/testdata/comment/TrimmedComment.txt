@@ -1,7 +1,5 @@
 Vento File(0,35)
-  VentoElement: VENTO_ELEMENT(0,4)
+  VentoPsiElement: VENTO_COMMENT_BLOCK(0,35)
     PsiElement(VENTO_TRIMMED_COMMENTED_START_TOKEN)('{{#-')(0,4)
-  VentoElement: VENTO_ELEMENT(4,31)
     PsiElement(VENTO_COMMENTED_CONTENT_TOKEN)(' This is a trimmed comment ')(4,31)
-  VentoElement: VENTO_ELEMENT(31,35)
     PsiElement(VENTO_TRIMMED_COMMENTED_END_TOKEN)('-#}}')(31,35)

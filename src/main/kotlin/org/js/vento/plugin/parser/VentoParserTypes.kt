@@ -7,6 +7,7 @@ package org.js.vento.plugin.parser
 
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
+import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoPsiElementImpl
 import org.js.vento.plugin.lexer.VentoElementImpl
 
@@ -16,6 +17,9 @@ import org.js.vento.plugin.lexer.VentoElementImpl
  * and any custom element types for the PSI structure.
  */
 object VentoParserTypes {
+    @JvmField
+    val COMMENT_BLOCK: IElementType = VentoParserElementType("VENTO_COMMENT_BLOCK")
+
     @JvmField
     val JAVASCRIPT_ELEMENT = VentoParserElementType("VENTO_JAVASCRIPT_ELEMENT")
 

@@ -10,7 +10,11 @@ import org.js.vento.plugin.parser.VentoParserDefinition
 
 class ParserTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testParsingTestData() {
-        doTest(true)
+        doCodeTest(
+            """{{# comment #}}
+{{#- comment -#}}
+{{> console.log('test') }}""",
+        )
     }
 
     /**

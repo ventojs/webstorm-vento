@@ -22,8 +22,5 @@ import com.intellij.openapi.vfs.VirtualFile
  * for Vento language files.
  */
 class VentoSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
-    override fun getSyntaxHighlighter(
-        project: Project?,
-        virtualFile: VirtualFile?,
-    ): SyntaxHighlighter = VentoSyntaxHighlighter()
+    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter = VentoSyntaxHighlighter()
 }

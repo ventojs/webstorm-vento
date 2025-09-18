@@ -3,10 +3,13 @@
  * All rights reserved.
  */
 
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package org.js.vento.plugin.highlighting
 
 import com.intellij.lexer.Lexer
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.*
+import com.intellij.openapi.editor.colors.CodeInsightColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
@@ -33,10 +36,10 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
-                VentoLexerTypes.COMMENTED_START -> COMMENT
+                VentoLexerTypes.OPEN_COMMENT_CLAUSE -> COMMENT
                 VentoLexerTypes.CLOSE_COMMENT_CLAUSE -> COMMENT
-                VentoLexerTypes.TRIMMED_COMMENTED_START -> COMMENT
-                VentoLexerTypes.CLOSE_COMMENT_TRIM_CLAUSE -> COMMENT
+                VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE -> COMMENT
+                VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE -> COMMENT
                 VentoLexerTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
                 VentoLexerTypes.JAVASCRIPT_START -> JAVASCRIPT
                 VentoLexerTypes.JAVASCRIPT_END -> JAVASCRIPT
@@ -46,6 +49,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 VentoLexerTypes.VARIABLE_END -> VARIABLE
                 VentoLexerTypes.TEXT -> TEXT
                 VentoLexerTypes.HTML_TAG -> HTML
+                VentoLexerTypes.ERROR -> ERROR
                 else -> null
             }
 
@@ -61,54 +65,16 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
-        val COMMENT =
-            createTextAttributesKey(
-                "VENTO_COMMENTED",
-                DefaultLanguageHighlighterColors.DOC_COMMENT,
-            )
-
-        val COMMENTED_CONTENT =
-            createTextAttributesKey(
-                "VENTO_COMMENT",
-                DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP,
-            )
-
-        val JAVASCRIPT =
-            createTextAttributesKey(
-                "VENTO_JAVASCRIPT",
-                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR,
-            )
-
-        val VARIABLE =
-            createTextAttributesKey(
-                "VENTO_VARIABLE",
-                DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR,
-            )
-
-        val VARIABLE_ELEMENT =
-            createTextAttributesKey(
-                "VENTO_VARIABLE_ELEMENT",
-                DefaultLanguageHighlighterColors.GLOBAL_VARIABLE,
-            )
-
-        val VARIABLE_PIPES =
-            createTextAttributesKey(
-                "VENTO_VARIABLE_PIPES",
-                DefaultLanguageHighlighterColors.KEYWORD,
-            )
-
-        val TEXT =
-            createTextAttributesKey(
-                "VENTO_TEXT",
-                DefaultLanguageHighlighterColors.STATIC_FIELD,
-            )
-
-        val HTML =
-            createTextAttributesKey(
-                "VENTO_HTML",
-                DefaultLanguageHighlighterColors.MARKUP_TAG,
-            )
-
+        val COMMENT = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
+        val COMMENTED_CONTENT = createTextAttributesKey("VENTO_COMMENT", DOC_COMMENT_MARKUP)
+        val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", TEMPLATE_LANGUAGE_COLOR)
+        val VARIABLE = createTextAttributesKey("VENTO_VARIABLE", TEMPLATE_LANGUAGE_COLOR)
+        val VARIABLE_ELEMENT = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
+        val VARIABLE_PIPES = createTextAttributesKey("VENTO_VARIABLE_PIPES", KEYWORD)
+        val TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
+        val HTML = createTextAttributesKey("VENTO_HTML", MARKUP_TAG)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
+        val ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
+        val SYNTAX_ERROR = createTextAttributesKey("VENTO_SYNTAX_ERROR", CodeInsightColors.ERRORS_ATTRIBUTES)
     }
 }

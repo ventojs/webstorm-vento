@@ -38,10 +38,7 @@ import org.js.vento.plugin.lexer.VentoLexerTypes
  * - `VentoJavaScriptInjector` for handling JavaScript code injection in parsed elements.
  */
 class VentoParser : PsiParser {
-    override fun parse(
-        root: IElementType,
-        builder: PsiBuilder,
-    ): ASTNode {
+    override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
         val rootMarker = builder.mark()
 
         while (!builder.eof()) {
@@ -56,6 +53,9 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
 
         when (tokenType) {
+            VentoLexerTypes.OPEN_COMMENT_CLAUSE,
+            VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE,
+            -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             else -> {
                 val marker = builder.mark()
@@ -81,5 +81,28 @@ class VentoParser : PsiParser {
         }
 
         marker.done(VentoParserTypes.JAVASCRIPT_ELEMENT)
+    }
+
+    private fun parseCommentBlock(builder: PsiBuilder) {
+        val marker = builder.mark()
+
+        // Consume opening token
+        builder.advanceLexer()
+
+        // Consume content tokens
+        while (!builder.eof() &&
+            builder.tokenType == VentoLexerTypes.COMMENTED_CONTENT
+        ) {
+            builder.advanceLexer()
+        }
+
+        // Consume closing token if present
+        if (builder.tokenType == VentoLexerTypes.CLOSE_COMMENT_CLAUSE ||
+            builder.tokenType == VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE
+        ) {
+            builder.advanceLexer()
+        }
+
+        marker.done(VentoParserTypes.COMMENT_BLOCK)
     }
 }

@@ -61,32 +61,30 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 <YYINITIAL> {
 
-
-
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE;}
+    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
     {HTML_TAG}                { return VentoLexerTypes.HTML_TAG; }
     {TEXT}                    { return VentoLexerTypes.TEXT; }
 
     {OPEN_COMMENT_TRIMMED_PHRASE}    {
                 yybegin(COMMENT);
-                return VentoLexerTypes.TRIMMED_COMMENTED_START;
+                return VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE;
             }
 
     {OPEN_COMMENT_PHRASE}    {
-                yybegin(COMMENT);
-                return VentoLexerTypes.COMMENTED_START;
-            }
+            yybegin(COMMENT);
+            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+         }
 
     {JAVASCRIPT_START}    {
-            yybegin(SCRIPT_CONTENT);
-            return VentoLexerTypes.JAVASCRIPT_START;
-        }
+        yybegin(SCRIPT_CONTENT);
+        return VentoLexerTypes.JAVASCRIPT_START;
+    }
 
     {VARIABLE_START}    {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_START;
-        }
+        yybegin(VARIABLE_CONTENT);
+        return VentoLexerTypes.VARIABLE_START;
+    }
 
     [^] { return VentoLexerTypes.ERROR; }
 
@@ -112,17 +110,29 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 <COMMENT> {
 
-    [^-#{]+ { return VentoLexerTypes.COMMENTED_CONTENT; }
+    // Match everything that is not the start of a closing comment sequence
+    ([^#-]|"#"[^}]|"-"[^#}])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
+
+    // Handle single characters that might be part of closing sequences
+    "#" { return VentoLexerTypes.COMMENTED_CONTENT; }
+    "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
 
     {CLOSE_COMMENT_PHRASE} {
                 yybegin(YYINITIAL);
                 return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
-            }
+    }
 
     {CLOSE_COMMENT_TRIMMED_PHRASE} {
-                yybegin(YYINITIAL);
-                return VentoLexerTypes.CLOSE_COMMENT_TRIM_CLAUSE;
-            }
+                    yybegin(YYINITIAL);
+                    return VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE;
+    }
+
+    [^] {
+        yybegin(YYINITIAL);
+        yypushback(yylength());
+        return VentoLexerTypes.ERROR;
+    }
+
 }
 
 // CRITICAL: Handle EOF explicitly

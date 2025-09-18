@@ -29,6 +29,34 @@ comment #}}
         doCodeTest(code)
     }
 
+    fun testMultilineBrokenComment() {
+        val code =
+            """{{# comment
+{{ content }}
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
+    fun testMultilineBrokenTrimmedComment() {
+        val code =
+            """{{#- comment
+{{ content }}
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
+    fun testEmptyComment() {
+        doCodeTest("{{#--#}}")
+    }
+
+    fun testLeftTrimComment() {
+        doCodeTest("{{#- left trim #}}")
+    }
+
+    fun testBrokenComment() {
+        doCodeTest("<h1> {{# {{ title }} {{#}}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/comment"
 
     override fun includeRanges(): Boolean = true

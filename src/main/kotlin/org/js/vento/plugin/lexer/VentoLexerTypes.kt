@@ -14,16 +14,16 @@ import com.intellij.psi.tree.IElementType
  */
 object VentoLexerTypes {
     @JvmField
-    var COMMENTED_START: IElementType = VentoLexerTokenType("VENTO_COMMENTED_START")
+    var OPEN_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_START")
 
     @JvmField
     var CLOSE_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_END")
 
     @JvmField
-    var TRIMMED_COMMENTED_START: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_START")
+    var OPEN_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_START")
 
     @JvmField
-    var CLOSE_COMMENT_TRIM_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_END")
+    var CLOSE_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_END")
 
     @JvmField
     var COMMENTED_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENTED_CONTENT")

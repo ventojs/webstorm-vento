@@ -24,7 +24,7 @@ class VentoLexerAdapter : FlexAdapter(createLexer()) {
                 SlowOperations.knownIssue("IDEA-000000").use {
                     VentoLexer(null) as FlexLexer
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Fallback in case of issues
                 ApplicationManager.getApplication().runReadAction<FlexLexer> {
                     VentoLexer(null) as FlexLexer
@@ -35,12 +35,7 @@ class VentoLexerAdapter : FlexAdapter(createLexer()) {
         fun createTestLexer(): FlexLexer = createLexer()
     }
 
-    override fun start(
-        buffer: CharSequence,
-        startOffset: Int,
-        endOffset: Int,
-        initialState: Int,
-    ) {
+    override fun start(buffer: CharSequence, startOffset: Int, endOffset: Int, initialState: Int) {
         // Ensure we're not blocking the EDT during lexer operations
         if (ApplicationManager.getApplication().isDispatchThread) {
             // If we're on EDT and this might be slow, wrap in a known issue allowance
