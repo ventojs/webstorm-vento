@@ -17,3 +17,6 @@ build
 
 /src/main/gen
 /.kotlin
+/.idea/modules/webstorm-vento.iml
+/.idea/modules/webstorm-vento.main.iml
+/.idea/modules/webstorm-vento.test.iml
