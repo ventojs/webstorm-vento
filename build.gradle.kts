@@ -3,6 +3,8 @@
  * All rights reserved.
  */
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask
+import org.jlleitschuh.gradle.ktlint.tasks.KtLintFormatTask
 
 plugins {
     id("java")
@@ -49,6 +51,16 @@ tasks {
     // Enable JUnit Platform for tests (Jupiter + Vintage)
     test {
         useJUnitPlatform()
+    }
+
+    // Make KtLint tasks depend on lexer generation
+    withType<KtLintCheckTask> {
+        dependsOn("generateLexer")
+    }
+
+    // If you also have KtLint format tasks, add the same dependency
+    withType<KtLintFormatTask> {
+        dependsOn("generateLexer")
     }
 }
 

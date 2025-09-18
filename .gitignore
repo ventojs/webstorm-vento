@@ -12,6 +12,36 @@ build
 /.idea/shelf/
 /.idea/libraries
 
+# User-specific stuff
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+# Generated files
+.idea/**/contentModel.xml
+
+# Sensitive or machine-specific
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Gradle and Maven
+.idea/**/gradle.xml
+.idea/**/libraries
+
+# File-based project format
+*.iws
+**/*.iml
+
+# IntelliJ
+out/
+
 
 /idea-flex.skeleton
 
@@ -20,3 +50,4 @@ build
 /.idea/modules/webstorm-vento.iml
 /.idea/modules/webstorm-vento.main.iml
 /.idea/modules/webstorm-vento.test.iml
+!/.idea/modules/
