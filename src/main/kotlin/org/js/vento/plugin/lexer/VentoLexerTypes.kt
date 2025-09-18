@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2025 Florian Hehlen & Óscar Otero
+ * All rights reserved.
+ */
+
+package org.js.vento.plugin.lexer
+
+import com.intellij.psi.tree.IElementType
+
+/**
+ * Defines token and element types for the Vento language.
+ * This includes both basic token types (like COMMENT, KEYWORD, etc.)
+ * and any custom element types for the PSI structure.
+ */
+object VentoLexerTypes {
+    @JvmField
+    var COMMENTED_START: IElementType = VentoLexerTokenType("VENTO_COMMENTED_START")
+
+    @JvmField
+    var CLOSE_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_END")
+
+    @JvmField
+    var TRIMMED_COMMENTED_START: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_START")
+
+    @JvmField
+    var CLOSE_COMMENT_TRIM_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_END")
+
+    @JvmField
+    var COMMENTED_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENTED_CONTENT")
+
+    @JvmField
+    var JAVASCRIPT_START: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_START")
+
+    @JvmField
+    var JAVASCRIPT_END: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_END")
+
+    @JvmField
+    var VARIABLE_START: IElementType = VentoLexerTokenType("VENTO_VARIABLE_START")
+
+    @JvmField
+    val VARIABLE_ELEMENT = VentoLexerTokenType("VENTO_VARIABLE_ELEMENT")
+
+    @JvmField
+    var VARIABLE_END: IElementType = VentoLexerTokenType("VENTO_VARIABLE_END")
+
+    @JvmField
+    var ERROR = VentoLexerTokenType("VENTO_ERROR")
+
+    @JvmField
+    val COMMENT = VentoLexerTokenType("VENTO_COMMENT")
+
+    @JvmField
+    val STRING = VentoLexerTokenType("VENTO_STRING")
+
+    @JvmField
+    val HTML_TAG = VentoLexerTokenType("VENTO_HTML_TAG")
+
+    @JvmField
+    val TEXT = VentoLexerTokenType("VENTO_HTML_TAG")
+
+    @JvmField
+    val EMPTY_LINE = VentoLexerTokenType("VENTO_EMPTY_LINE")
+}

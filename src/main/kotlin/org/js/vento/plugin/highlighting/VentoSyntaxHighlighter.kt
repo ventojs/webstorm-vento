@@ -11,8 +11,9 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.VentoTypes
 import org.js.vento.plugin.lexer.VentoLexerAdapter
+import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.parser.VentoParserTypes
 
 /**
  * Handles syntax highlighting for the Vento language in the IntelliJ Platform.
@@ -32,19 +33,19 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
-                VentoTypes.COMMENTED_START -> COMMENT
-                VentoTypes.COMMENTED_END -> COMMENT
-                VentoTypes.TRIMMED_COMMENTED_START -> COMMENT
-                VentoTypes.TRIMMED_COMMENTED_END -> COMMENT
-                VentoTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
-                VentoTypes.JAVASCRIPT_START -> JAVASCRIPT
-                VentoTypes.JAVASCRIPT_END -> JAVASCRIPT
-                VentoTypes.VARIABLE_START -> VARIABLE
-                VentoTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
-                VentoTypes.VARIABLE_PIPES -> VARIABLE_PIPES
-                VentoTypes.VARIABLE_END -> VARIABLE
-                VentoTypes.TEXT -> TEXT
-                VentoTypes.HTML_TAG -> HTML
+                VentoLexerTypes.COMMENTED_START -> COMMENT
+                VentoLexerTypes.CLOSE_COMMENT_CLAUSE -> COMMENT
+                VentoLexerTypes.TRIMMED_COMMENTED_START -> COMMENT
+                VentoLexerTypes.CLOSE_COMMENT_TRIM_CLAUSE -> COMMENT
+                VentoLexerTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
+                VentoLexerTypes.JAVASCRIPT_START -> JAVASCRIPT
+                VentoLexerTypes.JAVASCRIPT_END -> JAVASCRIPT
+                VentoLexerTypes.VARIABLE_START -> VARIABLE
+                VentoLexerTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
+                VentoParserTypes.VARIABLE_PIPES -> VARIABLE_PIPES
+                VentoLexerTypes.VARIABLE_END -> VARIABLE
+                VentoLexerTypes.TEXT -> TEXT
+                VentoLexerTypes.HTML_TAG -> HTML
                 else -> null
             }
 
@@ -54,7 +55,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
             }
 
             else -> {
-                arrayOf<TextAttributesKey>(highlight)
+                arrayOf(highlight)
             }
         }
     }

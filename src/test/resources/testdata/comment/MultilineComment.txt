@@ -1,0 +1,7 @@
+Vento File(0,35)
+  VentoElement: VENTO_ELEMENT(0,3)
+    PsiElement(VENTO_COMMENTED_START_TOKEN)('{{#')(0,3)
+  VentoElement: VENTO_ELEMENT(3,32)
+    PsiElement(VENTO_COMMENTED_CONTENT_TOKEN)('\nThis is\na multiline\ncomment ')(3,32)
+  VentoElement: VENTO_ELEMENT(32,35)
+    PsiElement(VENTO_COMMENTED_END_TOKEN)('#}}')(32,35)

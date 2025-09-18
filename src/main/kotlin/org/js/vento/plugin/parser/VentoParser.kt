@@ -9,7 +9,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.VentoTypes
+import org.js.vento.plugin.lexer.VentoLexerTypes
 
 /**
  * A parser implementation for Vento template files.
@@ -56,11 +56,11 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
 
         when (tokenType) {
-            VentoTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
+            VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
-                marker.done(VentoTypes.VENTO_ELEMENT)
+                marker.done(VentoParserTypes.VENTO_ELEMENT)
             }
         }
     }
@@ -68,18 +68,18 @@ class VentoParser : PsiParser {
     private fun parseJavaScriptElement(builder: PsiBuilder) {
         val marker = builder.mark()
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_START) {
+        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_START) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_ELEMENT) {
+        if (builder.tokenType == VentoParserTypes.JAVASCRIPT_ELEMENT) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_END) {
+        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_END) {
             builder.advanceLexer()
         }
 
-        marker.done(VentoTypes.JAVASCRIPT_ELEMENT)
+        marker.done(VentoParserTypes.JAVASCRIPT_ELEMENT)
     }
 }
