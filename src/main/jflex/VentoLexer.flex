@@ -105,7 +105,7 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 <COMMENT> {
 
     // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#}])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
+    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
 
     // Handle single characters that might be part of closing sequences
     "#" { return VentoLexerTypes.COMMENTED_CONTENT; }
