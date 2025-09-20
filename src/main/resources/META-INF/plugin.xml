@@ -7,7 +7,30 @@
     <id>org.js.vento.webstormvento</id>
 
     <name>Vento JS Support</name>
-    <description>Vento.js static genreation template support</description>
+    <description><![CDATA[
+        Provides support for the <a href="https://vento.js.org/">VentoJs</a> template engine.
+        The support includes:
+        <ul>
+            <li>syntax highlighting</li>
+            <li>syntax checking</li>
+        </ul>
+        For more information visit the
+        <a href="https://example.com">project site</a>.
+        ]]></description>
+
+    <change-notes><![CDATA[
+        <h1>v 0.1.0</h1>
+        <h2>New Features</h2>
+        <ul>
+            <li>Comment Block Highlighting</li>
+            <li>JavaScript Block Highlighting</li>
+            <li>HTML Highlighting</li>
+        </ul>
+        <h2>Bug Fixes</h2>
+        <ul>
+        </ul>
+        ]]></change-notes>
+
 
     <vendor url="https://github.com/ventojs">
         ventojs
@@ -46,4 +69,15 @@
 
 
     </extensions>
+
+    <actions>
+        <action id="VentoToggleCommentAction"
+                class="org.js.vento.plugin.actions.VentoToggleCommentAction"
+                text="Toggle Vento Comment"
+                description="Toggle Vento comment markers ({{# #}}) around selection">
+            <keyboard-shortcut keymap="$default" first-keystroke="ctrl SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta SLASH"/>
+        </action>
+    </actions>
 </idea-plugin>
