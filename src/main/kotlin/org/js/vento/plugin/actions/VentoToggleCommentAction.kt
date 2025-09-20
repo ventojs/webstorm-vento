@@ -12,7 +12,6 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiFile
 import org.js.vento.plugin.filetype.VentoFileType
 
 class VentoToggleCommentAction : AnAction() {
