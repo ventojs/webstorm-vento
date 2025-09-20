@@ -25,9 +25,6 @@ class VentoToggleCommentAction : AnAction() {
             return
         }
 
-        val document = editor.document
-        val selectionModel = editor.selectionModel
-
         // Determine if we should comment or uncomment
         if (shouldUncomment(editor)) {
             performUncomment(editor, project)
@@ -45,7 +42,7 @@ class VentoToggleCommentAction : AnAction() {
             val selectionEnd = selectionModel.selectionEnd
             findCommentBounds(document.text, selectionStart, selectionEnd) != null
         } else {
-            // No selection - check around cursor
+            // No selection - check around the cursor
             val cursorPos = editor.caretModel.offset
             findCommentAroundCursor(document.text, cursorPos) != null
         }
@@ -55,7 +52,7 @@ class VentoToggleCommentAction : AnAction() {
         val document = editor.document
         val selectionModel = editor.selectionModel
 
-        // Get the text to comment - either selection or logical selection around cursor
+        // Get the text to comment - either selection or logical selection around the cursor
         val (textToComment, rangeStart, rangeEnd) = getTextToComment(editor) ?: return
 
         WriteCommandAction.runWriteCommandAction(project) {
@@ -66,7 +63,6 @@ class VentoToggleCommentAction : AnAction() {
     }
 
     private fun getTextToComment(editor: Editor): Triple<String, Int, Int>? {
-        val document = editor.document
         val selectionModel = editor.selectionModel
 
         return if (selectionModel.hasSelection()) {
@@ -86,7 +82,7 @@ class VentoToggleCommentAction : AnAction() {
         val cursorPos = editor.caretModel.offset
         val text = document.text
 
-        // Strategy 1: Select current line if it's not empty
+        // Strategy 1: Select the current line if it's not empty
         val lineNumber = document.getLineNumber(cursorPos)
         val lineStart = document.getLineStartOffset(lineNumber)
         val lineEnd = document.getLineEndOffset(lineNumber)
@@ -119,7 +115,7 @@ class VentoToggleCommentAction : AnAction() {
     private fun findWordBounds(text: String, cursorPos: Int): Pair<Int, Int>? {
         if (cursorPos >= text.length) return null
 
-        // Check if cursor is on a word character
+        // Check if the cursor is on a word character
         if (!text[cursorPos].isLetterOrDigit() && text[cursorPos] != '_') {
             return null
         }
@@ -140,7 +136,7 @@ class VentoToggleCommentAction : AnAction() {
     }
 
     private fun findLogicalBlock(text: String, cursorPos: Int): Pair<Int, Int>? {
-        // Find the start of meaningful content before cursor
+        // Find the start of meaningful content before the cursor
         var blockStart = cursorPos
         var foundContent = false
 
@@ -159,11 +155,11 @@ class VentoToggleCommentAction : AnAction() {
             blockStart--
         }
 
-        // Find the end of meaningful content after cursor
+        // Find the end of meaningful content after the cursor
         var blockEnd = cursorPos
         foundContent = false
 
-        // Go forwards to find end of block
+        // Go forwards to find the end of the block
         while (blockEnd < text.length) {
             val char = text[blockEnd]
             if (char == '\n') {
@@ -234,7 +230,7 @@ class VentoToggleCommentAction : AnAction() {
             start--
         }
 
-        // Look forwards for comment end
+        // Look forwards for the comment end
         var end = cursorPos
         while (end < text.length - 3) {
             if (end + 3 <= text.length && text.substring(end, end + 3) == "#}}" ||
@@ -247,7 +243,7 @@ class VentoToggleCommentAction : AnAction() {
         }
 
         // Verify we found a valid comment
-        if (start < end && start >= 0 && end <= text.length) {
+        if (start in 0..<end && end <= text.length) {
             val commentText = text.substring(start, end)
             return if ((commentText.startsWith("{{#-") && commentText.endsWith("-#}}")) ||
                 (commentText.startsWith("{{#") && commentText.endsWith("#}}"))
@@ -269,7 +265,7 @@ class VentoToggleCommentAction : AnAction() {
             return selStart to selEnd
         }
 
-        // Try to expand selection to include comment markers
+        // Try to expand the selection to include comment markers
         val expandedStart = maxOf(0, selStart - 4)
         val expandedEnd = minOf(text.length, selEnd + 4)
 
@@ -324,14 +320,14 @@ class VentoToggleCommentAction : AnAction() {
             return
         }
 
-        // Enable if we have a selection, can find a comment around cursor, or can create logical selection
+        // Enable if we have a selection, can find a comment around the cursor, or can create logical selection
         val hasSelection = editor.selectionModel.hasSelection()
         val canUncomment = findCommentAroundCursor(editor.document.text, editor.caretModel.offset) != null
         val canComment = hasSelection || getTextToComment(editor) != null
 
         e.presentation.isEnabled = canUncomment || canComment
 
-        // Update text based on current state
+        // Update text based on the current state
         e.presentation.text =
             if (shouldUncomment(editor)) {
                 "Uncomment Vento Block"
