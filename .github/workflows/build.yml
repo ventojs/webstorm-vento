@@ -115,9 +115,16 @@ jobs:
         with:
           cache-read-only: true
 
-      # Run tests
-      - name: Run Tests
+      # Run tests with conditional rule enforcement
+      # For pull requests and non-main branches: enforce all rules including ktlint
+      - name: Run Tests (with all rules)
+        if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main')
         run: ./gradlew check
+      
+      # For main branch pushes: skip lint rules to avoid blocking deployments
+      - name: Run Tests (skip lint rules)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: ./gradlew test
 
       # Collect Tests Result of failed tests
       - name: Collect Tests Result
