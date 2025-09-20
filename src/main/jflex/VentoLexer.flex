@@ -38,10 +38,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 WHITESPACE = [ \t\r\n]+
-OPEN_COMMENT_PHRASE = \{\{#
-CLOSE_COMMENT_PHRASE = #}}
-OPEN_COMMENT_TRIMMED_PHRASE = \{\{#-
-CLOSE_COMMENT_TRIMMED_PHRASE = -#}}
+OPEN_COMMENT_PHRASE = \{\{#-?
+CLOSE_COMMENT_PHRASE = -?#}}
 JAVASCRIPT_START = \{\{>
 VARIABLE_START = \{\{
 HTML_TAG = <[/!]?[a-zA-Z][a-zA-Z0-9\-_]*(\s+[a-zA-Z\-_][a-zA-Z0-9\-_]*(\s*=\s*("[^"]*"|'[^']*'|[^"'<>\/\s]+))?)*\s*\/?>
@@ -66,10 +64,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
     {HTML_TAG}                { return VentoLexerTypes.HTML_TAG; }
     {TEXT}                    { return VentoLexerTypes.TEXT; }
 
-    {OPEN_COMMENT_TRIMMED_PHRASE}    {
-                yybegin(COMMENT);
-                return VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE;
-            }
 
     {OPEN_COMMENT_PHRASE}    {
             yybegin(COMMENT);
@@ -122,10 +116,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
                 return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
     }
 
-    {CLOSE_COMMENT_TRIMMED_PHRASE} {
-                    yybegin(YYINITIAL);
-                    return VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE;
-    }
 
     [^] {
         yybegin(YYINITIAL);
