@@ -21,6 +21,9 @@ object VentoParserTypes {
     val COMMENT_BLOCK: IElementType = VentoParserElementType("VENTO_COMMENT_BLOCK")
 
     @JvmField
+    val HTML_ELEMENT = VentoParserElementType("VENTO_HTML_ELEMENT")
+
+    @JvmField
     val JAVASCRIPT_ELEMENT = VentoParserElementType("VENTO_JAVASCRIPT_ELEMENT")
 
     @JvmField
@@ -34,13 +37,12 @@ object VentoParserTypes {
      * by your parser definition in createElement(node: ASTNode).
      */
     object Factory {
-        fun createElement(node: ASTNode): PsiElement {
-//            println("ast node: ${node.elementType}")
-            return when (node.elementType) {
+        fun createElement(node: ASTNode): PsiElement =
+            when (node.elementType) {
                 VENTO_ELEMENT -> VentoElementImpl(node)
+                HTML_ELEMENT -> VentoElementImpl(node)
                 JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
                 else -> VentoPsiElementImpl(node)
             }
-        }
     }
 }

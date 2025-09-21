@@ -48,7 +48,6 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 VentoParserTypes.VARIABLE_PIPES -> VARIABLE_PIPES
                 VentoLexerTypes.VARIABLE_END -> VARIABLE
                 VentoLexerTypes.TEXT -> TEXT
-                VentoLexerTypes.HTML_TAG -> HTML
                 VentoLexerTypes.ERROR -> ERROR
                 else -> null
             }
@@ -72,7 +71,6 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
         val VARIABLE_ELEMENT = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
         val VARIABLE_PIPES = createTextAttributesKey("VENTO_VARIABLE_PIPES", KEYWORD)
         val TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
-        val HTML = createTextAttributesKey("VENTO_HTML", MARKUP_TAG)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
         val ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
         val SYNTAX_ERROR = createTextAttributesKey("VENTO_SYNTAX_ERROR", CodeInsightColors.ERRORS_ATTRIBUTES)

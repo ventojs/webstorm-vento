@@ -42,7 +42,7 @@ OPEN_COMMENT_PHRASE = \{\{#-?
 CLOSE_COMMENT_PHRASE = -?#}}
 JAVASCRIPT_START = \{\{>
 VARIABLE_START = \{\{
-HTML_TAG = <[/!]?[a-zA-Z][a-zA-Z0-9\-_]*(\s+[a-zA-Z\-_][a-zA-Z0-9\-_]*(\s*=\s*("[^"]*"|'[^']*'|[^"'<>\/\s]+))?)*\s*\/?>
+DEFAULT_HTML = [^{]+
 TEXT=[^<{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
@@ -61,8 +61,7 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
     {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
-    {HTML_TAG}                { return VentoLexerTypes.HTML_TAG; }
-    {TEXT}                    { return VentoLexerTypes.TEXT; }
+    {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
 
     {OPEN_COMMENT_PHRASE}    {

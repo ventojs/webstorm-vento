@@ -8,12 +8,14 @@ package org.js.vento.webstormvento
 import com.intellij.lexer.FlexLexer
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
+import com.jetbrains.rd.util.printlnError
 import junit.framework.TestCase
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 
 abstract class BaseLexerTestCase(name: String) : TestCase(name) {
     private lateinit var lexer: FlexLexer
 
+    @Suppress("UnstableApiUsage")
     override fun setUp() {
         super.setUp()
         val lexer =
@@ -32,6 +34,9 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
                 val token = getNext(lexer, template)
                 assertEquals(expected, token.second)
             }
+
+            val token: IElementType? = lexer.advance()
+            assertNull("tokens provided do not match: " + template.substring(lexer.tokenStart, lexer.tokenEnd), token)
             passed = true
         } finally {
             if (!passed) lexAndPrint(template)
@@ -40,16 +45,16 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
 
     protected fun lexAndPrint(template: String) {
         initLexer(template)
-        println("-".repeat(30))
-        println("Template:")
-        println("-".repeat(30))
-        println(template)
-        println("-".repeat(30))
-        println("Tokens:")
-        println("-".repeat(30))
+        printlnError("-".repeat(30))
+        printlnError("Template:")
+        printlnError("-".repeat(30))
+        printlnError(template)
+        printlnError("-".repeat(30))
+        printlnError("Tokens:")
+        printlnError("-".repeat(30))
         do {
             val token: Pair<IElementType?, String> = getNext(lexer, template)
-            println(
+            printlnError(
                 "token: " + "${token.first}(${token.first?.index})".padEnd(40, ' ') + " = [${token.second}]",
             )
         } while (lexer.tokenEnd < template.length)

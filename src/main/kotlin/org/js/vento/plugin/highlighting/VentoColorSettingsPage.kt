@@ -31,7 +31,6 @@ class VentoColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
                 AttributesDescriptor("Variable symbol", VentoSyntaxHighlighter.VARIABLE_PIPES),
                 AttributesDescriptor("Text", VentoSyntaxHighlighter.TEXT),
-                AttributesDescriptor("HTML", VentoSyntaxHighlighter.HTML),
             )
     }
 
@@ -41,20 +40,15 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
-        <!DOCTYPE html>
-        <html>
-            <head>
-                {{# This is a sample web page #}}
-                {{#- trimmed comment -#}}
+        Comments:
+          {{# This is a sample web page #}}
+          {{#- trimmed comment -#}}
 
-                {{> console.log('Hello World') }}
-            </head>
-            <body>
-                <h1>My Blog</h1>
-                <h2>Hello {{ username || "unknown" }}! </h2>
-                <p>There are many cool things to read here</p>
-            </body>
-        </html>
+        Variables:
+          {{ username || "unknown" }}
+
+        Javascript:
+          {{> console.log('Hello World') }}
         """.trimIndent()
 
     override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? = null

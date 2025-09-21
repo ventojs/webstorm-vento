@@ -53,7 +53,7 @@ class LexerTestCase(name: String) : BaseLexerTestCase(name) {
     }
 
     fun `test lexing html `() {
-        lexAndTest("hello <span>world</span>", arrayOf("hello ", "<span>", "world", "</span>"))
+        lexAndTest("hello <span>world</span>", arrayOf("hello <span>world</span>"))
     }
 
     fun `test lexing page `() {
