@@ -49,29 +49,15 @@
                   language="Vento"
                   extensions="vto"/>
 
-        <lang.parserDefinition
-                language="Vento"
-                implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"
-        />
+        <lang.parserDefinition language="Vento" implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"/>
 
-        <lang.syntaxHighlighterFactory
-                language="Vento"
-                implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
+        <lang.syntaxHighlighterFactory language="Vento" implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
 
-        <colorSettingsPage
-                implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.VentoContextualJavaScriptInjector"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.VentoHtmlInjector"/>
 
-        <multiHostInjector
-                implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
-        <multiHostInjector
-                implementation="org.js.vento.plugin.parser.VentoHtmlInjector"/>
-        <multiHostInjector
-                implementation="org.js.vento.plugin.parser.VentoVariableJavaScriptInjector"/>
-
-        <annotator
-                language="Vento"
-                implementationClass="org.js.vento.plugin.highlighting.VentoAnnotator"/>
-
+        <annotator language="Vento" implementationClass="org.js.vento.plugin.highlighting.VentoAnnotator"/>
 
     </extensions>
 
