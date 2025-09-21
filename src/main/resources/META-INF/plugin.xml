@@ -4,7 +4,7 @@
   -->
 
 <idea-plugin>
-    <id>org.js.vento.webstormvento</id>
+    <id>org.js.vento.plugin</id>
 
     <name>Vento JS Support</name>
     <description><![CDATA[

@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 class LexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing comment`() {
@@ -54,25 +54,5 @@ class LexerTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test lexing html `() {
         lexAndTest("hello <span>world</span>", arrayOf("hello <span>world</span>"))
-    }
-
-    fun `test lexing page `() {
-        lexAndPrint(
-            """<!DOCTYPE html>
-<html>
-    <head>
-        {{# This is a sample web page #}}
-        {{#- trimmed comment -#}}
-        {{> console.log('Hello World') }}
-    </head>
-    <body>
-        <h1>My Blog</h1>
-        <h2>Hello {{ username || "unknown" }}! </h2>
-        <p>There a many cool things to read here</p>
-    </body>
-</html>
-
-""",
-        )
     }
 }

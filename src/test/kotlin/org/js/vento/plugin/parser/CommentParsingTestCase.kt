@@ -3,10 +3,9 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.parser
 
 import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.parser.VentoParserDefinition
 
 class CommentParsingTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testSimpleComment() {
