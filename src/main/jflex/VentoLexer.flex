@@ -41,7 +41,8 @@ WHITESPACE = [ \t\r\n]+
 OPEN_COMMENT_PHRASE = \{\{#-?
 CLOSE_COMMENT_PHRASE = -?#}}
 JAVASCRIPT_START = \{\{>
-VARIABLE_START = \{\{
+OPEN_VARIABLE_PHRASE = \{\{-?
+CLOSE_VARIABLE_PHRASE = -?}}
 DEFAULT_HTML = [^{]+
 TEXT=[^<{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
@@ -74,7 +75,7 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
         return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {VARIABLE_START}    {
+    {OPEN_VARIABLE_PHRASE}    {
         yybegin(VARIABLE_CONTENT);
         return VentoLexerTypes.VARIABLE_START;
     }
@@ -84,11 +85,12 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <VARIABLE_CONTENT> {
-    ([^}]|"}"[^}])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    "}}" {
+   ([^}]|"}"[^}])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+   {CLOSE_VARIABLE_PHRASE} {
            yybegin(YYINITIAL);
            return VentoLexerTypes.VARIABLE_END;
-        }
+   }
 }
 
 

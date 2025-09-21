@@ -5,12 +5,20 @@
 
 package org.js.vento.plugin.lexer
 
+@Suppress("ktlint:standard:blank-line-before-declaration")
 class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
-    fun `test lexing variables`() {
-        lexAndTest("{{ variable }}", arrayOf("{{", " variable ", "}}"))
-    }
-
-    fun `test lexing variables with pipes`() {
-        lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable || \"default\" ", "}}"))
+    fun `test string variable`() = lexAndTest("{{ \"Hello World\" }}", arrayOf("{{", " \"Hello World\" ", "}}"))
+    fun `test undefined`() = lexAndTest("{{ undefined }}", arrayOf("{{", " undefined ", "}}"))
+    fun `test null`() = lexAndTest("{{ null }}", arrayOf("{{", " null ", "}}"))
+    fun `test lexing variables`() = lexAndTest("{{ variable }}", arrayOf("{{", " variable ", "}}"))
+    fun `test with or`() = lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable || \"default\" ", "}}"))
+    fun `test with pipes`() = lexAndTest("{{ variable |> toUpperCase }}", arrayOf("{{", " variable |> toUpperCase ", "}}"))
+    fun `test with timming`() = lexAndTest("Hello {{- \"World\" }}", arrayOf("Hello ", "{{-", " \"World\" ", "}}"))
+    fun `test with ternary operator`() = lexAndTest("{{ message ? \"yes\" : \"no\" }}", arrayOf("{{", " message ? \"yes\" : \"no\" ", "}}"))
+    fun `test complex`() {
+        lexAndTest(
+            "{{> let foo = -2 }}\n1 + 1 = {{--foo}}",
+            arrayOf("{{>", " let foo = -2 ", "}}", "\n1 + 1 = ", "{{-", "-foo", "}}"),
+        )
     }
 }
