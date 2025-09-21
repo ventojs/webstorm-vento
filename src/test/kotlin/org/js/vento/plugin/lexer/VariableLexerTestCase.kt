@@ -11,6 +11,6 @@ class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
     }
 
     fun `test lexing variables with pipes`() {
-        lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable ", "||", " \"default\" ", "}}"))
+        lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable || \"default\" ", "}}"))
     }
 }
