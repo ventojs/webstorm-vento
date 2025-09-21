@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.lexer
+package org.js.vento.plugin.parser
 
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
@@ -12,6 +12,4 @@ import org.js.vento.plugin.VentoLanguage
  * Represents an element type for the Vento language.
  * Typically used for syntax/AST nodes in the PSI tree.
  */
-class VentoElementType(
-    debugName: String,
-) : IElementType(debugName, VentoLanguage)
+class VentoParserElementType(debugName: String) : IElementType(debugName, VentoLanguage)

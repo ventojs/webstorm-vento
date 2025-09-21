@@ -6,8 +6,10 @@ package org.js.vento.plugin.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.VentoTypes;
+import org.js.vento.plugin.parser.VentoParserTypes;
+import org.js.vento.plugin.lexer.VentoLexerTypes;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
+
 %%
 
 %public
@@ -22,7 +24,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state MACRO_START
 %state VENTO_ELEMENT_STATE
 %state PURE_JS
-%state COMMENTED_CONTENT
+%state COMMENT
 %state SCRIPT_CONTENT
 %state FRONT_MATTER_STATE
 %state TEMPLATE_SWITCH
@@ -36,8 +38,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 WHITESPACE = [ \t\r\n]+
-COMMENT_START = \{\{#
-TRIMMED_COMMENT_START = \{\{#-
+OPEN_COMMENT_PHRASE = \{\{#-?
+CLOSE_COMMENT_PHRASE = -?#}}
 JAVASCRIPT_START = \{\{>
 VARIABLE_START = \{\{
 HTML_TAG = <[/!]?[a-zA-Z][a-zA-Z0-9\-_]*(\s+[a-zA-Z\-_][a-zA-Z0-9\-_]*(\s*=\s*("[^"]*"|'[^']*'|[^"'<>\/\s]+))?)*\s*\/?>
@@ -57,68 +59,70 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 <YYINITIAL> {
 
+    {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
+    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
+    {HTML_TAG}                { return VentoLexerTypes.HTML_TAG; }
+    {TEXT}                    { return VentoLexerTypes.TEXT; }
 
 
-    {EMPTY_LINE}              { return VentoTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE;}
-    {HTML_TAG}                { return VentoTypes.HTML_TAG; }
-    {TEXT}                    { return VentoTypes.TEXT; }
-
-    {TRIMMED_COMMENT_START}    {
-        yybegin(COMMENTED_CONTENT);
-        return VentoTypes.TRIMMED_COMMENTED_START;
-    }
-
-    {COMMENT_START}    {
-        yybegin(COMMENTED_CONTENT);
-        return VentoTypes.COMMENTED_START;
-    }
+    {OPEN_COMMENT_PHRASE}    {
+            yybegin(COMMENT);
+            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+         }
 
     {JAVASCRIPT_START}    {
         yybegin(SCRIPT_CONTENT);
-        return VentoTypes.JAVASCRIPT_START;
+        return VentoLexerTypes.JAVASCRIPT_START;
     }
 
     {VARIABLE_START}    {
         yybegin(VARIABLE_CONTENT);
-        return VentoTypes.VARIABLE_START;
+        return VentoLexerTypes.VARIABLE_START;
     }
 
-    [^] { return VentoTypes.ERROR; }
+    [^] { return VentoLexerTypes.ERROR; }
 
 }
 
 <VARIABLE_CONTENT> {
-    \|\| {return VentoTypes.VARIABLE_PIPES;}
-    ([^}\|]|"}"[^}\|])+ { return VentoTypes.VARIABLE_ELEMENT; }
+    \|\| {return VentoParserTypes.VARIABLE_PIPES;}
+    ([^}\|]|"}"[^}\|])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
     "}}" {
-       yybegin(YYINITIAL);
-       return VentoTypes.VARIABLE_END;
-    }
+           yybegin(YYINITIAL);
+           return VentoLexerTypes.VARIABLE_END;
+        }
 }
 
 
 <SCRIPT_CONTENT> {
-   ([^}]|"}"[^}])+ { return VentoTypes.JAVASCRIPT_ELEMENT; }
+   ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
    "}}" {
-       yybegin(YYINITIAL);
-       return VentoTypes.JAVASCRIPT_END;
-   }
+          yybegin(YYINITIAL);
+          return VentoLexerTypes.JAVASCRIPT_END;
+      }
 }
 
-<COMMENTED_CONTENT> {
+<COMMENT> {
 
-    [^-#{]+ { return VentoTypes.COMMENTED_CONTENT; }
+    // Match everything that is not the start of a closing comment sequence
+    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
 
-    "#}}" {
-        yybegin(YYINITIAL);
-        return VentoTypes.COMMENTED_END;
+    // Handle single characters that might be part of closing sequences
+    "#" { return VentoLexerTypes.COMMENTED_CONTENT; }
+    "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
+
+    {CLOSE_COMMENT_PHRASE} {
+                yybegin(YYINITIAL);
+                return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
     }
 
-    "-#}}" {
+
+    [^] {
         yybegin(YYINITIAL);
-        return VentoTypes.TRIMMED_COMMENTED_END;
+        yypushback(yylength());
+        return VentoLexerTypes.ERROR;
     }
+
 }
 
 // CRITICAL: Handle EOF explicitly

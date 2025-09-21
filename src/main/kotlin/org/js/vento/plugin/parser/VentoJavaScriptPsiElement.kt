@@ -29,19 +29,14 @@ class VentoJavaScriptPsiElement(
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
         return object : LiteralTextEscaper<VentoJavaScriptPsiElement>(this) {
-            override fun decode(
-                rangeInsideHost: TextRange,
-                outChars: StringBuilder,
-            ): Boolean {
+            override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
                 return true
             }
 
-            override fun getOffsetInHost(
-                offsetInDecoded: Int,
-                rangeInsideHost: TextRange,
-            ): Int = rangeInsideHost.startOffset + offsetInDecoded
+            override fun getOffsetInHost(offsetInDecoded: Int, rangeInsideHost: TextRange): Int =
+                rangeInsideHost.startOffset + offsetInDecoded
 
             override fun getRelevantTextRange(): TextRange = getContentRange()
 

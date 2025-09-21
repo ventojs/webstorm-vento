@@ -28,10 +28,7 @@ import com.intellij.psi.PsiElement
  * - `VentoJavaScriptPsiElement` which represents the JavaScript blocks in the PSI tree.
  */
 class VentoJavaScriptInjector : MultiHostInjector {
-    override fun getLanguagesToInject(
-        registrar: MultiHostRegistrar,
-        context: PsiElement,
-    ) {
+    override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         if (context is VentoJavaScriptPsiElement) {
             val contentRange = context.getContentRange()
             if (contentRange.length > 0) {

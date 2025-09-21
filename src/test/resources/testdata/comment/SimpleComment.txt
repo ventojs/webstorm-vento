@@ -1,0 +1,5 @@
+Vento File(0,25)
+  VentoPsiElement: VENTO_COMMENT_BLOCK(0,25)
+    PsiElement(VENTO_COMMENTED_START_TOKEN)('{{#')(0,3)
+    PsiElement(VENTO_COMMENTED_CONTENT_TOKEN)(' This is a comment ')(3,22)
+    PsiElement(VENTO_COMMENTED_END_TOKEN)('#}}')(22,25)

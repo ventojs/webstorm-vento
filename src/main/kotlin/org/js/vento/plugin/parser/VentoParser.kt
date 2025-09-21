@@ -9,7 +9,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.VentoTypes
+import org.js.vento.plugin.lexer.VentoLexerTypes
 
 /**
  * A parser implementation for Vento template files.
@@ -38,10 +38,7 @@ import org.js.vento.plugin.VentoTypes
  * - `VentoJavaScriptInjector` for handling JavaScript code injection in parsed elements.
  */
 class VentoParser : PsiParser {
-    override fun parse(
-        root: IElementType,
-        builder: PsiBuilder,
-    ): ASTNode {
+    override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
         val rootMarker = builder.mark()
 
         while (!builder.eof()) {
@@ -56,11 +53,14 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
 
         when (tokenType) {
-            VentoTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
+            VentoLexerTypes.OPEN_COMMENT_CLAUSE,
+            VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE,
+            -> parseCommentBlock(builder)
+            VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
-                marker.done(VentoTypes.VENTO_ELEMENT)
+                marker.done(VentoParserTypes.VENTO_ELEMENT)
             }
         }
     }
@@ -68,18 +68,41 @@ class VentoParser : PsiParser {
     private fun parseJavaScriptElement(builder: PsiBuilder) {
         val marker = builder.mark()
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_START) {
+        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_START) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_ELEMENT) {
+        if (builder.tokenType == VentoParserTypes.JAVASCRIPT_ELEMENT) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoTypes.JAVASCRIPT_END) {
+        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_END) {
             builder.advanceLexer()
         }
 
-        marker.done(VentoTypes.JAVASCRIPT_ELEMENT)
+        marker.done(VentoParserTypes.JAVASCRIPT_ELEMENT)
+    }
+
+    private fun parseCommentBlock(builder: PsiBuilder) {
+        val marker = builder.mark()
+
+        // Consume opening token
+        builder.advanceLexer()
+
+        // Consume content tokens
+        while (!builder.eof() &&
+            builder.tokenType == VentoLexerTypes.COMMENTED_CONTENT
+        ) {
+            builder.advanceLexer()
+        }
+
+        // Consume closing token if present
+        if (builder.tokenType == VentoLexerTypes.CLOSE_COMMENT_CLAUSE ||
+            builder.tokenType == VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE
+        ) {
+            builder.advanceLexer()
+        }
+
+        marker.done(VentoParserTypes.COMMENT_BLOCK)
     }
 }

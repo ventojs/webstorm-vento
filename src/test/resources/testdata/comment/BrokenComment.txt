@@ -1,0 +1,8 @@
+Vento File(0,26)
+  VentoElement: VENTO_ELEMENT(0,4)
+    PsiElement(VENTO_HTML_TAG_TOKEN)('<h1>')(0,4)
+  PsiWhiteSpace(' ')(4,5)
+  VentoPsiElement: VENTO_COMMENT_BLOCK(5,26)
+    PsiElement(VENTO_COMMENTED_START_TOKEN)('{{#')(5,8)
+    PsiElement(VENTO_COMMENTED_CONTENT_TOKEN)(' {{ title }} {{')(8,23)
+    PsiElement(VENTO_COMMENTED_END_TOKEN)('#}}')(23,26)
