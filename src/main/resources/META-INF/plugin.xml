@@ -65,6 +65,9 @@
                 implementation="org.js.vento.plugin.parser.VentoJavaScriptInjector"/>
         <multiHostInjector
                 implementation="org.js.vento.plugin.parser.VentoHtmlInjector"/>
+        <multiHostInjector
+                implementation="org.js.vento.plugin.parser.VentoVariableJavaScriptInjector"/>
+
         <annotator
                 language="Vento"
                 implementationClass="org.js.vento.plugin.highlighting.VentoAnnotator"/>

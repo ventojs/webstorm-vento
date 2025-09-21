@@ -57,12 +57,31 @@ class VentoParser : PsiParser {
             VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE,
             -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
+            VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(VentoParserTypes.VENTO_ELEMENT)
             }
         }
+    }
+
+    private fun parseVariableElement(builder: PsiBuilder) {
+        val marker = builder.mark()
+
+        if (builder.tokenType == VentoLexerTypes.VARIABLE_START) {
+            builder.advanceLexer()
+        }
+
+        if (builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT) {
+            builder.advanceLexer()
+        }
+
+        if (builder.tokenType == VentoLexerTypes.VARIABLE_END) {
+            builder.advanceLexer()
+        }
+
+        marker.done(VentoParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
     }
 
     private fun parseJavaScriptElement(builder: PsiBuilder) {

@@ -84,8 +84,7 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <VARIABLE_CONTENT> {
-    \|\| {return VentoParserTypes.VARIABLE_PIPES;}
-    ([^}\|]|"}"[^}\|])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+    ([^}]|"}"[^}])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
     "}}" {
            yybegin(YYINITIAL);
            return VentoLexerTypes.VARIABLE_END;
