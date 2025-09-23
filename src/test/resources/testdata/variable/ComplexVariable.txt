@@ -1,0 +1,5 @@
+Vento File(0,56)
+  VentoPsiElement: VENTO_VARIABLE_ELEMENT(0,56)
+    PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)(' url |> await fetch |> await json |> JSON.stringify ')(2,54)
+    PsiElement(VENTO_VARIABLE_END_TOKEN)('}}')(54,56)

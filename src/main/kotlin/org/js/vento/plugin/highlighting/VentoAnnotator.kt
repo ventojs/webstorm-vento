@@ -1,42 +1,40 @@
+
+/*
+ * Copyright (c) 2025 Florian Hehlen & Óscar Otero
+ * All rights reserved.
+ */
+
 package org.js.vento.plugin.highlighting
 
 import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
-import com.intellij.psi.tree.IElementType
-import com.intellij.psi.util.elementType
-import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.parser.VentoVariablePsiElement
 
 class VentoAnnotator : Annotator {
+    private val expressionValidator = VentoJavaScriptExpressionValidator()
+
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        when (element.elementType) {
-            VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE, VentoLexerTypes.OPEN_COMMENT_CLAUSE -> {
-                if (!hasMatchingEnd(element, arrayOf(VentoLexerTypes.CLOSE_COMMENT_CLAUSE, VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE))) {
-                    holder
-                        .newAnnotation(HighlightSeverity.ERROR, "Unclosed comment block")
-                        .range(element.textRange)
-                        .textAttributes(VentoSyntaxHighlighter.SYNTAX_ERROR)
-                        .create()
-                }
-            }
+        if (element is VentoVariablePsiElement) {
+            validateVariableExpression(element, holder)
         }
     }
 
-    private fun hasMatchingEnd(startElement: PsiElement, expectedEndTypes: Array<IElementType>): Boolean {
-        var depth = 1
-        expectedEndTypes.forEach {
-            var current = startElement.nextSibling
-            while (current != null && depth > 0) {
-                when (current.elementType) {
-                    startElement.elementType -> depth++
-                    it -> depth--
-                }
-                current = current.nextSibling
-            }
-            if (depth == 0) return true
-        }
+    private fun validateVariableExpression(element: VentoVariablePsiElement, holder: AnnotationHolder) {
+        val contentRange = element.getContentRange()
+        if (contentRange.length == 0) return
 
-        return false
+        val content = contentRange.substring(element.text)
+        val project = element.project
+
+        val result = expressionValidator.isValidExpression(content, project)
+
+        if (!result.isValid) {
+            val annotationRange = contentRange.shiftRight(element.textRange.startOffset)
+            holder.newAnnotation(HighlightSeverity.ERROR, result.errorMessage ?: "Invalid expression")
+                .range(annotationRange)
+                .create()
+        }
     }
 }

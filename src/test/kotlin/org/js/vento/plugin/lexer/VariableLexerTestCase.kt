@@ -13,7 +13,7 @@ class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing variables`() = lexAndTest("{{ variable }}", arrayOf("{{", " variable ", "}}"))
     fun `test with or`() = lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable || \"default\" ", "}}"))
     fun `test with pipes`() = lexAndTest("{{ variable |> toUpperCase }}", arrayOf("{{", " variable |> toUpperCase ", "}}"))
-    fun `test with timming`() = lexAndTest("Hello {{- \"World\" }}", arrayOf("Hello ", "{{-", " \"World\" ", "}}"))
+    fun `test with trimming`() = lexAndTest("Hello {{- \"World\" }}", arrayOf("Hello ", "{{-", " \"World\" ", "}}"))
     fun `test with ternary operator`() = lexAndTest("{{ message ? \"yes\" : \"no\" }}", arrayOf("{{", " message ? \"yes\" : \"no\" ", "}}"))
     fun `test complex`() {
         lexAndTest(

@@ -1,0 +1,5 @@
+Vento File(0,13)
+  VentoPsiElement: VENTO_VARIABLE_ELEMENT(0,13)
+    PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)(' content ')(2,11)
+    PsiElement(VENTO_VARIABLE_END_TOKEN)('}}')(11,13)
