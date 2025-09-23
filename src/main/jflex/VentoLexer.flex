@@ -26,6 +26,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state PURE_JS
 %state COMMENT
 %state SCRIPT_CONTENT
+%state JS_STRING
 %state FRONT_MATTER_STATE
 %state TEMPLATE_SWITCH
 %state VARIABLE_CONTENT
@@ -85,7 +86,15 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <VARIABLE_CONTENT> {
-   ([^}]|"}"[^}])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+   // First try to match content that doesn't end with a dash before }}
+   ([^}]|"}"[^}])*[^}-]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+   // Then match content ending with dash(es) but not the closing sequence
+   ([^}]|"}"[^}])*"-"+ / [^}] { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+   // Match single dash when not part of closing
+   "-" / [^}] { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
 
    {CLOSE_VARIABLE_PHRASE} {
            yybegin(YYINITIAL);

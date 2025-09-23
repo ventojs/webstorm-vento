@@ -12,7 +12,13 @@ class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         val code = "{{ content }}"
         doCodeTest(code)
     }
- fun testComplexVariable() {
+
+    fun testTrimmedVariable() {
+        val code = "{{- content -}}"
+        doCodeTest(code)
+    }
+
+    fun testComplexVariable() {
         val code = "{{ url |> await fetch |> await json |> JSON.stringify }}"
         doCodeTest(code)
     }

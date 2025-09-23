@@ -47,10 +47,16 @@ class VentoVariablePsiElement(node: ASTNode) :
         val text = this.text
         val start =
             when {
+                text.indexOf("{{-") > -1 -> text.indexOf("{{-") + 3
                 text.indexOf("{{") > -1 -> text.indexOf("{{") + 2
                 else -> 0
             }
-        val end = if (text.endsWith("}}")) text.length - 2 else text.length
+        val end = when {
+            text.endsWith("-}}") -> text.length - 3
+            text.endsWith("}}") -> text.length - 2
+            else -> text.length
+        }
+
         return TextRange(start, end)
     }
 }
