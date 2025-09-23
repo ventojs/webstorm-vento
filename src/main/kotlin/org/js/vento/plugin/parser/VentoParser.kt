@@ -53,9 +53,7 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
 
         when (tokenType) {
-            VentoLexerTypes.OPEN_COMMENT_CLAUSE,
-            VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE,
-            -> parseCommentBlock(builder)
+            VentoLexerTypes.OPEN_COMMENT_CLAUSE, VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
             else -> {
@@ -67,21 +65,22 @@ class VentoParser : PsiParser {
     }
 
     private fun parseVariableElement(builder: PsiBuilder) {
-        val marker = builder.mark()
+        val m = builder.mark()
+        builder.advanceLexer() // consume {{ or {{-
 
-        if (builder.tokenType == VentoLexerTypes.VARIABLE_START) {
+        // Consume content tokens until we see the end or EOF
+        while (!builder.eof() && builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT) {
-            builder.advanceLexer()
-        }
-
+        // Expect end
         if (builder.tokenType == VentoLexerTypes.VARIABLE_END) {
             builder.advanceLexer()
+        } else {
+            builder.error("Expected '}}' to close variable")
         }
 
-        marker.done(VentoParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
+        m.done(VentoParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
     }
 
     private fun parseJavaScriptElement(builder: PsiBuilder) {

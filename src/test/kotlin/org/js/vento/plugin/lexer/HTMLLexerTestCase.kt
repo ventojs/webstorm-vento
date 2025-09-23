@@ -12,7 +12,7 @@ class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test lexing page `() {
         lexAndTest(
-"""<html>
+            """<html>
     <head>
         {{# comment #}}
     </head>
@@ -23,20 +23,24 @@ class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
 
 """,
             arrayOf(
-"""<html>
+                """<html>
     <head>
         """,
                 "{{#",
                 " comment ",
                 "#}}",
-"""
+                """
     </head>
     <body>
         <h2>Hello """,
                 "{{",
-                " username || \"unknown\" ",
+                "username",
+                "||",
+                "\"",
+                "unknown",
+                "\"",
                 "}}",
-"""! </h2>
+                """! </h2>
     </body>
 </html>
 

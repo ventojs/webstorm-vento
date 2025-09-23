@@ -45,11 +45,7 @@ class LexerTestCase(name: String) : BaseLexerTestCase(name) {
     }
 
     fun `test lexing variables`() {
-        lexAndTest("{{ variable }}", arrayOf("{{", " variable ", "}}"))
-    }
-
-    fun `test lexing variables with pipes`() {
-        lexAndTest("{{ variable || \"default\" }}", arrayOf("{{", " variable || \"default\" ", "}}"))
+        lexAndTest("{{ variable }}", arrayOf("{{", "variable", "}}"))
     }
 
     fun `test lexing html `() {

@@ -27,6 +27,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state COMMENT
 %state SCRIPT_CONTENT
 %state JS_STRING
+%state JSON_STRING
+%state JS_OBJECT
 %state FRONT_MATTER_STATE
 %state TEMPLATE_SWITCH
 %state VARIABLE_CONTENT
@@ -49,6 +51,9 @@ TEXT=[^<{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 %{
+  // Tracks nested `{` … `}` depth
+  private int objectDepth = 0;
+
   private void yyclose() throws java.io.IOException {
     if (zzReader != null) {
       zzReader.close();
@@ -86,20 +91,83 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <VARIABLE_CONTENT> {
-   // First try to match content that doesn't end with a dash before }}
-   ([^}]|"}"[^}])*[^}-]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
 
-   // Then match content ending with dash(es) but not the closing sequence
-   ([^}]|"}"[^}])*"-"+ / [^}] { return VentoLexerTypes.VARIABLE_ELEMENT; }
+   //single line strings
+   \" {
+          yybegin(JS_STRING);
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
 
-   // Match single dash when not part of closing
-   "-" / [^}] { return VentoLexerTypes.VARIABLE_ELEMENT; }
+   //objects
+   \{ {
+          objectDepth=1;
+          yybegin(JS_OBJECT);
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+
+   [^\"{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+   {WHITESPACE} {}
 
 
    {CLOSE_VARIABLE_PHRASE} {
            yybegin(YYINITIAL);
            return VentoLexerTypes.VARIABLE_END;
    }
+
+   [^] { return VentoLexerTypes.ERROR; }
+}
+
+<JS_OBJECT> {
+
+    \{ {
+          objectDepth++;
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^}{\"]+ {return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \} {
+          objectDepth--;
+          if (objectDepth == 0) {
+             yybegin(VARIABLE_CONTENT);
+          }
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+
+    //single line strings
+    \" {
+       yybegin(JSON_STRING);
+       return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
+}
+
+<JSON_STRING> {
+    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \" {
+         yybegin(JS_OBJECT);
+         return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
+}
+
+<JS_STRING> {
+    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \" {
+          yybegin(VARIABLE_CONTENT);
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
 }
 
 
