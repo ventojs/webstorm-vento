@@ -94,6 +94,7 @@ dependencies {
 }
 
 intellijPlatform {
+
     pluginConfiguration {
         version = providers.gradleProperty("pluginVersion")
         description = providers.gradleProperty("pluginDescription")
@@ -115,6 +116,20 @@ intellijPlatform {
                 .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
     pluginVerification { ides { recommended() } }
+
+// Configure plugin verifier IDEs
+    pluginVerification {
+        ides {
+            // Webstorm
+            ide("WS", "2024.2")
+            ide("WS", "2025.1")
+            ide("WS", "2025.2")
+            // IntelliJ Ultimate
+            ide("IU", "2024.3")
+            ide("IU", "2025.1")
+            ide("IU", "2025.2")
+        }
+    }
 }
 
 tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }
