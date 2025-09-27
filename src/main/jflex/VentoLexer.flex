@@ -21,9 +21,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 
-%state MACRO_START
-%state VENTO_ELEMENT_STATE
-%state PURE_JS
 %state COMMENT
 %state SCRIPT_CONTENT
 %state JS_STRING
@@ -33,10 +30,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state BRACKET
 %state JSON_STRING
 %state JS_OBJECT
-%state FRONT_MATTER_STATE
-%state TEMPLATE_SWITCH
 %state VARIABLE_CONTENT
-%state EOF
 
 %{
     // Ensure we handle EOF properly
@@ -51,18 +45,12 @@ JAVASCRIPT_START = \{\{>
 OPEN_VARIABLE_PHRASE = \{\{-?
 CLOSE_VARIABLE_PHRASE = -?}}
 DEFAULT_HTML = [^{]+
-TEXT=[^<{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 %{
   // Tracks nested `{` … `}` depth
   private int objectDepth = 0;
 
-  private void yyclose() throws java.io.IOException {
-    if (zzReader != null) {
-      zzReader.close();
-    }
-  }
 %}
 
 
@@ -71,7 +59,7 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 <YYINITIAL> {
 
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
+    {WHITESPACE}              { return WHITE_SPACE; }
     {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
 
@@ -132,7 +120,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
    {WHITESPACE} {}
 
-
    {CLOSE_VARIABLE_PHRASE} {
            yybegin(YYINITIAL);
                       return VentoLexerTypes.VARIABLE_END;
@@ -165,7 +152,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
        return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <JSON_STRING> {
@@ -176,7 +162,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
          return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <JS_STRING> {
@@ -189,7 +174,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
           return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <JS_STRING_2> {
@@ -201,7 +185,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
                     return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <JS_STRING_3> {
@@ -212,7 +195,6 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
                     return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <JS_REGEX> {
@@ -228,13 +210,14 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
           return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
-    [^] {return VentoLexerTypes.ERROR;}
 }
 
 <BRACKET> {
     "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
   [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 }
+
+<JS_STRING,JS_STRING_2,JS_STRING_3,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
 
 <SCRIPT_CONTENT> {
    ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }

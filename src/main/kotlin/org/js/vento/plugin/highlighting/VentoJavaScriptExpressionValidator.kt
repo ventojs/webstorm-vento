@@ -37,7 +37,7 @@ class VentoJavaScriptExpressionValidator {
             val statements = expressionFile.statements
 
             if (statements.isNotEmpty() && statements.size > 0) {
-                return ValidationResult(false, "Variable blocks must contain not statements")
+                return ValidationResult(false, "Variable blocks must contain a statements")
             }
 
             return ValidationResult(false, "Invalid JavaScript expression")
@@ -46,13 +46,10 @@ class VentoJavaScriptExpressionValidator {
         }
     }
 
-    private fun createJSFile(content: String, project: Project): JSFile {
-        return PsiFileFactory.getInstance(project)
+    private fun createJSFile(content: String, project: Project): JSFile =
+        PsiFileFactory
+            .getInstance(project)
             .createFileFromText("temp.js", JavaScriptFileType, content) as JSFile
-    }
 
-    data class ValidationResult(
-        val isValid: Boolean,
-        val errorMessage: String?,
-    )
+    data class ValidationResult(val isValid: Boolean, val errorMessage: String?)
 }
