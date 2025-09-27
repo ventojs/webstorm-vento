@@ -24,6 +24,16 @@ class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test deep object`() = lexAndTest("{{{a:1,b:{c:2}}}}", arrayOf("{{", "{", "a:1,b:", "{", "c:2", "}", "}", "}}"))
     fun `test object with dashes`() = lexAndTest("{{{a:1,b:foo--}}}", arrayOf("{{", "{", "a:1,b:foo--", "}", "}}"))
     fun `test object with string`() = lexAndTest("{{{a:1,b:\"abc\"}}}", arrayOf("{{", "{", "a:1,b:", "\"", "abc", "\"", "}", "}}"))
+    fun `test complex string`() = lexAndTest("""{{ "'\"'" }}""", arrayOf("{{", "\"", "'", "\\\"", "'", "\"", "}}"))
+    fun `test regex`() =
+        lexAndTest(
+            "{{ !/[/\"}]/.test('foo/bar') }}",
+            arrayOf("{{", "!", "/", "[", "/\"}", "]", "/", ".test(", "'", "foo/bar", "'", ")", "}}"),
+        )
+
+    fun `test string literal`() =
+        lexAndTest("{{ html`foo \\\${bar \\\${baz}` }}", arrayOf("{{", "html", "`", "foo \\\${bar \\\${baz}", "`", "}}"))
+
     fun `test JSON`() =
         lexAndTest(
             "{{{\"a\":1,\"b\":\"abc\"}}}",

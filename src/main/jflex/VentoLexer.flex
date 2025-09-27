@@ -27,6 +27,10 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state COMMENT
 %state SCRIPT_CONTENT
 %state JS_STRING
+%state JS_STRING_2
+%state JS_STRING_3
+%state JS_REGEX
+%state BRACKET
 %state JSON_STRING
 %state JS_OBJECT
 %state FRONT_MATTER_STATE
@@ -73,17 +77,17 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
     {OPEN_COMMENT_PHRASE}    {
             yybegin(COMMENT);
-            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+                        return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
          }
 
     {JAVASCRIPT_START}    {
         yybegin(SCRIPT_CONTENT);
-        return VentoLexerTypes.JAVASCRIPT_START;
+                return VentoLexerTypes.JAVASCRIPT_START;
     }
 
     {OPEN_VARIABLE_PHRASE}    {
         yybegin(VARIABLE_CONTENT);
-        return VentoLexerTypes.VARIABLE_START;
+                return VentoLexerTypes.VARIABLE_START;
     }
 
     [^] { return VentoLexerTypes.ERROR; }
@@ -92,30 +96,46 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
 <VARIABLE_CONTENT> {
 
-   //single line strings
+   //strings
    \" {
           yybegin(JS_STRING);
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+                    return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   ' {
+             yybegin(JS_STRING_2);
+                          return VentoLexerTypes.VARIABLE_ELEMENT;
+      }
+
+   ` {
+                yybegin(JS_STRING_3);
+                                return VentoLexerTypes.VARIABLE_ELEMENT;
+         }
+
+   // regex segment
+   \/  {
+          yybegin(JS_REGEX);
+                    return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
    //objects
    \{ {
           objectDepth=1;
           yybegin(JS_OBJECT);
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+                    return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
    \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
 
 
-   [^\"{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+   [^\/\"'`{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
 
    {WHITESPACE} {}
 
 
    {CLOSE_VARIABLE_PHRASE} {
            yybegin(YYINITIAL);
-           return VentoLexerTypes.VARIABLE_END;
+                      return VentoLexerTypes.VARIABLE_END;
    }
 
    [^] { return VentoLexerTypes.ERROR; }
@@ -160,9 +180,11 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <JS_STRING> {
-    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
-    \" {
+    [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    [\"]+ {
           yybegin(VARIABLE_CONTENT);
           return VentoLexerTypes.VARIABLE_ELEMENT;
     }
@@ -170,6 +192,49 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
     [^] {return VentoLexerTypes.ERROR;}
 }
 
+<JS_STRING_2> {
+    "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    ' {
+          yybegin(VARIABLE_CONTENT);
+                    return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
+}
+
+<JS_STRING_3> {
+    [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    ` {
+          yybegin(VARIABLE_CONTENT);
+                    return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
+}
+
+<JS_REGEX> {
+    \[ {
+          yybegin(BRACKET);
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^\/\[]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \/ {
+          yybegin(VARIABLE_CONTENT);
+          return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^] {return VentoLexerTypes.ERROR;}
+}
+
+<BRACKET> {
+    "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
+  [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+}
 
 <SCRIPT_CONTENT> {
    ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }

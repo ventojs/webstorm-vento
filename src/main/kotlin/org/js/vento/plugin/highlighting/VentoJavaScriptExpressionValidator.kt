@@ -19,7 +19,7 @@ class VentoJavaScriptExpressionValidator {
         }
 
         try {
-            println(content.trim())
+            // println(content.trim())
 
             // If expression parsing failed, check if it's a statement (which is invalid for variables)
             val statementFile = createJSFile(content.trim(), project)
