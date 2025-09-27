@@ -12,6 +12,17 @@ import com.intellij.lang.javascript.psi.JSStatement
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 
+/**
+ * Validates JavaScript expressions for use within Vento variable blocks.
+ * This class ensures that the given JavaScript expressions follow the correct syntax and semantics required for variable expressions.
+ *
+ * The primary method in this class analyzes the provided JavaScript content
+ * and checks if it complies with the rules for valid variable expressions in JavaScript.
+ * It verifies that the content is not empty, consists of a single valid expression, and doesn't contain any invalid statements.
+ *
+ * Errors detected during validation are returned as part of a `ValidationResult`,
+ * which includes an error message explaining the issue if the validation fails.
+ */
 class VentoJavaScriptExpressionValidator {
     fun isValidExpression(content: String, project: Project): ValidationResult {
         if (content.trim().isEmpty()) {
@@ -19,8 +30,6 @@ class VentoJavaScriptExpressionValidator {
         }
 
         try {
-            // println(content.trim())
-
             // If expression parsing failed, check if it's a statement (which is invalid for variables)
             val statementFile = createJSFile(content.trim(), project)
             val statementsList = statementFile.statements
