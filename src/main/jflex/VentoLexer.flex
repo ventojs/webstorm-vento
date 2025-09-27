@@ -21,15 +21,15 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 
-%state COMMENT
-%state SCRIPT_CONTENT
-%state JS_STRING
-%state JS_STRING_2
-%state JS_STRING_3
-%state JS_REGEX
 %state BRACKET
+%state COMMENT
 %state JSON_STRING
 %state JS_OBJECT
+%state JS_REGEX
+%state JS_STRING_BACK_TICK
+%state JS_STRING_DOUBLE_QOUTE
+%state JS_STRING_SINGLE_QUOTE
+%state SCRIPT_CONTENT
 %state VARIABLE_CONTENT
 
 %{
@@ -38,19 +38,19 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %}
 
 
-WHITESPACE = [ \t\r\n]+
-OPEN_COMMENT_PHRASE = \{\{#-?
 CLOSE_COMMENT_PHRASE = -?#}}
-JAVASCRIPT_START = \{\{>
-OPEN_VARIABLE_PHRASE = \{\{-?
+CLOSE_JAVASCRIPT = }}
 CLOSE_VARIABLE_PHRASE = -?}}
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
+OPEN_COMMENT_PHRASE = \{\{#-?
+OPEN_JAVASCRIPT = \{\{>
+OPEN_VARIABLE_PHRASE = \{\{-?
+WHITESPACE = [ \t\r\n]+
 
 %{
   // Tracks nested `{` … `}` depth
   private int objectDepth = 0;
-
 %}
 
 
@@ -65,17 +65,17 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
     {OPEN_COMMENT_PHRASE}    {
             yybegin(COMMENT);
-                        return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
-         }
+            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+    }
 
-    {JAVASCRIPT_START}    {
-        yybegin(SCRIPT_CONTENT);
-                return VentoLexerTypes.JAVASCRIPT_START;
+    {OPEN_JAVASCRIPT}    {
+            yybegin(SCRIPT_CONTENT);
+            return VentoLexerTypes.JAVASCRIPT_START;
     }
 
     {OPEN_VARIABLE_PHRASE}    {
-        yybegin(VARIABLE_CONTENT);
-                return VentoLexerTypes.VARIABLE_START;
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_START;
     }
 
     [^] { return VentoLexerTypes.ERROR; }
@@ -86,31 +86,31 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 
    //strings
    \" {
-          yybegin(JS_STRING);
-                    return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(JS_STRING_DOUBLE_QOUTE);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
    ' {
-             yybegin(JS_STRING_2);
-                          return VentoLexerTypes.VARIABLE_ELEMENT;
-      }
+            yybegin(JS_STRING_SINGLE_QUOTE);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
 
    ` {
-                yybegin(JS_STRING_3);
-                                return VentoLexerTypes.VARIABLE_ELEMENT;
-         }
+            yybegin(JS_STRING_BACK_TICK);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
 
    // regex segment
    \/  {
-          yybegin(JS_REGEX);
-                    return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(JS_REGEX);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
    //objects
    \{ {
-          objectDepth=1;
-          yybegin(JS_OBJECT);
-                    return VentoLexerTypes.VARIABLE_ELEMENT;
+            objectDepth=1;
+            yybegin(JS_OBJECT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
    \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
@@ -121,8 +121,8 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
    {WHITESPACE} {}
 
    {CLOSE_VARIABLE_PHRASE} {
-           yybegin(YYINITIAL);
-                      return VentoLexerTypes.VARIABLE_END;
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.VARIABLE_END;
    }
 
    [^] { return VentoLexerTypes.ERROR; }
@@ -131,100 +131,108 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 <JS_OBJECT> {
 
     \{ {
-          objectDepth++;
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+            objectDepth++;
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
     [^}{\"]+ {return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     \} {
-          objectDepth--;
-          if (objectDepth == 0) {
+            objectDepth--;
+            if (objectDepth == 0) {
              yybegin(VARIABLE_CONTENT);
-          }
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+            }
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
-
 
     //single line strings
     \" {
-       yybegin(JSON_STRING);
-       return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(JSON_STRING);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
 <JSON_STRING> {
+
     [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     \" {
-         yybegin(JS_OBJECT);
-         return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(JS_OBJECT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
-<JS_STRING> {
+<JS_STRING_DOUBLE_QOUTE> {
+
     "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     [\"]+ {
-          yybegin(VARIABLE_CONTENT);
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
-<JS_STRING_2> {
+<JS_STRING_SINGLE_QUOTE> {
+
     "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
     [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     ' {
-          yybegin(VARIABLE_CONTENT);
-                    return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
-<JS_STRING_3> {
+<JS_STRING_BACK_TICK> {
+
     [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     ` {
-          yybegin(VARIABLE_CONTENT);
-                    return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
 <JS_REGEX> {
+
     \[ {
-          yybegin(BRACKET);
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(BRACKET);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
     [^\/\[]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
 
     \/ {
-          yybegin(VARIABLE_CONTENT);
-          return VentoLexerTypes.VARIABLE_ELEMENT;
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
 }
 
 <BRACKET> {
-    "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+  "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
   [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+
 }
 
-<JS_STRING,JS_STRING_2,JS_STRING_3,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
 
 <SCRIPT_CONTENT> {
+
    ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
-   "}}" {
-          yybegin(YYINITIAL);
-          return VentoLexerTypes.JAVASCRIPT_END;
-      }
+   {CLOSE_JAVASCRIPT} {
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.JAVASCRIPT_END;
+   }
+
 }
 
 <COMMENT> {
@@ -237,8 +245,8 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
     "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
 
     {CLOSE_COMMENT_PHRASE} {
-                yybegin(YYINITIAL);
-                return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
     }
 
 
