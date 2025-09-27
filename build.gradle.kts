@@ -11,7 +11,7 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "2.2.20"
     id("org.jetbrains.intellij.platform") version "2.9.0"
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    id("org.jlleitschuh.gradle.ktlint") version "13.1.0"
 }
 
 group = providers.gradleProperty("pluginGroup").get()
