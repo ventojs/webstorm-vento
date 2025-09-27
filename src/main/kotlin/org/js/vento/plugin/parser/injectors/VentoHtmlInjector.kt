@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.parser
+package org.js.vento.plugin.parser.injectors
 
 import com.intellij.lang.html.HTMLLanguage
 import com.intellij.lang.injection.MultiHostInjector

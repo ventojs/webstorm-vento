@@ -3,20 +3,23 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.parser
 
 import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.parser.VentoParserDefinition
 
-class HTMLParserTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class ParserTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testParsingTestData() {
-        doCodeTest("""<div>{{ content }}</div>""")
+        doCodeTest(
+            """{{# comment #}}
+{{#- comment -#}}
+{{> console.log('test') }}""",
+        )
     }
 
     /**
      * @return path to test data file directory relative to root of this module.
      */
-    override fun getTestDataPath(): String = "src/test/resources/testdata/html"
+    override fun getTestDataPath(): String = "src/test/resources/testdata"
 
     override fun includeRanges(): Boolean = true
 }

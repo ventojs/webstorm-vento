@@ -27,6 +27,9 @@ object VentoParserTypes {
     val JAVASCRIPT_ELEMENT = VentoParserElementType("VENTO_JAVASCRIPT_ELEMENT")
 
     @JvmField
+    val JAVACRIPT_VARIABLE_ELEMENT = VentoParserElementType("VENTO_VARIABLE_ELEMENT")
+
+    @JvmField
     val VARIABLE_PIPES = VentoParserElementType("VENTO_VARIABLE_PIPES")
 
     @JvmField
@@ -42,6 +45,7 @@ object VentoParserTypes {
                 VENTO_ELEMENT -> VentoElementImpl(node)
                 HTML_ELEMENT -> VentoElementImpl(node)
                 JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
+                JAVACRIPT_VARIABLE_ELEMENT -> VentoVariablePsiElement(node)
                 else -> VentoPsiElementImpl(node)
             }
     }

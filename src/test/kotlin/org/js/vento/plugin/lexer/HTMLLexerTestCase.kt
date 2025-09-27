@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing html `() {
@@ -12,7 +12,7 @@ class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test lexing page `() {
         lexAndTest(
-"""<html>
+            """<html>
     <head>
         {{# comment #}}
     </head>
@@ -23,22 +23,24 @@ class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
 
 """,
             arrayOf(
-"""<html>
+                """<html>
     <head>
         """,
                 "{{#",
                 " comment ",
                 "#}}",
-"""
+                """
     </head>
     <body>
         <h2>Hello """,
                 "{{",
-                " username ",
+                "username",
                 "||",
-                " \"unknown\" ",
+                "\"",
+                "unknown",
+                "\"",
                 "}}",
-"""! </h2>
+                """! </h2>
     </body>
 </html>
 

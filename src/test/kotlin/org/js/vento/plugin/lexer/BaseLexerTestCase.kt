@@ -3,14 +3,13 @@
  * All rights reserved.
  */
 
-package org.js.vento.webstormvento
+package org.js.vento.plugin.lexer
 
 import com.intellij.lexer.FlexLexer
 import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
 import com.jetbrains.rd.util.printlnError
 import junit.framework.TestCase
-import org.js.vento.plugin.lexer.VentoLexerAdapter
 
 abstract class BaseLexerTestCase(name: String) : TestCase(name) {
     private lateinit var lexer: FlexLexer
