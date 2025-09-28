@@ -31,6 +31,9 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state JS_STRING_SINGLE_QUOTE
 %state SCRIPT_CONTENT
 %state VARIABLE_CONTENT
+%state FOR_CONTENT
+%state FOR_VALUE
+%state FOR_COLLECTION
 
 %{
     // Ensure we handle EOF properly
@@ -40,12 +43,13 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 CLOSE_COMMENT_PHRASE = -?#}}
 CLOSE_JAVASCRIPT = }}
-CLOSE_VARIABLE_PHRASE = -?}}
+CLOSE_VENTO_BLOCK = -?}}
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 OPEN_COMMENT_PHRASE = \{\{#-?
+FOR_KEY = "for"
 OPEN_JAVASCRIPT = \{\{>
-OPEN_VARIABLE_PHRASE = \{\{-?
+OPEN_VENTO_BLOCK = \{\{-?
 WHITESPACE = [ \t\r\n]+
 
 %{
@@ -73,13 +77,68 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {OPEN_VARIABLE_PHRASE}    {
+    {OPEN_VENTO_BLOCK}    {
             yybegin(VARIABLE_CONTENT);
             return VentoLexerTypes.VARIABLE_START;
     }
 
+    \{\{ / .*[/]?{FOR_KEY}    {
+            yybegin(FOR_CONTENT);
+            return VentoLexerTypes.FOR_START;
+    }
+
     [^] { return VentoLexerTypes.ERROR; }
 
+}
+
+<FOR_CONTENT> {
+
+    {WHITESPACE}   { return WHITE_SPACE; }
+
+    [ \t]+{FOR_KEY}[ \t]+ / .*"of"   {
+          yybegin(FOR_VALUE);
+          return VentoLexerTypes.FOR_KEY;
+    }
+
+    [ \t]+[/]{FOR_KEY}[ \t]+    {
+
+              return VentoLexerTypes.CLOSE_FOR_KEY;
+        }
+
+    "}}"  {
+                      yybegin(YYINITIAL);
+                      return VentoLexerTypes.FOR_END;
+        }
+}
+
+<FOR_VALUE> {
+
+    {WHITESPACE}   { return WHITE_SPACE; }
+
+    [^ \t]+[^]+ / [ \t]+"of"[ \t]+   {
+          return VentoLexerTypes.FOR_VALUE;
+    }
+
+    [ \t]+"of"[ \t]+   {
+          yybegin(FOR_COLLECTION);
+          return VentoLexerTypes.FOR_OF;
+    }
+
+
+}
+
+<FOR_COLLECTION> {
+
+    {WHITESPACE}   { return WHITE_SPACE; }
+
+    [^ \t]+[^]+ / [ \t]+{CLOSE_VENTO_BLOCK}   {
+              return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    "}}"  {
+                  yybegin(YYINITIAL);
+                  return VentoLexerTypes.FOR_END;
+    }
 }
 
 <VARIABLE_CONTENT> {
@@ -124,7 +183,7 @@ WHITESPACE = [ \t\r\n]+
 
    {WHITESPACE} {}
 
-   {CLOSE_VARIABLE_PHRASE} {
+   {CLOSE_VENTO_BLOCK} {
             yybegin(YYINITIAL);
             return VentoLexerTypes.VARIABLE_END;
    }

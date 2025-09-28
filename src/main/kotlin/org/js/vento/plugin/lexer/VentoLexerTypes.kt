@@ -59,5 +59,26 @@ object VentoLexerTypes {
     val EMPTY_LINE = VentoLexerTokenType("VENTO_EMPTY_LINE")
 
     @JvmField
+    var FOR_START: IElementType = VentoLexerTokenType("VENTO_FOR_START")
+
+    @JvmField
+    var FOR_KEY: IElementType = VentoLexerTokenType("VENTO_FOR_KEY")
+
+    @JvmField
+    var CLOSE_FOR_KEY: IElementType = VentoLexerTokenType("VENTO_CLOSE_FOR_KEY")
+
+    @JvmField
+    var FOR_VALUE: IElementType = VentoLexerTokenType("VENTO_FOR_VALUE")
+
+    @JvmField
+    var FOR_OF: IElementType = VentoLexerTokenType("VENTO_FOR_OF")
+
+    @JvmField
+    var FOR_COLLECTION: IElementType = VentoLexerTokenType("VENTO_FOR_COLLECTION")
+
+    @JvmField
+    var FOR_END: IElementType = VentoLexerTokenType("VENTO_FOR_END")
+
+    @JvmField
     val PIPE_ELEMENT = VentoLexerTokenType("VENTO_PIPE")
 }
