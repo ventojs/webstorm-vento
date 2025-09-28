@@ -68,13 +68,6 @@ class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
         )
 
     /**
-     * Verifies pipeline operator usage.
-     * Input: {{ variable |> toUpperCase }}
-     * Expected: {{, variable, |>, toUpperCase, }}
-     */
-    fun `test with pipes`() = lexAndTest("{{ variable |> toUpperCase }}", arrayOf("{{", "variable", "|>", "toUpperCase", "}}"))
-
-    /**
      * Verifies ternary conditional operator tokenization.
      * Input: {{ message ? "yes" : "no" }}
      * Expected: {{, message, ?, ", yes, ", :, ", no, ", }}

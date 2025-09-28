@@ -53,9 +53,6 @@ object VentoLexerTypes {
     val STRING = VentoLexerTokenType("VENTO_STRING")
 
     @JvmField
-    val HTML_TAG = VentoLexerTokenType("VENTO_HTML_TAG")
-
-    @JvmField
     val TEXT = VentoLexerTokenType("VENTO_HTML_TAG")
 
     @JvmField
