@@ -19,9 +19,8 @@ import org.js.vento.plugin.VentoPsiElementImpl
  * @constructor Creates a new instance with the given AST node.
  * @param node The AST node associated with this PSI element.
  */
-class VentoJavaScriptPsiElement(
-    node: ASTNode,
-) : VentoPsiElementImpl(node),
+class VentoJavaScriptPsiElement(node: ASTNode) :
+    VentoPsiElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
 
