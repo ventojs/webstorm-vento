@@ -233,7 +233,8 @@ class VentoToggleCommentAction : AnAction() {
         // Look forwards for the comment end
         var end = cursorPos
         while (end < text.length - 3) {
-            if (end + 3 <= text.length && text.substring(end, end + 3) == "#}}" ||
+            if (end + 3 <= text.length &&
+                text.substring(end, end + 3) == "#}}" ||
                 (end + 4 <= text.length && text.substring(end, end + 4) == "-#}}")
             ) {
                 end += if (end + 3 <= text.length && text.substring(end, end + 3) == "#}}") 3 else 4

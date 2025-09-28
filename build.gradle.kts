@@ -8,10 +8,10 @@ import org.jlleitschuh.gradle.ktlint.tasks.KtLintFormatTask
 
 plugins {
     id("java")
-    id("org.jetbrains.kotlin.jvm") version "2.1.0"
-    id("org.jetbrains.intellij.platform") version "2.2.1"
+    id("org.jetbrains.kotlin.jvm") version "2.2.20"
+    id("org.jetbrains.intellij.platform") version "2.9.0"
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
-    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    id("org.jlleitschuh.gradle.ktlint") version "13.1.0"
 }
 
 group = providers.gradleProperty("pluginGroup").get()
@@ -68,12 +68,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // JUnit 5 (Jupiter) for tests
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.4")
 
     // Support for legacy JUnit 3/4 tests (e.g., classes extending TestCase)
     testImplementation("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.10.3")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.13.4")
 
     // Kotlin test assertions routed to JUnit Platform
     testImplementation(kotlin("test"))
@@ -94,6 +94,7 @@ dependencies {
 }
 
 intellijPlatform {
+
     pluginConfiguration {
         version = providers.gradleProperty("pluginVersion")
         description = providers.gradleProperty("pluginDescription")
@@ -115,6 +116,20 @@ intellijPlatform {
                 .map { listOf(it.substringAfter('-', "").substringBefore('.').ifEmpty { "default" }) }
     }
     pluginVerification { ides { recommended() } }
+
+// Configure plugin verifier IDEs
+    pluginVerification {
+        ides {
+            // Webstorm
+            ide("WS", "2024.2")
+            ide("WS", "2025.1")
+            ide("WS", "2025.2")
+            // IntelliJ Ultimate
+            ide("IU", "2024.3")
+            ide("IU", "2025.1")
+            ide("IU", "2025.2")
+        }
+    }
 }
 
 tasks { wrapper { gradleVersion = providers.gradleProperty("gradleVersion").get() } }

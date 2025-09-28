@@ -11,9 +11,9 @@ import com.intellij.psi.LiteralTextEscaper
 import com.intellij.psi.PsiLanguageInjectionHost
 import org.js.vento.plugin.VentoPsiElementImpl
 
-class VentoElementImpl(
-    node: ASTNode,
-) : VentoPsiElementImpl(node), PsiLanguageInjectionHost {
+class VentoElementImpl(node: ASTNode) :
+    VentoPsiElementImpl(node),
+    PsiLanguageInjectionHost {
     override fun toString(): String = "VentoElement: ${node.elementType}"
 
     // Enable language injection (e.g., HTML) into default content blocks
