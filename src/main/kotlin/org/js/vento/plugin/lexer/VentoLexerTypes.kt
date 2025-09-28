@@ -60,4 +60,7 @@ object VentoLexerTypes {
 
     @JvmField
     val EMPTY_LINE = VentoLexerTokenType("VENTO_EMPTY_LINE")
+
+    @JvmField
+    val PIPE_ELEMENT = VentoLexerTokenType("VENTO_PIPE")
 }

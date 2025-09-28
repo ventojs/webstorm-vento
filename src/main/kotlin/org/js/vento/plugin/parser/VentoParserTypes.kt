@@ -30,9 +30,6 @@ object VentoParserTypes {
     val JAVACRIPT_VARIABLE_ELEMENT = VentoParserElementType("VENTO_VARIABLE_ELEMENT")
 
     @JvmField
-    val VARIABLE_PIPES = VentoParserElementType("VENTO_VARIABLE_PIPES")
-
-    @JvmField
     val VENTO_ELEMENT = VentoParserElementType("VENTO_ELEMENT")
 
     /**

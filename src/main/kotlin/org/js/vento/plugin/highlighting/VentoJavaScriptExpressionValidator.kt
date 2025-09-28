@@ -6,11 +6,18 @@
 package org.js.vento.plugin.highlighting
 
 import com.intellij.lang.javascript.JavaScriptFileType
-import com.intellij.lang.javascript.psi.JSExpression
+import com.intellij.lang.javascript.psi.JSBlockStatement
+import com.intellij.lang.javascript.psi.JSExpressionStatement
 import com.intellij.lang.javascript.psi.JSFile
-import com.intellij.lang.javascript.psi.JSStatement
+import com.intellij.lang.javascript.psi.JSLabeledStatement
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
+import com.intellij.psi.PsiWhiteSpace
+
+private const val RULE = "Variable blocks must contain one expression only"
+private const val PIPE_RULE = "$RULE followed by a Vento pipe expression"
+
+private const val PIPE = "|>"
 
 /**
  * Validates JavaScript expressions for use within Vento variable blocks.
@@ -25,31 +32,28 @@ import com.intellij.psi.PsiFileFactory
  */
 class VentoJavaScriptExpressionValidator {
     fun isValidExpression(content: String, project: Project): ValidationResult {
-        if (content.trim().isEmpty()) {
-            return ValidationResult(false, "Empty expression")
-        }
+        val trimmed = content.trim()
+        val rule = if (trimmed.contains(PIPE)) PIPE_RULE else RULE
+        val segment = if (trimmed.contains(PIPE)) trimmed.take(trimmed.indexOf(PIPE)) else content
+
+        if (segment.isEmpty()) return ValidationResult(false, "Empty expression")
 
         try {
-            // If expression parsing failed, check if it's a statement (which is invalid for variables)
-            val statementFile = createJSFile(content.trim(), project)
-            val statementsList = statementFile.statements
+            val file = createJSFile(segment, project)
+            val elements = file.statements
 
-            if (statementsList.isNotEmpty()) {
-                if (statementsList.size > 1) return ValidationResult(false, "Variable blocks must contain only one expression")
-                val statement = statementsList[0]
-                if (statement is JSStatement && statement !is JSExpression) {
-                    return ValidationResult(true, "Variable blocks must contain expressions, not statements")
-                }
+            return when {
+                elements.size > 1 -> ValidationResult(false, rule)
+                elements[0] is JSExpressionStatement -> ValidationResult(true, rule)
+                elements[0] is JSBlockStatement &&
+                    elements[0].children.filter {
+                        it !is PsiWhiteSpace
+                    }[1] is JSLabeledStatement -> ValidationResult(true, rule) // object
+                elements[0] is JSBlockStatement &&
+                    elements[0].children.filter { it !is PsiWhiteSpace }[1] is JSExpressionStatement &&
+                    elements[0].children.filter { it !is PsiWhiteSpace }[3] is JSExpressionStatement -> ValidationResult(true, rule) // json
+                else -> ValidationResult(false, rule)
             }
-
-            val expressionFile = createJSFile("(${content.trim()})", project)
-            val statements = expressionFile.statements
-
-            if (statements.isNotEmpty() && statements.size > 0) {
-                return ValidationResult(false, "Variable blocks must contain a statements")
-            }
-
-            return ValidationResult(false, "Invalid JavaScript expression")
         } catch (e: Exception) {
             return ValidationResult(false, "Syntax error: ${e.message}")
         }
