@@ -50,7 +50,8 @@ class VentoAnnotator : Annotator {
 
         if (!result.isValid) {
             val annotationRange = contentRange.shiftRight(element.textRange.startOffset)
-            holder.newAnnotation(HighlightSeverity.ERROR, result.errorMessage ?: "Invalid expression")
+            holder
+                .newAnnotation(HighlightSeverity.ERROR, result.errorMessage ?: "Invalid expression")
                 .range(annotationRange)
                 .create()
         }
