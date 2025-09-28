@@ -3,12 +3,13 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.parser
+package org.js.vento.plugin.parser.injectors
 
 import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.psi.PsiElement
+import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
 
 /**
  * Implements a `MultiHostInjector` for handling JavaScript code injection

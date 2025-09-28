@@ -21,15 +21,16 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 
-%state MACRO_START
-%state VENTO_ELEMENT_STATE
-%state PURE_JS
+%state BRACKET
 %state COMMENT
+%state JSON_STRING
+%state JS_OBJECT
+%state JS_REGEX
+%state JS_STRING_BACK_TICK
+%state JS_STRING_DOUBLE_QOUTE
+%state JS_STRING_SINGLE_QUOTE
 %state SCRIPT_CONTENT
-%state FRONT_MATTER_STATE
-%state TEMPLATE_SWITCH
 %state VARIABLE_CONTENT
-%state EOF
 
 %{
     // Ensure we handle EOF properly
@@ -37,21 +38,19 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %}
 
 
-WHITESPACE = [ \t\r\n]+
-OPEN_COMMENT_PHRASE = \{\{#-?
 CLOSE_COMMENT_PHRASE = -?#}}
-JAVASCRIPT_START = \{\{>
-VARIABLE_START = \{\{
+CLOSE_JAVASCRIPT = }}
+CLOSE_VARIABLE_PHRASE = -?}}
 DEFAULT_HTML = [^{]+
-TEXT=[^<{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
+OPEN_COMMENT_PHRASE = \{\{#-?
+OPEN_JAVASCRIPT = \{\{>
+OPEN_VARIABLE_PHRASE = \{\{-?
+WHITESPACE = [ \t\r\n]+
 
 %{
-  private void yyclose() throws java.io.IOException {
-    if (zzReader != null) {
-      zzReader.close();
-    }
-  }
+  // Tracks nested `{` … `}` depth
+  private int objectDepth = 0;
 %}
 
 
@@ -60,23 +59,23 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 <YYINITIAL> {
 
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return com.intellij.psi.TokenType.WHITE_SPACE; }
+    {WHITESPACE}              { return WHITE_SPACE; }
     {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
 
     {OPEN_COMMENT_PHRASE}    {
             yybegin(COMMENT);
             return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
-         }
-
-    {JAVASCRIPT_START}    {
-        yybegin(SCRIPT_CONTENT);
-        return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {VARIABLE_START}    {
-        yybegin(VARIABLE_CONTENT);
-        return VentoLexerTypes.VARIABLE_START;
+    {OPEN_JAVASCRIPT}    {
+            yybegin(SCRIPT_CONTENT);
+            return VentoLexerTypes.JAVASCRIPT_START;
+    }
+
+    {OPEN_VARIABLE_PHRASE}    {
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_START;
     }
 
     [^] { return VentoLexerTypes.ERROR; }
@@ -84,21 +83,156 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 }
 
 <VARIABLE_CONTENT> {
-    \|\| {return VentoParserTypes.VARIABLE_PIPES;}
-    ([^}\|]|"}"[^}\|])+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    "}}" {
-           yybegin(YYINITIAL);
-           return VentoLexerTypes.VARIABLE_END;
-        }
+
+   //strings
+   \" {
+            yybegin(JS_STRING_DOUBLE_QOUTE);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   ' {
+            yybegin(JS_STRING_SINGLE_QUOTE);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   ` {
+            yybegin(JS_STRING_BACK_TICK);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   // regex segment
+   \/  {
+            yybegin(JS_REGEX);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   //objects
+   \{ {
+            objectDepth=1;
+            yybegin(JS_OBJECT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+   }
+
+   \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+
+   [^\/\"'`{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+
+   {WHITESPACE} {}
+
+   {CLOSE_VARIABLE_PHRASE} {
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.VARIABLE_END;
+   }
+
+   [^] { return VentoLexerTypes.ERROR; }
 }
 
+<JS_OBJECT> {
+
+    \{ {
+            objectDepth++;
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^}{\"]+ {return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \} {
+            objectDepth--;
+            if (objectDepth == 0) {
+             yybegin(VARIABLE_CONTENT);
+            }
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    //single line strings
+    \" {
+            yybegin(JSON_STRING);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<JSON_STRING> {
+
+    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \" {
+            yybegin(JS_OBJECT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<JS_STRING_DOUBLE_QOUTE> {
+
+    "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    [\"]+ {
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<JS_STRING_SINGLE_QUOTE> {
+
+    "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    ' {
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<JS_STRING_BACK_TICK> {
+
+    [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    ` {
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<JS_REGEX> {
+
+    \[ {
+            yybegin(BRACKET);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+    [^\/\[]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+
+    \/ {
+            yybegin(VARIABLE_CONTENT);
+            return VentoLexerTypes.VARIABLE_ELEMENT;
+    }
+
+}
+
+<BRACKET> {
+
+  "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
+  [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+
+}
+
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
 
 <SCRIPT_CONTENT> {
+
    ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
-   "}}" {
-          yybegin(YYINITIAL);
-          return VentoLexerTypes.JAVASCRIPT_END;
-      }
+   {CLOSE_JAVASCRIPT} {
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.JAVASCRIPT_END;
+   }
+
 }
 
 <COMMENT> {
@@ -111,8 +245,8 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
     "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
 
     {CLOSE_COMMENT_PHRASE} {
-                yybegin(YYINITIAL);
-                return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
+            yybegin(YYINITIAL);
+            return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
     }
 
 
