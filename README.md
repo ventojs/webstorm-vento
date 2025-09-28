@@ -9,8 +9,9 @@
   Vento for JetBrain's WebStorm IDE
   <br /><br />
 </h1>
-
+<!-- Plugin description -->
 <h4 align="center">A plugin for the Vento template engine for Deno & Node</h4>
+<!-- Plugin description end -->
 <div align="center">
 
 [![Contributors][contributors_shield_url]][contributors_url]
