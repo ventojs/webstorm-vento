@@ -1,16 +1,25 @@
 <div id="readme-top"></div>
 
+<!-- Plugin description -->
 <h1 align="center">
   <br />
     <a href="https://vento.js.org/">
-      <img src="https://github.com/ventojs/vscode-vento/blob/main/icon.svg" alt="VentoJS Logo" width="200">
+      <img src="https://vento.js.org/favicon.svg" alt="VentoJS Logo" width="200">
     </a>
   <br /><br />
-  Vento for JetBrain's WebStorm IDE
+  Vento for JetBrain's WebStorm & IntelliJ IDEA Ultimate IDE
   <br /><br />
 </h1>
-<!-- Plugin description -->
-<h4 align="center">A plugin for the Vento template engine for Deno & Node</h4>
+<div align="center">
+Provides support for the <a href="https://vento.js.org/">VentoJs</a> template engine.
+The support includes:
+
+<h4>syntax highlighting</h4>
+<h4>syntax checking</h4>
+
+For more information visit the
+<a href="https://vento.js.org/">Vento</a>.
+</div>
 <!-- Plugin description end -->
 <div align="center">
 

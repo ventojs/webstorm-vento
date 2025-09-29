@@ -8,15 +8,19 @@
 package org.js.vento.plugin.highlighting
 
 import com.intellij.lexer.Lexer
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.*
-import com.intellij.openapi.editor.colors.CodeInsightColors
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.GLOBAL_VARIABLE
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.KEYWORD
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.STATIC_FIELD
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 import org.js.vento.plugin.lexer.VentoLexerTypes
-import org.js.vento.plugin.parser.VentoParserTypes
 
 /**
  * Handles syntax highlighting for the Vento language in the IntelliJ Platform.
@@ -45,10 +49,10 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 VentoLexerTypes.JAVASCRIPT_END -> JAVASCRIPT
                 VentoLexerTypes.VARIABLE_START -> VARIABLE
                 VentoLexerTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
-                VentoParserTypes.VARIABLE_PIPES -> VARIABLE_PIPES
                 VentoLexerTypes.VARIABLE_END -> VARIABLE
                 VentoLexerTypes.TEXT -> TEXT
                 VentoLexerTypes.ERROR -> ERROR
+                VentoLexerTypes.PIPE_ELEMENT -> PIPE
                 else -> null
             }
 
@@ -69,10 +73,9 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
         val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", TEMPLATE_LANGUAGE_COLOR)
         val VARIABLE = createTextAttributesKey("VENTO_VARIABLE", TEMPLATE_LANGUAGE_COLOR)
         val VARIABLE_ELEMENT = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
-        val VARIABLE_PIPES = createTextAttributesKey("VENTO_VARIABLE_PIPES", KEYWORD)
         val TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
         val ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
-        val SYNTAX_ERROR = createTextAttributesKey("VENTO_SYNTAX_ERROR", CodeInsightColors.ERRORS_ATTRIBUTES)
+        val PIPE = createTextAttributesKey("VENTO_PIPE", KEYWORD)
     }
 }

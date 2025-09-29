@@ -6,37 +6,15 @@
 <idea-plugin>
     <id>org.js.vento.plugin</id>
 
-    <name>Vento JS Support</name>
-    <description><![CDATA[
-        Provides support for the <a href="https://vento.js.org/">VentoJs</a> template engine.
-        The support includes:
-        <ul>
-            <li>syntax highlighting</li>
-            <li>syntax checking</li>
-        </ul>
-        For more information visit the
-        <a href="https://example.com">project site</a>.
-        ]]></description>
+    <name>Vento Template Engine</name>
 
-    <change-notes><![CDATA[
-        <h1>v 0.1.0</h1>
-        <h2>New Features</h2>
-        <ul>
-            <li>Comment Block Highlighting</li>
-            <li>JavaScript Block Highlighting</li>
-            <li>HTML Highlighting</li>
-        </ul>
-        <h2>Bug Fixes</h2>
-        <ul>
-        </ul>
-        ]]></change-notes>
+    <description>Content replaced at build-time from README.md</description>
+    <change-notes>Content replaced at build time from CHANGELOG.md</change-notes>
 
-
-    <vendor url="https://github.com/ventojs">
-        ventojs
-    </vendor>
+    <vendor url="https://github.com/ventojs">ventojs</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
     <depends>JavaScript</depends>

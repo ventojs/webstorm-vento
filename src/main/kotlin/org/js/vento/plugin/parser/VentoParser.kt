@@ -69,7 +69,9 @@ class VentoParser : PsiParser {
         builder.advanceLexer() // consume {{ or {{-
 
         // Consume content tokens until we see the end or EOF
-        while (!builder.eof() && builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT) {
+        while (!builder.eof() &&
+            (builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT || builder.tokenType == VentoLexerTypes.PIPE_ELEMENT)
+        ) {
             builder.advanceLexer()
         }
 

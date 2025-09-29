@@ -24,13 +24,12 @@ class VentoColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
             arrayOf<AttributesDescriptor>(
-                AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
                 AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
                 AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
+                AttributesDescriptor("Pipe", VentoSyntaxHighlighter.PIPE),
                 AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
-                AttributesDescriptor("Variable symbol", VentoSyntaxHighlighter.VARIABLE_PIPES),
-                AttributesDescriptor("Text", VentoSyntaxHighlighter.TEXT),
+                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
             )
     }
 
@@ -46,6 +45,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
         Variables:
           {{ username || "unknown" }}
+          {{ "Hello World!" |> toUpperCase }}
 
         Javascript:
           {{> console.log('Hello World') }}

@@ -113,6 +113,10 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.VARIABLE_ELEMENT;
    }
 
+   "|>" {
+           return VentoLexerTypes.PIPE_ELEMENT;
+   }
+
    \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
 
 
