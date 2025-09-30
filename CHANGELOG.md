@@ -10,6 +10,7 @@
 - Delegate parsing of the main body of a `.vto` file to the JetBrains HTML plugin. (#51)
 - Variable block with (`{{ }}`) and wihtout trimming (`{{- -}}`) support. (#36) (#38)
 - Variable pipe (`{{ expression |> call }}`) support (#39)
+- For-block (`{{ for [value] of [collection] }}`) support (#43) (#77)
 
 ### Fixed
 
