@@ -148,7 +148,8 @@ val prepareFlexFiles =
                             // Process content after second %%, replacing %include directives
                             val processedAfterContent =
                                 afterSecondPercent
-                                    .lines().joinToString("\n") { line ->
+                                    .lines()
+                                    .joinToString("\n") { line ->
                                         val trimmedLine = line.trim()
                                         if (trimmedLine.startsWith("%include ")) {
                                             val includePath = trimmedLine.removePrefix("%include ").trim()

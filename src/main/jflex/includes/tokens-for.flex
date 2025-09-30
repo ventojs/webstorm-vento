@@ -33,7 +33,7 @@ WHITESPACE = [ \t\r\n]+
 
     {WHITESPACE}   {  }
 
-    {FOR_KEY} / .*"of"   {
+    {FOR_KEY} / .*"}}"   {
           yybegin(FOR_VALUE);
           return VentoLexerTypes.FOR_KEY;
     }
@@ -76,8 +76,8 @@ WHITESPACE = [ \t\r\n]+
     }
 
     [^] {
-          yybegin(FOR_CONTENT);
-          yypushback(yylength());
+          yybegin(FOR_COLLECTION);
+          return VentoLexerTypes.ERROR;
     }
 
 }
@@ -93,11 +93,21 @@ WHITESPACE = [ \t\r\n]+
           return VentoLexerTypes.FOR_COLLECTION;
     }
 
-    [^}{]+ {return VentoLexerTypes.FOR_COLLECTION;}
+    [^}{]+ {
+          collection = true;
+          return VentoLexerTypes.FOR_COLLECTION;
+      }
 
     "}}"  {
-          yybegin(YYINITIAL);
-          return VentoLexerTypes.FOR_END;
+          if(collection == true){
+              collection = false;
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.FOR_END;
+          } else {
+              collection = false;
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+          }
     }
 
     [^] {

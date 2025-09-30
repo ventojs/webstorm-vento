@@ -30,10 +30,7 @@ class ForBlockValidator {
             return ValidationResult(true, "Valide closing for-block found.")
         } else {
 //            content.node.children().forEach { println(it.elementType.toString() + " : " + VentoLexerTypes.ERROR.toString()) }
-            if (content.node.children().any {
-                    it.elementType.toString() == VentoLexerTypes.ERROR.toString()
-                }
-            ) {
+            if (content.node.children().any { it.elementType.toString() == VentoLexerTypes.ERROR.toString() }) {
                 return ValidationResult(false, "Invalid for-block. $SYNTAX")
             }
         }

@@ -46,7 +46,12 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     }
 
     fun testForNoValue() {
-        val code = "{{ for of values }} "
+        val code = "{{ for of values }}"
+        doCodeTest(code)
+    }
+
+    fun testForNoOf() {
+        val code = "{{ for value values }}"
         doCodeTest(code)
     }
 

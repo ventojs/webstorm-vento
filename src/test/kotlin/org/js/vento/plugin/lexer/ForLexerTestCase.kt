@@ -47,4 +47,10 @@ class ForLexerTestCase(name: String) : BaseLexerTestCase(name) {
             "{{ for of values }}",
             arrayOf("{{", "for", "of", " values ", "}}"),
         )
+
+    fun `test for of with missing for `() =
+        lexAndTest(
+            "{{ for value values }}",
+            arrayOf("{{", "for", "v", "alue values ", "}}"),
+        )
 }

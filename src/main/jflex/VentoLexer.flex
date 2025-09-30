@@ -43,6 +43,7 @@ WHITESPACE = [ \t\r\n]+
 %{
   private int objectDepth = 0;
   private boolean value = false;
+  private boolean collection = false;
 
 %}
 
