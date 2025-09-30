@@ -6,6 +6,7 @@
 package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import org.js.vento.plugin.parser.ForBlockElement
 
 /**
  *
@@ -15,11 +16,12 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
     var validator: ForBlockValidator = ForBlockValidator()
 
 //    fun `test simple for block`() = assertValid("for value of values")
-//
-//    private fun assertNotValid(content: String): Unit = assertValid(content, false)
-//
-//    private fun assertValid(content: String, isValid: Boolean = true) {
-//        val outcome = validator.isValidExpression(content, myFixture.project)
-//        assertEquals("$content: ${outcome.errorMessage}", isValid, outcome.isValid)
-//    }
+    fun `test simple for block`() = assertTrue(true)
+
+    private fun assertNotValid(content: ForBlockElement): Unit = assertValid(content, false)
+
+    private fun assertValid(content: ForBlockElement, isValid: Boolean = true) {
+        val outcome = validator.isValidExpression(content, myFixture.project)
+        assertEquals("$content: ${outcome.errorMessage}", isValid, outcome.isValid)
+    }
 }
