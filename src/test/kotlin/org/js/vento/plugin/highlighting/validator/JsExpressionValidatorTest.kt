@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.highlighting
+package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.Language
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
@@ -13,13 +13,13 @@ import com.intellij.testFramework.fixtures.BasePlatformTestCase
  * within Vento templates. Ensures expressions are valid while statements are rejected.
  */
 @Suppress("ktlint:standard:function-naming")
-class VentoJavaScriptExpressionValidatorTest : BasePlatformTestCase() {
-    lateinit var validator: VentoJavaScriptExpressionValidator
+class JsExpressionValidatorTest : BasePlatformTestCase() {
+    lateinit var validator: JsExpressionValidator
 
     override fun setUp() {
         super.setUp()
         assertTrue(Language.findLanguageByID("JavaScript") != null)
-        validator = VentoJavaScriptExpressionValidator()
+        validator = JsExpressionValidator()
     }
 
     //region Valid Expression Tests

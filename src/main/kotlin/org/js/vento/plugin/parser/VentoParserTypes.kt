@@ -46,7 +46,7 @@ object VentoParserTypes {
                 HTML_ELEMENT -> VentoElementImpl(node)
                 JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VentoVariablePsiElement(node)
-                VENTO_FOR_ELEMENT -> VentoPsiElementImpl(node)
+                VENTO_FOR_ELEMENT -> ForBlockElement(node)
                 else -> VentoPsiElementImpl(node)
             }
     }
