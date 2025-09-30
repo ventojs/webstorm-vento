@@ -30,6 +30,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Pipe", VentoSyntaxHighlighter.PIPE),
                 AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
                 AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
+                AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VENTO_EXPRESSION),
             )
     }
 
@@ -43,9 +44,12 @@ class VentoColorSettingsPage : ColorSettingsPage {
           {{# This is a sample web page #}}
           {{#- trimmed comment -#}}
 
-        Variables:
+        Variable Block:
           {{ username || "unknown" }}
           {{ "Hello World!" |> toUpperCase }}
+
+        Vento Blocks:
+          {{ for value of collection }}
 
         Javascript:
           {{> console.log('Hello World') }}

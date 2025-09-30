@@ -69,23 +69,18 @@ class VentoParser : PsiParser {
         val m = builder.mark()
         builder.advanceLexer() // consume {{
 
-        if (builder.tokenType == VentoLexerTypes.CLOSE_FOR_KEY) {
-            builder.advanceLexer()
-        }
-
-        if (builder.tokenType == VentoLexerTypes.FOR_KEY) {
-            builder.advanceLexer()
-        }
-
-        if (builder.tokenType == VentoLexerTypes.FOR_VALUE) {
-            builder.advanceLexer()
-        }
-
-        if (builder.tokenType == VentoLexerTypes.FOR_OF) {
-            builder.advanceLexer()
-        }
-
-        if (builder.tokenType == VentoLexerTypes.FOR_COLLECTION) {
+        // Consume content tokens until we see the end or EOF
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.CLOSE_FOR_KEY ||
+                    builder.tokenType == VentoLexerTypes.FOR_KEY ||
+                    builder.tokenType == VentoLexerTypes.FOR_VALUE ||
+                    builder.tokenType == VentoLexerTypes.FOR_OF ||
+                    builder.tokenType == VentoLexerTypes.FOR_COLLECTION ||
+                    builder.tokenType == VentoLexerTypes.ERROR
+            )
+        ) {
             builder.advanceLexer()
         }
 
@@ -101,8 +96,12 @@ class VentoParser : PsiParser {
         builder.advanceLexer() // consume {{ or {{-
 
         // Consume content tokens until we see the end or EOF
-        while (!builder.eof() &&
-            (builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT || builder.tokenType == VentoLexerTypes.PIPE_ELEMENT)
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT ||
+                    builder.tokenType == VentoLexerTypes.PIPE_ELEMENT
+            )
         ) {
             builder.advanceLexer()
         }
