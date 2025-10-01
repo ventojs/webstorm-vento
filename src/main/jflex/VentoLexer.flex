@@ -72,12 +72,20 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.VARIABLE_START;
     }
 
+    \{\{ / [ \t]?"/fr"   {
+            yybegin(FOR_CONTENT);
+            return VentoLexerTypes.FOR_START;
+    }
+
     \{\{ / .*[/]?{FOR_KEY}    {
             yybegin(FOR_CONTENT);
             return VentoLexerTypes.FOR_START;
     }
 
-    [^] { return VentoLexerTypes.ERROR; }
+    [^] {
+          //System.out.println("YYINITIAL error");
+          return VentoLexerTypes.ERROR;
+      }
 
 }
 

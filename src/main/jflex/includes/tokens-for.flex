@@ -11,6 +11,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state FOR_CONTENT
 %state FOR_VALUE
 %state FOR_OBJECT
+%state FOR_ARRAY
+%state FOR_PIPE
 
 
 
@@ -33,7 +35,7 @@ WHITESPACE = [ \t\r\n]+
 
     {WHITESPACE}   {  }
 
-    {FOR_KEY} / .*"}}"   {
+    {FOR_KEY} / [ \t].*"}}"   {
           yybegin(FOR_VALUE);
           return VentoLexerTypes.FOR_KEY;
     }
@@ -42,12 +44,17 @@ WHITESPACE = [ \t\r\n]+
           return VentoLexerTypes.CLOSE_FOR_KEY;
     }
 
+    [/][f]?[o]?[r]? {
+          return VentoLexerTypes.ERROR;
+    }
+
     "}}"  {
           yybegin(YYINITIAL);
           return VentoLexerTypes.FOR_END;
     }
 
-    [^] {
+    [^/] {
+          //System.out.println("for error : "+yytext());
           yybegin(YYINITIAL);
           return VentoLexerTypes.ERROR;
     }
@@ -58,7 +65,7 @@ WHITESPACE = [ \t\r\n]+
 
     {WHITESPACE}   {  }
 
-    [^ \t]+ / [ \t]+"of"[ \t]+   {
+    [^ \t]+"await"?"index,"?.+ / [ \t]+"of"[ \t]+   {
           value = true;
           return VentoLexerTypes.FOR_VALUE;
     }
@@ -76,6 +83,7 @@ WHITESPACE = [ \t\r\n]+
     }
 
     [^] {
+          //System.out.println("value error");
           yybegin(FOR_COLLECTION);
           return VentoLexerTypes.ERROR;
     }
@@ -93,7 +101,14 @@ WHITESPACE = [ \t\r\n]+
           return VentoLexerTypes.FOR_COLLECTION;
     }
 
-    [^}{]+ {
+    \[ {
+          objectDepth = 0;
+          objectDepth++;
+          yybegin(FOR_ARRAY);
+          return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    [^}{\]\[]+ {
           collection = true;
           return VentoLexerTypes.FOR_COLLECTION;
       }
@@ -111,6 +126,7 @@ WHITESPACE = [ \t\r\n]+
     }
 
     [^] {
+          //System.out.println("collection error:" + yytext());
           yybegin(FOR_VALUE);
           yypushback(yylength());
     }
@@ -130,7 +146,7 @@ WHITESPACE = [ \t\r\n]+
     \} {
             objectDepth--;
             if (objectDepth == 0) {
-             yybegin(FOR_CONTENT);
+             yybegin(FOR_PIPE);
             }
             return VentoLexerTypes.FOR_COLLECTION;
     }
@@ -140,6 +156,55 @@ WHITESPACE = [ \t\r\n]+
             yypushback(yylength());
     }
 
+}
+
+<FOR_ARRAY> {
+
+    {WHITESPACE}   {  }
+
+    \[ {
+          objectDepth++;
+          return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    [^\]\[]+ {return VentoLexerTypes.FOR_COLLECTION;}
+
+    \] {
+          objectDepth--;
+          if (objectDepth == 0) {
+            yybegin(FOR_PIPE);
+          }
+          return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    \][ \t]*[.].*\(.*\) {
+          objectDepth--;
+          if (objectDepth == 0) {
+             yybegin(FOR_PIPE);
+          }
+          return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    [^] {
+            yybegin(FOR_COLLECTION);
+            yypushback(yylength());
+    }
+
+}
+
+<FOR_PIPE> {
+
+     {WHITESPACE}   {  }
+
+    "|> ".+ / [ \t]"}}" {
+          yybegin(FOR_CONTENT);
+          return VentoLexerTypes.FOR_COLLECTION;
+    }
+
+    [^] {
+          yybegin(FOR_CONTENT);
+          yypushback(yylength());
+      }
 }
 
 
