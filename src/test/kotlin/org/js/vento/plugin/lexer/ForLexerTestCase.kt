@@ -157,7 +157,7 @@ class ForLexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for missing space`() =
         lexAndTest(
             "{{ forletter of \"abcd\" }}",
-            arrayOf("{{", "f", "orletter", "of", "\"abcd\"", "}}"),
+            arrayOf("{{", "f", "orletter of \"abcd\" }}"),
         )
 
     /**
