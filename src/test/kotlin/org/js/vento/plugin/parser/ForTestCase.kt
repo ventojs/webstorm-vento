@@ -45,6 +45,16 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testComplexFor() {
+        val code = "{{ for odd_number of [1, 2, 3].filter((n) => n%2) }}"
+        doCodeTest(code)
+    }
+
+    fun testComplexForWithPipe() {
+        val code = "{{ for even_number of [1, 2, 3] |> filter((n) => n % 2 === 0) }}"
+        doCodeTest(code)
+    }
+
     fun testForNoValue() {
         val code = "{{ for of values }}"
         doCodeTest(code)
