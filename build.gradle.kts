@@ -68,12 +68,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // JUnit 5 (Jupiter) for tests
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.13.4")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.13.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.14.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.14.0")
 
     // Support for legacy JUnit 3/4 tests (e.g., classes extending TestCase)
     testImplementation("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.13.4")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.14.0")
 
     // Kotlin test assertions routed to JUnit Platform
     testImplementation(kotlin("test"))
