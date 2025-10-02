@@ -131,10 +131,8 @@ intellijPlatform {
     pluginVerification {
         ides {
             // Webstorm
-            ide("WS", "2025.1")
             ide("WS", "2025.2")
             // IntelliJ Ultimate
-            ide("IU", "2025.1")
             ide("IU", "2025.2")
         }
     }
