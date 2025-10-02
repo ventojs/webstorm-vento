@@ -54,6 +54,52 @@ class ForLexerTestCase(name: String) : BaseLexerTestCase(name) {
         lexAndTest("{{ for index, value of [{a:1},{a:2}] }}", arrayOf("{{", "for", "index, value", "of", "[", "{a:1},{a:2}", "]", "}}"))
 
     /**
+     * Tests iteration with complex destructuring pattern using index and object pattern.
+     * Syntax: {{ for index, {name, value} of items }}
+     * Validates correct tokenization of combined index and object destructuring.
+     */
+    fun `test for with many values`() =
+        lexAndTest("{{ for index, {name, value} of items }}", arrayOf("{{", "for", "index, {name, value}", "of", " items ", "}}"))
+
+    /**
+     * Tests iteration using array destructuring pattern.
+     * Syntax: {{ for [name, value] of items }}
+     * Validates correct tokenization of array destructuring syntax.
+     */
+    fun `test for with array values`() =
+        lexAndTest("{{ for [name, value] of items }}", arrayOf("{{", "for", "[name, value]", "of", " items ", "}}"))
+
+    /**
+     * Tests iteration with nested array destructuring pattern.
+     * Syntax: {{ for [[n]] of [[[1]], [[2]]] }}
+     * Validates correct tokenization of deeply nested array structures.
+     */
+    fun `test for with x`() =
+        lexAndTest(
+            "{{ for [[n]] of [[[1]], [[2]]] }}",
+            arrayOf(
+                "{{",
+                "for",
+                "[[n]]",
+                "of",
+                "[",
+                "[",
+                "[",
+                "1",
+                "]",
+                "]",
+                ", ",
+                "[",
+                "[",
+                "2",
+                "]",
+                "]",
+                "]",
+                "}}",
+            ),
+        )
+
+    /**
      * Tests iteration over a nested object structure within a complete for block.
      * Validates correct tokenization of nested braces.
      */
