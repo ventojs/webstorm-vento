@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [0.1.0] - 2025-09-28
+## [0.1.0] - 2025-10-03
 ### Added
 
 - Delegate parsing to the JetBrains JavaScript plugin. (#50)
