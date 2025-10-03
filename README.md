@@ -42,6 +42,21 @@ For more information visit the
 `webstorm-vento` is the plugin which integrates the [Vento Template Engine](https://vento.js.org/) with JetBrain's
 IntelliJ Ultimate and WebStorm IDEs.
 
+### Implemented Features
+#### Vento variables and scripts
+![vento-syntax-highlighting](docs/assets/variables_and_scripts.png)
+
+#### Vento comments
+![vento-syntax-highlighting](docs/assets/comment.png)
+
+#### HTML support
+![vento-syntax-highlighting](docs/assets/layout.png)
+
+#### Vento `for` loops
+![vento-syntax-highlighting](docs/assets/for.png)
+
+
+
 > [!IMPORTANT]
 > ### Note to plugin users
 >
@@ -57,7 +72,7 @@ IntelliJ Ultimate and WebStorm IDEs.
 >
 > * You can use IntelliJ Community or Ultimate edition for development.
 > * Installing the built plugin in Webstorm works.
-> * Targeting Webstorm at build and testing time is not yet working.
+> * The plugin is tested with Webstorm 2025.x.x and IntelliJ IDEA Ultimate 2025.x.x.
 
 ## Installation
 
