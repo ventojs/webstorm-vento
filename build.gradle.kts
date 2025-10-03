@@ -34,10 +34,154 @@ sourceSets {
     }
 }
 
+// Task to prepare cleaned .flex files for generation
+val prepareFlexFiles =
+    tasks.register<Task>("prepareFlexFiles") {
+        val sourceDir = layout.projectDirectory.dir("src/main/jflex")
+        val tempDir = layout.buildDirectory.dir("tmp/jflex-cleaned")
+
+        inputs.dir(sourceDir)
+        outputs.dir(tempDir)
+
+        doLast {
+            val sourceDirFile = sourceDir.asFile
+            val tempDirFile = tempDir.get().asFile
+
+            // Clean and recreate temp directory
+            tempDirFile.deleteRecursively()
+            tempDirFile.mkdirs()
+
+            // Process include files to extract blocks
+            val includeFiles =
+                sourceDirFile
+                    .walkTopDown()
+                    .filter { it.isFile && it.extension == "flex" && it.path.contains("includes/") }
+
+            val block1Lines = mutableSetOf<String>()
+            val block2Lines = mutableSetOf<String>()
+            val includeRuleContent = mutableMapOf<String, String>()
+
+            includeFiles.forEach { includeFile ->
+                val content = includeFile.readText()
+                val relativePath = includeFile.relativeTo(sourceDirFile).path
+
+                // Extract BLOCK 1 content (imports) and deduplicate
+                val block1Regex = Regex("""// BLOCK 1 - START\s*\n(.*?)\n// BLOCK 1 - END""", RegexOption.DOT_MATCHES_ALL)
+                block1Regex.find(content)?.let { match ->
+                    val blockContent = match.groupValues[1].trim()
+                    if (blockContent.isNotEmpty()) {
+                        // Split by lines and add to set for deduplication
+                        blockContent.lines().forEach { line ->
+                            val trimmedLine = line.trim()
+                            if (trimmedLine.isNotEmpty()) {
+                                block1Lines.add(trimmedLine)
+                            }
+                        }
+                    }
+                }
+
+                // Extract BLOCK 2 content (states) and deduplicate
+                val block2Regex = Regex("""// BLOCK 2 - START\s*\n(.*?)\n// BLOCK 2 - END""", RegexOption.DOT_MATCHES_ALL)
+                block2Regex.find(content)?.let { match ->
+                    val blockContent = match.groupValues[1].trim()
+                    if (blockContent.isNotEmpty()) {
+                        // Split by lines and add to set for deduplication
+                        blockContent.lines().forEach { line ->
+                            val trimmedLine = line.trim()
+                            if (trimmedLine.isNotEmpty()) {
+                                block2Lines.add(trimmedLine)
+                            }
+                        }
+                    }
+                }
+
+                // Extract rule content (everything after second %%)
+                val parts = content.split("%%")
+                if (parts.size >= 3) {
+                    val ruleContent = parts.drop(2).joinToString("%%").trim()
+                    includeRuleContent[relativePath] = ruleContent
+                }
+            }
+
+            // Process root VentoLexer.flex file
+            val rootFile = File(sourceDirFile, "VentoLexer.flex")
+            if (rootFile.exists()) {
+                val rootContent = rootFile.readText()
+                val parts = rootContent.split("%%")
+
+                if (parts.size >= 3) {
+                    val beforeFirstPercent = parts[0]
+                    val betweenPercents = parts[1]
+                    val afterSecondPercent = parts.drop(2).joinToString("%%")
+
+                    // Build merged content
+                    val mergedContent =
+                        buildString {
+                            // Original content before first %%
+                            append(beforeFirstPercent.trimEnd())
+
+                            // Add BLOCK 1 content (imports) if any
+                            if (block1Lines.isNotEmpty()) {
+                                append("\n\n// Merged imports from include files\n")
+                                block1Lines.sorted().forEach { line ->
+                                    append(line)
+                                    append("\n")
+                                }
+                            }
+
+                            append("\n%%")
+
+                            // Original content between %% markers
+                            append(betweenPercents)
+
+                            // Add BLOCK 2 content (states) if any
+                            if (block2Lines.isNotEmpty()) {
+                                append("\n// Merged states from include files\n")
+                                block2Lines.sorted().forEach { line ->
+                                    append(line)
+                                    append("\n")
+                                }
+                            }
+
+                            append("\n%%")
+
+                            // Process content after second %%, replacing %include directives
+                            val processedAfterContent =
+                                afterSecondPercent
+                                    .lines()
+                                    .joinToString("\n") { line ->
+                                        val trimmedLine = line.trim()
+                                        if (trimmedLine.startsWith("%include ")) {
+                                            val includePath = trimmedLine.removePrefix("%include ").trim()
+                                            val ruleContent = includeRuleContent[includePath]
+                                            if (ruleContent != null) {
+                                                "\n// Content from $includePath\n$ruleContent"
+                                            } else {
+                                                "// Warning: Could not find content for $includePath"
+                                            }
+                                        } else {
+                                            line
+                                        }
+                                    }
+
+                            append(processedAfterContent)
+                        }
+
+                    // Write merged file
+                    val targetFile = File(tempDirFile, "VentoLexer.flex")
+                    targetFile.writeText(mergedContent)
+                    println("Created merged VentoLexer.flex with content from ${includeFiles.count()} include files")
+                }
+            }
+        }
+    }
+
 // Configure GrammarKit to generate the lexer
 tasks {
+
     generateLexer {
-        sourceFile.set(file("src/main/jflex/VentoLexer.flex"))
+        dependsOn("prepareFlexFiles")
+        sourceFile.set(file("build/tmp/jflex-cleaned/VentoLexer.flex"))
         targetOutputDir.set(file("src/main/gen/org/js/vento/plugin/lexer"))
         purgeOldFiles.set(true)
     }

@@ -56,6 +56,7 @@ class VentoParser : PsiParser {
             VentoLexerTypes.OPEN_COMMENT_CLAUSE, VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
+            VentoLexerTypes.FOR_START -> parseForElement(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -64,13 +65,43 @@ class VentoParser : PsiParser {
         }
     }
 
+    private fun parseForElement(builder: PsiBuilder) {
+        val m = builder.mark()
+        builder.advanceLexer() // consume {{
+
+        // Consume content tokens until we see the end or EOF
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.CLOSE_FOR_KEY ||
+                    builder.tokenType == VentoLexerTypes.FOR_KEY ||
+                    builder.tokenType == VentoLexerTypes.FOR_VALUE ||
+                    builder.tokenType == VentoLexerTypes.FOR_OF ||
+                    builder.tokenType == VentoLexerTypes.FOR_COLLECTION ||
+                    builder.tokenType == VentoLexerTypes.ERROR
+            )
+        ) {
+            builder.advanceLexer()
+        }
+
+        if (builder.tokenType == VentoLexerTypes.FOR_END) {
+            builder.advanceLexer()
+        }
+
+        m.done(VentoParserTypes.VENTO_FOR_ELEMENT)
+    }
+
     private fun parseVariableElement(builder: PsiBuilder) {
         val m = builder.mark()
         builder.advanceLexer() // consume {{ or {{-
 
         // Consume content tokens until we see the end or EOF
-        while (!builder.eof() &&
-            (builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT || builder.tokenType == VentoLexerTypes.PIPE_ELEMENT)
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT ||
+                    builder.tokenType == VentoLexerTypes.PIPE_ELEMENT
+            )
         ) {
             builder.advanceLexer()
         }

@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.highlighting
+package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.javascript.JavaScriptFileType
 import com.intellij.lang.javascript.psi.JSBlockStatement
@@ -13,11 +13,6 @@ import com.intellij.lang.javascript.psi.JSLabeledStatement
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFileFactory
 import com.intellij.psi.PsiWhiteSpace
-
-private const val RULE = "Variable blocks must contain one expression only"
-private const val PIPE_RULE = "$RULE followed by a Vento pipe expression"
-
-private const val PIPE = "|>"
 
 /**
  * Validates JavaScript expressions for use within Vento variable blocks.
@@ -30,7 +25,7 @@ private const val PIPE = "|>"
  * Errors detected during validation are returned as part of a `ValidationResult`,
  * which includes an error message explaining the issue if the validation fails.
  */
-class VentoJavaScriptExpressionValidator {
+class JsExpressionValidator {
     fun isValidExpression(content: String, project: Project): ValidationResult {
         val trimmed = content.trim()
         val rule = if (trimmed.contains(PIPE)) PIPE_RULE else RULE
@@ -64,5 +59,9 @@ class VentoJavaScriptExpressionValidator {
             .getInstance(project)
             .createFileFromText("temp.js", JavaScriptFileType, content) as JSFile
 
-    data class ValidationResult(val isValid: Boolean, val errorMessage: String?)
+    companion object {
+        private const val RULE = "Variable blocks must contain one expression only"
+        private const val PIPE_RULE = "$RULE followed by a Vento pipe expression"
+        private const val PIPE = "|>"
+    }
 }

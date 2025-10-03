@@ -32,6 +32,9 @@ object VentoParserTypes {
     @JvmField
     val VENTO_ELEMENT = VentoParserElementType("VENTO_ELEMENT")
 
+    @JvmField
+    val VENTO_FOR_ELEMENT: IElementType = VentoParserElementType("VENTO_FOR_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -43,6 +46,7 @@ object VentoParserTypes {
                 HTML_ELEMENT -> VentoElementImpl(node)
                 JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VentoVariablePsiElement(node)
+                VENTO_FOR_ELEMENT -> ForBlockElement(node)
                 else -> VentoPsiElementImpl(node)
             }
     }
