@@ -17,8 +17,7 @@ The support includes:
 <h4>syntax highlighting</h4>
 <h4>syntax checking</h4>
 
-For more information visit the
-<a href="https://vento.js.org/">Vento</a>.
+For more information visit <a href="https://vento.js.org/">Vento</a>.
 </div>
 <!-- Plugin description end -->
 <div align="center">
@@ -43,6 +42,9 @@ For more information visit the
 IntelliJ Ultimate and WebStorm IDEs.
 
 ### Implemented Features
+Take a look at the following screenshots to get a better idea of what the plugin can already do.
+The rest of the features are still under development. (see: [backlog](https://github.com/ventojs/webstorm-vento/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature))
+
 #### Vento variables and scripts
 ![vento-syntax-highlighting](docs/assets/variables_and_scripts.png)
 
