@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) 2025 Florian Hehlen & Óscar Otero
  * All rights reserved.
@@ -10,6 +9,9 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
+import org.js.vento.plugin.highlighting.validator.ForBlockValidator
+import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
+import org.js.vento.plugin.parser.ForBlockElement
 import org.js.vento.plugin.parser.VentoVariablePsiElement
 
 /**
@@ -19,7 +21,8 @@ import org.js.vento.plugin.parser.VentoVariablePsiElement
  */
 class VentoAnnotator : Annotator {
     /** Validator used to check JavaScript expression syntax and semantics */
-    private val expressionValidator = VentoJavaScriptExpressionValidator()
+    private val expressionValidator = JsExpressionValidator()
+    private val forBlockValidator = ForBlockValidator()
 
     /**
      * Processes PSI elements to find and validate Vento variable expressions.
@@ -30,6 +33,17 @@ class VentoAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         if (element is VentoVariablePsiElement) {
             validateVariableExpression(element, holder)
+        }
+
+        if (element is ForBlockElement) {
+            val result = forBlockValidator.isValidExpression(element, element.project)
+
+            if (!result.isValid) {
+                holder
+                    .newAnnotation(HighlightSeverity.ERROR, result.errorMessage ?: "Invalid for block")
+                    .range(element.textRange)
+                    .create()
+            }
         }
     }
 
