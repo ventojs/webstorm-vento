@@ -13,6 +13,7 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT_
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.GLOBAL_VARIABLE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.INVALID_STRING_ESCAPE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.KEYWORD
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.LOCAL_VARIABLE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.STATIC_FIELD
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
 import com.intellij.openapi.editor.colors.TextAttributesKey
@@ -52,7 +53,14 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 VentoLexerTypes.VARIABLE_END -> VARIABLE
                 VentoLexerTypes.TEXT -> TEXT
                 VentoLexerTypes.ERROR -> ERROR
-                VentoLexerTypes.PIPE_ELEMENT -> PIPE
+                VentoLexerTypes.PIPE_ELEMENT -> KEY_WORD
+                VentoLexerTypes.FOR_START -> VARIABLE
+                VentoLexerTypes.FOR_KEY -> KEY_WORD
+                VentoLexerTypes.FOR_VALUE -> VENTO_EXPRESSION
+                VentoLexerTypes.CLOSE_FOR_KEY -> KEY_WORD
+                VentoLexerTypes.FOR_OF -> KEY_WORD
+                VentoLexerTypes.FOR_COLLECTION -> VENTO_EXPRESSION
+                VentoLexerTypes.FOR_END -> VARIABLE
                 else -> null
             }
 
@@ -76,6 +84,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
         val TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
         val ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
-        val PIPE = createTextAttributesKey("VENTO_PIPE", KEYWORD)
+        val KEY_WORD = createTextAttributesKey("VENTO_PIPE", KEYWORD)
+        val VENTO_EXPRESSION = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
     }
 }

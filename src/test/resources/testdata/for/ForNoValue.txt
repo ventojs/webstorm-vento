@@ -1,0 +1,7 @@
+Vento File(0,19)
+  VentoPsiElement: VENTO_FOR_ELEMENT(0,19)
+    PsiElement(VENTO_FOR_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_FOR_KEY_TOKEN)(' for')(2,6)
+    PsiElement(VENTO_ERROR_TOKEN)(' of')(6,9)
+    PsiElement(VENTO_FOR_COLLECTION_TOKEN)(' values ')(9,17)
+    PsiElement(VENTO_FOR_END_TOKEN)('}}')(17,19)

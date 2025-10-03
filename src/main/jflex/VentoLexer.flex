@@ -21,16 +21,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 
 
-%state BRACKET
 %state COMMENT
-%state JSON_STRING
-%state JS_OBJECT
-%state JS_REGEX
-%state JS_STRING_BACK_TICK
-%state JS_STRING_DOUBLE_QOUTE
-%state JS_STRING_SINGLE_QUOTE
 %state SCRIPT_CONTENT
-%state VARIABLE_CONTENT
 
 %{
     // Ensure we handle EOF properly
@@ -40,17 +32,19 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 CLOSE_COMMENT_PHRASE = -?#}}
 CLOSE_JAVASCRIPT = }}
-CLOSE_VARIABLE_PHRASE = -?}}
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
+FOR_KEY = "for"
 OPEN_COMMENT_PHRASE = \{\{#-?
 OPEN_JAVASCRIPT = \{\{>
-OPEN_VARIABLE_PHRASE = \{\{-?
+OPEN_VENTO_BLOCK = \{\{-?
 WHITESPACE = [ \t\r\n]+
 
 %{
-  // Tracks nested `{` … `}` depth
   private int objectDepth = 0;
+  private boolean value = false;
+  private boolean collection = false;
+
 %}
 
 
@@ -73,159 +67,30 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {OPEN_VARIABLE_PHRASE}    {
+    {OPEN_VENTO_BLOCK}    {
             yybegin(VARIABLE_CONTENT);
             return VentoLexerTypes.VARIABLE_START;
     }
 
-    [^] { return VentoLexerTypes.ERROR; }
+    \{\{ / [ \t]?"/fr"   {
+            yybegin(FOR_CONTENT);
+            return VentoLexerTypes.FOR_START;
+    }
+
+    \{\{ / .*[/]?{FOR_KEY}    {
+            yybegin(FOR_CONTENT);
+            return VentoLexerTypes.FOR_START;
+    }
+
+    [^] {
+          //System.out.println("YYINITIAL error");
+          return VentoLexerTypes.ERROR;
+      }
 
 }
 
-<VARIABLE_CONTENT> {
-
-   //strings
-   \" {
-            yybegin(JS_STRING_DOUBLE_QOUTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
-
-   ' {
-            yybegin(JS_STRING_SINGLE_QUOTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
-
-   ` {
-            yybegin(JS_STRING_BACK_TICK);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
-
-   // regex segment
-   \/  {
-            yybegin(JS_REGEX);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
-
-   //objects
-   \{ {
-            objectDepth=1;
-            yybegin(JS_OBJECT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
-
-   "|>" {
-           return VentoLexerTypes.PIPE_ELEMENT;
-   }
-
-   \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-
-   [^\/\"'`{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
-
-   {WHITESPACE} {}
-
-   {CLOSE_VARIABLE_PHRASE} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.VARIABLE_END;
-   }
-
-   [^] { return VentoLexerTypes.ERROR; }
-}
-
-<JS_OBJECT> {
-
-    \{ {
-            objectDepth++;
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-    [^}{\"]+ {return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    \} {
-            objectDepth--;
-            if (objectDepth == 0) {
-             yybegin(VARIABLE_CONTENT);
-            }
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-    //single line strings
-    \" {
-            yybegin(JSON_STRING);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<JSON_STRING> {
-
-    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    \" {
-            yybegin(JS_OBJECT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<JS_STRING_DOUBLE_QOUTE> {
-
-    "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    [\"]+ {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<JS_STRING_SINGLE_QUOTE> {
-
-    "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
-    [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    ' {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<JS_STRING_BACK_TICK> {
-
-    [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    ` {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<JS_REGEX> {
-
-    \[ {
-            yybegin(BRACKET);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-    [^\/\[]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
-
-    \/ {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
-
-}
-
-<BRACKET> {
-
-  "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
-  [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
-
-}
+%include includes/tokens-for.flex
+%include includes/tokens-variables.flex
 
 <JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
 
