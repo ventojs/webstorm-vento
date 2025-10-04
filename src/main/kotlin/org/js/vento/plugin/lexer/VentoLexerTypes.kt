@@ -14,19 +14,19 @@ import com.intellij.psi.tree.IElementType
  */
 object VentoLexerTypes {
     @JvmField
-    var OPEN_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_START")
+    var COMMENT_START: IElementType = VentoLexerTokenType("VENTO_COMMENT_START")
 
     @JvmField
-    var CLOSE_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_END")
+    var COMMENT_END: IElementType = VentoLexerTokenType("VENTO_COMMENT_END")
 
     @JvmField
-    var OPEN_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_START")
+    var TRIM_COMMENT_START: IElementType = VentoLexerTokenType("VENTO_TRIM_COMMENT_START")
 
     @JvmField
-    var CLOSE_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_END")
+    var TRIM_COMMENT_END: IElementType = VentoLexerTokenType("VENTO_TRIM_COMMENT_END")
 
     @JvmField
-    var COMMENTED_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENTED_CONTENT")
+    var COMMENT_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENT_CONTENT")
 
     @JvmField
     var JAVASCRIPT_START: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_START")
@@ -81,4 +81,22 @@ object VentoLexerTypes {
 
     @JvmField
     val PIPE_ELEMENT = VentoLexerTokenType("VENTO_PIPE")
+
+    @JvmField
+    val IMPORT_START = VentoLexerTokenType("VENTO_IMPORT_START")
+
+    @JvmField
+    val IMPORT_END = VentoLexerTokenType("VENTO_IMPORT_END")
+
+    @JvmField
+    val EXPORT = VentoLexerTokenType("VENTO_EXPORT")
+
+    @JvmField
+    val IMPORT_VALUES = VentoLexerTokenType("VENTO_IMPORT_VALUES")
+
+    @JvmField
+    val IMPORT_FROM = VentoLexerTokenType("VENTO_IMPORT_FOR")
+
+    @JvmField
+    val IMPORT_FILE = VentoLexerTokenType("VENTO_IMPORT_FILE")
 }
