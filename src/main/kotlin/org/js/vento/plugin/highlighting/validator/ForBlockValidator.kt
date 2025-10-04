@@ -7,8 +7,8 @@ package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.tree.util.children
 import com.intellij.openapi.project.Project
+import org.js.vento.plugin.ForBlockElement
 import org.js.vento.plugin.lexer.VentoLexerTypes
-import org.js.vento.plugin.parser.ForBlockElement
 
 /**
  * Validates JavaScript expressions for use within Vento variable blocks.

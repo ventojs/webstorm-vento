@@ -4,8 +4,9 @@
  *---------------------------------------------------------------------------*/
 package org.js.vento.plugin.lexer;
 
+import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.VentoParserTypes;
+import org.js.vento.plugin.parser.ParserTypes;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %%
@@ -100,7 +101,7 @@ FROM = "from"
           // TODO: consider adding a Vento block token
       }
 
-    {DEFAULT_HTML}    { return VentoParserTypes.HTML_ELEMENT; }
+    {DEFAULT_HTML}    { return ParserTypes.HTML_ELEMENT; }
 
     [^]               { return VentoLexerTypes.ERROR; }
 
@@ -162,7 +163,7 @@ FROM = "from"
 
 <SCRIPT_CONTENT> {
 
-   ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
+   ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
    {CBLOCK} {
             yybegin(YYINITIAL);
             return VentoLexerTypes.JAVASCRIPT_END;

@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.parser
+package org.js.vento.plugin
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
@@ -15,10 +15,11 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
-import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.filetype.VentoFile
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.parser.ParserTypes
+import org.js.vento.plugin.parser.VentoParser
 
 /**
  * Defines the parser for Vento files, integrating key components such as Lexer, Parser, and PSI elements.
@@ -57,7 +58,7 @@ class VentoParserDefinition : ParserDefinition {
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.create(VentoLexerTypes.STRING)
 
-    override fun createElement(node: ASTNode): PsiElement = VentoParserTypes.Factory.createElement(node)
+    override fun createElement(node: ASTNode): PsiElement = ParserTypes.Factory.createElement(node)
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 }

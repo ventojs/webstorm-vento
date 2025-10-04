@@ -7,7 +7,7 @@ package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import org.js.vento.plugin.parser.ForBlockElement
+import org.js.vento.plugin.ForBlockElement
 
 /**
  * Test suite for ForBlockValidator functionality.

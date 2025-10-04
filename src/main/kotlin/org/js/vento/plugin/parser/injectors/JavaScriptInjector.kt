@@ -9,7 +9,7 @@ import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.psi.PsiElement
-import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
+import org.js.vento.plugin.VentoJavaScriptPsiElement
 
 /**
  * Implements a `MultiHostInjector` for handling JavaScript code injection
@@ -28,7 +28,7 @@ import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
  * See also:
  * - `VentoJavaScriptPsiElement` which represents the JavaScript blocks in the PSI tree.
  */
-class VentoJavaScriptInjector : MultiHostInjector {
+class JavaScriptInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         if (context is VentoJavaScriptPsiElement) {
             val contentRange = context.getContentRange()

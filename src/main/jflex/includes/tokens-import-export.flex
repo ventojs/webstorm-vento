@@ -1,9 +1,5 @@
 // BLOCK 1 - START
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.VentoParserTypes;
 import org.js.vento.plugin.lexer.VentoLexerTypes;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
 // BLOCK 1 - END
 %%
 

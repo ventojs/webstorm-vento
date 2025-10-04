@@ -13,14 +13,14 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.util.PsiTreeUtil
-import org.js.vento.plugin.parser.VentoJavaScriptPsiElement
-import org.js.vento.plugin.parser.VentoVariablePsiElement
+import org.js.vento.plugin.VentoJavaScriptPsiElement
+import org.js.vento.plugin.VentoVariablePsiElement
 
 /**
  * Contextual JavaScript injector that creates a shared scope with common
  * Vento context variables and functions available to all blocks.
  */
-class VentoContextualJavaScriptInjector : MultiHostInjector {
+class ContextualJavaScriptInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
         if (!isFirstJavaScriptElementInFile(context)) return
 

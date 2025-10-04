@@ -9,6 +9,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.VentoLexerTypes
 
 /**
@@ -61,7 +62,7 @@ class VentoParser : PsiParser {
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
-                marker.done(VentoParserTypes.VENTO_ELEMENT)
+                marker.done(ParserTypes.VENTO_ELEMENT)
             }
         }
     }
@@ -82,7 +83,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        m.done(VentoParserTypes.IMPORT_ELEMENT)
+        m.done(ParserTypes.IMPORT_ELEMENT)
     }
 
     private fun parseForElement(builder: PsiBuilder) {
@@ -108,7 +109,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        m.done(VentoParserTypes.VENTO_FOR_ELEMENT)
+        m.done(ParserTypes.VENTO_FOR_ELEMENT)
     }
 
     private fun parseVariableElement(builder: PsiBuilder) {
@@ -133,7 +134,7 @@ class VentoParser : PsiParser {
             builder.error("Expected '}}' to close variable")
         }
 
-        m.done(VentoParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
+        m.done(ParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
     }
 
     private fun parseJavaScriptElement(builder: PsiBuilder) {
@@ -143,7 +144,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoParserTypes.JAVASCRIPT_ELEMENT) {
+        if (builder.tokenType == ParserTypes.JAVASCRIPT_ELEMENT) {
             builder.advanceLexer()
         }
 
@@ -151,7 +152,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        marker.done(VentoParserTypes.JAVASCRIPT_ELEMENT)
+        marker.done(ParserTypes.JAVASCRIPT_ELEMENT)
     }
 
     private fun parseCommentBlock(builder: PsiBuilder) {
@@ -174,6 +175,12 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        marker.done(VentoParserTypes.COMMENT_BLOCK)
+        marker.done(ParserTypes.COMMENT_BLOCK)
     }
 }
+
+/**
+ * Represents an element type for the Vento language.
+ * Typically used for syntax/AST nodes in the PSI tree.
+ */
+class VentoParserElementType(debugName: String) : IElementType(debugName, VentoLanguage)
