@@ -17,9 +17,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state BRACKET
 
 
-CLOSE_VENTO_BLOCK = -?}}
-WHITESPACE = [ \t\r\n]+
-
 // BLOCK 2 - END
 %%
 
@@ -66,7 +63,7 @@ WHITESPACE = [ \t\r\n]+
 
    {WHITESPACE} {}
 
-   {CLOSE_VENTO_BLOCK} {
+   {CVAR} {
             yybegin(YYINITIAL);
             return VentoLexerTypes.VARIABLE_END;
    }
@@ -168,3 +165,5 @@ WHITESPACE = [ \t\r\n]+
   [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 
 }
+
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }

@@ -1,4 +1,4 @@
 Vento File(0,26)
   VentoPsiElement: VENTO_COMMENT_BLOCK(0,26)
-    PsiElement(VENTO_COMMENTED_START_TOKEN)('{{#-')(0,4)
-    PsiElement(VENTO_COMMENTED_CONTENT_TOKEN)(' comment\n{{ content }}')(4,26)
+    PsiElement(VENTO_COMMENT_START_TOKEN)('{{#-')(0,4)
+    PsiElement(VENTO_COMMENT_CONTENT_TOKEN)(' comment\n{{ content }}')(4,26)

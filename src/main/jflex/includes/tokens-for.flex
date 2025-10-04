@@ -14,18 +14,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state FOR_ARRAY
 %state FOR_PIPE
 
-
-
-CLOSE_COMMENT_PHRASE = -?#}}
-CLOSE_JAVASCRIPT = }}
-DEFAULT_HTML = [^{]+
-EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 FOR_KEY = "for"
-OPEN_JAVASCRIPT = \{\{>
-OPEN_VENTO_BLOCK = \{\{-?
-WHITESPACE = [ \t\r\n]+
-
-
 
 // BLOCK 2 - END
 %%

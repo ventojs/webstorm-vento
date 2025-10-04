@@ -4,10 +4,8 @@
  *---------------------------------------------------------------------------*/
 package org.js.vento.plugin.lexer;
 
-import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
 import org.js.vento.plugin.parser.VentoParserTypes;
-import org.js.vento.plugin.lexer.VentoLexerTypes;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %%
@@ -18,6 +16,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %function advance
 %type IElementType
 %unicode
+//%debug
 
 
 
@@ -29,16 +28,54 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
     private boolean atEof = false;
 %}
 
+%{
+  private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
+  private static final boolean DEBUG = false;
 
-CLOSE_COMMENT_PHRASE = -?#}}
-CLOSE_JAVASCRIPT = }}
+  /** Enter 's', remembering where we came from (the caller). */
+  private void enter(int s) {
+    int caller = yystate();            // <-- push the *current* state
+    stateStack.push(caller);
+    yybegin(s);
+  }
+
+  /** Return to the caller state saved by the most recent enter(). */
+  private void leave() {
+    if (stateStack.isEmpty())
+      throw new IllegalStateException("leave() with empty state stack");
+    int caller = stateStack.pop();
+    if (DEBUG) System.out.println("leave -> " + caller);
+    yybegin(caller);
+  }
+
+  /** Optional: hard jump (not LIFO) if you need to abort nested states. */
+  private void resetAt(int s) {
+    stateStack.clear();
+    yybegin(s);
+  }
+%}
+
+
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
-FOR_KEY = "for"
-OPEN_COMMENT_PHRASE = \{\{#-?
-OPEN_JAVASCRIPT = \{\{>
-OPEN_VENTO_BLOCK = \{\{-?
 WHITESPACE = [ \t\r\n]+
+
+OBLOCK = "{{"
+CBLOCK = "}}"
+
+OCOMMENT = {OBLOCK}#-?
+CCOMMENT = -?#{CBLOCK}
+
+OJS = {OBLOCK}>
+OVAR = {OBLOCK}-?
+CVAR = -?{CBLOCK}
+
+
+FOR_KEY = "for"
+
+IMPORT = "import"
+EXPORT = "export"
+FROM = "from"
 
 %{
   private int objectDepth = 0;
@@ -57,17 +94,22 @@ WHITESPACE = [ \t\r\n]+
     {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
 
-    {OPEN_COMMENT_PHRASE}    {
-            yybegin(COMMENT);
-            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+    {OBLOCK}[ \t]+{IMPORT}    {
+            yybegin(IMPORT);
+            return VentoLexerTypes.IMPORT_START;
     }
 
-    {OPEN_JAVASCRIPT}    {
+    {OCOMMENT}    {
+            yybegin(COMMENT);
+            return VentoLexerTypes.COMMENT_START;
+    }
+
+    {OJS}    {
             yybegin(SCRIPT_CONTENT);
             return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {OPEN_VENTO_BLOCK}    {
+    {OVAR}    {
             yybegin(VARIABLE_CONTENT);
             return VentoLexerTypes.VARIABLE_START;
     }
@@ -91,13 +133,14 @@ WHITESPACE = [ \t\r\n]+
 
 %include includes/tokens-for.flex
 %include includes/tokens-variables.flex
+%include includes/tokens-import-export.flex
 
-<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
+
 
 <SCRIPT_CONTENT> {
 
    ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
-   {CLOSE_JAVASCRIPT} {
+   {CBLOCK} {
             yybegin(YYINITIAL);
             return VentoLexerTypes.JAVASCRIPT_END;
    }
@@ -107,16 +150,16 @@ WHITESPACE = [ \t\r\n]+
 <COMMENT> {
 
     // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
+    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENT_CONTENT; }
 
     // Handle single characters that might be part of closing sequences
-    "#" { return VentoLexerTypes.COMMENTED_CONTENT; }
-    "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
+    "#" { return VentoLexerTypes.COMMENT_CONTENT; }
+    "-" { return VentoLexerTypes.COMMENT_CONTENT; }
 
-    {CLOSE_COMMENT_PHRASE} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
-    }
+    {CCOMMENT} {
+                yybegin(YYINITIAL);
+                return VentoLexerTypes.COMMENT_END;
+        }
 
 
     [^] {

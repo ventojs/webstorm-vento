@@ -53,7 +53,7 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
 
         when (tokenType) {
-            VentoLexerTypes.OPEN_COMMENT_CLAUSE, VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE -> parseCommentBlock(builder)
+            VentoLexerTypes.COMMENT_START, VentoLexerTypes.TRIM_COMMENT_START -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
             VentoLexerTypes.FOR_START -> parseForElement(builder)
@@ -142,14 +142,14 @@ class VentoParser : PsiParser {
 
         // Consume content tokens
         while (!builder.eof() &&
-            builder.tokenType == VentoLexerTypes.COMMENTED_CONTENT
+            builder.tokenType == VentoLexerTypes.COMMENT_CONTENT
         ) {
             builder.advanceLexer()
         }
 
         // Consume closing token if present
-        if (builder.tokenType == VentoLexerTypes.CLOSE_COMMENT_CLAUSE ||
-            builder.tokenType == VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE
+        if (builder.tokenType == VentoLexerTypes.COMMENT_END ||
+            builder.tokenType == VentoLexerTypes.TRIM_COMMENT_END
         ) {
             builder.advanceLexer()
         }

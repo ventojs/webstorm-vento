@@ -41,11 +41,11 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
-                VentoLexerTypes.OPEN_COMMENT_CLAUSE -> COMMENT
-                VentoLexerTypes.CLOSE_COMMENT_CLAUSE -> COMMENT
-                VentoLexerTypes.OPEN_TRIM_COMMENT_CLAUSE -> COMMENT
-                VentoLexerTypes.CLOSE_TRIM_COMMENT_CLAUSE -> COMMENT
-                VentoLexerTypes.COMMENTED_CONTENT -> COMMENTED_CONTENT
+                VentoLexerTypes.COMMENT_START -> COMMENT
+                VentoLexerTypes.COMMENT_END -> COMMENT
+                VentoLexerTypes.TRIM_COMMENT_START -> COMMENT
+                VentoLexerTypes.TRIM_COMMENT_END -> COMMENT
+                VentoLexerTypes.COMMENT_CONTENT -> COMMENTED_CONTENT
                 VentoLexerTypes.JAVASCRIPT_START -> JAVASCRIPT
                 VentoLexerTypes.JAVASCRIPT_END -> JAVASCRIPT
                 VentoLexerTypes.VARIABLE_START -> VARIABLE
