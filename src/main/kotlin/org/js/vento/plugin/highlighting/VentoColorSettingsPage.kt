@@ -27,9 +27,9 @@ class VentoColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
                 AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
                 AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
-                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
-                AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VENTO_EXPRESSION),
+                AttributesDescriptor("Variable block", VentoSyntaxHighlighter.BLOCK),
+                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE),
+                AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VALUES),
                 AttributesDescriptor("Vento keyword", VentoSyntaxHighlighter.KEY_WORD),
             )
     }
@@ -50,6 +50,9 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
         Vento Blocks:
           {{ for value of collection |> toUpperCase}}
+
+         Vento import:
+         {{ import { component } from "path/to/file.vto" }}
 
         Javascript:
           {{> console.log('Hello World') }}

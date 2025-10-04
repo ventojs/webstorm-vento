@@ -57,12 +57,32 @@ class VentoParser : PsiParser {
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
             VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
             VentoLexerTypes.FOR_START -> parseForElement(builder)
+            VentoLexerTypes.IMPORT_START -> parseImportElement(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(VentoParserTypes.VENTO_ELEMENT)
             }
         }
+    }
+
+    private fun parseImportElement(builder: PsiBuilder) {
+        val m = builder.mark()
+        builder.advanceLexer()
+        while (!builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.IMPORT_KEY ||
+                    builder.tokenType == VentoLexerTypes.IMPORT_VALUES ||
+                    builder.tokenType == VentoLexerTypes.IMPORT_FROM ||
+                    builder.tokenType == VentoLexerTypes.IMPORT_FILE ||
+                    builder.tokenType == VentoLexerTypes.IMPORT_END ||
+                    builder.tokenType == VentoLexerTypes.ERROR
+            )
+        ) {
+            builder.advanceLexer()
+        }
+
+        m.done(VentoParserTypes.IMPORT_ELEMENT)
     }
 
     private fun parseForElement(builder: PsiBuilder) {

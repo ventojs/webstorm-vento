@@ -17,3 +17,5 @@ import com.intellij.lang.ASTNode
 open class VentoPsiElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "VentoPsiElement: ${node.elementType}"
 }
+
+class ImportElement(node: ASTNode) : VentoPsiElementImpl(node)

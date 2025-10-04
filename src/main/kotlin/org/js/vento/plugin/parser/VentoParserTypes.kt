@@ -8,6 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.ImportElement
 import org.js.vento.plugin.VentoPsiElementImpl
 import org.js.vento.plugin.lexer.VentoElementImpl
 
@@ -18,7 +19,7 @@ import org.js.vento.plugin.lexer.VentoElementImpl
  */
 object VentoParserTypes {
     @JvmField
-    val COMMENT_BLOCK: IElementType = VentoParserElementType("VENTO_COMMENT_BLOCK")
+    val COMMENT_BLOCK = VentoParserElementType("VENTO_COMMENT_BLOCK")
 
     @JvmField
     val HTML_ELEMENT = VentoParserElementType("VENTO_HTML_ELEMENT")
@@ -35,6 +36,9 @@ object VentoParserTypes {
     @JvmField
     val VENTO_FOR_ELEMENT: IElementType = VentoParserElementType("VENTO_FOR_ELEMENT")
 
+    @JvmField
+    val IMPORT_ELEMENT: IElementType = VentoParserElementType("VENTO_IMPORT_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -47,6 +51,7 @@ object VentoParserTypes {
                 JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VentoVariablePsiElement(node)
                 VENTO_FOR_ELEMENT -> ForBlockElement(node)
+                IMPORT_ELEMENT -> ImportElement(node)
                 else -> VentoPsiElementImpl(node)
             }
     }

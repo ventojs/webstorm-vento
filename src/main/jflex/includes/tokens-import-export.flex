@@ -11,7 +11,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %state IMPORT
 %state EXPORT
-%state IMPORT_EXPORT
+%state VALUES
 
 OPEN_VENTO_BLOCK = \{\{
 CLOSE_VENTO_BLOCK = }}
@@ -31,15 +31,43 @@ FROM = "from"
 <IMPORT> {
     {WHITESPACE}   {  }
 
-    \{([a-zA-Z]+[_0-9]+[,]?)+} { return VentoLexerTypes.IMPORT_VALUES; }
+    {IMPORT} / [ \t] {
+          yybegin(VALUES);
+          return VentoLexerTypes.IMPORT_KEY;
+    }
 
     {FROM} { return VentoLexerTypes.IMPORT_FROM; }
 
-    [\"][.]?[/]?.*".vto"[\"] {return VentoLexerTypes.IMPORT_FILE;}
+    [\"][.]?[/]?.*".vto"[\"] / {WHITESPACE}{CBLOCK} {
+          yybegin(BLOCK);
+          return VentoLexerTypes.IMPORT_FILE;
+    }
 
     [^] {
-              yybegin(IMPORT_EXPORT);
-              return VentoLexerTypes.ERROR;
-        }
+          yybegin(BLOCK);
+          return VentoLexerTypes.ERROR;
+    }
 }
 
+<VALUES> {
+    {WHITESPACE}   {  }
+
+    \{  { return VentoLexerTypes.IMPORT_VALUES; }
+    \,  { return VentoLexerTypes.IMPORT_VALUES; }
+    \}/ [ \t]+"from"  {
+          yybegin(IMPORT);
+          return VentoLexerTypes.IMPORT_VALUES;
+    }
+
+    [ \t]+ / {FROM} {
+          yybegin(IMPORT);
+    }
+
+    [a-zA-Z_$]+[a-zA-Z_$0-9]+ { return VentoLexerTypes.IMPORT_VALUES; }
+
+    [^] {
+          yybegin(IMPORT);
+          return VentoLexerTypes.ERROR;
+    }
+
+}

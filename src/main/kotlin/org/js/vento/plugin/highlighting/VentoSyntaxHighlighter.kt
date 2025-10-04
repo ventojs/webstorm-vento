@@ -8,6 +8,7 @@
 package org.js.vento.plugin.highlighting
 
 import com.intellij.lexer.Lexer
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.GLOBAL_VARIABLE
@@ -21,7 +22,32 @@ import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributes
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.VentoLexerAdapter
-import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.lexer.VentoLexerTypes.CLOSE_FOR_KEY
+import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_CONTENT
+import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_START
+import org.js.vento.plugin.lexer.VentoLexerTypes.ERROR
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_COLLECTION
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_KEY
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_OF
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_START
+import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_VALUE
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_FILE
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_FROM
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_KEY
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_START
+import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_VALUES
+import org.js.vento.plugin.lexer.VentoLexerTypes.JAVASCRIPT_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.JAVASCRIPT_START
+import org.js.vento.plugin.lexer.VentoLexerTypes.PIPE_ELEMENT
+import org.js.vento.plugin.lexer.VentoLexerTypes.TEXT
+import org.js.vento.plugin.lexer.VentoLexerTypes.TRIM_COMMENT_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.TRIM_COMMENT_START
+import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_ELEMENT
+import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_START
 
 /**
  * Handles syntax highlighting for the Vento language in the IntelliJ Platform.
@@ -41,26 +67,32 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
-                VentoLexerTypes.COMMENT_START -> COMMENT
-                VentoLexerTypes.COMMENT_END -> COMMENT
-                VentoLexerTypes.TRIM_COMMENT_START -> COMMENT
-                VentoLexerTypes.TRIM_COMMENT_END -> COMMENT
-                VentoLexerTypes.COMMENT_CONTENT -> COMMENTED_CONTENT
-                VentoLexerTypes.JAVASCRIPT_START -> JAVASCRIPT
-                VentoLexerTypes.JAVASCRIPT_END -> JAVASCRIPT
-                VentoLexerTypes.VARIABLE_START -> VARIABLE
-                VentoLexerTypes.VARIABLE_ELEMENT -> VARIABLE_ELEMENT
-                VentoLexerTypes.VARIABLE_END -> VARIABLE
-                VentoLexerTypes.TEXT -> TEXT
-                VentoLexerTypes.ERROR -> ERROR
-                VentoLexerTypes.PIPE_ELEMENT -> KEY_WORD
-                VentoLexerTypes.FOR_START -> VARIABLE
-                VentoLexerTypes.FOR_KEY -> KEY_WORD
-                VentoLexerTypes.FOR_VALUE -> VENTO_EXPRESSION
-                VentoLexerTypes.CLOSE_FOR_KEY -> KEY_WORD
-                VentoLexerTypes.FOR_OF -> KEY_WORD
-                VentoLexerTypes.FOR_COLLECTION -> VENTO_EXPRESSION
-                VentoLexerTypes.FOR_END -> VARIABLE
+                COMMENT_START -> COMMENT
+                COMMENT_END -> COMMENT
+                TRIM_COMMENT_START -> COMMENT
+                TRIM_COMMENT_END -> COMMENT
+                COMMENT_CONTENT -> COMMENTED_CONTENT
+                JAVASCRIPT_START -> JAVASCRIPT
+                JAVASCRIPT_END -> JAVASCRIPT
+                VARIABLE_START -> BLOCK
+                VARIABLE_ELEMENT -> VARIABLE
+                VARIABLE_END -> BLOCK
+                TEXT -> PLAIN_TEXT
+                ERROR -> HIGHLIGHT_ERROR
+                PIPE_ELEMENT -> KEY_WORD
+                FOR_START -> BLOCK
+                FOR_KEY -> KEY_WORD
+                FOR_VALUE -> VALUES
+                CLOSE_FOR_KEY -> KEY_WORD
+                FOR_OF -> KEY_WORD
+                FOR_COLLECTION -> VALUES
+                FOR_END -> BLOCK
+                IMPORT_START -> BLOCK
+                IMPORT_END -> BLOCK
+                IMPORT_KEY -> KEY_WORD
+                IMPORT_VALUES -> VALUES
+                IMPORT_FROM -> KEY_WORD
+                IMPORT_FILE -> STRING
                 else -> null
             }
 
@@ -79,12 +111,13 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
         val COMMENT = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
         val COMMENTED_CONTENT = createTextAttributesKey("VENTO_COMMENT", DOC_COMMENT_MARKUP)
         val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", TEMPLATE_LANGUAGE_COLOR)
-        val VARIABLE = createTextAttributesKey("VENTO_VARIABLE", TEMPLATE_LANGUAGE_COLOR)
-        val VARIABLE_ELEMENT = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
-        val TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
+        val BLOCK = createTextAttributesKey("VENTO_VARIABLE", TEMPLATE_LANGUAGE_COLOR)
+        val VARIABLE = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
+        val PLAIN_TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
-        val ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
+        val HIGHLIGHT_ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
         val KEY_WORD = createTextAttributesKey("VENTO_PIPE", KEYWORD)
-        val VENTO_EXPRESSION = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
+        val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
+        val STRING = createTextAttributesKey("VENTO_STRING", DefaultLanguageHighlighterColors.STRING)
     }
 }

@@ -22,6 +22,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %state COMMENT
 %state SCRIPT_CONTENT
+%state BLOCK
 
 %{
     // Ensure we handle EOF properly
@@ -81,6 +82,7 @@ FROM = "from"
   private int objectDepth = 0;
   private boolean value = false;
   private boolean collection = false;
+  private IElementType closeType = null;
 
 %}
 
@@ -91,12 +93,40 @@ FROM = "from"
 
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
     {WHITESPACE}              { return WHITE_SPACE; }
-    {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
+     {OBLOCK} {
+          yypushback(2);
+          yybegin(BLOCK);
+          // TODO: consider adding a Vento block token
+      }
+
+    {DEFAULT_HTML}    { return VentoParserTypes.HTML_ELEMENT; }
+
+    [^]               { return VentoLexerTypes.ERROR; }
+
+}
+
+<BLOCK> {
+    {WHITESPACE}              { }
 
     {OBLOCK}[ \t]+{IMPORT}    {
             yybegin(IMPORT);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.IMPORT_END;
             return VentoLexerTypes.IMPORT_START;
+    }
+
+    {CBLOCK} {
+            try {
+                yybegin(YYINITIAL);
+                if(closeType != null){
+                    return closeType;
+                } else {
+                    return VentoLexerTypes.ERROR;
+                }
+            } finally{
+                closeType = null;
+            }
     }
 
     {OCOMMENT}    {
@@ -124,18 +154,11 @@ FROM = "from"
             return VentoLexerTypes.FOR_START;
     }
 
-    [^] {
-          //System.out.println("YYINITIAL error");
-          return VentoLexerTypes.ERROR;
-      }
-
 }
 
 %include includes/tokens-for.flex
 %include includes/tokens-variables.flex
 %include includes/tokens-import-export.flex
-
-
 
 <SCRIPT_CONTENT> {
 
