@@ -1,0 +1,8 @@
+Vento File(0,38)
+  VentoPsiElement: VENTO_IMPORT_ELEMENT(0,38)
+    PsiElement(VENTO_EXPORT_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_EXPORT_KEY_TOKEN)(' export')(2,9)
+    PsiElement(VENTO_EXPORT_VAR_TOKEN)(' message')(9,17)
+    PsiElement(VENTO_EXPORT_EQUAL_TOKEN)(' =')(17,19)
+    PsiElement(VENTO_EXPORT_VALUE_TOKEN)(' "Hello, world!"')(19,35)
+    PsiElement(VENTO_EXPORT_END_TOKEN)(' }}')(35,38)

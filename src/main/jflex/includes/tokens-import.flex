@@ -6,16 +6,10 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 // BLOCK 2 - START
 
 %state IMPORT
-%state EXPORT
 %state VALUES
-
-OBLOCK = \{\{
-CBLOCK = }}
-EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
-WHITESPACE = [ \t\r\n]+
+%state FILE
 
 IMPORT = "import"
-EXPORT = "export"
 FROM = "from"
 
 // BLOCK 2 - END
@@ -32,17 +26,14 @@ FROM = "from"
           return VentoLexerTypes.IMPORT_KEY;
     }
 
-    {FROM} { return VentoLexerTypes.IMPORT_FROM; }
-
-    [\"][.]?[/]?.*".vto"[\"] / {WHITESPACE}{CBLOCK} {
-          yybegin(BLOCK);
-          return VentoLexerTypes.IMPORT_FILE;
+    {FROM} {
+          yybegin(FILE);
+          return VentoLexerTypes.IMPORT_FROM;
     }
-
 
     [^] {
           yypushback(yylength());
-          yybegin(BLOCK);
+          yybegin(FILE);
     }
 }
 
@@ -70,6 +61,27 @@ FROM = "from"
     [^] {
           yypushback(yylength());
           yybegin(IMPORT);
+    }
+
+}
+
+<FILE> {
+    {WHITESPACE}   {  }
+
+    [\"][.]?[/]?.*".vto"[\"] / {WHITESPACE}{CBLOCK} {
+          yybegin(BLOCK);
+          return VentoLexerTypes.IMPORT_FILE;
+    }
+
+    [^ \t].+ / {WHITESPACE}{CBLOCK} {
+
+              yybegin(BLOCK);
+              return VentoLexerTypes.BAD_TOKEN;
+    }
+
+    [^] {
+          yypushback(yylength());
+          yybegin(BLOCK);
     }
 
 }

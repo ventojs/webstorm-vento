@@ -11,6 +11,7 @@ import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.lexer.VentoLexerTypes.BAD_TOKEN
 
 /**
  * A parser implementation for Vento template files.
@@ -59,6 +60,7 @@ class VentoParser : PsiParser {
             VentoLexerTypes.VARIABLE_START -> parseVariable(builder)
             VentoLexerTypes.FOR_START -> parseFor(builder)
             VentoLexerTypes.IMPORT_START -> parseImport(builder)
+            VentoLexerTypes.EXPORT_START -> parseExport(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -74,8 +76,21 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.IMPORT_KEY, "Expected 'import' keyword")
         expect(builder, VentoLexerTypes.IMPORT_VALUES, "Expected import values", true)
         expect(builder, VentoLexerTypes.IMPORT_FROM, "Expected 'from' keyword")
-        expect(builder, VentoLexerTypes.IMPORT_FILE, "Expected vento file path")
+        expect(builder, VentoLexerTypes.IMPORT_FILE, "Expected vento(.vto) path string")
         expect(builder, VentoLexerTypes.IMPORT_END, "Expected '}}' ")
+
+        m.done(ParserTypes.IMPORT_ELEMENT)
+    }
+
+    private fun parseExport(builder: PsiBuilder) {
+        val m = builder.mark()
+
+        expect(builder, VentoLexerTypes.EXPORT_START, "Expected '{{' ")
+        expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
+        expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
+        expect(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
+        expect(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
+        expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
 
         m.done(ParserTypes.IMPORT_ELEMENT)
     }
@@ -187,6 +202,10 @@ private fun expect(builder: PsiBuilder, expected: IElementType, message: String,
         } else {
             true
         }
+    }
+    if (builder.tokenType == BAD_TOKEN) {
+        builder.advanceLexer()
+        builder.error(message)
     }
     builder.error(message)
     return false

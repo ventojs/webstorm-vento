@@ -84,6 +84,7 @@ FROM = "from"
   private boolean value = false;
   private boolean collection = false;
   private IElementType closeType = null;
+  private boolean impotFrom = false;
 
 %}
 
@@ -103,18 +104,27 @@ FROM = "from"
 
     {DEFAULT_HTML}    { return ParserTypes.HTML_ELEMENT; }
 
-    [^]               { return VentoLexerTypes.ERROR; }
+    [^]               {
+          return VentoLexerTypes.ERROR;
+    }
 
 }
 
 <BLOCK> {
     {WHITESPACE}              { }
 
-    {OBLOCK}[ \t]+{IMPORT}    {
+    {OBLOCK}{WHITESPACE}{IMPORT}    {
             yybegin(IMPORT);
             yypushback(yylength()-2);
             closeType = VentoLexerTypes.IMPORT_END;
             return VentoLexerTypes.IMPORT_START;
+    }
+
+    {OBLOCK}{WHITESPACE}{EXPORT}    {
+                yybegin(EXPORT);
+                yypushback(yylength()-2);
+                closeType = VentoLexerTypes.EXPORT_END;
+                return VentoLexerTypes.EXPORT_START;
     }
 
     {CBLOCK} {
@@ -160,6 +170,7 @@ FROM = "from"
 %include includes/tokens-for.flex
 %include includes/tokens-variables.flex
 %include includes/tokens-import.flex
+%include includes/tokens-export.flex
 
 <SCRIPT_CONTENT> {
 

@@ -99,4 +99,25 @@ object VentoLexerTypes {
 
     @JvmField
     val IMPORT_FILE = VentoLexerTokenType("VENTO_IMPORT_FILE")
+
+    @JvmField
+    val EXPORT_START = VentoLexerTokenType("VENTO_EXPORT_START")
+
+    @JvmField
+    val EXPORT_END = VentoLexerTokenType("VENTO_EXPORT_END")
+
+    @JvmField
+    val EXPORT_KEY = VentoLexerTokenType("VENTO_EXPORT_KEY")
+
+    @JvmField
+    val EXPORT_VAR = VentoLexerTokenType("VENTO_EXPORT_VAR")
+
+    @JvmField
+    val EXPORT_EQ = VentoLexerTokenType("VENTO_EXPORT_EQUAL")
+
+    @JvmField
+    val EXPORT_VALUE = VentoLexerTokenType("VENTO_EXPORT_VALUE")
+
+    @JvmField
+    val BAD_TOKEN = VentoLexerTokenType("VENTO_BAD_TOKEN")
 }

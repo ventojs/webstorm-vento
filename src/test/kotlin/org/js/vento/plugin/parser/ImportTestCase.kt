@@ -70,6 +70,14 @@ class ImportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    /**
+     *
+     */
+    fun testMissingOpenString() {
+        val code = "{{ import foo from \"./file.vto }}"
+        doCodeTest(code)
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/import"
 
     override fun includeRanges(): Boolean = true

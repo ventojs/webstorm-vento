@@ -51,8 +51,11 @@ class VentoColorSettingsPage : ColorSettingsPage {
         Vento Blocks:
           {{ for value of collection |> toUpperCase}}
 
-         Vento import:
-         {{ import { component } from "path/to/file.vto" }}
+        Vento import:
+          {{ import { component } from "path/to/file.vto" }}
+
+        Vento import:
+          {{ export message = "Hello World!" }}
 
         Javascript:
           {{> console.log('Hello World') }}
