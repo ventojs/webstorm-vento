@@ -95,7 +95,7 @@ object VentoLexerTypes {
     val IMPORT_VALUES = VentoLexerTokenType("VENTO_IMPORT_VALUES")
 
     @JvmField
-    val IMPORT_FROM = VentoLexerTokenType("VENTO_IMPORT_FOR")
+    val IMPORT_FROM = VentoLexerTokenType("VENTO_IMPORT_FROM")
 
     @JvmField
     val IMPORT_FILE = VentoLexerTokenType("VENTO_IMPORT_FILE")

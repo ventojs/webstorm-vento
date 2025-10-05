@@ -55,10 +55,10 @@ class VentoParser : PsiParser {
 
         when (tokenType) {
             VentoLexerTypes.COMMENT_START, VentoLexerTypes.TRIM_COMMENT_START -> parseCommentBlock(builder)
-            VentoLexerTypes.JAVASCRIPT_START -> parseJavaScriptElement(builder)
-            VentoLexerTypes.VARIABLE_START -> parseVariableElement(builder)
-            VentoLexerTypes.FOR_START -> parseForElement(builder)
-            VentoLexerTypes.IMPORT_START -> parseImportElement(builder)
+            VentoLexerTypes.JAVASCRIPT_START -> parseJavaScript(builder)
+            VentoLexerTypes.VARIABLE_START -> parseVariable(builder)
+            VentoLexerTypes.FOR_START -> parseFor(builder)
+            VentoLexerTypes.IMPORT_START -> parseImport(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -67,26 +67,20 @@ class VentoParser : PsiParser {
         }
     }
 
-    private fun parseImportElement(builder: PsiBuilder) {
+    private fun parseImport(builder: PsiBuilder) {
         val m = builder.mark()
-        builder.advanceLexer()
-        while (!builder.eof() &&
-            (
-                builder.tokenType == VentoLexerTypes.IMPORT_KEY ||
-                    builder.tokenType == VentoLexerTypes.IMPORT_VALUES ||
-                    builder.tokenType == VentoLexerTypes.IMPORT_FROM ||
-                    builder.tokenType == VentoLexerTypes.IMPORT_FILE ||
-                    builder.tokenType == VentoLexerTypes.IMPORT_END ||
-                    builder.tokenType == VentoLexerTypes.ERROR
-            )
-        ) {
-            builder.advanceLexer()
-        }
+
+        expect(builder, VentoLexerTypes.IMPORT_START, "Expected '{{' ")
+        expect(builder, VentoLexerTypes.IMPORT_KEY, "Expected 'import' keyword")
+        expect(builder, VentoLexerTypes.IMPORT_VALUES, "Expected import values", true)
+        expect(builder, VentoLexerTypes.IMPORT_FROM, "Expected 'from' keyword")
+        expect(builder, VentoLexerTypes.IMPORT_FILE, "Expected vento file path")
+        expect(builder, VentoLexerTypes.IMPORT_END, "Expected '}}' ")
 
         m.done(ParserTypes.IMPORT_ELEMENT)
     }
 
-    private fun parseForElement(builder: PsiBuilder) {
+    private fun parseFor(builder: PsiBuilder) {
         val m = builder.mark()
         builder.advanceLexer() // consume {{
 
@@ -112,7 +106,7 @@ class VentoParser : PsiParser {
         m.done(ParserTypes.VENTO_FOR_ELEMENT)
     }
 
-    private fun parseVariableElement(builder: PsiBuilder) {
+    private fun parseVariable(builder: PsiBuilder) {
         val m = builder.mark()
         builder.advanceLexer() // consume {{ or {{-
 
@@ -137,7 +131,7 @@ class VentoParser : PsiParser {
         m.done(ParserTypes.JAVACRIPT_VARIABLE_ELEMENT)
     }
 
-    private fun parseJavaScriptElement(builder: PsiBuilder) {
+    private fun parseJavaScript(builder: PsiBuilder) {
         val marker = builder.mark()
 
         if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_START) {
@@ -184,3 +178,16 @@ class VentoParser : PsiParser {
  * Typically used for syntax/AST nodes in the PSI tree.
  */
 class VentoParserElementType(debugName: String) : IElementType(debugName, VentoLanguage)
+
+private fun expect(builder: PsiBuilder, expected: IElementType, message: String, expectMultipleTokens: Boolean = false): Boolean {
+    if (builder.tokenType == expected) {
+        builder.advanceLexer()
+        return if (expectMultipleTokens && builder.tokenType == expected) {
+            return expect(builder, expected, message, true)
+        } else {
+            true
+        }
+    }
+    builder.error(message)
+    return false
+}

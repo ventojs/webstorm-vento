@@ -9,8 +9,8 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 %state EXPORT
 %state VALUES
 
-OPEN_VENTO_BLOCK = \{\{
-CLOSE_VENTO_BLOCK = }}
+OBLOCK = \{\{
+CBLOCK = }}
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 
@@ -39,9 +39,10 @@ FROM = "from"
           return VentoLexerTypes.IMPORT_FILE;
     }
 
+
     [^] {
+          yypushback(yylength());
           yybegin(BLOCK);
-          return VentoLexerTypes.ERROR;
     }
 }
 
@@ -50,20 +51,25 @@ FROM = "from"
 
     \{  { return VentoLexerTypes.IMPORT_VALUES; }
     \,  { return VentoLexerTypes.IMPORT_VALUES; }
-    \}/ [ \t]+"from"  {
+    \} / {WHITESPACE}{FROM}  {
           yybegin(IMPORT);
           return VentoLexerTypes.IMPORT_VALUES;
     }
 
-    [ \t]+ / {FROM} {
-          yybegin(IMPORT);
+    {FROM}.*{CBLOCK} {
+        yypushback(yylength());
+        yybegin(IMPORT);
     }
 
-    [a-zA-Z_$]+[a-zA-Z_$0-9]+ { return VentoLexerTypes.IMPORT_VALUES; }
+    [a-zA-Z_$]+[a-zA-Z_$0-9]*  { return VentoLexerTypes.IMPORT_VALUES; }
+    [a-zA-Z_$]+[a-zA-Z_$0-9]* / {WHITESPACE}{FROM} {
+          yybegin(IMPORT);
+          return VentoLexerTypes.IMPORT_VALUES;
+    }
 
     [^] {
+          yypushback(yylength());
           yybegin(IMPORT);
-          return VentoLexerTypes.ERROR;
     }
 
 }

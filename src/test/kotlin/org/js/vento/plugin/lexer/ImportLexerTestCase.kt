@@ -18,4 +18,16 @@ class ImportLexerTestCase(name: String) : BaseLexerTestCase(name) {
             "{{ import foo from \"./afile.vto\" }}",
             arrayOf("{{", "import", "foo", "from", "\"./afile.vto\"", "}}"),
         )
+
+    fun `test no value import`() =
+        lexAndTest(
+            "{{ import from \"./afile.vto\" }}",
+            arrayOf("{{", "import", "from", "\"./afile.vto\"", "}}"),
+        )
+
+    fun `test no file import`() =
+        lexAndTest(
+            "{{ import foo from  }}",
+            arrayOf("{{", "import", "foo", "from", "}}"),
+        )
 }

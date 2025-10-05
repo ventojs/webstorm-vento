@@ -159,7 +159,7 @@ FROM = "from"
 
 %include includes/tokens-for.flex
 %include includes/tokens-variables.flex
-%include includes/tokens-import-export.flex
+%include includes/tokens-import.flex
 
 <SCRIPT_CONTENT> {
 
