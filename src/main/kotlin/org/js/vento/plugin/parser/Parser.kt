@@ -62,6 +62,7 @@ class VentoParser : PsiParser {
             VentoLexerTypes.IMPORT_START -> parseImport(builder)
             VentoLexerTypes.EXPORT_START -> parseExport(builder)
             VentoLexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
+            VentoLexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -112,6 +113,19 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.EXPORT_CLOSE_END, "Expected '}}' ")
 
         m.done(ParserTypes.EXPORT_CLOSE_ELEMENT)
+    }
+
+    private fun parseExportFunction(builder: PsiBuilder) {
+        val m = builder.mark()
+
+        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_START, "Expected '{{' ")
+        expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
+        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_KEY, "Expected 'function' keyword")
+        expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected function name")
+        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])", true)
+        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_END, "Expected '}}' ")
+
+        m.done(ParserTypes.EXPORT_FUNCTION_ELEMENT)
     }
 
     private fun parseFor(builder: PsiBuilder) {

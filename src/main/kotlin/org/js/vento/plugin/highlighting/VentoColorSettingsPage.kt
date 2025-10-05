@@ -31,6 +31,7 @@ class VentoColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE),
                 AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VALUES),
                 AttributesDescriptor("Vento keyword", VentoSyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("Vento args", VentoSyntaxHighlighter.ARGS),
             )
     }
 
@@ -59,6 +60,10 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
           {{ export message }}
           <h1>Hello World!</h1>
+          {{ /export }}
+
+          {{ export function sayHello(name) }}
+          <h1>Hello {{ name }}!</h1>
           {{ /export }}
 
         Javascript:

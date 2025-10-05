@@ -78,6 +78,7 @@ FOR_KEY = "for"
 
 IMPORT = "import"
 EXPORT = "export"
+FUNCTION = "function"
 FROM = "from"
 
 %{
@@ -85,7 +86,6 @@ FROM = "from"
   private boolean value = false;
   private boolean collection = false;
   private IElementType closeType = null;
-  private boolean impotFrom = false;
 
 %}
 
@@ -121,6 +121,13 @@ FROM = "from"
             return VentoLexerTypes.IMPORT_START;
     }
 
+    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION}    {
+            yybegin(EXPORT_FUNCTION_BLOCK);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.EXPORT_FUNCTION_END;
+            return VentoLexerTypes.EXPORT_FUNCTION_START;
+    }
+
     {OBLOCK}{OWS}{EXPORT}    {
             yybegin(EXPORT);
             yypushback(yylength()-2);
@@ -128,12 +135,6 @@ FROM = "from"
             return VentoLexerTypes.EXPORT_START;
     }
 
-    {OBLOCK}{OWS}{EXPORT} / .*{OBLOCK}{OWS}[/]{EXPORT}    {
-            yybegin(EXPORT);
-            yypushback(yylength()-2);
-            closeType = VentoLexerTypes.EXPORT_BLOCK_END;
-            return VentoLexerTypes.EXPORT_BLOCK_START;
-    }
 
     {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
            yybegin(EXPORT_CLOSE);

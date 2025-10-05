@@ -4,7 +4,7 @@ Vento File(0,33)
     PsiElement(VENTO_IMPORT_KEY_TOKEN)(' import')(2,9)
     PsiElement(VENTO_IMPORT_VALUES_TOKEN)(' foo')(9,13)
     PsiElement(VENTO_IMPORT_FROM_TOKEN)(' from')(13,18)
-    PsiElement(VENTO_BAD_TOKEN_TOKEN)(' "./file.vto')(18,30)
+    PsiElement(VENTO_UNKNOWN_TOKEN)(' "./file.vto')(18,30)
     PsiErrorElement:Expected vento(.vto) path string(30,30)
       <empty list>
     PsiElement(VENTO_IMPORT_END_TOKEN)(' }}')(30,33)

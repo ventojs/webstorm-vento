@@ -9,6 +9,7 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 %state EXPORT_CLOSE
 %state EXPORT_VALUE
 %state EXPORT_BLOCK_MODE
+%state EXPORT_FUNCTION_BLOCK
 
 EXPORT = "export"
 // Simple identifiers and string literals used in export value
@@ -28,7 +29,7 @@ OWS =[ \t\n\r]*
           return VentoLexerTypes.EXPORT_KEY;
     }
 
-    {EXPORT}{OWS}{CBLOCK}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
+    {EXPORT}{WHITESPACE}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
           yybegin(EXPORT_BLOCK_MODE);
           yypushback(yylength()-6);
           return VentoLexerTypes.EXPORT_KEY;
@@ -86,3 +87,27 @@ OWS =[ \t\n\r]*
           yybegin(BLOCK);
     }
 }
+
+<EXPORT_FUNCTION_BLOCK> {
+
+    {WHITESPACE}   { }
+
+    {EXPORT} { return VentoLexerTypes.EXPORT_KEY; }
+
+    {FUNCTION} { return VentoLexerTypes.EXPORT_FUNCTION_KEY; }
+
+    {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
+
+    "("{IDENT}?([,]{IDENT})*")" { return VentoLexerTypes.EXPORT_FUNCTION_ARGS; }
+
+    {CBLOCK} {
+         yybegin(BLOCK);
+         yypushback(yylength());
+    }
+
+    [^] {
+         return VentoLexerTypes.UNKNOWN;
+    }
+}
+
+

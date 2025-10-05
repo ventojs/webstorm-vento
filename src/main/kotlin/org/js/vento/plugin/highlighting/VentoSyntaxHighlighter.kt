@@ -32,6 +32,10 @@ import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_END
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_EQ
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_ARGS
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_KEY
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_KEY
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_VALUE
@@ -111,6 +115,10 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_CLOSE_START -> BLOCK
                 EXPORT_CLOSE_END -> BLOCK
                 EXPORT_CLOSE_KEY -> KEY_WORD
+                EXPORT_FUNCTION_KEY -> KEY_WORD
+                EXPORT_FUNCTION_ARGS -> ARGS
+                EXPORT_FUNCTION_END -> BLOCK
+                EXPORT_FUNCTION_START -> BLOCK
                 else -> null
             }
 
@@ -135,6 +143,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
         val HIGHLIGHT_ERROR = createTextAttributesKey("VENTO_ERROR", INVALID_STRING_ESCAPE)
         val KEY_WORD = createTextAttributesKey("VENTO_PIPE", KEYWORD)
+        val ARGS = createTextAttributesKey("VENTO_ARGS", DefaultLanguageHighlighterColors.PARAMETER)
         val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
         val STRING = createTextAttributesKey("VENTO_STRING", DefaultLanguageHighlighterColors.STRING)
     }

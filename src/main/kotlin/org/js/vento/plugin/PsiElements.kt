@@ -31,6 +31,8 @@ class ExportOpenElement(node: ASTNode) : VentoPsiElementImpl(node)
 
 class ExportCloseElement(node: ASTNode) : VentoPsiElementImpl(node)
 
+class ExportFunctionElement(node: ASTNode) : VentoPsiElementImpl(node)
+
 class ForBlockElement(node: ASTNode) : VentoPsiElementImpl(node)
 
 /**

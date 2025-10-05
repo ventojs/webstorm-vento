@@ -12,4 +12,10 @@ class ExportLexerTestCase(name: String) : BaseLexerTestCase(name) {
             "{{ export message = \"Hello, world!\" }}",
             arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "}}"),
         )
+
+    fun `test function import`() =
+        lexAndTest(
+            "{{ export function message (name) }}foo{{/export}}",
+            arrayOf("{{", "export", "function", "message", "(name)", "}}", "foo", "{{", "/export", "}}"),
+        )
 }
