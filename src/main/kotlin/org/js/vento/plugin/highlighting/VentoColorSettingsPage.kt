@@ -54,8 +54,12 @@ class VentoColorSettingsPage : ColorSettingsPage {
         Vento import:
           {{ import { component } from "path/to/file.vto" }}
 
-        Vento import:
+        Vento export:
           {{ export message = "Hello World!" }}
+
+          {{ export message }}
+          <h1>Hello World!</h1>
+          {{ /export }}
 
         Javascript:
           {{> console.log('Hello World') }}

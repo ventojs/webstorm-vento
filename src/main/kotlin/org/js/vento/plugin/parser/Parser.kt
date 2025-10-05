@@ -11,7 +11,7 @@ import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.VentoLexerTypes
-import org.js.vento.plugin.lexer.VentoLexerTypes.BAD_TOKEN
+import org.js.vento.plugin.lexer.VentoLexerTypes.UNKNOWN
 
 /**
  * A parser implementation for Vento template files.
@@ -61,6 +61,7 @@ class VentoParser : PsiParser {
             VentoLexerTypes.FOR_START -> parseFor(builder)
             VentoLexerTypes.IMPORT_START -> parseImport(builder)
             VentoLexerTypes.EXPORT_START -> parseExport(builder)
+            VentoLexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -88,11 +89,29 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.EXPORT_START, "Expected '{{' ")
         expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
-        expect(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
-        expect(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
+        val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
+        val hasVal = optional(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
         expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
 
-        m.done(ParserTypes.IMPORT_ELEMENT)
+        if ((hasEq && !hasVal) || (!hasEq && hasVal)) {
+            builder.error("Expected value after '='")
+        }
+
+        if (hasEq && hasVal) {
+            m.done(ParserTypes.EXPORT_ELEMENT)
+        } else {
+            m.done(ParserTypes.EXPORT_OPEN_ELEMENT)
+        }
+    }
+
+    private fun parseExportClose(builder: PsiBuilder) {
+        val m = builder.mark()
+
+        expect(builder, VentoLexerTypes.EXPORT_CLOSE_START, "Expected '{{/' ")
+        expect(builder, VentoLexerTypes.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
+        expect(builder, VentoLexerTypes.EXPORT_CLOSE_END, "Expected '}}' ")
+
+        m.done(ParserTypes.EXPORT_CLOSE_ELEMENT)
     }
 
     private fun parseFor(builder: PsiBuilder) {
@@ -195,18 +214,36 @@ class VentoParser : PsiParser {
 class VentoParserElementType(debugName: String) : IElementType(debugName, VentoLanguage)
 
 private fun expect(builder: PsiBuilder, expected: IElementType, message: String, expectMultipleTokens: Boolean = false): Boolean {
-    if (builder.tokenType == expected) {
+    return if (builder.tokenType == expected) {
         builder.advanceLexer()
         return if (expectMultipleTokens && builder.tokenType == expected) {
-            return expect(builder, expected, message, true)
+            expect(builder, expected, message, true)
         } else {
             true
         }
-    }
-    if (builder.tokenType == BAD_TOKEN) {
-        builder.advanceLexer()
+    } else {
+        if (builder.tokenType == UNKNOWN) {
+            builder.advanceLexer()
+        }
         builder.error(message)
+        false
     }
-    builder.error(message)
-    return false
+}
+
+private fun optional(builder: PsiBuilder, expected: IElementType, message: String, expectMultipleTokens: Boolean = false): Boolean {
+    return if (builder.tokenType == expected) {
+        builder.advanceLexer()
+        return if (expectMultipleTokens && builder.tokenType == expected) {
+            expect(builder, expected, message, true)
+        } else {
+            true
+        }
+    } else {
+        if (builder.tokenType == UNKNOWN) {
+            builder.advanceLexer()
+            builder.error(message)
+            return false
+        }
+        false
+    }
 }

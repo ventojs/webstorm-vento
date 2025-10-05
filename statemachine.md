@@ -156,6 +156,7 @@ stateDiagram-v2
     export --> function
     export --> async
     exportVar --> exportEquals
+    exportVar --> close
     exportVar --> pipe
     exportEquals --> exportValue
     exportValue --> close

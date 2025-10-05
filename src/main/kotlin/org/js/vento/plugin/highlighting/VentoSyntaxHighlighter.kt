@@ -27,6 +27,9 @@ import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_END
 import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.ERROR
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_END
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_KEY
+import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_END
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_EQ
 import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_KEY
@@ -105,6 +108,9 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_VAR -> VALUES
                 EXPORT_EQ -> KEY_WORD
                 EXPORT_VALUE -> VALUES
+                EXPORT_CLOSE_START -> BLOCK
+                EXPORT_CLOSE_END -> BLOCK
+                EXPORT_CLOSE_KEY -> KEY_WORD
                 else -> null
             }
 

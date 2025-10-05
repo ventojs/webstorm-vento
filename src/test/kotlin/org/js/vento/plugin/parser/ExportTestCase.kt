@@ -14,6 +14,16 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testVariableBlockExport() {
+        val code =
+            """
+            {{ export message }}
+            Hello, world!
+            {{ /export }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/import"
 
     override fun includeRanges(): Boolean = true

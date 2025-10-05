@@ -61,6 +61,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
+OWS = [ \t\r\n]*
 
 OBLOCK = "{{"
 CBLOCK = "}}"
@@ -120,11 +121,25 @@ FROM = "from"
             return VentoLexerTypes.IMPORT_START;
     }
 
-    {OBLOCK}{WHITESPACE}{EXPORT}    {
-                yybegin(EXPORT);
-                yypushback(yylength()-2);
-                closeType = VentoLexerTypes.EXPORT_END;
-                return VentoLexerTypes.EXPORT_START;
+    {OBLOCK}{OWS}{EXPORT}    {
+            yybegin(EXPORT);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.EXPORT_END;
+            return VentoLexerTypes.EXPORT_START;
+    }
+
+    {OBLOCK}{OWS}{EXPORT} / .*{OBLOCK}{OWS}[/]{EXPORT}    {
+            yybegin(EXPORT);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.EXPORT_BLOCK_END;
+            return VentoLexerTypes.EXPORT_BLOCK_START;
+    }
+
+    {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
+           yybegin(EXPORT_CLOSE);
+           yypushback(yylength()-2);
+           closeType = VentoLexerTypes.EXPORT_CLOSE_END;
+           return VentoLexerTypes.EXPORT_CLOSE_START;
     }
 
     {CBLOCK} {

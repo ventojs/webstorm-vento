@@ -6,12 +6,15 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 // BLOCK 2 - START
 
 %state EXPORT
+%state EXPORT_CLOSE
 %state EXPORT_VALUE
+%state EXPORT_BLOCK_MODE
 
 EXPORT = "export"
 // Simple identifiers and string literals used in export value
 IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
 STRING = [\"][^\"\n\r]*[\"]
+OWS =[ \t\n\r]*
 
 // BLOCK 2 - END
 %%
@@ -25,9 +28,13 @@ STRING = [\"][^\"\n\r]*[\"]
           return VentoLexerTypes.EXPORT_KEY;
     }
 
-    // Fallback to block if not actually an export keyword
+    {EXPORT}{OWS}{CBLOCK}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
+          yybegin(EXPORT_BLOCK_MODE);
+          yypushback(yylength()-6);
+          return VentoLexerTypes.EXPORT_KEY;
+    }
+
     [^] {
-          System.out.println("ERR1!");
           yypushback(yylength());
           yybegin(BLOCK);
     }
@@ -36,20 +43,46 @@ STRING = [\"][^\"\n\r]*[\"]
 <EXPORT_VALUE> {
     {WHITESPACE}   {  }
 
-   // Basic tokens for a simple variable export: name = "value"
     {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
     "=" { return VentoLexerTypes.EXPORT_EQ; }
     {STRING} { return VentoLexerTypes.EXPORT_VALUE; }
 
-    // When we hit the close-block token sequence, let the outer state handle it
     {CBLOCK} {
           yybegin(BLOCK);
           yypushback(yylength());
     }
 
-    // Any other single character, consume as generic content to avoid no-match errors
     [^] {
-          System.out.println("ERR2!");
-          return VentoLexerTypes.ERROR; }
+          return VentoLexerTypes.ERROR;
+    }
 
+}
+
+<EXPORT_BLOCK_MODE> {
+    {WHITESPACE}   {  }
+
+    {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
+
+    {CBLOCK} {
+         yybegin(BLOCK);
+         yypushback(yylength());
+    }
+
+    [^] {
+         return VentoLexerTypes.UNKNOWN;
+    }
+}
+
+<EXPORT_CLOSE> {
+    {WHITESPACE}   {  }
+
+    [/]{EXPORT} / {OWS}{CBLOCK} {
+          yybegin(BLOCK);
+          return VentoLexerTypes.EXPORT_CLOSE_KEY;
+    }
+
+    [^] {
+          yypushback(yylength());
+          yybegin(BLOCK);
+    }
 }

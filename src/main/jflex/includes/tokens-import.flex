@@ -74,9 +74,8 @@ FROM = "from"
     }
 
     [^ \t].+ / {WHITESPACE}{CBLOCK} {
-
-              yybegin(BLOCK);
-              return VentoLexerTypes.BAD_TOKEN;
+          yybegin(BLOCK);
+          return VentoLexerTypes.UNKNOWN;
     }
 
     [^] {
