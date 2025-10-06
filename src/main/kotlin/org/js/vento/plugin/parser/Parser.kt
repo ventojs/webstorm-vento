@@ -92,6 +92,10 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
         val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
         val hasVal = optional(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
+        if (builder.tokenType == VentoLexerTypes.PIPE_ELEMENT) {
+            expect(builder, VentoLexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
+            expect(builder, VentoLexerTypes.VARIABLE_ELEMENT, "Expected pipe (|>)", true)
+        }
         expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
 
         if ((hasEq && !hasVal) || (!hasEq && hasVal)) {

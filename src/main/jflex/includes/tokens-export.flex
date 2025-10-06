@@ -16,6 +16,7 @@ EXPORT = "export"
 IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
 STRING = [\"][^\"\n\r]*[\"]
 OWS =[ \t\n\r]*
+PIPE = "|>"
 
 // BLOCK 2 - END
 %%
@@ -48,13 +49,18 @@ OWS =[ \t\n\r]*
     "=" { return VentoLexerTypes.EXPORT_EQ; }
     {STRING} { return VentoLexerTypes.EXPORT_VALUE; }
 
+    {PIPE} {
+         yypushback(yylength());
+         enter(PIPE);
+    }
+
     {CBLOCK} {
           yybegin(BLOCK);
           yypushback(yylength());
     }
 
     [^] {
-          return VentoLexerTypes.ERROR;
+          return VentoLexerTypes.UNKNOWN;
     }
 
 }
@@ -100,9 +106,14 @@ OWS =[ \t\n\r]*
 
     "("{IDENT}?([,]{IDENT})*")" { return VentoLexerTypes.EXPORT_FUNCTION_ARGS; }
 
-    {CBLOCK} {
-         yybegin(BLOCK);
+    {PIPE} {
          yypushback(yylength());
+         enter(PIPE);
+    }
+
+    {CBLOCK} {
+         yypushback(yylength());
+         yybegin(BLOCK);
     }
 
     [^] {
