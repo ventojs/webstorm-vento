@@ -22,17 +22,17 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
    //strings
    \" {
             yybegin(JS_STRING_DOUBLE_QOUTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    ' {
             yybegin(JS_STRING_SINGLE_QUOTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    ` {
             yybegin(JS_STRING_BACK_TICK);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    // regex segment
@@ -87,54 +87,54 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
     //single line strings
     \" {
             yybegin(JSON_STRING);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }
 
 <JSON_STRING> {
 
-    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^\"]+ { return VentoLexerTypes.STRING;}
 
     \" {
             yybegin(JS_OBJECT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }
 
 <JS_STRING_DOUBLE_QOUTE> {
 
-    "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    "\\\"" { return VentoLexerTypes.STRING;}
 
-    [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^\\\"]+ { return VentoLexerTypes.STRING;}
 
     [\"]+ {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }
 
 <JS_STRING_SINGLE_QUOTE> {
 
-    "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
-    [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    "\\'" { return VentoLexerTypes.STRING;}
+    [^']+ { return VentoLexerTypes.STRING;}
 
     ' {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }
 
 <JS_STRING_BACK_TICK> {
 
-    [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^`]+ { return VentoLexerTypes.STRING;}
 
     ` {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }

@@ -23,15 +23,16 @@ import javax.swing.Icon
 class VentoColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
-            arrayOf<AttributesDescriptor>(
-                AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
+            arrayOf(
+                AttributesDescriptor("Args", VentoSyntaxHighlighter.ARGS),
+                AttributesDescriptor("Block / Comment", VentoSyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Block / JavaScript", VentoSyntaxHighlighter.JAVASCRIPT),
+                AttributesDescriptor("Block / Variable", VentoSyntaxHighlighter.BLOCK),
                 AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
-                AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Variable block", VentoSyntaxHighlighter.BLOCK),
+                AttributesDescriptor("Expression", VentoSyntaxHighlighter.VALUES),
+                AttributesDescriptor("Keyword", VentoSyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("String", VentoSyntaxHighlighter.STRING),
                 AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE),
-                AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VALUES),
-                AttributesDescriptor("Vento keyword", VentoSyntaxHighlighter.KEY_WORD),
-                AttributesDescriptor("Vento args", VentoSyntaxHighlighter.ARGS),
             )
     }
 

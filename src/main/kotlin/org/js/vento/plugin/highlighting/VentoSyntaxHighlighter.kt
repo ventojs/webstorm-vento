@@ -22,6 +22,7 @@ import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributes
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.VentoLexerAdapter
+import org.js.vento.plugin.lexer.VentoLexerTypes
 import org.js.vento.plugin.lexer.VentoLexerTypes.CLOSE_FOR_KEY
 import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_END
@@ -119,6 +120,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_FUNCTION_ARGS -> ARGS
                 EXPORT_FUNCTION_END -> BLOCK
                 EXPORT_FUNCTION_START -> BLOCK
+                VentoLexerTypes.STRING -> STRING
                 else -> null
             }
 

@@ -29,7 +29,7 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
     {FUNC_PARAM} { return VentoLexerTypes.VARIABLE_ELEMENT; }
     \. { return VentoLexerTypes.VARIABLE_ELEMENT; }
     {REGEX} { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    {STRING} { return VentoLexerTypes.VARIABLE_ELEMENT; }
+    {STRING} { return VentoLexerTypes.STRING; }
 
     {CBLOCK} {
           yypushback(yylength());

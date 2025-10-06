@@ -91,7 +91,12 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
         val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
-        val hasVal = optional(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
+        val hasVal =
+            if (builder.tokenType == VentoLexerTypes.EXPORT_VALUE) {
+                optional(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
+            } else {
+                optional(builder, VentoLexerTypes.STRING, "Expected value", true)
+            }
         if (builder.tokenType == VentoLexerTypes.PIPE_ELEMENT) {
             expect(builder, VentoLexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
             expect(builder, VentoLexerTypes.VARIABLE_ELEMENT, "Expected pipe (|>)", true)
@@ -167,7 +172,8 @@ class VentoParser : PsiParser {
             !builder.eof() &&
             (
                 builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT ||
-                    builder.tokenType == VentoLexerTypes.PIPE_ELEMENT
+                    builder.tokenType == VentoLexerTypes.PIPE_ELEMENT ||
+                    builder.tokenType == VentoLexerTypes.STRING
             )
         ) {
             builder.advanceLexer()
