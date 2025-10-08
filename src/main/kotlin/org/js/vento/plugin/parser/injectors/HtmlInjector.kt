@@ -14,7 +14,7 @@ import org.js.vento.plugin.VentoElementImpl
 /**
  * Injects HTML language into default content blocks of Vento templates.
  *
- * The default content (outside of Vento-specific constructs like comments, variables, and JS blocks)
+ * The default content (outside Vento-specific constructs like comments, variables, and JS blocks)
  * is represented by VentoElementImpl PSI elements. This injector delegates their content to the
  * IntelliJ HTML parser for proper highlighting and features.
  */

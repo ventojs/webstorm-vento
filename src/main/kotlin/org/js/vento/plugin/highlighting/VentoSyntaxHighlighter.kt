@@ -16,11 +16,12 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.INVALID_STRI
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.KEYWORD
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.LOCAL_VARIABLE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.STATIC_FIELD
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.TEMPLATE_LANGUAGE_COLOR
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
+import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
+import com.intellij.ui.JBColor
 import org.js.vento.plugin.lexer.VentoLexerAdapter
 import org.js.vento.plugin.lexer.VentoLexerTypes
 import org.js.vento.plugin.lexer.VentoLexerTypes.CLOSE_FOR_KEY
@@ -62,6 +63,7 @@ import org.js.vento.plugin.lexer.VentoLexerTypes.TRIM_COMMENT_START
 import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_ELEMENT
 import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_END
 import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_START
+import java.awt.Color
 
 /**
  * Handles syntax highlighting for the Vento language in the IntelliJ Platform.
@@ -136,10 +138,18 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
     }
 
     companion object {
+        val ventoSky = JBColor("sky", Color(12, 138, 183))
+        val ventoNight = JBColor("night", Color(2, 2, 124))
+        val ventoPink = JBColor("pink", Color(255, 0, 124))
+        val ventoGray = JBColor("gray", Color(28, 32, 40))
+        val ventoLightRed = JBColor("light-red", Color(244, 100, 99))
+        val ventoLightGray = JBColor("light-gray", Color(157, 166, 187))
+        val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))
+        val JSBLOCK = createTextAttributesKey("JS_BLOCK", TextAttributes(ventoPink, ventoGray, null, null, 0))
         val COMMENT = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
         val COMMENTED_CONTENT = createTextAttributesKey("VENTO_COMMENT", DOC_COMMENT_MARKUP)
-        val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", TEMPLATE_LANGUAGE_COLOR)
-        val BLOCK = createTextAttributesKey("VENTO_VARIABLE", TEMPLATE_LANGUAGE_COLOR)
+        val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", JSBLOCK)
+        val BLOCK = createTextAttributesKey("VENTO_VARIABLE", VBLOCK)
         val VARIABLE = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
         val PLAIN_TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
         val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
