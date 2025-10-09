@@ -36,6 +36,12 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
           leave();
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] { return VentoLexerTypes.UNKNOWN; }
 }
 

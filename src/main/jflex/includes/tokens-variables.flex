@@ -64,6 +64,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.VARIABLE_END;
    }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
    [^] { return VentoLexerTypes.ERROR; }
 }
 
@@ -84,6 +90,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     //single line strings
     \" {
             yybegin(JSON_STRING);
@@ -101,6 +113,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.STRING;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
 }
 
 <JS_STRING_DOUBLE_QOUTE> {
@@ -114,6 +132,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.STRING;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
 }
 
 <JS_STRING_SINGLE_QUOTE> {
@@ -126,6 +150,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.STRING;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
 }
 
 <JS_STRING_BACK_TICK> {
@@ -136,6 +166,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             yybegin(VARIABLE_CONTENT);
             return VentoLexerTypes.STRING;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
 }
 
@@ -153,6 +189,11 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
             return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 }
 
 <BRACKET> {
@@ -160,6 +201,11 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
   "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
   [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 
+  <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 }
 
 <JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }

@@ -36,6 +36,13 @@ PIPE = "|>"
           return VentoLexerTypes.EXPORT_KEY;
     }
 
+
+    <<EOF>> {
+          // Unterminated pipe at EOF: reset and consume safely
+          yybegin(YYINITIAL);
+          return VentoLexerTypes.ERROR;
+    }
+
     [^] {
           yypushback(yylength());
           yybegin(BLOCK);
@@ -59,6 +66,12 @@ PIPE = "|>"
           yypushback(yylength());
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
           return VentoLexerTypes.UNKNOWN;
     }
@@ -75,6 +88,12 @@ PIPE = "|>"
          yypushback(yylength());
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
          return VentoLexerTypes.UNKNOWN;
     }
@@ -88,6 +107,11 @@ PIPE = "|>"
           return VentoLexerTypes.EXPORT_CLOSE_KEY;
     }
 
+    <<EOF>> {
+          // Unterminated pipe at EOF: reset and consume safely
+          yybegin(YYINITIAL);
+          return VentoLexerTypes.ERROR;
+    }
     [^] {
           yypushback(yylength());
           yybegin(BLOCK);
@@ -115,6 +139,12 @@ PIPE = "|>"
          yypushback(yylength());
          yybegin(BLOCK);
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
          return VentoLexerTypes.UNKNOWN;

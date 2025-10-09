@@ -144,16 +144,15 @@ FROM = "from"
     }
 
     {CBLOCK} {
-            try {
-                yybegin(YYINITIAL);
-                if(closeType != null){
-                    return closeType;
-                } else {
-                    return VentoLexerTypes.ERROR;
-                }
-            } finally{
-                closeType = null;
-            }
+           yybegin(YYINITIAL);
+           IElementType ct = closeType;
+           closeType = null;
+//           System.out.println(ct);
+           if(ct != null){
+               return ct;
+           } else {
+               return VentoLexerTypes.ERROR;
+           }
     }
 
     {OCOMMENT}    {
@@ -181,6 +180,11 @@ FROM = "from"
             return VentoLexerTypes.FOR_START;
     }
 
+    [^] {
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.ERROR;
+    }
+
 }
 
 %include includes/tokens-for.flex
@@ -193,8 +197,13 @@ FROM = "from"
 
    ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
    {CBLOCK} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.JAVASCRIPT_END;
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.JAVASCRIPT_END;
+   }
+
+   [^] {
+       yybegin(YYINITIAL);
+       return VentoLexerTypes.ERROR;
    }
 
 }
@@ -209,9 +218,9 @@ FROM = "from"
     "-" { return VentoLexerTypes.COMMENT_CONTENT; }
 
     {CCOMMENT} {
-                yybegin(YYINITIAL);
-                return VentoLexerTypes.COMMENT_END;
-        }
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.COMMENT_END;
+    }
 
 
     [^] {
@@ -222,11 +231,3 @@ FROM = "from"
 
 }
 
-// CRITICAL: Handle EOF explicitly
-<<EOF>>             {
-    if (!atEof) {
-        atEof = true;
-        return null;
-    }
-    return null;
-}

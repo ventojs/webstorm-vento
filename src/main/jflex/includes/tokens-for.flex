@@ -38,6 +38,12 @@ FOR_KEY = "for"
           return VentoLexerTypes.FOR_END;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^/] {
           //System.out.println("for error : "+yytext());
           yybegin(YYINITIAL);
@@ -66,6 +72,12 @@ FOR_KEY = "for"
               return VentoLexerTypes.ERROR;
           }
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
           //System.out.println("value error");
@@ -110,6 +122,12 @@ FOR_KEY = "for"
           }
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
           //System.out.println("collection error:" + yytext());
           yybegin(FOR_VALUE);
@@ -135,6 +153,12 @@ FOR_KEY = "for"
             }
             return VentoLexerTypes.FOR_COLLECTION;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
             yybegin(FOR_COLLECTION);
@@ -170,6 +194,12 @@ FOR_KEY = "for"
           return VentoLexerTypes.FOR_COLLECTION;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
             yybegin(FOR_COLLECTION);
             yypushback(yylength());
@@ -185,6 +215,12 @@ FOR_KEY = "for"
           yybegin(FOR_CONTENT);
           return VentoLexerTypes.FOR_COLLECTION;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
           yybegin(FOR_CONTENT);

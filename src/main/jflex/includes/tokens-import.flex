@@ -31,6 +31,12 @@ FROM = "from"
           return VentoLexerTypes.IMPORT_FROM;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
           yypushback(yylength());
           yybegin(FILE);
@@ -58,6 +64,12 @@ FROM = "from"
           return VentoLexerTypes.IMPORT_VALUES;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
           yypushback(yylength());
           yybegin(IMPORT);
@@ -77,6 +89,12 @@ FROM = "from"
           yybegin(BLOCK);
           return VentoLexerTypes.UNKNOWN;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
           yypushback(yylength());
