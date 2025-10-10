@@ -17,13 +17,15 @@ import org.js.vento.plugin.lexer.LexerTypes;
 %%
 
 <EXPRESSION> {
-
+    [ \t]+ { System.out.println("SPACE"); }
    //strings
-   [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
+   \"([^\"\\]|\\.)*\" {
+          System.out.println("STRING");
+          return LexerTypes.STRING; }
 
-   [\'][^\'\n\r]*[\'] { return LexerTypes.STRING; }
+   \'([^\'\\]|\\.)*\' { return LexerTypes.STRING; }
 
-   [\`][^\`\n\r]*[\`] { return LexerTypes.STRING; }
+   \`([^\`\\]|\\.)*\` { return LexerTypes.STRING; }
 
    \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTypes.REGEX; }
 
@@ -38,21 +40,33 @@ import org.js.vento.plugin.lexer.LexerTypes;
    }
 
    "}}" {
+          System.out.println("CLOSE");
         yypushback(yylength());
         leave();
    }
 
    "|>" {
+          System.out.println("PIPE");
         enter(EXPRESSION);
         return LexerTypes.PIPE_ELEMENT;
    }
 
-   [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
-   [ \t]+ { }
+   [^\/\"'`(){} \t\n\r]+ {
+          System.out.println("EXPR");
+          return LexerTypes.EXPRESSION; }
 
-   <<EOF>> { leave(); }
 
-   [^] { leave(); }
+   <<EOF>> {
+          System.out.println("UNKNOWN STATE");
+        leave();
+        return LexerTypes.UNKNOWN;
+   }
+
+   [^] {
+          System.out.println("UNKNOWN STATE");
+        leave();
+        return LexerTypes.UNKNOWN;
+   }
 }
 
 <EXP_OBJECT> {

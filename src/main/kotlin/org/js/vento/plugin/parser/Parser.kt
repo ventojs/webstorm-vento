@@ -91,7 +91,7 @@ class VentoParser : PsiParser {
         expect(builder, LexerTypes.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, LexerTypes.EXPORT_VAR, "Expected variable", true)
 
-        val hasEq = optional(builder, LexerTypes.EXPORT_EQ, "Expected '=' keyword")
+        val hasEq = optional(builder, LexerTypes.EQUAL, "Expected '=' keyword")
         var hasVal = false
         if (hasEq) hasVal = parseExpression(builder)
         if (hasEq && !hasVal) builder.error("Expected expression after '='")
@@ -122,8 +122,7 @@ class VentoParser : PsiParser {
                     builder.tokenType == LexerTypes.STRING ||
                     builder.tokenType == LexerTypes.REGEX ||
                     builder.tokenType == LexerTypes.BRACKET ||
-                    builder.tokenType == LexerTypes.DOT ||
-                    builder.tokenType == LexerTypes.ERROR
+                    builder.tokenType == LexerTypes.DOT
             )
         ) {
             builder.advanceLexer()

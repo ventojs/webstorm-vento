@@ -85,6 +85,7 @@ object LexerTypes {
     @JvmField
     var FOR_END: IElementType = LexerTokenType("VENTO_FOR_END")
 
+    // TODO: rename to PIPE
     @JvmField
     val PIPE_ELEMENT = LexerTokenType("VENTO_PIPE")
 
@@ -143,6 +144,9 @@ object LexerTypes {
     val EXPORT_EQ = LexerTokenType("VENTO_EXPORT_EQUAL")
 
     @JvmField
+    val EQUAL = LexerTokenType("VENTO_EQUAL")
+
+    @JvmField
     val EXPORT_VALUE = LexerTokenType("VENTO_EXPORT_VALUE")
 
     @JvmField
@@ -153,4 +157,7 @@ object LexerTypes {
 
     @JvmField
     val DOT = LexerTokenType("VENTO_DOT")
+
+    @JvmField
+    val IDENTIFIER = LexerTokenType("VENTO_IDENTIFIER")
 }

@@ -144,7 +144,7 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
      */
     private fun returnFirstAsForBlockElement(block: String): ForBlockElement {
         val file: PsiFile? = myFixture.configureByText("test.vto", block)
-        file?.node?.getChildren(null)?.forEach { println(it.text) }
+        // file?.node?.getChildren(null)?.forEach { println(it.text) }
         val element = ForBlockElement(file?.node?.firstChildNode!!)
         return element
     }
