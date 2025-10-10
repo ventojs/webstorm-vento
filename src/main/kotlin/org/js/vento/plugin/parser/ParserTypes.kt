@@ -26,6 +26,9 @@ import org.js.vento.plugin.VentoVariablePsiElement
  */
 object ParserTypes {
     @JvmField
+    val EXPRESSION = VentoParserElementType("VENTO_EXPRESSION")
+
+    @JvmField
     val COMMENT_BLOCK = VentoParserElementType("VENTO_COMMENT_BLOCK")
 
     @JvmField

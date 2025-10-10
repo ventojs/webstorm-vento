@@ -53,8 +53,10 @@ PIPE = "|>"
     {WHITESPACE}   {  }
 
     {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
-    "=" { return VentoLexerTypes.EXPORT_EQ; }
-    {STRING} { return VentoLexerTypes.EXPORT_VALUE; }
+    "=" {
+          enter(EXPRESSION);
+          return VentoLexerTypes.EXPORT_EQ;
+      }
 
     {PIPE} {
          yypushback(yylength());

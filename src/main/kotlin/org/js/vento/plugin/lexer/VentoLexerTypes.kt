@@ -35,6 +35,9 @@ object VentoLexerTypes {
     var JAVASCRIPT_END: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_END")
 
     @JvmField
+    val EXPRESSION = VentoLexerTokenType("VENTO_EXPRESSION")
+
+    @JvmField
     var VARIABLE_START: IElementType = VentoLexerTokenType("VENTO_VARIABLE_START")
 
     @JvmField
@@ -51,6 +54,9 @@ object VentoLexerTypes {
 
     @JvmField
     val STRING = VentoLexerTokenType("VENTO_STRING")
+
+    @JvmField
+    val REGEX = VentoLexerTokenType("VENTO_REGEX")
 
     @JvmField
     val TEXT = VentoLexerTokenType("VENTO_HTML_TAG")
@@ -141,4 +147,10 @@ object VentoLexerTypes {
 
     @JvmField
     val UNKNOWN = VentoLexerTokenType("VENTO_UNKNOWN")
+
+    @JvmField
+    val BRACKET = VentoLexerTokenType("VENTO_BRACKET")
+
+    @JvmField
+    val DOT = VentoLexerTokenType("VENTO_DOT")
 }

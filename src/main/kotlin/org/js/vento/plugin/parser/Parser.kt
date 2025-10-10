@@ -53,7 +53,7 @@ class VentoParser : PsiParser {
 
     private fun parseElement(builder: PsiBuilder) {
         val tokenType = builder.tokenType
-
+        builder.setDebugMode(true)
         when (tokenType) {
             VentoLexerTypes.COMMENT_START, VentoLexerTypes.TRIM_COMMENT_START -> parseCommentBlock(builder)
             VentoLexerTypes.JAVASCRIPT_START -> parseJavaScript(builder)
@@ -90,28 +90,48 @@ class VentoParser : PsiParser {
         expect(builder, VentoLexerTypes.EXPORT_START, "Expected '{{' ")
         expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
-        val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
-        val hasVal =
-            if (builder.tokenType == VentoLexerTypes.EXPORT_VALUE) {
-                optional(builder, VentoLexerTypes.EXPORT_VALUE, "Expected value")
-            } else {
-                optional(builder, VentoLexerTypes.STRING, "Expected value", true)
-            }
-        if (builder.tokenType == VentoLexerTypes.PIPE_ELEMENT) {
-            expect(builder, VentoLexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
-            expect(builder, VentoLexerTypes.VARIABLE_ELEMENT, "Expected pipe (|>)", true)
-        }
-        expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
 
-        if ((hasEq && !hasVal) || (!hasEq && hasVal)) {
-            builder.error("Expected value after '='")
+        val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
+        var hasVal = false
+        if (hasEq) hasVal = parseExpression(builder)
+        if (hasEq && !hasVal) builder.error("Expected expression after '='")
+
+        while (!builder.eof() && builder.tokenType == VentoLexerTypes.PIPE_ELEMENT) {
+            val hasPipe = optional(builder, VentoLexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
+            var hasPipeExpression = false
+            if (hasPipe) hasPipeExpression = parseExpression(builder)
+            if (hasPipe && !hasPipeExpression) builder.error("Expected expression after '|>'")
         }
+
+        expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
 
         if (hasEq && hasVal) {
             m.done(ParserTypes.EXPORT_ELEMENT)
         } else {
             m.done(ParserTypes.EXPORT_OPEN_ELEMENT)
         }
+    }
+
+    private fun parseExpression(builder: PsiBuilder): Boolean {
+        val m = builder.mark()
+
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == VentoLexerTypes.EXPRESSION ||
+                    builder.tokenType == VentoLexerTypes.STRING ||
+                    builder.tokenType == VentoLexerTypes.REGEX ||
+                    builder.tokenType == VentoLexerTypes.BRACKET ||
+                    builder.tokenType == VentoLexerTypes.DOT ||
+                    builder.tokenType == VentoLexerTypes.ERROR
+            )
+        ) {
+            builder.advanceLexer()
+        }
+
+        m.done(ParserTypes.EXPRESSION)
+
+        return true
     }
 
     private fun parseExportClose(builder: PsiBuilder) {

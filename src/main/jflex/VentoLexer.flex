@@ -17,6 +17,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %function advance
 %type IElementType
 %unicode
+%char
 //%debug
 
 
@@ -28,6 +29,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %{
     // Ensure we handle EOF properly
     private boolean atEof = false;
+    StringBuilder buf = new StringBuilder();
 %}
 
 %{
@@ -192,6 +194,7 @@ FROM = "from"
 %include includes/tokens-import.flex
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
+%include includes/tokens-expression.flex
 
 <SCRIPT_CONTENT> {
 

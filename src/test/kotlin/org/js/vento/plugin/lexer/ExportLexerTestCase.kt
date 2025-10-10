@@ -28,18 +28,47 @@ class ExportLexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test export with pipe 2`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" |> filter((n) => n % 2 === 0).toString() }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "filter", "((n) => n % 2 === 0).toString()", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "message",
+                "=",
+                "\"Hello, world!\"",
+                "|>",
+                "filter",
+                "(",
+                "(",
+                "n",
+                ")",
+                "=>",
+                "n",
+                "%",
+                "2",
+                "===",
+                "0",
+                ")",
+                ".toString",
+                "(",
+                ")",
+                "}}",
+            ),
         )
 
     fun `test export with pipe 3`() =
         lexAndTest(
-            "{{ export message = \"Hello, world!\" |> !/[/\\\"}]/.test('foo/bar') }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "!/[/\\\"}]/.test('foo/bar')", "}}"),
+            "{{ export message = \"Hello, world!\" |> !/[/\"\\]}]/.test('foo/bar') }}",
+            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "!", "/[/\"\\]}]/", ".test", "(", "'foo/bar'", ")", "}}"),
         )
 
     fun `test export with pipe 4`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" |> JSON.stringify }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "JSON", ".", "stringify", "}}"),
+            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "JSON.stringify", "}}"),
+        )
+
+    fun `test export with expression`() =
+        lexAndTest(
+            "{{ export foo = JSON.parse(\"{}\") }}",
+            arrayOf("{{", "export", "foo", "=", "JSON.parse", "(", "\"{}\"", ")", "}}"),
         )
 }
