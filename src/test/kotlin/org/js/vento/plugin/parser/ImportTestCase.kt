@@ -24,6 +24,15 @@ class ImportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     }
 
     /**
+     * Tests import with destructured named imports.
+     * Example: {{ import { foo } from "./afile.vto" }}
+     */
+    fun testNamedImportError() {
+        val code = "{{ import { foo  from \"./afile.vto\" }}"
+        doCodeTest(code)
+    }
+
+    /**
      * Tests import with multiple destructured named imports.
      * Example: {{ import { foo,bar } from "./afile.vto" }}
      */

@@ -11,6 +11,8 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 
 IMPORT = "import"
 FROM = "from"
+IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
+OWS =[ \t\n\r]*
 
 // BLOCK 2 - END
 %%
@@ -46,28 +48,32 @@ FROM = "from"
 <VALUES> {
     {WHITESPACE}   {  }
 
-    \{  { return VentoLexerTypes.IMPORT_VALUES; }
-    \,  { return VentoLexerTypes.IMPORT_VALUES; }
-    \} / {WHITESPACE}{FROM}  {
+    "{"{OWS}{IMP_ID}{OWS}(,{OWS}{IMP_ID}{OWS})*"}" {
           yybegin(IMPORT);
           return VentoLexerTypes.IMPORT_VALUES;
     }
+//    \{  { return VentoLexerTypes.IMPORT_VALUES; }
+    \,  { return VentoLexerTypes.IMPORT_VALUES; }
+//    \} / {WHITESPACE}{FROM}  {
+//          yybegin(IMPORT);
+//          return VentoLexerTypes.IMPORT_VALUES;
+//    }
 
     {FROM}.*{CBLOCK} {
         yypushback(yylength());
         yybegin(IMPORT);
     }
 
-    [a-zA-Z_$]+[a-zA-Z_$0-9]*  { return VentoLexerTypes.IMPORT_VALUES; }
-    [a-zA-Z_$]+[a-zA-Z_$0-9]* / {WHITESPACE}{FROM} {
+    {IMP_ID}  { return VentoLexerTypes.IMPORT_VALUES; }
+    {IMP_ID} / {WHITESPACE}{FROM} {
           yybegin(IMPORT);
           return VentoLexerTypes.IMPORT_VALUES;
     }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
+
+              yybegin(IMPORT);
+              return VentoLexerTypes.UNKNOWN;
         }
 
     [^] {
@@ -80,7 +86,7 @@ FROM = "from"
 <FILE> {
     {WHITESPACE}   {  }
 
-    [\"][.]?[/]?.*".vto"[\"] / {WHITESPACE}{CBLOCK} {
+    [\"][.]?[/]?.*[\"] / {WHITESPACE}{CBLOCK} {
           yybegin(BLOCK);
           return VentoLexerTypes.IMPORT_FILE;
     }

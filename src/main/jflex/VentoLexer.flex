@@ -26,11 +26,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state SCRIPT_CONTENT
 %state BLOCK
 
-%{
-    // Ensure we handle EOF properly
-    private boolean atEof = false;
-    StringBuilder buf = new StringBuilder();
-%}
 
 %{
   private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
