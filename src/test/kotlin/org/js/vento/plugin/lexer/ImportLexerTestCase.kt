@@ -42,4 +42,10 @@ class ImportLexerTestCase(name: String) : BaseLexerTestCase(name) {
             "{{ import foo from  }}",
             arrayOf("{{", "import", "foo", "from", "}}"),
         )
+
+    fun `test renamed import`() =
+        lexAndTest(
+            "{{ import { foo as bar } from \"baz\" }}",
+            arrayOf("{{", "import", "{ foo as bar }", "from", "\"baz\"", "}}"),
+        )
 }
