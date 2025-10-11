@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class HTMLLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class HTMLTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing html `() {
         lexAndTest("hello <span>world</span>", arrayOf("hello <span>world</span>"))
     }

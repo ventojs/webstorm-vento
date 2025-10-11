@@ -6,7 +6,7 @@
 package org.js.vento.plugin.lexer
 
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class ExportLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class ExportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple export`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" }}",

@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 
@@ -23,13 +23,13 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
 
     {WHITESPACE}   {  }
 
-    {PIPE} / .*{CBLOCK} { return VentoLexerTypes.PIPE_ELEMENT; }
+    {PIPE} / .*{CBLOCK} { return LexerTypes.PIPE_ELEMENT; }
 
-    {IDENT} { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    {FUNC_PARAM} { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    \. { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    {REGEX} { return VentoLexerTypes.VARIABLE_ELEMENT; }
-    {STRING} { return VentoLexerTypes.STRING; }
+    {IDENT} { return LexerTypes.VARIABLE_ELEMENT; }
+    {FUNC_PARAM} { return LexerTypes.VARIABLE_ELEMENT; }
+    \. { return LexerTypes.VARIABLE_ELEMENT; }
+    {REGEX} { return LexerTypes.VARIABLE_ELEMENT; }
+    {STRING} { return LexerTypes.STRING; }
 
     {CBLOCK} {
           yypushback(yylength());
@@ -37,12 +37,12 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
     }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
-    [^] { return VentoLexerTypes.UNKNOWN; }
+    [^] { return LexerTypes.UNKNOWN; }
 }
 
 

@@ -19,7 +19,7 @@ import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
  * It checks the syntax and semantics of variable expressions and provides error annotations
  * when invalid expressions are detected.
  */
-class VentoAnnotator : Annotator {
+class Annotator : Annotator {
     /** Validator used to check JavaScript expression syntax and semantics */
     private val expressionValidator = JsExpressionValidator()
     private val forBlockValidator = ForBlockValidator()

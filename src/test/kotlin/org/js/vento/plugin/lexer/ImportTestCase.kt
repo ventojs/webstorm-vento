@@ -6,7 +6,7 @@
 package org.js.vento.plugin.lexer
 
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class ImportLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class ImportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple import`() =
         lexAndTest(
             "{{ import { foo } from \"./afile.vto\" }}",

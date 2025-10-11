@@ -13,7 +13,7 @@ import com.intellij.lexer.FlexLexer
  * It assumes there's a generated Java class named VentoLexer
  * from a corresponding .flex file (VentoLexer.flex).
  */
-class VentoLexerAdapter : FlexAdapter(createLexer()) {
+class LexerAdapter : FlexAdapter(createLexer()) {
     companion object {
         fun createLexer(): FlexLexer = VentoLexer(null) as FlexLexer
 

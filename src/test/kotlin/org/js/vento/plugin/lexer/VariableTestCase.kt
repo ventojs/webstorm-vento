@@ -12,7 +12,7 @@ package org.js.vento.plugin.lexer
  * Each test includes a short description of the scenario and the expected tokenization.
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class VariableLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     // ---------------------------
     // Basics: literals & variables
     // ---------------------------

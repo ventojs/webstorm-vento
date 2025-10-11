@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -21,191 +21,191 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 
    //strings
    \" {
-            yybegin(JS_STRING_DOUBLE_QOUTE);
-            return VentoLexerTypes.STRING;
-   }
+               yybegin(JS_STRING_DOUBLE_QOUTE);
+               return LexerTypes.STRING;
+      }
 
    ' {
-            yybegin(JS_STRING_SINGLE_QUOTE);
-            return VentoLexerTypes.STRING;
-   }
+               yybegin(JS_STRING_SINGLE_QUOTE);
+               return LexerTypes.STRING;
+      }
 
    ` {
-            yybegin(JS_STRING_BACK_TICK);
-            return VentoLexerTypes.STRING;
-   }
+               yybegin(JS_STRING_BACK_TICK);
+               return LexerTypes.STRING;
+      }
 
    // regex segment
    \/  {
-            yybegin(JS_REGEX);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
+               yybegin(JS_REGEX);
+               return LexerTypes.VARIABLE_ELEMENT;
+      }
 
    //objects
    \{ {
-            objectDepth=1;
-            yybegin(JS_OBJECT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-   }
+               objectDepth=1;
+               yybegin(JS_OBJECT);
+               return LexerTypes.VARIABLE_ELEMENT;
+      }
 
    "|>" {
-           return VentoLexerTypes.PIPE_ELEMENT;
-   }
+              return LexerTypes.PIPE_ELEMENT;
+      }
 
-   \- / [^}] {return VentoLexerTypes.VARIABLE_ELEMENT;}
+   \- / [^}] {return LexerTypes.VARIABLE_ELEMENT;}
 
 
-   [^\/\"'`{}\- \t]+ { return VentoLexerTypes.VARIABLE_ELEMENT; }
+   [^\/\"'`{}\- \t]+ { return LexerTypes.VARIABLE_ELEMENT; }
 
    {WHITESPACE} {}
 
    {CVAR} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.VARIABLE_END;
-   }
+               yybegin(YYINITIAL);
+               return LexerTypes.VARIABLE_END;
+      }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
-   [^] { return VentoLexerTypes.ERROR; }
+   [^] { return LexerTypes.ERROR; }
 }
 
 <JS_OBJECT> {
 
     \{ {
-            objectDepth++;
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
+                objectDepth++;
+                return LexerTypes.VARIABLE_ELEMENT;
+        }
 
-    [^}{\"]+ {return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^}{\"]+ {return LexerTypes.VARIABLE_ELEMENT;}
 
     \} {
-            objectDepth--;
-            if (objectDepth == 0) {
-             yybegin(VARIABLE_CONTENT);
-            }
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
+                objectDepth--;
+                if (objectDepth == 0) {
+                 yybegin(VARIABLE_CONTENT);
+                }
+                return LexerTypes.VARIABLE_ELEMENT;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
     //single line strings
     \" {
-            yybegin(JSON_STRING);
-            return VentoLexerTypes.STRING;
-    }
+                yybegin(JSON_STRING);
+                return LexerTypes.STRING;
+        }
 
 }
 
 <JSON_STRING> {
 
-    [^\"]+ { return VentoLexerTypes.STRING;}
+    [^\"]+ { return LexerTypes.STRING;}
 
     \" {
-            yybegin(JS_OBJECT);
-            return VentoLexerTypes.STRING;
-    }
+                yybegin(JS_OBJECT);
+                return LexerTypes.STRING;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
 }
 
 <JS_STRING_DOUBLE_QOUTE> {
 
-    "\\\"" { return VentoLexerTypes.STRING;}
+    "\\\"" { return LexerTypes.STRING;}
 
-    [^\\\"]+ { return VentoLexerTypes.STRING;}
+    [^\\\"]+ { return LexerTypes.STRING;}
 
     [\"]+ {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.STRING;
-    }
+                yybegin(VARIABLE_CONTENT);
+                return LexerTypes.STRING;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
 }
 
 <JS_STRING_SINGLE_QUOTE> {
 
-    "\\'" { return VentoLexerTypes.STRING;}
-    [^']+ { return VentoLexerTypes.STRING;}
+    "\\'" { return LexerTypes.STRING;}
+    [^']+ { return LexerTypes.STRING;}
 
     ' {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.STRING;
-    }
+                yybegin(VARIABLE_CONTENT);
+                return LexerTypes.STRING;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
 }
 
 <JS_STRING_BACK_TICK> {
 
-    [^`]+ { return VentoLexerTypes.STRING;}
+    [^`]+ { return LexerTypes.STRING;}
 
     ` {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.STRING;
-    }
+                yybegin(VARIABLE_CONTENT);
+                return LexerTypes.STRING;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
 }
 
 <JS_REGEX> {
 
     \[ {
-            yybegin(BRACKET);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
+                yybegin(BRACKET);
+                return LexerTypes.VARIABLE_ELEMENT;
+        }
 
-    [^\/\[]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^\/\[]+ { return LexerTypes.VARIABLE_ELEMENT;}
 
     \/ {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
-    }
+                yybegin(VARIABLE_CONTENT);
+                return LexerTypes.VARIABLE_ELEMENT;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 }
 
 <BRACKET> {
 
-  "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
-  [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+  "]"        { yybegin(JS_REGEX); return LexerTypes.VARIABLE_ELEMENT; }
+  [^\]]+     { return LexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 
   <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                // Unterminated pipe at EOF: reset and consume safely
+                yybegin(YYINITIAL);
+                return LexerTypes.ERROR;
+          }
 }
 
-<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return LexerTypes.ERROR; }

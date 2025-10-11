@@ -17,7 +17,7 @@ package org.js.vento.plugin.lexer
  * - Error handling for malformed syntax
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class ForLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class ForTestCase(name: String) : BaseLexerTestCase(name) {
     // =============================================================================
     // Basic Iteration - Arrays and Objects
     // =============================================================================

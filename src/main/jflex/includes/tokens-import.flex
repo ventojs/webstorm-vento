@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 
@@ -24,20 +24,20 @@ OWS =[ \t\n\r]*
     {WHITESPACE}   {  }
 
     {IMPORT} / [ \t] {
-          yybegin(VALUES);
-          return VentoLexerTypes.IMPORT_KEY;
-    }
+              yybegin(VALUES);
+              return LexerTypes.IMPORT_KEY;
+        }
 
     {FROM} {
-          yybegin(FILE);
-          return VentoLexerTypes.IMPORT_FROM;
-    }
+              yybegin(FILE);
+              return LexerTypes.IMPORT_FROM;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
     [^] {
           yypushback(yylength());
@@ -49,11 +49,11 @@ OWS =[ \t\n\r]*
     {WHITESPACE}   {  }
 
     "{"{OWS}{IMP_ID}{OWS}(,{OWS}{IMP_ID}{OWS})*"}" {
-          yybegin(IMPORT);
-          return VentoLexerTypes.IMPORT_VALUES;
-    }
+              yybegin(IMPORT);
+              return LexerTypes.IMPORT_VALUES;
+        }
 //    \{  { return VentoLexerTypes.IMPORT_VALUES; }
-    \,  { return VentoLexerTypes.IMPORT_VALUES; }
+    \,  { return LexerTypes.IMPORT_VALUES; }
 //    \} / {WHITESPACE}{FROM}  {
 //          yybegin(IMPORT);
 //          return VentoLexerTypes.IMPORT_VALUES;
@@ -64,17 +64,17 @@ OWS =[ \t\n\r]*
         yybegin(IMPORT);
     }
 
-    {IMP_ID}  { return VentoLexerTypes.IMPORT_VALUES; }
+    {IMP_ID}  { return LexerTypes.IMPORT_VALUES; }
     {IMP_ID} / {WHITESPACE}{FROM} {
-          yybegin(IMPORT);
-          return VentoLexerTypes.IMPORT_VALUES;
-    }
+              yybegin(IMPORT);
+              return LexerTypes.IMPORT_VALUES;
+        }
 
     <<EOF>> {
 
-              yybegin(IMPORT);
-              return VentoLexerTypes.UNKNOWN;
-        }
+                  yybegin(IMPORT);
+                  return LexerTypes.UNKNOWN;
+            }
 
     [^] {
           yypushback(yylength());
@@ -87,20 +87,20 @@ OWS =[ \t\n\r]*
     {WHITESPACE}   {  }
 
     [\"][.]?[/]?.*[\"] / {WHITESPACE}{CBLOCK} {
-          yybegin(BLOCK);
-          return VentoLexerTypes.IMPORT_FILE;
-    }
+              yybegin(BLOCK);
+              return LexerTypes.IMPORT_FILE;
+        }
 
     [^ \t].+ / {WHITESPACE}{CBLOCK} {
-          yybegin(BLOCK);
-          return VentoLexerTypes.UNKNOWN;
-    }
+              yybegin(BLOCK);
+              return LexerTypes.UNKNOWN;
+        }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+                  // Unterminated pipe at EOF: reset and consume safely
+                  yybegin(YYINITIAL);
+                  return LexerTypes.ERROR;
+            }
 
     [^] {
           yypushback(yylength());

@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -20,23 +20,23 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 <EXPRESSION> {
 
    //strings
-   [\"][^\"\n\r]*[\"] { return VentoLexerTypes.STRING; }
+   [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
 
-   [\'][^\'\n\r]*[\'] { return VentoLexerTypes.STRING; }
+   [\'][^\'\n\r]*[\'] { return LexerTypes.STRING; }
 
-   [\`][^\`\n\r]*[\`] { return VentoLexerTypes.STRING; }
+   [\`][^\`\n\r]*[\`] { return LexerTypes.STRING; }
 
-   \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return VentoLexerTypes.REGEX; }
+   \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTypes.REGEX; }
 
-   [.]  { return VentoLexerTypes.DOT; }
+   [.]  { return LexerTypes.DOT; }
 
-   [()\[\]]  { return VentoLexerTypes.BRACKET; }
+   [()\[\]]  { return LexerTypes.BRACKET; }
 
    \{ {
-        objectDepth=1;
-        yybegin(EXP_OBJECT);
-        return VentoLexerTypes.EXPRESSION;
-   }
+           objectDepth=1;
+           yybegin(EXP_OBJECT);
+           return LexerTypes.EXPRESSION;
+      }
 
 
    "}}" {
@@ -45,11 +45,11 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
    }
 
    "|>" {
-        enter(EXPRESSION);
-        return VentoLexerTypes.PIPE_ELEMENT;
-   }
+           enter(EXPRESSION);
+           return LexerTypes.PIPE_ELEMENT;
+      }
 
-   [^\/\"'`(){} \t\n\r]+ { return VentoLexerTypes.EXPRESSION; }
+   [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
    [ \t]+ { }
 
    <<EOF>> { leave(); }
@@ -60,26 +60,26 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 <EXP_OBJECT> {
 
     \{ {
-        objectDepth++;
-        return VentoLexerTypes.EXPRESSION;
-    }
+            objectDepth++;
+            return LexerTypes.EXPRESSION;
+        }
 
-    [\"][^\"\n\r]*[\"] { return VentoLexerTypes.STRING; }
+    [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
 
-    [^}{\"]+ {return VentoLexerTypes.EXPRESSION;}
+    [^}{\"]+ {return LexerTypes.EXPRESSION;}
 
     \} {
-        objectDepth--;
-        if (objectDepth == 0) {
-         yybegin(EXPRESSION);
+            objectDepth--;
+            if (objectDepth == 0) {
+             yybegin(EXPRESSION);
+            }
+            return LexerTypes.EXPRESSION;
         }
-        return VentoLexerTypes.EXPRESSION;
-    }
 
     <<EOF>> {
-        leave();
-        return VentoLexerTypes.UNKNOWN;
-    }
+            leave();
+            return LexerTypes.UNKNOWN;
+        }
 
 }
 

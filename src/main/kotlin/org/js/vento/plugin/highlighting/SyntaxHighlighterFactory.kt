@@ -21,6 +21,6 @@ import com.intellij.openapi.vfs.VirtualFile
  * in tandem with `VentoSyntaxHighlighter` to provide colorized editor support
  * for Vento language files.
  */
-class VentoSyntaxHighlighterFactory : SyntaxHighlighterFactory() {
-    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter = VentoSyntaxHighlighter()
+class SyntaxHighlighterFactory : SyntaxHighlighterFactory() {
+    override fun getSyntaxHighlighter(project: Project?, virtualFile: VirtualFile?): SyntaxHighlighter = SyntaxHighlighter()
 }

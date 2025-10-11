@@ -6,7 +6,6 @@
 package org.js.vento.plugin.highlighting
 
 import com.intellij.openapi.editor.colors.TextAttributesKey
-import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.options.colors.AttributesDescriptor
 import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
@@ -20,25 +19,25 @@ import javax.swing.Icon
  * The class provides configuration options for highlighting different language constructs such as comments,
  * JavaScript blocks, and variables. It defines display attributes and their respective association with Vento syntax elements.
  */
-class VentoColorSettingsPage : ColorSettingsPage {
+class ColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
             arrayOf(
-                AttributesDescriptor("Args", VentoSyntaxHighlighter.ARGS),
-                AttributesDescriptor("Block / Comment", VentoSyntaxHighlighter.COMMENT),
-                AttributesDescriptor("Block / JavaScript", VentoSyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Block / Variable", VentoSyntaxHighlighter.BLOCK),
-                AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
-                AttributesDescriptor("Expression", VentoSyntaxHighlighter.VALUES),
-                AttributesDescriptor("Keyword", VentoSyntaxHighlighter.KEY_WORD),
-                AttributesDescriptor("String", VentoSyntaxHighlighter.STRING),
-                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE),
+                AttributesDescriptor("Args", SyntaxHighlighter.ARGS),
+                AttributesDescriptor("Block / Comment", SyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Block / JavaScript", SyntaxHighlighter.JAVASCRIPT),
+                AttributesDescriptor("Block / Variable", SyntaxHighlighter.BLOCK),
+                AttributesDescriptor("Comment content", SyntaxHighlighter.COMMENTED_CONTENT),
+                AttributesDescriptor("Expression", SyntaxHighlighter.VALUES),
+                AttributesDescriptor("Keyword", SyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("String", SyntaxHighlighter.STRING),
+                AttributesDescriptor("Variable", SyntaxHighlighter.VARIABLE),
             )
     }
 
     override fun getIcon(): Icon = Vento.ICON
 
-    override fun getHighlighter(): SyntaxHighlighter = VentoSyntaxHighlighter()
+    override fun getHighlighter(): SyntaxHighlighter = SyntaxHighlighter()
 
     override fun getDemoText(): String =
         """

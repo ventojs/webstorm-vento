@@ -12,4 +12,4 @@ import org.js.vento.plugin.VentoLanguage
  * Represents a token type for the Vento language.
  * Typically used for lexical tokens.
  */
-class VentoLexerTokenType(debugName: String) : IElementType("${debugName}_TOKEN", VentoLanguage)
+class LexerTokenType(debugName: String) : IElementType("${debugName}_TOKEN", VentoLanguage)
