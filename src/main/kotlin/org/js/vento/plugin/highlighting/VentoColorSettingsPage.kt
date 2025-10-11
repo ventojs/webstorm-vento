@@ -23,14 +23,16 @@ import javax.swing.Icon
 class VentoColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
-            arrayOf<AttributesDescriptor>(
-                AttributesDescriptor("Comment block", VentoSyntaxHighlighter.COMMENT),
+            arrayOf(
+                AttributesDescriptor("Args", VentoSyntaxHighlighter.ARGS),
+                AttributesDescriptor("Block / Comment", VentoSyntaxHighlighter.COMMENT),
+                AttributesDescriptor("Block / JavaScript", VentoSyntaxHighlighter.JAVASCRIPT),
+                AttributesDescriptor("Block / Variable", VentoSyntaxHighlighter.BLOCK),
                 AttributesDescriptor("Comment content", VentoSyntaxHighlighter.COMMENTED_CONTENT),
-                AttributesDescriptor("JavaScript block", VentoSyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Variable block", VentoSyntaxHighlighter.VARIABLE),
-                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE_ELEMENT),
-                AttributesDescriptor("Vento expression", VentoSyntaxHighlighter.VENTO_EXPRESSION),
-                AttributesDescriptor("Vento keyword", VentoSyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("Expression", VentoSyntaxHighlighter.VALUES),
+                AttributesDescriptor("Keyword", VentoSyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("String", VentoSyntaxHighlighter.STRING),
+                AttributesDescriptor("Variable", VentoSyntaxHighlighter.VARIABLE),
             )
     }
 
@@ -50,6 +52,20 @@ class VentoColorSettingsPage : ColorSettingsPage {
 
         Vento Blocks:
           {{ for value of collection |> toUpperCase}}
+
+        Vento import:
+          {{ import { component } from "path/to/file.vto" }}
+
+        Vento export:
+          {{ export message = "Hello World!" }}
+
+          {{ export message }}
+          <h1>Hello World!</h1>
+          {{ /export }}
+
+          {{ export function sayHello(name) }}
+          <h1>Hello {{ name }}!</h1>
+          {{ /export }}
 
         Javascript:
           {{> console.log('Hello World') }}

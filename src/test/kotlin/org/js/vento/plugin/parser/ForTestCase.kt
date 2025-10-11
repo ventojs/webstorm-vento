@@ -6,6 +6,7 @@
 package org.js.vento.plugin.parser
 
 import com.intellij.testFramework.ParsingTestCase
+import org.js.vento.plugin.VentoParserDefinition
 
 class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testSimpleFor() {

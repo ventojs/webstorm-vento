@@ -1,9 +1,5 @@
 // BLOCK 1 - START
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.VentoParserTypes;
 import org.js.vento.plugin.lexer.VentoLexerTypes;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -14,18 +10,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state FOR_ARRAY
 %state FOR_PIPE
 
-
-
-CLOSE_COMMENT_PHRASE = -?#}}
-CLOSE_JAVASCRIPT = }}
-DEFAULT_HTML = [^{]+
-EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 FOR_KEY = "for"
-OPEN_JAVASCRIPT = \{\{>
-OPEN_VENTO_BLOCK = \{\{-?
-WHITESPACE = [ \t\r\n]+
-
-
 
 // BLOCK 2 - END
 %%
@@ -52,6 +37,12 @@ WHITESPACE = [ \t\r\n]+
           yybegin(YYINITIAL);
           return VentoLexerTypes.FOR_END;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^/] {
           //System.out.println("for error : "+yytext());
@@ -81,6 +72,12 @@ WHITESPACE = [ \t\r\n]+
               return VentoLexerTypes.ERROR;
           }
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
           //System.out.println("value error");
@@ -125,6 +122,12 @@ WHITESPACE = [ \t\r\n]+
           }
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
           //System.out.println("collection error:" + yytext());
           yybegin(FOR_VALUE);
@@ -150,6 +153,12 @@ WHITESPACE = [ \t\r\n]+
             }
             return VentoLexerTypes.FOR_COLLECTION;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
             yybegin(FOR_COLLECTION);
@@ -185,6 +194,12 @@ WHITESPACE = [ \t\r\n]+
           return VentoLexerTypes.FOR_COLLECTION;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     [^] {
             yybegin(FOR_COLLECTION);
             yypushback(yylength());
@@ -200,6 +215,12 @@ WHITESPACE = [ \t\r\n]+
           yybegin(FOR_CONTENT);
           return VentoLexerTypes.FOR_COLLECTION;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
     [^] {
           yybegin(FOR_CONTENT);

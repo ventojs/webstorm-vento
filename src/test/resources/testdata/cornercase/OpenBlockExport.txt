@@ -1,0 +1,8 @@
+Vento File(0,6)
+  PsiWhiteSpace(' ')(0,1)
+  VentoPsiElement: VENTO_VARIABLE_ELEMENT(1,3)
+    PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(1,3)
+    PsiErrorElement:Expected '}}' to close variable(3,3)
+      <empty list>
+  VentoElement: VENTO_ELEMENT(3,6)
+    PsiElement(VENTO_ERROR_TOKEN)(' \n\n')(3,6)

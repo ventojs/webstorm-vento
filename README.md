@@ -57,7 +57,10 @@ The rest of the features are still under development. (see: [backlog](https://gi
 #### Vento `for` loops
 ![vento-syntax-highlighting](docs/assets/for.png)
 
+#### Vento `export` & `import`
+![vento-syntax-highlighting](docs/assets/export.png)
 
+![vento-syntax-highlighting](docs/assets/import.png)
 
 > [!IMPORTANT]
 > ### Note to plugin users

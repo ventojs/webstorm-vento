@@ -1,9 +1,5 @@
 // BLOCK 1 - START
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.VentoParserTypes;
 import org.js.vento.plugin.lexer.VentoLexerTypes;
-import static com.intellij.psi.TokenType.WHITE_SPACE;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -17,9 +13,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state BRACKET
 
 
-CLOSE_VENTO_BLOCK = -?}}
-WHITESPACE = [ \t\r\n]+
-
 // BLOCK 2 - END
 %%
 
@@ -29,17 +22,17 @@ WHITESPACE = [ \t\r\n]+
    //strings
    \" {
             yybegin(JS_STRING_DOUBLE_QOUTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    ' {
             yybegin(JS_STRING_SINGLE_QUOTE);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    ` {
             yybegin(JS_STRING_BACK_TICK);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
    }
 
    // regex segment
@@ -66,10 +59,16 @@ WHITESPACE = [ \t\r\n]+
 
    {WHITESPACE} {}
 
-   {CLOSE_VENTO_BLOCK} {
+   {CVAR} {
             yybegin(YYINITIAL);
             return VentoLexerTypes.VARIABLE_END;
    }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
    [^] { return VentoLexerTypes.ERROR; }
 }
@@ -91,58 +90,88 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
+
     //single line strings
     \" {
             yybegin(JSON_STRING);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
 
 }
 
 <JSON_STRING> {
 
-    [^\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^\"]+ { return VentoLexerTypes.STRING;}
 
     \" {
             yybegin(JS_OBJECT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
 }
 
 <JS_STRING_DOUBLE_QOUTE> {
 
-    "\\\"" { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    "\\\"" { return VentoLexerTypes.STRING;}
 
-    [^\\\"]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^\\\"]+ { return VentoLexerTypes.STRING;}
 
     [\"]+ {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
 }
 
 <JS_STRING_SINGLE_QUOTE> {
 
-    "\\'" { return VentoLexerTypes.VARIABLE_ELEMENT;}
-    [^']+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    "\\'" { return VentoLexerTypes.STRING;}
+    [^']+ { return VentoLexerTypes.STRING;}
 
     ' {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
 }
 
 <JS_STRING_BACK_TICK> {
 
-    [^`]+ { return VentoLexerTypes.VARIABLE_ELEMENT;}
+    [^`]+ { return VentoLexerTypes.STRING;}
 
     ` {
             yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_ELEMENT;
+            return VentoLexerTypes.STRING;
     }
+
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 
 }
 
@@ -160,6 +189,11 @@ WHITESPACE = [ \t\r\n]+
             return VentoLexerTypes.VARIABLE_ELEMENT;
     }
 
+    <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 }
 
 <BRACKET> {
@@ -167,4 +201,11 @@ WHITESPACE = [ \t\r\n]+
   "]"        { yybegin(JS_REGEX); return VentoLexerTypes.VARIABLE_ELEMENT; }
   [^\]]+     { return VentoLexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 
+  <<EOF>> {
+              // Unterminated pipe at EOF: reset and consume safely
+              yybegin(YYINITIAL);
+              return VentoLexerTypes.ERROR;
+        }
 }
+
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }

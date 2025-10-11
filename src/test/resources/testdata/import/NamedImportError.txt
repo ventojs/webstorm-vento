@@ -1,0 +1,8 @@
+Vento File(0,38)
+  VentoPsiElement: VENTO_IMPORT_ELEMENT(0,38)
+    PsiElement(VENTO_IMPORT_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_IMPORT_KEY_TOKEN)(' import')(2,9)
+    PsiElement(VENTO_UNKNOWN_TOKEN)(' { foo  from "./afile.vto"')(9,35)
+    PsiErrorElement:Expected import values(35,35)
+      <empty list>
+    PsiElement(VENTO_IMPORT_END_TOKEN)(' }}')(35,38)

@@ -6,8 +6,7 @@ package org.js.vento.plugin.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.VentoParserTypes;
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.parser.ParserTypes;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %%
@@ -18,32 +17,72 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %function advance
 %type IElementType
 %unicode
+%char
+//%debug
 
 
 
 %state COMMENT
 %state SCRIPT_CONTENT
+%state BLOCK
+
 
 %{
-    // Ensure we handle EOF properly
-    private boolean atEof = false;
+  private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
+  private static final boolean DEBUG = false;
+
+  /** Enter 's', remembering where we came from (the caller). */
+  private void enter(int s) {
+    int caller = yystate();            // <-- push the *current* state
+    stateStack.push(caller);
+    yybegin(s);
+  }
+
+  /** Return to the caller state saved by the most recent enter(). */
+  private void leave() {
+    if (stateStack.isEmpty())
+      throw new IllegalStateException("leave() with empty state stack");
+    int caller = stateStack.pop();
+    if (DEBUG) System.out.println("leave -> " + caller);
+    yybegin(caller);
+  }
+
+  /** Optional: hard jump (not LIFO) if you need to abort nested states. */
+  private void resetAt(int s) {
+    stateStack.clear();
+    yybegin(s);
+  }
 %}
 
 
-CLOSE_COMMENT_PHRASE = -?#}}
-CLOSE_JAVASCRIPT = }}
 DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
-FOR_KEY = "for"
-OPEN_COMMENT_PHRASE = \{\{#-?
-OPEN_JAVASCRIPT = \{\{>
-OPEN_VENTO_BLOCK = \{\{-?
 WHITESPACE = [ \t\r\n]+
+OWS = [ \t\r\n]*
+
+OBLOCK = "{{"
+CBLOCK = "}}"
+
+OCOMMENT = {OBLOCK}#-?
+CCOMMENT = -?#{CBLOCK}
+
+OJS = {OBLOCK}>
+OVAR = {OBLOCK}-?
+CVAR = -?{CBLOCK}
+
+
+FOR_KEY = "for"
+
+IMPORT = "import"
+EXPORT = "export"
+FUNCTION = "function"
+FROM = "from"
 
 %{
   private int objectDepth = 0;
   private boolean value = false;
   private boolean collection = false;
+  private IElementType closeType = null;
 
 %}
 
@@ -54,20 +93,76 @@ WHITESPACE = [ \t\r\n]+
 
     {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
     {WHITESPACE}              { return WHITE_SPACE; }
-    {DEFAULT_HTML}            { return VentoParserTypes.HTML_ELEMENT; }
 
+     {OBLOCK} {
+          yypushback(2);
+          yybegin(BLOCK);
+          // TODO: consider adding a Vento block token
+      }
 
-    {OPEN_COMMENT_PHRASE}    {
-            yybegin(COMMENT);
-            return VentoLexerTypes.OPEN_COMMENT_CLAUSE;
+    {DEFAULT_HTML}    { return ParserTypes.HTML_ELEMENT; }
+
+    [^]               {
+          return VentoLexerTypes.ERROR;
     }
 
-    {OPEN_JAVASCRIPT}    {
+}
+
+<BLOCK> {
+    {WHITESPACE}              { }
+
+    {OBLOCK}{WHITESPACE}{IMPORT}    {
+            yybegin(IMPORT);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.IMPORT_END;
+            return VentoLexerTypes.IMPORT_START;
+    }
+
+    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION}    {
+            yybegin(EXPORT_FUNCTION_BLOCK);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.EXPORT_FUNCTION_END;
+            return VentoLexerTypes.EXPORT_FUNCTION_START;
+    }
+
+    {OBLOCK}{OWS}{EXPORT}    {
+            yybegin(EXPORT);
+            yypushback(yylength()-2);
+            closeType = VentoLexerTypes.EXPORT_END;
+            return VentoLexerTypes.EXPORT_START;
+    }
+
+
+    {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
+           yybegin(EXPORT_CLOSE);
+           yypushback(yylength()-2);
+           closeType = VentoLexerTypes.EXPORT_CLOSE_END;
+           return VentoLexerTypes.EXPORT_CLOSE_START;
+    }
+
+    {CBLOCK} {
+           yybegin(YYINITIAL);
+           IElementType ct = closeType;
+           closeType = null;
+//           System.out.println(ct);
+           if(ct != null){
+               return ct;
+           } else {
+               return VentoLexerTypes.ERROR;
+           }
+    }
+
+    {OCOMMENT}    {
+            yybegin(COMMENT);
+            return VentoLexerTypes.COMMENT_START;
+    }
+
+    {OJS}    {
             yybegin(SCRIPT_CONTENT);
             return VentoLexerTypes.JAVASCRIPT_START;
     }
 
-    {OPEN_VENTO_BLOCK}    {
+    {OVAR}    {
             yybegin(VARIABLE_CONTENT);
             return VentoLexerTypes.VARIABLE_START;
     }
@@ -83,23 +178,30 @@ WHITESPACE = [ \t\r\n]+
     }
 
     [^] {
-          //System.out.println("YYINITIAL error");
-          return VentoLexerTypes.ERROR;
-      }
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.ERROR;
+    }
 
 }
 
 %include includes/tokens-for.flex
 %include includes/tokens-variables.flex
-
-<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return VentoLexerTypes.ERROR; }
+%include includes/tokens-import.flex
+%include includes/tokens-export.flex
+%include includes/tokens-pipe.flex
+%include includes/tokens-expression.flex
 
 <SCRIPT_CONTENT> {
 
-   ([^}]|"}"[^}])+ { return VentoParserTypes.JAVASCRIPT_ELEMENT; }
-   {CLOSE_JAVASCRIPT} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.JAVASCRIPT_END;
+   ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
+   {CBLOCK} {
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.JAVASCRIPT_END;
+   }
+
+   [^] {
+       yybegin(YYINITIAL);
+       return VentoLexerTypes.ERROR;
    }
 
 }
@@ -107,15 +209,15 @@ WHITESPACE = [ \t\r\n]+
 <COMMENT> {
 
     // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENTED_CONTENT; }
+    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENT_CONTENT; }
 
     // Handle single characters that might be part of closing sequences
-    "#" { return VentoLexerTypes.COMMENTED_CONTENT; }
-    "-" { return VentoLexerTypes.COMMENTED_CONTENT; }
+    "#" { return VentoLexerTypes.COMMENT_CONTENT; }
+    "-" { return VentoLexerTypes.COMMENT_CONTENT; }
 
-    {CLOSE_COMMENT_PHRASE} {
-            yybegin(YYINITIAL);
-            return VentoLexerTypes.CLOSE_COMMENT_CLAUSE;
+    {CCOMMENT} {
+        yybegin(YYINITIAL);
+        return VentoLexerTypes.COMMENT_END;
     }
 
 
@@ -127,11 +229,3 @@ WHITESPACE = [ \t\r\n]+
 
 }
 
-// CRITICAL: Handle EOF explicitly
-<<EOF>>             {
-    if (!atEof) {
-        atEof = true;
-        return null;
-    }
-    return null;
-}

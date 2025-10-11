@@ -30,7 +30,7 @@
 
         <!-- Parser Definition -->
         <!-- Defines how Vento files should be parsed into a PSI tree -->
-        <lang.parserDefinition language="Vento" implementationClass="org.js.vento.plugin.parser.VentoParserDefinition"/>
+        <lang.parserDefinition language="Vento" implementationClass="org.js.vento.plugin.VentoParserDefinition"/>
 
         <!-- Syntax Highlighting -->
         <!-- Provides syntax highlighting capabilities for Vento files -->
@@ -41,9 +41,9 @@
 
         <!-- Language Injection -->
         <!-- Injects JavaScript language support into Vento JavaScript blocks -->
-        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.VentoContextualJavaScriptInjector"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.ContextualJavaScriptInjector"/>
         <!-- Injects HTML language support into Vento template content -->
-        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.VentoHtmlInjector"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.HtmlInjector"/>
 
         <!-- Code Analysis -->
         <!-- Provides code analysis and error highlighting for Vento files -->

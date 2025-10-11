@@ -9,10 +9,10 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
+import org.js.vento.plugin.ForBlockElement
+import org.js.vento.plugin.VentoVariablePsiElement
 import org.js.vento.plugin.highlighting.validator.ForBlockValidator
 import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
-import org.js.vento.plugin.parser.ForBlockElement
-import org.js.vento.plugin.parser.VentoVariablePsiElement
 
 /**
  * Annotator for Vento template language that validates JavaScript expressions within templates.

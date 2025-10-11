@@ -14,25 +14,28 @@ import com.intellij.psi.tree.IElementType
  */
 object VentoLexerTypes {
     @JvmField
-    var OPEN_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_START")
+    var COMMENT_START: IElementType = VentoLexerTokenType("VENTO_COMMENT_START")
 
     @JvmField
-    var CLOSE_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_COMMENTED_END")
+    var COMMENT_END: IElementType = VentoLexerTokenType("VENTO_COMMENT_END")
 
     @JvmField
-    var OPEN_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_START")
+    var TRIM_COMMENT_START: IElementType = VentoLexerTokenType("VENTO_TRIM_COMMENT_START")
 
     @JvmField
-    var CLOSE_TRIM_COMMENT_CLAUSE: IElementType = VentoLexerTokenType("VENTO_TRIMMED_COMMENTED_END")
+    var TRIM_COMMENT_END: IElementType = VentoLexerTokenType("VENTO_TRIM_COMMENT_END")
 
     @JvmField
-    var COMMENTED_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENTED_CONTENT")
+    var COMMENT_CONTENT: IElementType = VentoLexerTokenType("VENTO_COMMENT_CONTENT")
 
     @JvmField
     var JAVASCRIPT_START: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_START")
 
     @JvmField
     var JAVASCRIPT_END: IElementType = VentoLexerTokenType("VENTO_JAVASCRIPT_END")
+
+    @JvmField
+    val EXPRESSION = VentoLexerTokenType("VENTO_EXPRESSION")
 
     @JvmField
     var VARIABLE_START: IElementType = VentoLexerTokenType("VENTO_VARIABLE_START")
@@ -51,6 +54,9 @@ object VentoLexerTypes {
 
     @JvmField
     val STRING = VentoLexerTokenType("VENTO_STRING")
+
+    @JvmField
+    val REGEX = VentoLexerTokenType("VENTO_REGEX")
 
     @JvmField
     val TEXT = VentoLexerTokenType("VENTO_HTML_TAG")
@@ -81,4 +87,70 @@ object VentoLexerTypes {
 
     @JvmField
     val PIPE_ELEMENT = VentoLexerTokenType("VENTO_PIPE")
+
+    @JvmField
+    val IMPORT_START = VentoLexerTokenType("VENTO_IMPORT_START")
+
+    @JvmField
+    val IMPORT_END = VentoLexerTokenType("VENTO_IMPORT_END")
+
+    @JvmField
+    val IMPORT_KEY = VentoLexerTokenType("VENTO_IMPORT_KEY")
+
+    @JvmField
+    val IMPORT_VALUES = VentoLexerTokenType("VENTO_IMPORT_VALUES")
+
+    @JvmField
+    val IMPORT_FROM = VentoLexerTokenType("VENTO_IMPORT_FROM")
+
+    @JvmField
+    val IMPORT_FILE = VentoLexerTokenType("VENTO_IMPORT_FILE")
+
+    @JvmField
+    val EXPORT_START = VentoLexerTokenType("VENTO_EXPORT_START")
+
+    @JvmField
+    val EXPORT_END = VentoLexerTokenType("VENTO_EXPORT_END")
+
+    @JvmField
+    val EXPORT_FUNCTION_START = VentoLexerTokenType("VENTO_EXPORT_FUNCTION_START")
+
+    @JvmField
+    val EXPORT_FUNCTION_END = VentoLexerTokenType("VENTO_EXPORT_FUNCTION_END")
+
+    @JvmField
+    val EXPORT_CLOSE_START = VentoLexerTokenType("VENTO_CLOSE_EXPORT_START")
+
+    @JvmField
+    val EXPORT_CLOSE_END = VentoLexerTokenType("VENTO_CLOSE_EXPORT_END")
+
+    @JvmField
+    val EXPORT_KEY = VentoLexerTokenType("VENTO_EXPORT_KEY")
+
+    @JvmField
+    val EXPORT_CLOSE_KEY = VentoLexerTokenType("VENTO_EXPORT_KEY")
+
+    @JvmField
+    val EXPORT_VAR = VentoLexerTokenType("VENTO_EXPORT_VAR")
+
+    @JvmField
+    val EXPORT_FUNCTION_ARGS = VentoLexerTokenType("VENTO_FUNCTION_ARGS")
+
+    @JvmField
+    val EXPORT_FUNCTION_KEY = VentoLexerTokenType("VENTO_EXPORT_FUNCTION_KEY")
+
+    @JvmField
+    val EXPORT_EQ = VentoLexerTokenType("VENTO_EXPORT_EQUAL")
+
+    @JvmField
+    val EXPORT_VALUE = VentoLexerTokenType("VENTO_EXPORT_VALUE")
+
+    @JvmField
+    val UNKNOWN = VentoLexerTokenType("VENTO_UNKNOWN")
+
+    @JvmField
+    val BRACKET = VentoLexerTokenType("VENTO_BRACKET")
+
+    @JvmField
+    val DOT = VentoLexerTokenType("VENTO_DOT")
 }
