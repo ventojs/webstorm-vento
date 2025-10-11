@@ -6,8 +6,7 @@
 package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.tree.util.children
-import com.intellij.openapi.project.Project
-import org.js.vento.plugin.ForBlockElement
+import org.js.vento.plugin.ForBlockBaseElement
 import org.js.vento.plugin.lexer.LexerTypes
 
 /**
@@ -22,7 +21,7 @@ import org.js.vento.plugin.lexer.LexerTypes
  * which includes an error message explaining the issue if the validation fails.
  */
 class ForBlockValidator {
-    fun isValidExpression(content: ForBlockElement, project: Project): ValidationResult {
+    fun isValidExpression(content: ForBlockBaseElement): ValidationResult {
         if (content.text.isEmpty()) return ValidationResult(false, "Empty for-block found. $SYNTAX")
         if (content.text.matches(forClose)) {
             return ValidationResult(true, "Valide closing for-block found.")

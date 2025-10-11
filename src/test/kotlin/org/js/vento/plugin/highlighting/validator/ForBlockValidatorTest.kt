@@ -7,7 +7,7 @@ package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.psi.PsiFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
-import org.js.vento.plugin.ForBlockElement
+import org.js.vento.plugin.ForBlockBaseElement
 
 /**
  * Test suite for ForBlockValidator functionality.
@@ -142,10 +142,10 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
      * @param block The template string containing the for block to parse
      * @return ForBlockElement created from the first child node of the parsed template
      */
-    private fun returnFirstAsForBlockElement(block: String): ForBlockElement {
+    private fun returnFirstAsForBlockElement(block: String): ForBlockBaseElement {
         val file: PsiFile? = myFixture.configureByText("test.vto", block)
         file?.node?.getChildren(null)?.forEach { println(it.text) }
-        val element = ForBlockElement(file?.node?.firstChildNode!!)
+        val element = ForBlockBaseElement(file?.node?.firstChildNode!!)
         return element
     }
 
@@ -154,7 +154,7 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
      *
      * @param content The ForBlockElement to validate
      */
-    private fun assertNotValid(content: ForBlockElement): Unit = assertValid(content, false)
+    private fun assertNotValid(content: ForBlockBaseElement): Unit = assertValid(content, false)
 
     /**
      * Asserts the validity of a ForBlockElement.
@@ -162,8 +162,8 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
      * @param content The ForBlockElement to validate
      * @param isValid Expected validity state (default: true)
      */
-    private fun assertValid(content: ForBlockElement, isValid: Boolean = true) {
-        val outcome = validator.isValidExpression(content, myFixture.project)
+    private fun assertValid(content: ForBlockBaseElement, isValid: Boolean = true) {
+        val outcome = validator.isValidExpression(content)
         assertEquals("$content: ${outcome.errorMessage}", isValid, outcome.isValid)
     }
 }
