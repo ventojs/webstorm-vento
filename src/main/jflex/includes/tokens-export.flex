@@ -21,31 +21,29 @@ PIPE = "|>"
 // BLOCK 2 - END
 %%
 
-
 <EXPORT> {
     {WHITESPACE}   {  }
 
     {EXPORT} / {WHITESPACE} {
-              yybegin(EXPORT_VALUE);
-              return LexerTypes.EXPORT_KEY;
-        }
+        yybegin(EXPORT_VALUE);
+        return LexerTypes.EXPORT_KEY;
+    }
 
     {EXPORT}{WHITESPACE}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-              yybegin(EXPORT_BLOCK_MODE);
-              yypushback(yylength()-6);
-              return LexerTypes.EXPORT_KEY;
-        }
+        yybegin(EXPORT_BLOCK_MODE);
+        yypushback(yylength()-6);
+        return LexerTypes.EXPORT_KEY;
+    }
 
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return LexerTypes.ERROR;
-        }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-          yypushback(yylength());
-          yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 }
 
@@ -54,29 +52,28 @@ PIPE = "|>"
 
     {IDENT} { return LexerTypes.EXPORT_VAR; }
     "=" {
-              enter(EXPRESSION);
-              return LexerTypes.EXPORT_EQ;
-          }
+        enter(EXPRESSION);
+        return LexerTypes.EXPORT_EQ;
+    }
 
     {PIPE} {
-         yypushback(yylength());
-         enter(PIPE);
+        yypushback(yylength());
+        enter(PIPE);
     }
 
     {CBLOCK} {
-          yybegin(BLOCK);
-          yypushback(yylength());
+        yybegin(BLOCK);
+        yypushback(yylength());
     }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-              return LexerTypes.UNKNOWN;
-        }
+        return LexerTypes.UNKNOWN;
+    }
 
 }
 
@@ -86,43 +83,41 @@ PIPE = "|>"
     {IDENT} { return LexerTypes.EXPORT_VAR; }
 
     {CBLOCK} {
-         yybegin(BLOCK);
-         yypushback(yylength());
+        yybegin(BLOCK);
+        yypushback(yylength());
     }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
-    [^] {
-             return LexerTypes.UNKNOWN;
-        }
+    [^] { return LexerTypes.UNKNOWN; }
+
 }
 
 <EXPORT_CLOSE> {
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     [/]{EXPORT} / {OWS}{CBLOCK} {
-              yybegin(BLOCK);
-              return LexerTypes.EXPORT_CLOSE_KEY;
-        }
+        yybegin(BLOCK);
+        return LexerTypes.EXPORT_CLOSE_KEY;
+    }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return LexerTypes.ERROR;
-        }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
+
     [^] {
-          yypushback(yylength());
-          yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 }
 
 <EXPORT_FUNCTION_BLOCK> {
 
-    {WHITESPACE}   { }
+    {WHITESPACE} { }
 
     {EXPORT} { return LexerTypes.EXPORT_KEY; }
 
@@ -133,24 +128,22 @@ PIPE = "|>"
     "("{IDENT}?([,]{IDENT})*")" { return LexerTypes.EXPORT_FUNCTION_ARGS; }
 
     {PIPE} {
-         yypushback(yylength());
-         enter(PIPE);
+        yypushback(yylength());
+        enter(PIPE);
     }
 
     {CBLOCK} {
-         yypushback(yylength());
-         yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
-    [^] {
-             return LexerTypes.UNKNOWN;
-        }
+    [^] { return LexerTypes.UNKNOWN; }
+
 }
 
 

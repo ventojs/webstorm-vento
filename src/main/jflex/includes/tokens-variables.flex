@@ -16,59 +16,53 @@ import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 2 - END
 %%
 
-
 <VARIABLE_CONTENT> {
 
    //strings
-   \" {
-               yybegin(JS_STRING_DOUBLE_QOUTE);
-               return LexerTypes.STRING;
+    \" {
+        yybegin(JS_STRING_DOUBLE_QOUTE);
+        return LexerTypes.STRING;
+    }
+
+    ' {
+        yybegin(JS_STRING_SINGLE_QUOTE);
+        return LexerTypes.STRING;
       }
 
-   ' {
-               yybegin(JS_STRING_SINGLE_QUOTE);
-               return LexerTypes.STRING;
-      }
+    ` {
+        yybegin(JS_STRING_BACK_TICK);
+        return LexerTypes.STRING;
+    }
 
-   ` {
-               yybegin(JS_STRING_BACK_TICK);
-               return LexerTypes.STRING;
-      }
+    \/  {
+        yybegin(JS_REGEX);
+        return LexerTypes.VARIABLE_ELEMENT;
+    }
 
-   // regex segment
-   \/  {
-               yybegin(JS_REGEX);
-               return LexerTypes.VARIABLE_ELEMENT;
-      }
-
-   //objects
    \{ {
-               objectDepth=1;
-               yybegin(JS_OBJECT);
-               return LexerTypes.VARIABLE_ELEMENT;
-      }
+        objectDepth=1;
+        yybegin(JS_OBJECT);
+        return LexerTypes.VARIABLE_ELEMENT;
+   }
 
-   "|>" {
-              return LexerTypes.PIPE_ELEMENT;
-      }
+    "|>" { return LexerTypes.PIPE_ELEMENT; }
 
    \- / [^}] {return LexerTypes.VARIABLE_ELEMENT;}
 
 
    [^\/\"'`{}\- \t]+ { return LexerTypes.VARIABLE_ELEMENT; }
 
-   {WHITESPACE} {}
+   {WHITESPACE} { }
 
-   {CVAR} {
-               yybegin(YYINITIAL);
-               return LexerTypes.VARIABLE_END;
-      }
+    {CVAR} {
+        yybegin(YYINITIAL);
+        return LexerTypes.VARIABLE_END;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
    [^] { return LexerTypes.ERROR; }
 }
@@ -76,31 +70,29 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <JS_OBJECT> {
 
     \{ {
-                objectDepth++;
-                return LexerTypes.VARIABLE_ELEMENT;
-        }
+        objectDepth++;
+        return LexerTypes.VARIABLE_ELEMENT;
+    }
 
-    [^}{\"]+ {return LexerTypes.VARIABLE_ELEMENT;}
+    [^}{\"]+ { return LexerTypes.VARIABLE_ELEMENT; }
 
     \} {
-                objectDepth--;
-                if (objectDepth == 0) {
-                 yybegin(VARIABLE_CONTENT);
-                }
-                return LexerTypes.VARIABLE_ELEMENT;
+        objectDepth--;
+        if (objectDepth == 0) {
+            yybegin(VARIABLE_CONTENT);
         }
+        return LexerTypes.VARIABLE_ELEMENT;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
-    //single line strings
     \" {
-                yybegin(JSON_STRING);
-                return LexerTypes.STRING;
-        }
+        yybegin(JSON_STRING);
+        return LexerTypes.STRING;
+    }
 
 }
 
@@ -109,15 +101,14 @@ import org.js.vento.plugin.lexer.LexerTypes;
     [^\"]+ { return LexerTypes.STRING;}
 
     \" {
-                yybegin(JS_OBJECT);
-                return LexerTypes.STRING;
-        }
+        yybegin(JS_OBJECT);
+        return LexerTypes.STRING;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 
@@ -128,15 +119,14 @@ import org.js.vento.plugin.lexer.LexerTypes;
     [^\\\"]+ { return LexerTypes.STRING;}
 
     [\"]+ {
-                yybegin(VARIABLE_CONTENT);
-                return LexerTypes.STRING;
-        }
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.STRING;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 
@@ -146,15 +136,14 @@ import org.js.vento.plugin.lexer.LexerTypes;
     [^']+ { return LexerTypes.STRING;}
 
     ' {
-                yybegin(VARIABLE_CONTENT);
-                return LexerTypes.STRING;
-        }
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.STRING;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 
@@ -163,49 +152,46 @@ import org.js.vento.plugin.lexer.LexerTypes;
     [^`]+ { return LexerTypes.STRING;}
 
     ` {
-                yybegin(VARIABLE_CONTENT);
-                return LexerTypes.STRING;
-        }
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.STRING;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 
 <JS_REGEX> {
 
     \[ {
-                yybegin(BRACKET);
-                return LexerTypes.VARIABLE_ELEMENT;
-        }
+        yybegin(BRACKET);
+        return LexerTypes.VARIABLE_ELEMENT;
+    }
 
     [^\/\[]+ { return LexerTypes.VARIABLE_ELEMENT;}
 
     \/ {
-                yybegin(VARIABLE_CONTENT);
-                return LexerTypes.VARIABLE_ELEMENT;
-        }
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.VARIABLE_ELEMENT;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 }
 
 <BRACKET> {
 
-  "]"        { yybegin(JS_REGEX); return LexerTypes.VARIABLE_ELEMENT; }
-  [^\]]+     { return LexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+    "]"        { yybegin(JS_REGEX); return LexerTypes.VARIABLE_ELEMENT; }
+    [^\]]+     { return LexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
 
-  <<EOF>> {
-                // Unterminated pipe at EOF: reset and consume safely
-                yybegin(YYINITIAL);
-                return LexerTypes.ERROR;
-          }
+    <<EOF>> {
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 }
 
 <JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return LexerTypes.ERROR; }

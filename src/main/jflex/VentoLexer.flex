@@ -86,100 +86,96 @@ FROM = "from"
 
 %}
 
-
 %%
 
 <YYINITIAL> {
 
-    {EMPTY_LINE}              { return LexerTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return WHITE_SPACE; }
+    {EMPTY_LINE} { return LexerTypes.EMPTY_LINE; }
+    {WHITESPACE} { return WHITE_SPACE; }
 
-     {OBLOCK} {
-          yypushback(2);
-          yybegin(BLOCK);
-          // TODO: consider adding a Vento block token
-      }
+    {OBLOCK} {
+        yypushback(2);
+        yybegin(BLOCK);
+        // TODO: consider adding a Vento block token
+    }
 
-    {DEFAULT_HTML}    { return ParserTypes.HTML_ELEMENT; }
+    {DEFAULT_HTML} { return ParserTypes.HTML_ELEMENT; }
 
-    [^]               {
-              return LexerTypes.ERROR;
-        }
+    [^]   { return LexerTypes.ERROR; }
 
 }
 
 <BLOCK> {
-    {WHITESPACE}              { }
+    {WHITESPACE} { }
 
-    {OBLOCK}{WHITESPACE}{IMPORT}    {
-                yybegin(IMPORT);
-                yypushback(yylength()-2);
-                closeType = LexerTypes.IMPORT_END;
-                return LexerTypes.IMPORT_START;
-        }
+    {OBLOCK}{WHITESPACE}{IMPORT} {
+        yybegin(IMPORT);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.IMPORT_END;
+        return LexerTypes.IMPORT_START;
+    }
 
-    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION}    {
-                yybegin(EXPORT_FUNCTION_BLOCK);
-                yypushback(yylength()-2);
-                closeType = LexerTypes.EXPORT_FUNCTION_END;
-                return LexerTypes.EXPORT_FUNCTION_START;
-        }
+    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
+        yybegin(EXPORT_FUNCTION_BLOCK);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_FUNCTION_END;
+        return LexerTypes.EXPORT_FUNCTION_START;
+    }
 
-    {OBLOCK}{OWS}{EXPORT}    {
-                yybegin(EXPORT);
-                yypushback(yylength()-2);
-                closeType = LexerTypes.EXPORT_END;
-                return LexerTypes.EXPORT_START;
-        }
-
+    {OBLOCK}{OWS}{EXPORT} {
+        yybegin(EXPORT);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_END;
+        return LexerTypes.EXPORT_START;
+    }
 
     {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-               yybegin(EXPORT_CLOSE);
-               yypushback(yylength()-2);
-               closeType = LexerTypes.EXPORT_CLOSE_END;
-               return LexerTypes.EXPORT_CLOSE_START;
-        }
+        yybegin(EXPORT_CLOSE);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_CLOSE_END;
+        return LexerTypes.EXPORT_CLOSE_START;
+    }
 
     {CBLOCK} {
-               yybegin(YYINITIAL);
-               IElementType ct = closeType;
-               closeType = null;
-               if(ct != null){
-                   return ct;
-               } else {
-                   return LexerTypes.ERROR;
-               }
+        yybegin(YYINITIAL);
+        IElementType ct = closeType;
+        closeType = null;
+        if(ct != null){
+           return ct;
+        } else {
+           return LexerTypes.ERROR;
         }
+    }
 
-    {OCOMMENT}    {
-                yybegin(COMMENT);
-                return LexerTypes.COMMENT_START;
-        }
+    {OCOMMENT} {
+        yybegin(COMMENT);
+        return LexerTypes.COMMENT_START;
+    }
 
-    {OJS}    {
-                yybegin(SCRIPT_CONTENT);
-                return LexerTypes.JAVASCRIPT_START;
-        }
+    {OJS} {
+        yybegin(SCRIPT_CONTENT);
+        return LexerTypes.JAVASCRIPT_START;
+    }
 
-    {OVAR}    {
-                yybegin(VARIABLE_CONTENT);
-                return LexerTypes.VARIABLE_START;
-        }
+    {OVAR} {
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.VARIABLE_START;
+    }
 
-    \{\{ / [ \t]?"/fr"   {
-                yybegin(FOR_CONTENT);
-                return LexerTypes.FOR_START;
-        }
+    \{\{ / [ \t]?"/fr" {
+        yybegin(FOR_CONTENT);
+        return LexerTypes.FOR_START;
+    }
 
-    \{\{ / .*[/]?{FOR_KEY}    {
-                yybegin(FOR_CONTENT);
-                return LexerTypes.FOR_START;
-        }
+    \{\{ / .*[/]?{FOR_KEY} {
+        yybegin(FOR_CONTENT);
+        return LexerTypes.FOR_START;
+    }
 
     [^] {
-            yybegin(YYINITIAL);
-            return LexerTypes.ERROR;
-        }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 

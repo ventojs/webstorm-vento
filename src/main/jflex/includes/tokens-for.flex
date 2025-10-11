@@ -18,212 +18,200 @@ FOR_KEY = "for"
 
 <FOR_CONTENT> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
-    {FOR_KEY} / [ \t].*"}}"   {
-              yybegin(FOR_VALUE);
-              return LexerTypes.FOR_KEY;
-        }
+    {FOR_KEY} / [ \t].*"}}" {
+        yybegin(FOR_VALUE);
+        return LexerTypes.FOR_KEY;
+    }
 
-    [/]{FOR_KEY}    {
-              return LexerTypes.CLOSE_FOR_KEY;
-        }
+    [/]{FOR_KEY} { return LexerTypes.CLOSE_FOR_KEY; }
 
-    [/][f]?[o]?[r]? {
-              return LexerTypes.ERROR;
-        }
+    [/][f]?[o]?[r]? { return LexerTypes.ERROR; }
 
-    "}}"  {
-              yybegin(YYINITIAL);
-              return LexerTypes.FOR_END;
-        }
+    "}}" {
+        yybegin(YYINITIAL);
+        return LexerTypes.FOR_END;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^/] {
-              yybegin(YYINITIAL);
-              return LexerTypes.ERROR;
-        }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
 }
 
 <FOR_VALUE> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     [^ \t]+"await"?"index,"?.+ / [ \t]+"of"[ \t]+   {
-              value = true;
-              return LexerTypes.FOR_VALUE;
-        }
+        value = true;
+        return LexerTypes.FOR_VALUE;
+    }
 
-    "of"   {
-              if(value == true) {
-                  value= false;
-                  yybegin(FOR_COLLECTION);
-                  return LexerTypes.FOR_OF;
-              } else {
-                  value= false;
-                  yybegin(FOR_COLLECTION);
-                  return LexerTypes.ERROR;
-              }
+    "of" {
+        if(value == true) {
+            value= false;
+            yybegin(FOR_COLLECTION);
+            return LexerTypes.FOR_OF;
+        }   else {
+            value= false;
+            yybegin(FOR_COLLECTION);
+            return LexerTypes.ERROR;
         }
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-
-              yybegin(FOR_COLLECTION);
-              return LexerTypes.ERROR;
-        }
+        yybegin(FOR_COLLECTION);
+        return LexerTypes.ERROR;
+    }
 
 }
 
 <FOR_COLLECTION> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     \{ {
-              objectDepth = 0;
-              objectDepth++;
-              yybegin(FOR_OBJECT);
-              return LexerTypes.FOR_COLLECTION;
-        }
+        objectDepth = 0;
+        objectDepth++;
+        yybegin(FOR_OBJECT);
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     \[ {
-              objectDepth = 0;
-              objectDepth++;
-              yybegin(FOR_ARRAY);
-              return LexerTypes.FOR_COLLECTION;
-        }
+        objectDepth = 0;
+        objectDepth++;
+        yybegin(FOR_ARRAY);
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     [^}{\]\[]+ {
-              collection = true;
-              return LexerTypes.FOR_COLLECTION;
-          }
+        collection = true;
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     "}}"  {
-              if(collection == true){
-                  collection = false;
-                  yybegin(YYINITIAL);
-                  return LexerTypes.FOR_END;
-              } else {
-                  collection = false;
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-              }
+        if(collection == true){
+            collection = false;
+            yybegin(YYINITIAL);
+            return LexerTypes.FOR_END;
+        } else {
+            collection = false;
+            yybegin(YYINITIAL);
+            return LexerTypes.ERROR;
         }
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-
-          yybegin(FOR_VALUE);
-          yypushback(yylength());
+        yybegin(FOR_VALUE);
+        yypushback(yylength());
     }
 }
 
 <FOR_OBJECT> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     \{ {
-                objectDepth++;
-                return LexerTypes.FOR_COLLECTION;
-        }
+        objectDepth++;
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     [^}{]+ {return LexerTypes.FOR_COLLECTION;}
 
     \} {
-                objectDepth--;
-                if (objectDepth == 0) {
-                 yybegin(FOR_PIPE);
-                }
-                return LexerTypes.FOR_COLLECTION;
+        objectDepth--;
+        if (objectDepth == 0) {
+            yybegin(FOR_PIPE);
         }
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     <<EOF>> {
-
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-            yybegin(FOR_COLLECTION);
-            yypushback(yylength());
+        yybegin(FOR_COLLECTION);
+        yypushback(yylength());
     }
 
 }
 
 <FOR_ARRAY> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     \[ {
-              objectDepth++;
-              return LexerTypes.FOR_COLLECTION;
-        }
+        objectDepth++;
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     [^\]\[]+ {return LexerTypes.FOR_COLLECTION;}
 
     \] {
-              objectDepth--;
-              if (objectDepth == 0) {
-                yybegin(FOR_PIPE);
-              }
-              return LexerTypes.FOR_COLLECTION;
+        objectDepth--;
+        if (objectDepth == 0) {
+            yybegin(FOR_PIPE);
         }
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     \][ \t]*[.].*\(.*\) {
-              objectDepth--;
-              if (objectDepth == 0) {
-                 yybegin(FOR_PIPE);
-              }
-              return LexerTypes.FOR_COLLECTION;
+        objectDepth--;
+        if (objectDepth == 0) {
+            yybegin(FOR_PIPE);
         }
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-            yybegin(FOR_COLLECTION);
-            yypushback(yylength());
+        yybegin(FOR_COLLECTION);
+        yypushback(yylength());
     }
 
 }
 
 <FOR_PIPE> {
 
-     {WHITESPACE}   {  }
+     {WHITESPACE} {  }
 
     "|> ".+ / [ \t]"}}" {
-              yybegin(FOR_CONTENT);
-              return LexerTypes.FOR_COLLECTION;
-        }
+        yybegin(FOR_CONTENT);
+        return LexerTypes.FOR_COLLECTION;
+    }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-          yybegin(FOR_CONTENT);
-          yypushback(yylength());
+        yybegin(FOR_CONTENT);
+        yypushback(yylength());
       }
 }
 

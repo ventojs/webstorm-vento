@@ -21,26 +21,29 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
 
 <PIPE> {
 
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     {PIPE} / .*{CBLOCK} { return LexerTypes.PIPE_ELEMENT; }
 
     {IDENT} { return LexerTypes.VARIABLE_ELEMENT; }
+
     {FUNC_PARAM} { return LexerTypes.VARIABLE_ELEMENT; }
+
     \. { return LexerTypes.VARIABLE_ELEMENT; }
+
     {REGEX} { return LexerTypes.VARIABLE_ELEMENT; }
+
     {STRING} { return LexerTypes.STRING; }
 
     {CBLOCK} {
-          yypushback(yylength());
-          leave();
+        yypushback(yylength());
+        leave();
     }
 
     <<EOF>> {
-                  // Unterminated pipe at EOF: reset and consume safely
-                  yybegin(YYINITIAL);
-                  return LexerTypes.ERROR;
-            }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] { return LexerTypes.UNKNOWN; }
 }

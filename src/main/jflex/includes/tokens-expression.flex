@@ -16,7 +16,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 2 - END
 %%
 
-
 <EXPRESSION> {
 
    //strings
@@ -33,11 +32,10 @@ import org.js.vento.plugin.lexer.LexerTypes;
    [()\[\]]  { return LexerTypes.BRACKET; }
 
    \{ {
-           objectDepth=1;
-           yybegin(EXP_OBJECT);
-           return LexerTypes.EXPRESSION;
-      }
-
+        objectDepth=1;
+        yybegin(EXP_OBJECT);
+        return LexerTypes.EXPRESSION;
+   }
 
    "}}" {
         yypushback(yylength());
@@ -45,9 +43,9 @@ import org.js.vento.plugin.lexer.LexerTypes;
    }
 
    "|>" {
-           enter(EXPRESSION);
-           return LexerTypes.PIPE_ELEMENT;
-      }
+        enter(EXPRESSION);
+        return LexerTypes.PIPE_ELEMENT;
+   }
 
    [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
    [ \t]+ { }
@@ -60,26 +58,26 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <EXP_OBJECT> {
 
     \{ {
-            objectDepth++;
-            return LexerTypes.EXPRESSION;
-        }
+        objectDepth++;
+        return LexerTypes.EXPRESSION;
+    }
 
     [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
 
     [^}{\"]+ {return LexerTypes.EXPRESSION;}
 
     \} {
-            objectDepth--;
-            if (objectDepth == 0) {
-             yybegin(EXPRESSION);
-            }
-            return LexerTypes.EXPRESSION;
+        objectDepth--;
+        if (objectDepth == 0) {
+            yybegin(EXPRESSION);
         }
+        return LexerTypes.EXPRESSION;
+    }
 
     <<EOF>> {
-            leave();
-            return LexerTypes.UNKNOWN;
-        }
+         leave();
+         return LexerTypes.UNKNOWN;
+    }
 
 }
 
