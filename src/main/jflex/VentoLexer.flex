@@ -21,7 +21,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 //%debug
 
 
-
+// STATES
 %state COMMENT
 %state SCRIPT_CONTENT
 %state BLOCK
@@ -59,6 +59,10 @@ DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
+STRING = [\"][^\"\n\r]*[\"]
+
+IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
+PIPE = "|>"
 
 OBLOCK = "{{"
 CBLOCK = "}}"
@@ -69,7 +73,6 @@ CCOMMENT = -?#{CBLOCK}
 OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
-
 
 FOR_KEY = "for"
 
@@ -96,6 +99,7 @@ FROM = "from"
     {OBLOCK} {
         yypushback(2);
         yybegin(BLOCK);
+        // foo
         // TODO: consider adding a Vento block token
     }
 
@@ -179,13 +183,6 @@ FROM = "from"
 
 }
 
-%include includes/tokens-for.flex
-%include includes/tokens-variables.flex
-%include includes/tokens-import.flex
-%include includes/tokens-export.flex
-%include includes/tokens-pipe.flex
-%include includes/tokens-expression.flex
-
 <SCRIPT_CONTENT> {
 
    ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
@@ -215,12 +212,12 @@ FROM = "from"
             return LexerTypes.COMMENT_END;
         }
 
-
-    [^] {
-            yybegin(YYINITIAL);
-            yypushback(yylength());
-            return LexerTypes.ERROR;
-        }
-
 }
+
+%include includes/tokens-for.flex
+%include includes/tokens-variables.flex
+%include includes/tokens-import.flex
+%include includes/tokens-export.flex
+%include includes/tokens-pipe.flex
+%include includes/tokens-expression.flex
 

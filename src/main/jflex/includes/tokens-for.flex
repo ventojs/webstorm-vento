@@ -149,11 +149,6 @@ FOR_KEY = "for"
         return LexerTypes.ERROR;
     }
 
-    [^] {
-        yybegin(FOR_COLLECTION);
-        yypushback(yylength());
-    }
-
 }
 
 <FOR_ARRAY> {
@@ -186,11 +181,6 @@ FOR_KEY = "for"
     <<EOF>> {
         yybegin(YYINITIAL);
         return LexerTypes.ERROR;
-    }
-
-    [^] {
-        yybegin(FOR_COLLECTION);
-        yypushback(yylength());
     }
 
 }

@@ -11,12 +11,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
 %state EXPORT_BLOCK_MODE
 %state EXPORT_FUNCTION_BLOCK
 
-EXPORT = "export"
-// Simple identifiers and string literals used in export value
-IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
-STRING = [\"][^\"\n\r]*[\"]
-OWS =[ \t\n\r]*
-PIPE = "|>"
 
 // BLOCK 2 - END
 %%

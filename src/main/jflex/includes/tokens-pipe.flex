@@ -7,12 +7,9 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
 %state PIPE
 
-PIPE = "|>"
 
-OWS =[ \t\n\r]*
-IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
 FUNC_PARAM = "(".*")"
-STRING = "\"".*"\""
+
 REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
 
 // BLOCK 2 - END

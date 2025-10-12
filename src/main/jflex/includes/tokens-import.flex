@@ -12,7 +12,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
 IMPORT = "import"
 FROM = "from"
 IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
-OWS =[ \t\n\r]*
 
 // BLOCK 2 - END
 %%
