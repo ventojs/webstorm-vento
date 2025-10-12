@@ -17,23 +17,23 @@ import com.intellij.psi.PsiLanguageInjectionHost
  *
  * @param node The AST node corresponding to this PSI element.
  */
-sealed class VentoPsiElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
+sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "VentoPsiElement: ${node.elementType}"
 }
 
-class DefaultElement(node: ASTNode) : VentoPsiElementImpl(node)
+class DefaultBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ImportElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ImportBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ExportBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportOpenElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ExportOpenBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportCloseElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ExportCloseBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportFunctionElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ExportFunctionBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ForBlockElement(node: ASTNode) : VentoPsiElementImpl(node)
+class ForBlockElement(node: ASTNode) : BaseElementImpl(node)
 
 /**
  * Represents a PSI element for JavaScript blocks in Vento templates.
@@ -43,15 +43,15 @@ class ForBlockElement(node: ASTNode) : VentoPsiElementImpl(node)
  * @constructor Creates a new instance with the given AST node.
  * @param node The AST node associated with this PSI element.
  */
-class VentoJavaScriptPsiElement(node: ASTNode) :
-    VentoPsiElementImpl(node),
+class JavaScriptBaseElement(node: ASTNode) :
+    BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
 
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VentoJavaScriptPsiElement>(this) {
+        return object : LiteralTextEscaper<JavaScriptBaseElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -85,15 +85,15 @@ class VentoJavaScriptPsiElement(node: ASTNode) :
  * PSI element representing a Vento variable block that contains a JavaScript expression.
  * This element enables JavaScript language injection for variable expressions.
  */
-class VentoVariablePsiElement(node: ASTNode) :
-    VentoPsiElementImpl(node),
+class VariablePsiBaseElement(node: ASTNode) :
+    BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
 
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VentoVariablePsiElement>(this) {
+        return object : LiteralTextEscaper<VariablePsiBaseElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -132,8 +132,8 @@ class VentoVariablePsiElement(node: ASTNode) :
     }
 }
 
-class VentoElementImpl(node: ASTNode) :
-    VentoPsiElementImpl(node),
+class VentoElement(node: ASTNode) :
+    BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun toString(): String = "VentoElement: ${node.elementType}"
 
@@ -143,7 +143,7 @@ class VentoElementImpl(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VentoElementImpl>(this) {
+        return object : LiteralTextEscaper<VentoElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)

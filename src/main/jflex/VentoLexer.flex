@@ -21,7 +21,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 //%debug
 
 
-
+// STATES
 %state COMMENT
 %state SCRIPT_CONTENT
 %state BLOCK
@@ -59,6 +59,10 @@ DEFAULT_HTML = [^{]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
+STRING = [\"][^\"\n\r]*[\"]
+
+IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
+PIPE = "|>"
 
 OBLOCK = "{{"
 CBLOCK = "}}"
@@ -69,7 +73,6 @@ CCOMMENT = -?#{CBLOCK}
 OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
-
 
 FOR_KEY = "for"
 
@@ -86,101 +89,128 @@ FROM = "from"
 
 %}
 
-
 %%
 
 <YYINITIAL> {
 
-    {EMPTY_LINE}              { return VentoLexerTypes.EMPTY_LINE; }
-    {WHITESPACE}              { return WHITE_SPACE; }
+    {EMPTY_LINE} { return LexerTypes.EMPTY_LINE; }
+    {WHITESPACE} { return WHITE_SPACE; }
 
-     {OBLOCK} {
-          yypushback(2);
-          yybegin(BLOCK);
-          // TODO: consider adding a Vento block token
-      }
-
-    {DEFAULT_HTML}    { return ParserTypes.HTML_ELEMENT; }
-
-    [^]               {
-          return VentoLexerTypes.ERROR;
+    {OBLOCK} {
+        yypushback(2);
+        yybegin(BLOCK);
+        // foo
+        // TODO: consider adding a Vento block token
     }
+
+    {DEFAULT_HTML} { return ParserTypes.HTML_ELEMENT; }
+
+    [^]   { return LexerTypes.ERROR; }
 
 }
 
 <BLOCK> {
-    {WHITESPACE}              { }
+    {WHITESPACE} { }
 
-    {OBLOCK}{WHITESPACE}{IMPORT}    {
-            yybegin(IMPORT);
-            yypushback(yylength()-2);
-            closeType = VentoLexerTypes.IMPORT_END;
-            return VentoLexerTypes.IMPORT_START;
+    {OBLOCK}{WHITESPACE}{IMPORT} {
+        yybegin(IMPORT);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.IMPORT_END;
+        return LexerTypes.IMPORT_START;
     }
 
-    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION}    {
-            yybegin(EXPORT_FUNCTION_BLOCK);
-            yypushback(yylength()-2);
-            closeType = VentoLexerTypes.EXPORT_FUNCTION_END;
-            return VentoLexerTypes.EXPORT_FUNCTION_START;
+    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
+        yybegin(EXPORT_FUNCTION_BLOCK);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_FUNCTION_END;
+        return LexerTypes.EXPORT_FUNCTION_START;
     }
 
-    {OBLOCK}{OWS}{EXPORT}    {
-            yybegin(EXPORT);
-            yypushback(yylength()-2);
-            closeType = VentoLexerTypes.EXPORT_END;
-            return VentoLexerTypes.EXPORT_START;
+    {OBLOCK}{OWS}{EXPORT} {
+        yybegin(EXPORT);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_END;
+        return LexerTypes.EXPORT_START;
     }
-
 
     {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-           yybegin(EXPORT_CLOSE);
-           yypushback(yylength()-2);
-           closeType = VentoLexerTypes.EXPORT_CLOSE_END;
-           return VentoLexerTypes.EXPORT_CLOSE_START;
+        yybegin(EXPORT_CLOSE);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.EXPORT_CLOSE_END;
+        return LexerTypes.EXPORT_CLOSE_START;
     }
 
     {CBLOCK} {
-           yybegin(YYINITIAL);
-           IElementType ct = closeType;
-           closeType = null;
-//           System.out.println(ct);
-           if(ct != null){
-               return ct;
-           } else {
-               return VentoLexerTypes.ERROR;
-           }
+        yybegin(YYINITIAL);
+        IElementType ct = closeType;
+        closeType = null;
+        if(ct != null){
+           return ct;
+        } else {
+           return LexerTypes.ERROR;
+        }
     }
 
-    {OCOMMENT}    {
-            yybegin(COMMENT);
-            return VentoLexerTypes.COMMENT_START;
+    {OCOMMENT} {
+        yybegin(COMMENT);
+        return LexerTypes.COMMENT_START;
     }
 
-    {OJS}    {
-            yybegin(SCRIPT_CONTENT);
-            return VentoLexerTypes.JAVASCRIPT_START;
+    {OJS} {
+        yybegin(SCRIPT_CONTENT);
+        return LexerTypes.JAVASCRIPT_START;
     }
 
-    {OVAR}    {
-            yybegin(VARIABLE_CONTENT);
-            return VentoLexerTypes.VARIABLE_START;
+    {OVAR} {
+        yybegin(VARIABLE_CONTENT);
+        return LexerTypes.VARIABLE_START;
     }
 
-    \{\{ / [ \t]?"/fr"   {
-            yybegin(FOR_CONTENT);
-            return VentoLexerTypes.FOR_START;
+    \{\{ / [ \t]?"/fr" {
+        yybegin(FOR_CONTENT);
+        return LexerTypes.FOR_START;
     }
 
-    \{\{ / .*[/]?{FOR_KEY}    {
-            yybegin(FOR_CONTENT);
-            return VentoLexerTypes.FOR_START;
+    \{\{ / .*[/]?{FOR_KEY} {
+        yybegin(FOR_CONTENT);
+        return LexerTypes.FOR_START;
     }
 
     [^] {
         yybegin(YYINITIAL);
-        return VentoLexerTypes.ERROR;
+        return LexerTypes.ERROR;
     }
+
+}
+
+<SCRIPT_CONTENT> {
+
+   ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
+   {CBLOCK} {
+           yybegin(YYINITIAL);
+           return LexerTypes.JAVASCRIPT_END;
+      }
+
+   [^] {
+          yybegin(YYINITIAL);
+          return LexerTypes.ERROR;
+      }
+
+}
+
+<COMMENT> {
+
+    // Match everything that is not the start of a closing comment sequence
+    ([^#-]|"#"[^}]|"-"[^#])+ { return LexerTypes.COMMENT_CONTENT; }
+
+    // Handle single characters that might be part of closing sequences
+    "#" { return LexerTypes.COMMENT_CONTENT; }
+    "-" { return LexerTypes.COMMENT_CONTENT; }
+
+    {CCOMMENT} {
+            yybegin(YYINITIAL);
+            return LexerTypes.COMMENT_END;
+        }
 
 }
 
@@ -190,42 +220,4 @@ FROM = "from"
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
 %include includes/tokens-expression.flex
-
-<SCRIPT_CONTENT> {
-
-   ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
-   {CBLOCK} {
-        yybegin(YYINITIAL);
-        return VentoLexerTypes.JAVASCRIPT_END;
-   }
-
-   [^] {
-       yybegin(YYINITIAL);
-       return VentoLexerTypes.ERROR;
-   }
-
-}
-
-<COMMENT> {
-
-    // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#])+ { return VentoLexerTypes.COMMENT_CONTENT; }
-
-    // Handle single characters that might be part of closing sequences
-    "#" { return VentoLexerTypes.COMMENT_CONTENT; }
-    "-" { return VentoLexerTypes.COMMENT_CONTENT; }
-
-    {CCOMMENT} {
-        yybegin(YYINITIAL);
-        return VentoLexerTypes.COMMENT_END;
-    }
-
-
-    [^] {
-        yybegin(YYINITIAL);
-        yypushback(yylength());
-        return VentoLexerTypes.ERROR;
-    }
-
-}
 

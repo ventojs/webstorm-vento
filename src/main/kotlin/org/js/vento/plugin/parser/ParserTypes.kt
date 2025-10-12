@@ -8,16 +8,16 @@ package org.js.vento.plugin.parser
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.DefaultElement
-import org.js.vento.plugin.ExportCloseElement
-import org.js.vento.plugin.ExportElement
-import org.js.vento.plugin.ExportFunctionElement
-import org.js.vento.plugin.ExportOpenElement
+import org.js.vento.plugin.DefaultBaseElement
+import org.js.vento.plugin.ExportBaseElement
+import org.js.vento.plugin.ExportCloseBaseElement
+import org.js.vento.plugin.ExportFunctionBaseElement
+import org.js.vento.plugin.ExportOpenBaseElement
 import org.js.vento.plugin.ForBlockElement
-import org.js.vento.plugin.ImportElement
-import org.js.vento.plugin.VentoElementImpl
-import org.js.vento.plugin.VentoJavaScriptPsiElement
-import org.js.vento.plugin.VentoVariablePsiElement
+import org.js.vento.plugin.ImportBaseElement
+import org.js.vento.plugin.JavaScriptBaseElement
+import org.js.vento.plugin.VariablePsiBaseElement
+import org.js.vento.plugin.VentoElement
 
 /**
  * Defines token and element types for the Vento language.
@@ -68,17 +68,17 @@ object ParserTypes {
     object Factory {
         fun createElement(node: ASTNode): PsiElement =
             when (node.elementType) {
-                VENTO_ELEMENT -> VentoElementImpl(node)
-                HTML_ELEMENT -> VentoElementImpl(node)
-                JAVASCRIPT_ELEMENT -> VentoJavaScriptPsiElement(node)
-                JAVACRIPT_VARIABLE_ELEMENT -> VentoVariablePsiElement(node)
+                VENTO_ELEMENT -> VentoElement(node)
+                HTML_ELEMENT -> VentoElement(node)
+                JAVASCRIPT_ELEMENT -> JavaScriptBaseElement(node)
+                JAVACRIPT_VARIABLE_ELEMENT -> VariablePsiBaseElement(node)
                 VENTO_FOR_ELEMENT -> ForBlockElement(node)
-                IMPORT_ELEMENT -> ImportElement(node)
-                EXPORT_ELEMENT -> ExportElement(node)
-                EXPORT_OPEN_ELEMENT -> ExportOpenElement(node)
-                EXPORT_CLOSE_ELEMENT -> ExportCloseElement(node)
-                EXPORT_FUNCTION_ELEMENT -> ExportFunctionElement(node)
-                else -> DefaultElement(node)
+                IMPORT_ELEMENT -> ImportBaseElement(node)
+                EXPORT_ELEMENT -> ExportBaseElement(node)
+                EXPORT_OPEN_ELEMENT -> ExportOpenBaseElement(node)
+                EXPORT_CLOSE_ELEMENT -> ExportCloseBaseElement(node)
+                EXPORT_FUNCTION_ELEMENT -> ExportFunctionBaseElement(node)
+                else -> DefaultBaseElement(node)
             }
     }
 }

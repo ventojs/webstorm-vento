@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 
@@ -11,71 +11,62 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 %state EXPORT_BLOCK_MODE
 %state EXPORT_FUNCTION_BLOCK
 
-EXPORT = "export"
-// Simple identifiers and string literals used in export value
-IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
-STRING = [\"][^\"\n\r]*[\"]
-OWS =[ \t\n\r]*
-PIPE = "|>"
 
 // BLOCK 2 - END
 %%
-
 
 <EXPORT> {
     {WHITESPACE}   {  }
 
     {EXPORT} / {WHITESPACE} {
-          yybegin(EXPORT_VALUE);
-          return VentoLexerTypes.EXPORT_KEY;
+        yybegin(EXPORT_VALUE);
+        return LexerTypes.EXPORT_KEY;
     }
 
     {EXPORT}{WHITESPACE}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-          yybegin(EXPORT_BLOCK_MODE);
-          yypushback(yylength()-6);
-          return VentoLexerTypes.EXPORT_KEY;
+        yybegin(EXPORT_BLOCK_MODE);
+        yypushback(yylength()-6);
+        return LexerTypes.EXPORT_KEY;
     }
 
 
     <<EOF>> {
-          // Unterminated pipe at EOF: reset and consume safely
-          yybegin(YYINITIAL);
-          return VentoLexerTypes.ERROR;
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
     }
 
     [^] {
-          yypushback(yylength());
-          yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 }
 
 <EXPORT_VALUE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTypes.EXPORT_VAR; }
     "=" {
-          enter(EXPRESSION);
-          return VentoLexerTypes.EXPORT_EQ;
-      }
+        enter(EXPRESSION);
+        return LexerTypes.EXPORT_EQ;
+    }
 
     {PIPE} {
-         yypushback(yylength());
-         enter(PIPE);
+        yypushback(yylength());
+        enter(PIPE);
     }
 
     {CBLOCK} {
-          yybegin(BLOCK);
-          yypushback(yylength());
+        yybegin(BLOCK);
+        yypushback(yylength());
     }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
+    }
 
     [^] {
-          return VentoLexerTypes.UNKNOWN;
+        return LexerTypes.UNKNOWN;
     }
 
 }
@@ -83,74 +74,70 @@ PIPE = "|>"
 <EXPORT_BLOCK_MODE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTypes.EXPORT_VAR; }
 
     {CBLOCK} {
-         yybegin(BLOCK);
-         yypushback(yylength());
+        yybegin(BLOCK);
+        yypushback(yylength());
     }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
-
-    [^] {
-         return VentoLexerTypes.UNKNOWN;
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
     }
+
+    [^] { return LexerTypes.UNKNOWN; }
+
 }
 
 <EXPORT_CLOSE> {
-    {WHITESPACE}   {  }
+    {WHITESPACE} {  }
 
     [/]{EXPORT} / {OWS}{CBLOCK} {
-          yybegin(BLOCK);
-          return VentoLexerTypes.EXPORT_CLOSE_KEY;
+        yybegin(BLOCK);
+        return LexerTypes.EXPORT_CLOSE_KEY;
     }
 
     <<EOF>> {
-          // Unterminated pipe at EOF: reset and consume safely
-          yybegin(YYINITIAL);
-          return VentoLexerTypes.ERROR;
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
     }
+
     [^] {
-          yypushback(yylength());
-          yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 }
 
 <EXPORT_FUNCTION_BLOCK> {
 
-    {WHITESPACE}   { }
+    {WHITESPACE} { }
 
-    {EXPORT} { return VentoLexerTypes.EXPORT_KEY; }
+    {EXPORT} { return LexerTypes.EXPORT_KEY; }
 
-    {FUNCTION} { return VentoLexerTypes.EXPORT_FUNCTION_KEY; }
+    {FUNCTION} { return LexerTypes.EXPORT_FUNCTION_KEY; }
 
-    {IDENT} { return VentoLexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTypes.EXPORT_VAR; }
 
-    "("{IDENT}?([,]{IDENT})*")" { return VentoLexerTypes.EXPORT_FUNCTION_ARGS; }
+    "("{IDENT}?([,]{IDENT})*")" { return LexerTypes.EXPORT_FUNCTION_ARGS; }
 
     {PIPE} {
-         yypushback(yylength());
-         enter(PIPE);
+        yypushback(yylength());
+        enter(PIPE);
     }
 
     {CBLOCK} {
-         yypushback(yylength());
-         yybegin(BLOCK);
+        yypushback(yylength());
+        yybegin(BLOCK);
     }
 
     <<EOF>> {
-              // Unterminated pipe at EOF: reset and consume safely
-              yybegin(YYINITIAL);
-              return VentoLexerTypes.ERROR;
-        }
-
-    [^] {
-         return VentoLexerTypes.UNKNOWN;
+        yybegin(YYINITIAL);
+        return LexerTypes.ERROR;
     }
+
+    [^] { return LexerTypes.UNKNOWN; }
+
 }
 
 

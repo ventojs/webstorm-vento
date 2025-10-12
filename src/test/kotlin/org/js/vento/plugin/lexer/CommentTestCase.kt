@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class CommentLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class CommentTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing comment`() {
         lexAndTest(
             "\n{{# \"Hello world\" #}}\n",

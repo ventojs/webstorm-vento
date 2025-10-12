@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.VentoLexerTypes;
+import org.js.vento.plugin.lexer.LexerTypes;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -16,28 +16,26 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 // BLOCK 2 - END
 %%
 
-
 <EXPRESSION> {
 
    //strings
-   [\"][^\"\n\r]*[\"] { return VentoLexerTypes.STRING; }
+   [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
 
-   [\'][^\'\n\r]*[\'] { return VentoLexerTypes.STRING; }
+   [\'][^\'\n\r]*[\'] { return LexerTypes.STRING; }
 
-   [\`][^\`\n\r]*[\`] { return VentoLexerTypes.STRING; }
+   [\`][^\`\n\r]*[\`] { return LexerTypes.STRING; }
 
-   \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return VentoLexerTypes.REGEX; }
+   \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTypes.REGEX; }
 
-   [.]  { return VentoLexerTypes.DOT; }
+   [.]  { return LexerTypes.DOT; }
 
-   [()\[\]]  { return VentoLexerTypes.BRACKET; }
+   [()\[\]]  { return LexerTypes.BRACKET; }
 
    \{ {
         objectDepth=1;
         yybegin(EXP_OBJECT);
-        return VentoLexerTypes.EXPRESSION;
+        return LexerTypes.EXPRESSION;
    }
-
 
    "}}" {
         yypushback(yylength());
@@ -46,10 +44,10 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 
    "|>" {
         enter(EXPRESSION);
-        return VentoLexerTypes.PIPE_ELEMENT;
+        return LexerTypes.PIPE_ELEMENT;
    }
 
-   [^\/\"'`(){} \t\n\r]+ { return VentoLexerTypes.EXPRESSION; }
+   [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
    [ \t]+ { }
 
    <<EOF>> { leave(); }
@@ -61,24 +59,24 @@ import org.js.vento.plugin.lexer.VentoLexerTypes;
 
     \{ {
         objectDepth++;
-        return VentoLexerTypes.EXPRESSION;
+        return LexerTypes.EXPRESSION;
     }
 
-    [\"][^\"\n\r]*[\"] { return VentoLexerTypes.STRING; }
+    [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
 
-    [^}{\"]+ {return VentoLexerTypes.EXPRESSION;}
+    [^}{\"]+ {return LexerTypes.EXPRESSION;}
 
     \} {
         objectDepth--;
         if (objectDepth == 0) {
-         yybegin(EXPRESSION);
+            yybegin(EXPRESSION);
         }
-        return VentoLexerTypes.EXPRESSION;
+        return LexerTypes.EXPRESSION;
     }
 
     <<EOF>> {
-        leave();
-        return VentoLexerTypes.UNKNOWN;
+         leave();
+         return LexerTypes.UNKNOWN;
     }
 
 }

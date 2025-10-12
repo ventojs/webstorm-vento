@@ -10,8 +10,8 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
-import org.js.vento.plugin.lexer.VentoLexerTypes
-import org.js.vento.plugin.lexer.VentoLexerTypes.UNKNOWN
+import org.js.vento.plugin.lexer.LexerTypes
+import org.js.vento.plugin.lexer.LexerTypes.UNKNOWN
 
 /**
  * A parser implementation for Vento template files.
@@ -55,14 +55,14 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
         builder.setDebugMode(true)
         when (tokenType) {
-            VentoLexerTypes.COMMENT_START, VentoLexerTypes.TRIM_COMMENT_START -> parseCommentBlock(builder)
-            VentoLexerTypes.JAVASCRIPT_START -> parseJavaScript(builder)
-            VentoLexerTypes.VARIABLE_START -> parseVariable(builder)
-            VentoLexerTypes.FOR_START -> parseFor(builder)
-            VentoLexerTypes.IMPORT_START -> parseImport(builder)
-            VentoLexerTypes.EXPORT_START -> parseExport(builder)
-            VentoLexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
-            VentoLexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
+            LexerTypes.COMMENT_START, LexerTypes.TRIM_COMMENT_START -> parseCommentBlock(builder)
+            LexerTypes.JAVASCRIPT_START -> parseJavaScript(builder)
+            LexerTypes.VARIABLE_START -> parseVariable(builder)
+            LexerTypes.FOR_START -> parseFor(builder)
+            LexerTypes.IMPORT_START -> parseImport(builder)
+            LexerTypes.EXPORT_START -> parseExport(builder)
+            LexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
+            LexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -74,12 +74,12 @@ class VentoParser : PsiParser {
     private fun parseImport(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, VentoLexerTypes.IMPORT_START, "Expected '{{' ")
-        expect(builder, VentoLexerTypes.IMPORT_KEY, "Expected 'import' keyword")
-        expect(builder, VentoLexerTypes.IMPORT_VALUES, "Expected import values", true)
-        expect(builder, VentoLexerTypes.IMPORT_FROM, "Expected 'from' keyword")
-        expect(builder, VentoLexerTypes.IMPORT_FILE, "Expected vento(.vto) path string")
-        expect(builder, VentoLexerTypes.IMPORT_END, "Expected '}}' ")
+        expect(builder, LexerTypes.IMPORT_START, "Expected '{{' ")
+        expect(builder, LexerTypes.IMPORT_KEY, "Expected 'import' keyword")
+        expect(builder, LexerTypes.IMPORT_VALUES, "Expected import values", true)
+        expect(builder, LexerTypes.IMPORT_FROM, "Expected 'from' keyword")
+        expect(builder, LexerTypes.IMPORT_FILE, "Expected vento(.vto) path string")
+        expect(builder, LexerTypes.IMPORT_END, "Expected '}}' ")
 
         m.done(ParserTypes.IMPORT_ELEMENT)
     }
@@ -87,23 +87,23 @@ class VentoParser : PsiParser {
     private fun parseExport(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, VentoLexerTypes.EXPORT_START, "Expected '{{' ")
-        expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
-        expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected variable", true)
+        expect(builder, LexerTypes.EXPORT_START, "Expected '{{' ")
+        expect(builder, LexerTypes.EXPORT_KEY, "Expected 'export' keyword")
+        expect(builder, LexerTypes.EXPORT_VAR, "Expected variable", true)
 
-        val hasEq = optional(builder, VentoLexerTypes.EXPORT_EQ, "Expected '=' keyword")
+        val hasEq = optional(builder, LexerTypes.EXPORT_EQ, "Expected '=' keyword")
         var hasVal = false
         if (hasEq) hasVal = parseExpression(builder)
         if (hasEq && !hasVal) builder.error("Expected expression after '='")
 
-        while (!builder.eof() && builder.tokenType == VentoLexerTypes.PIPE_ELEMENT) {
-            val hasPipe = optional(builder, VentoLexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
+        while (!builder.eof() && builder.tokenType == LexerTypes.PIPE_ELEMENT) {
+            val hasPipe = optional(builder, LexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
             var hasPipeExpression = false
             if (hasPipe) hasPipeExpression = parseExpression(builder)
             if (hasPipe && !hasPipeExpression) builder.error("Expected expression after '|>'")
         }
 
-        expect(builder, VentoLexerTypes.EXPORT_END, "Expected '}}' ")
+        expect(builder, LexerTypes.EXPORT_END, "Expected '}}' ")
 
         if (hasEq && hasVal) {
             m.done(ParserTypes.EXPORT_ELEMENT)
@@ -118,12 +118,12 @@ class VentoParser : PsiParser {
         while (
             !builder.eof() &&
             (
-                builder.tokenType == VentoLexerTypes.EXPRESSION ||
-                    builder.tokenType == VentoLexerTypes.STRING ||
-                    builder.tokenType == VentoLexerTypes.REGEX ||
-                    builder.tokenType == VentoLexerTypes.BRACKET ||
-                    builder.tokenType == VentoLexerTypes.DOT ||
-                    builder.tokenType == VentoLexerTypes.ERROR
+                builder.tokenType == LexerTypes.EXPRESSION ||
+                    builder.tokenType == LexerTypes.STRING ||
+                    builder.tokenType == LexerTypes.REGEX ||
+                    builder.tokenType == LexerTypes.BRACKET ||
+                    builder.tokenType == LexerTypes.DOT ||
+                    builder.tokenType == LexerTypes.ERROR
             )
         ) {
             builder.advanceLexer()
@@ -137,9 +137,9 @@ class VentoParser : PsiParser {
     private fun parseExportClose(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, VentoLexerTypes.EXPORT_CLOSE_START, "Expected '{{/' ")
-        expect(builder, VentoLexerTypes.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
-        expect(builder, VentoLexerTypes.EXPORT_CLOSE_END, "Expected '}}' ")
+        expect(builder, LexerTypes.EXPORT_CLOSE_START, "Expected '{{/' ")
+        expect(builder, LexerTypes.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
+        expect(builder, LexerTypes.EXPORT_CLOSE_END, "Expected '}}' ")
 
         m.done(ParserTypes.EXPORT_CLOSE_ELEMENT)
     }
@@ -147,12 +147,12 @@ class VentoParser : PsiParser {
     private fun parseExportFunction(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_START, "Expected '{{' ")
-        expect(builder, VentoLexerTypes.EXPORT_KEY, "Expected 'export' keyword")
-        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_KEY, "Expected 'function' keyword")
-        expect(builder, VentoLexerTypes.EXPORT_VAR, "Expected function name")
-        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])", true)
-        expect(builder, VentoLexerTypes.EXPORT_FUNCTION_END, "Expected '}}' ")
+        expect(builder, LexerTypes.EXPORT_FUNCTION_START, "Expected '{{' ")
+        expect(builder, LexerTypes.EXPORT_KEY, "Expected 'export' keyword")
+        expect(builder, LexerTypes.EXPORT_FUNCTION_KEY, "Expected 'function' keyword")
+        expect(builder, LexerTypes.EXPORT_VAR, "Expected function name")
+        expect(builder, LexerTypes.EXPORT_FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])", true)
+        expect(builder, LexerTypes.EXPORT_FUNCTION_END, "Expected '}}' ")
 
         m.done(ParserTypes.EXPORT_FUNCTION_ELEMENT)
     }
@@ -165,18 +165,18 @@ class VentoParser : PsiParser {
         while (
             !builder.eof() &&
             (
-                builder.tokenType == VentoLexerTypes.CLOSE_FOR_KEY ||
-                    builder.tokenType == VentoLexerTypes.FOR_KEY ||
-                    builder.tokenType == VentoLexerTypes.FOR_VALUE ||
-                    builder.tokenType == VentoLexerTypes.FOR_OF ||
-                    builder.tokenType == VentoLexerTypes.FOR_COLLECTION ||
-                    builder.tokenType == VentoLexerTypes.ERROR
+                builder.tokenType == LexerTypes.CLOSE_FOR_KEY ||
+                    builder.tokenType == LexerTypes.FOR_KEY ||
+                    builder.tokenType == LexerTypes.FOR_VALUE ||
+                    builder.tokenType == LexerTypes.FOR_OF ||
+                    builder.tokenType == LexerTypes.FOR_COLLECTION ||
+                    builder.tokenType == LexerTypes.ERROR
             )
         ) {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoLexerTypes.FOR_END) {
+        if (builder.tokenType == LexerTypes.FOR_END) {
             builder.advanceLexer()
         }
 
@@ -191,16 +191,16 @@ class VentoParser : PsiParser {
         while (
             !builder.eof() &&
             (
-                builder.tokenType == VentoLexerTypes.VARIABLE_ELEMENT ||
-                    builder.tokenType == VentoLexerTypes.PIPE_ELEMENT ||
-                    builder.tokenType == VentoLexerTypes.STRING
+                builder.tokenType == LexerTypes.VARIABLE_ELEMENT ||
+                    builder.tokenType == LexerTypes.PIPE_ELEMENT ||
+                    builder.tokenType == LexerTypes.STRING
             )
         ) {
             builder.advanceLexer()
         }
 
         // Expect end
-        if (builder.tokenType == VentoLexerTypes.VARIABLE_END) {
+        if (builder.tokenType == LexerTypes.VARIABLE_END) {
             builder.advanceLexer()
         } else {
             builder.error("Expected '}}' to close variable")
@@ -212,7 +212,7 @@ class VentoParser : PsiParser {
     private fun parseJavaScript(builder: PsiBuilder) {
         val marker = builder.mark()
 
-        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_START) {
+        if (builder.tokenType == LexerTypes.JAVASCRIPT_START) {
             builder.advanceLexer()
         }
 
@@ -220,7 +220,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        if (builder.tokenType == VentoLexerTypes.JAVASCRIPT_END) {
+        if (builder.tokenType == LexerTypes.JAVASCRIPT_END) {
             builder.advanceLexer()
         }
 
@@ -235,14 +235,14 @@ class VentoParser : PsiParser {
 
         // Consume content tokens
         while (!builder.eof() &&
-            builder.tokenType == VentoLexerTypes.COMMENT_CONTENT
+            builder.tokenType == LexerTypes.COMMENT_CONTENT
         ) {
             builder.advanceLexer()
         }
 
         // Consume closing token if present
-        if (builder.tokenType == VentoLexerTypes.COMMENT_END ||
-            builder.tokenType == VentoLexerTypes.TRIM_COMMENT_END
+        if (builder.tokenType == LexerTypes.COMMENT_END ||
+            builder.tokenType == LexerTypes.TRIM_COMMENT_END
         ) {
             builder.advanceLexer()
         }

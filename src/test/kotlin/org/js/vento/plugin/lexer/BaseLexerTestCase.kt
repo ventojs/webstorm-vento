@@ -19,7 +19,7 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
         super.setUp()
         val lexer =
             SlowOperations.knownIssue("IDEA-000000").use {
-                VentoLexerAdapter.createTestLexer()
+                LexerAdapter.createTestLexer()
             }
         assertNotNull("Lexer should not be null", lexer)
         this.lexer = lexer

@@ -14,7 +14,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import org.js.vento.plugin.filetype.VentoFileType
 
-class VentoToggleCommentAction : AnAction() {
+class ToggleCommentAction : AnAction() {
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
 
     override fun actionPerformed(e: AnActionEvent) {

@@ -22,47 +22,47 @@ import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.intellij.ui.JBColor
-import org.js.vento.plugin.lexer.VentoLexerAdapter
-import org.js.vento.plugin.lexer.VentoLexerTypes
-import org.js.vento.plugin.lexer.VentoLexerTypes.CLOSE_FOR_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_CONTENT
-import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.COMMENT_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.ERROR
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_CLOSE_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_EQ
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_ARGS
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_FUNCTION_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_VALUE
-import org.js.vento.plugin.lexer.VentoLexerTypes.EXPORT_VAR
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_COLLECTION
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_OF
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.FOR_VALUE
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_FILE
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_FROM
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_KEY
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.IMPORT_VALUES
-import org.js.vento.plugin.lexer.VentoLexerTypes.JAVASCRIPT_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.JAVASCRIPT_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.PIPE_ELEMENT
-import org.js.vento.plugin.lexer.VentoLexerTypes.TEXT
-import org.js.vento.plugin.lexer.VentoLexerTypes.TRIM_COMMENT_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.TRIM_COMMENT_START
-import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_ELEMENT
-import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_END
-import org.js.vento.plugin.lexer.VentoLexerTypes.VARIABLE_START
+import org.js.vento.plugin.lexer.LexerAdapter
+import org.js.vento.plugin.lexer.LexerTypes
+import org.js.vento.plugin.lexer.LexerTypes.CLOSE_FOR_KEY
+import org.js.vento.plugin.lexer.LexerTypes.COMMENT_CONTENT
+import org.js.vento.plugin.lexer.LexerTypes.COMMENT_END
+import org.js.vento.plugin.lexer.LexerTypes.COMMENT_START
+import org.js.vento.plugin.lexer.LexerTypes.ERROR
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_END
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_EQ
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_FUNCTION_ARGS
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_FUNCTION_END
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_FUNCTION_KEY
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_FUNCTION_START
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_KEY
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_START
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_VALUE
+import org.js.vento.plugin.lexer.LexerTypes.EXPORT_VAR
+import org.js.vento.plugin.lexer.LexerTypes.FOR_COLLECTION
+import org.js.vento.plugin.lexer.LexerTypes.FOR_END
+import org.js.vento.plugin.lexer.LexerTypes.FOR_KEY
+import org.js.vento.plugin.lexer.LexerTypes.FOR_OF
+import org.js.vento.plugin.lexer.LexerTypes.FOR_START
+import org.js.vento.plugin.lexer.LexerTypes.FOR_VALUE
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_END
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_FILE
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_FROM
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_KEY
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_START
+import org.js.vento.plugin.lexer.LexerTypes.IMPORT_VALUES
+import org.js.vento.plugin.lexer.LexerTypes.JAVASCRIPT_END
+import org.js.vento.plugin.lexer.LexerTypes.JAVASCRIPT_START
+import org.js.vento.plugin.lexer.LexerTypes.PIPE_ELEMENT
+import org.js.vento.plugin.lexer.LexerTypes.TEXT
+import org.js.vento.plugin.lexer.LexerTypes.TRIM_COMMENT_END
+import org.js.vento.plugin.lexer.LexerTypes.TRIM_COMMENT_START
+import org.js.vento.plugin.lexer.LexerTypes.VARIABLE_ELEMENT
+import org.js.vento.plugin.lexer.LexerTypes.VARIABLE_END
+import org.js.vento.plugin.lexer.LexerTypes.VARIABLE_START
 import java.awt.Color
 
 /**
@@ -77,8 +77,8 @@ import java.awt.Color
  * - Provides a lexer for tokenizing Vento code.
  * - Maps token types to their respective highlighting attributes.
  */
-class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
-    override fun getHighlightingLexer(): Lexer = VentoLexerAdapter()
+class SyntaxHighlighter : SyntaxHighlighterBase() {
+    override fun getHighlightingLexer(): Lexer = LexerAdapter()
 
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
@@ -122,7 +122,7 @@ class VentoSyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_FUNCTION_ARGS -> ARGS
                 EXPORT_FUNCTION_END -> BLOCK
                 EXPORT_FUNCTION_START -> BLOCK
-                VentoLexerTypes.STRING -> STRING
+                LexerTypes.STRING -> STRING
                 else -> null
             }
 

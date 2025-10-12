@@ -35,9 +35,9 @@
         <!-- Syntax Highlighting -->
         <!-- Provides syntax highlighting capabilities for Vento files -->
         <lang.syntaxHighlighterFactory language="Vento"
-                                       implementationClass="org.js.vento.plugin.highlighting.VentoSyntaxHighlighterFactory"/>
+                                       implementationClass="org.js.vento.plugin.highlighting.SyntaxHighlighterFactory"/>
         <!-- Adds color settings page to customize syntax highlighting -->
-        <colorSettingsPage implementation="org.js.vento.plugin.highlighting.VentoColorSettingsPage"/>
+        <colorSettingsPage implementation="org.js.vento.plugin.highlighting.ColorSettingsPage"/>
 
         <!-- Language Injection -->
         <!-- Injects JavaScript language support into Vento JavaScript blocks -->
@@ -47,13 +47,13 @@
 
         <!-- Code Analysis -->
         <!-- Provides code analysis and error highlighting for Vento files -->
-        <annotator language="Vento" implementationClass="org.js.vento.plugin.highlighting.VentoAnnotator"/>
+        <annotator language="Vento" implementationClass="org.js.vento.plugin.highlighting.Annotator"/>
 
     </extensions>
 
     <actions>
         <action id="VentoToggleCommentAction"
-                class="org.js.vento.plugin.actions.VentoToggleCommentAction"
+                class="org.js.vento.plugin.actions.ToggleCommentAction"
                 text="Toggle Vento Comment"
                 description="Toggle Vento comment markers ({{# #}}) around selection">
             <keyboard-shortcut keymap="$default" first-keystroke="ctrl SLASH"/>

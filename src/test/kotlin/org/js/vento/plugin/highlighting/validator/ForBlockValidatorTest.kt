@@ -163,7 +163,7 @@ class ForBlockValidatorTest : BasePlatformTestCase() {
      * @param isValid Expected validity state (default: true)
      */
     private fun assertValid(content: ForBlockElement, isValid: Boolean = true) {
-        val outcome = validator.isValidExpression(content, myFixture.project)
+        val outcome = validator.isValidExpression(content)
         assertEquals("$content: ${outcome.errorMessage}", isValid, outcome.isValid)
     }
 }

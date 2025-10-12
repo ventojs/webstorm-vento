@@ -6,9 +6,8 @@
 package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.tree.util.children
-import com.intellij.openapi.project.Project
 import org.js.vento.plugin.ForBlockElement
-import org.js.vento.plugin.lexer.VentoLexerTypes
+import org.js.vento.plugin.lexer.LexerTypes
 
 /**
  * Validates JavaScript expressions for use within Vento variable blocks.
@@ -22,15 +21,12 @@ import org.js.vento.plugin.lexer.VentoLexerTypes
  * which includes an error message explaining the issue if the validation fails.
  */
 class ForBlockValidator {
-    fun isValidExpression(content: ForBlockElement, project: Project): ValidationResult {
-//        println("Validating for block: ${content.text}")
-
+    fun isValidExpression(content: ForBlockElement): ValidationResult {
         if (content.text.isEmpty()) return ValidationResult(false, "Empty for-block found. $SYNTAX")
         if (content.text.matches(forClose)) {
             return ValidationResult(true, "Valide closing for-block found.")
         } else {
-//            content.node.children().forEach { println(it.elementType.toString() + " : " + it.text) }
-            if (content.node.children().any { it.elementType.toString() == VentoLexerTypes.ERROR.toString() }) {
+            if (content.node.children().any { it.elementType.toString() == LexerTypes.ERROR.toString() }) {
                 return ValidationResult(false, "Invalid for-block. $SYNTAX")
             }
         }

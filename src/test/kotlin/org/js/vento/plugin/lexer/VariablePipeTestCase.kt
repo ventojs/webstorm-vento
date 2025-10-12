@@ -13,7 +13,7 @@ package org.js.vento.plugin.lexer
  * the pipeline operator (|>) and variable transformations.
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class VariablePipeLexerTestCase(name: String) : BaseLexerTestCase(name) {
+class VariablePipeTestCase(name: String) : BaseLexerTestCase(name) {
     /**
      *  Verifies that the lexer can recognize a simple variable pipe expression.
      *  Input: {{ "Hello, world!" |> toUpperCase }}

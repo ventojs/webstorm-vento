@@ -10,7 +10,7 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import org.js.vento.plugin.ForBlockElement
-import org.js.vento.plugin.VentoVariablePsiElement
+import org.js.vento.plugin.VariablePsiBaseElement
 import org.js.vento.plugin.highlighting.validator.ForBlockValidator
 import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
 
@@ -19,7 +19,7 @@ import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
  * It checks the syntax and semantics of variable expressions and provides error annotations
  * when invalid expressions are detected.
  */
-class VentoAnnotator : Annotator {
+class Annotator : Annotator {
     /** Validator used to check JavaScript expression syntax and semantics */
     private val expressionValidator = JsExpressionValidator()
     private val forBlockValidator = ForBlockValidator()
@@ -31,12 +31,12 @@ class VentoAnnotator : Annotator {
      * @param holder The holder to store annotations
      */
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        if (element is VentoVariablePsiElement) {
+        if (element is VariablePsiBaseElement) {
             validateVariableExpression(element, holder)
         }
 
         if (element is ForBlockElement) {
-            val result = forBlockValidator.isValidExpression(element, element.project)
+            val result = forBlockValidator.isValidExpression(element)
 
             if (!result.isValid) {
                 holder
@@ -53,7 +53,7 @@ class VentoAnnotator : Annotator {
      * @param element The variable PSI element to validate
      * @param holder The holder to store potential error annotations
      */
-    private fun validateVariableExpression(element: VentoVariablePsiElement, holder: AnnotationHolder) {
+    private fun validateVariableExpression(element: VariablePsiBaseElement, holder: AnnotationHolder) {
         val contentRange = element.getContentRange()
         if (contentRange.length == 0) return
 
