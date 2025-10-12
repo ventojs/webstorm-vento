@@ -33,7 +33,7 @@ class ExportCloseBaseElement(node: ASTNode) : BaseElementImpl(node)
 
 class ExportFunctionBaseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ForBlockBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ForBlockElement(node: ASTNode) : BaseElementImpl(node)
 
 /**
  * Represents a PSI element for JavaScript blocks in Vento templates.

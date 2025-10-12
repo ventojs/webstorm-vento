@@ -9,7 +9,7 @@ import com.intellij.lang.annotation.AnnotationHolder
 import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
-import org.js.vento.plugin.ForBlockBaseElement
+import org.js.vento.plugin.ForBlockElement
 import org.js.vento.plugin.VariablePsiBaseElement
 import org.js.vento.plugin.highlighting.validator.ForBlockValidator
 import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
@@ -35,7 +35,7 @@ class Annotator : Annotator {
             validateVariableExpression(element, holder)
         }
 
-        if (element is ForBlockBaseElement) {
+        if (element is ForBlockElement) {
             val result = forBlockValidator.isValidExpression(element)
 
             if (!result.isValid) {

@@ -13,7 +13,7 @@ import org.js.vento.plugin.ExportBaseElement
 import org.js.vento.plugin.ExportCloseBaseElement
 import org.js.vento.plugin.ExportFunctionBaseElement
 import org.js.vento.plugin.ExportOpenBaseElement
-import org.js.vento.plugin.ForBlockBaseElement
+import org.js.vento.plugin.ForBlockElement
 import org.js.vento.plugin.ImportBaseElement
 import org.js.vento.plugin.JavaScriptBaseElement
 import org.js.vento.plugin.VariablePsiBaseElement
@@ -72,7 +72,7 @@ object ParserTypes {
                 HTML_ELEMENT -> VentoElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptBaseElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VariablePsiBaseElement(node)
-                VENTO_FOR_ELEMENT -> ForBlockBaseElement(node)
+                VENTO_FOR_ELEMENT -> ForBlockElement(node)
                 IMPORT_ELEMENT -> ImportBaseElement(node)
                 EXPORT_ELEMENT -> ExportBaseElement(node)
                 EXPORT_OPEN_ELEMENT -> ExportOpenBaseElement(node)
