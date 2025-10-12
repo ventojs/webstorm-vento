@@ -20,7 +20,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
     [^|][^>]+{OWS}"}}" {
         yypushback(yylength());
-        System.out.println("EXPR: " +yytext());
         enter(EXPRESSION);
     }
 

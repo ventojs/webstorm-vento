@@ -105,7 +105,7 @@ class VentoParser : PsiParser {
 
         expect(builder, LexerTypes.EXPORT_END, "Expected '}}' ")
 
-        if (hasEq && hasVal) {
+        if (hasEq) {
             m.done(ParserTypes.EXPORT_ELEMENT)
         } else {
             m.done(ParserTypes.EXPORT_OPEN_ELEMENT)
@@ -115,6 +115,7 @@ class VentoParser : PsiParser {
     private fun parseExpression(builder: PsiBuilder): Boolean {
         val m = builder.mark()
 
+        var hasExpression = false
         while (
             !builder.eof() &&
             (
@@ -125,12 +126,13 @@ class VentoParser : PsiParser {
                     builder.tokenType == LexerTypes.DOT
             )
         ) {
+            hasExpression = true
             builder.advanceLexer()
         }
 
         m.done(ParserTypes.EXPRESSION)
 
-        return true
+        return hasExpression
     }
 
     private fun parseExportClose(builder: PsiBuilder) {

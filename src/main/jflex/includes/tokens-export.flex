@@ -47,7 +47,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {IDENT} { return LexerTypes.EXPORT_VAR; }
 
     "=" {
-          System.out.println("EQUAL");
         enter(EXPRESSION);
         return LexerTypes.EQUAL;
     }

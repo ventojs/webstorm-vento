@@ -5,6 +5,7 @@
 
 package org.js.vento.plugin.highlighting.validator
 
+import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.impl.source.tree.PsiErrorElementImpl
 import com.intellij.psi.util.elementType
@@ -76,7 +77,7 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
      *
      * @param content The ForBlockElement to validate
      */
-    private fun assertNotValid(content: ExportBaseElement): Unit = assertValid(content, false)
+    private fun assertNotValid(content: ExportBaseElement) = assertValid(content, false)
 
     /**
      * Asserts the validity of a ForBlockElement.
@@ -85,13 +86,19 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
      * @param isValid Expected validity state (default: true)
      */
     private fun assertValid(content: ExportBaseElement, isValid: Boolean = true) {
-        content.children.forEach {
-            try {
-                assertFalse("Found Error Element", it::class.java == PsiErrorElementImpl::class.java)
-            } catch (e: Error) {
-                lexAndPrint(content)
-                throw e
+        val passes = mutableListOf<Pair<Int, PsiElement>>()
+        content.children.forEachIndexed { index, it ->
+            if (it::class.java == PsiErrorElementImpl::class.java) passes.add(Pair(index, it))
+        }
+        try {
+            if (isValid && !passes.isEmpty()) {
+                fail("Found Error Element: ${passes.map { it.second.elementType }} (${passes.map { it.first }})")
+            } else if (!isValid && passes.isEmpty()) {
+                fail("Expected Error Elements")
             }
+        } catch (e: Error) {
+            lexAndPrint(content)
+            throw e
         }
     }
 
@@ -104,9 +111,9 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
         printlnError("Tokens:")
         printlnError("-".repeat(30))
 
-        content.children.forEach {
+        content.children.forEachIndexed { index, it ->
             printlnError(
-                "token: " + "${it.elementType}".padEnd(40, ' ') + " = [${it.textOffset}]",
+                "token: " + "$index".padEnd(10, ' ') + " = [$it]",
             )
         }
     }
