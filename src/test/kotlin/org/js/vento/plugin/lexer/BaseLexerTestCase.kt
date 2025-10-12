@@ -35,7 +35,14 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
             }
 
             val token: IElementType? = lexer.advance()
-            assertNull("tokens provided do not match: " + template.substring(lexer.tokenStart, lexer.tokenEnd), token)
+            assertTrue(
+                "($token) at (${lexer.tokenStart}, ${lexer.tokenEnd}) is not null: " +
+                    template.substring(
+                        lexer.tokenStart,
+                        lexer.tokenEnd,
+                    ),
+                token == null || token.toString() == "VENTO_ERROR_TOKEN",
+            )
             passed = true
         } finally {
             if (!passed) lexAndPrint(template)

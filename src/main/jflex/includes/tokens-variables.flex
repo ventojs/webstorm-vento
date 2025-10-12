@@ -34,25 +34,26 @@ import org.js.vento.plugin.lexer.LexerTypes;
         return LexerTypes.STRING;
     }
 
+    //regex
     \/  {
         yybegin(JS_REGEX);
         return LexerTypes.VARIABLE_ELEMENT;
     }
 
-   \{ {
+    //object
+    \{ {
         objectDepth=1;
         yybegin(JS_OBJECT);
         return LexerTypes.VARIABLE_ELEMENT;
-   }
+    }
 
     "|>" { return LexerTypes.PIPE_ELEMENT; }
 
-   \- / [^}] {return LexerTypes.VARIABLE_ELEMENT;}
+    \- / [^}] {return LexerTypes.VARIABLE_ELEMENT;}
 
+    [^\/\"'`{}\- \t]+ { return LexerTypes.VARIABLE_ELEMENT; }
 
-   [^\/\"'`{}\- \t]+ { return LexerTypes.VARIABLE_ELEMENT; }
-
-   {WHITESPACE} { }
+    {WHITESPACE} { }
 
     {CVAR} {
         yybegin(YYINITIAL);
@@ -178,9 +179,10 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
+        yybegin(VARIABLE_CONTENT);
         return LexerTypes.ERROR;
     }
+
 }
 
 <BRACKET> {

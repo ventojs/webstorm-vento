@@ -1,0 +1,11 @@
+Vento File(0,22)
+  VentoPsiElement: VENTO_VARIABLE_ELEMENT(0,22)
+    PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(0,2)
+    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)(' /')(2,4)
+    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)('fo }}\n{{ "hello"}}')(4,22)
+    PsiErrorElement:unexpected variable content(22,22)
+      <empty list>
+    PsiErrorElement:unexpected variable content(22,22)
+      <empty list>
+    PsiErrorElement:unexpected variable content(22,22)
+      <empty list>

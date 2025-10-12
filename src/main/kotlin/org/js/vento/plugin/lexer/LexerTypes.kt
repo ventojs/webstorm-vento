@@ -46,8 +46,11 @@ object LexerTypes {
     @JvmField
     var VARIABLE_END: IElementType = LexerTokenType("VENTO_VARIABLE_END")
 
+    /**
+     * @deprecated Use {@link #UNKNOWN} instead.
+     */
     @JvmField
-    var ERROR = LexerTokenType("VENTO_ERROR")
+    var ERROR: LexerTokenType = LexerTokenType("VENTO_ERROR")
 
     @JvmField
     val COMMENT = LexerTokenType("VENTO_COMMENT")

@@ -6,6 +6,7 @@
 package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.tree.util.children
+import com.intellij.psi.impl.source.tree.PsiErrorElementImpl
 import org.js.vento.plugin.ForBlockElement
 import org.js.vento.plugin.lexer.LexerTypes
 
@@ -26,7 +27,11 @@ class ForBlockValidator {
         if (content.text.matches(forClose)) {
             return ValidationResult(true, "Valide closing for-block found.")
         } else {
-            if (content.node.children().any { it.elementType.toString() == LexerTypes.ERROR.toString() }) {
+            if (content.node.children().any {
+                    it.elementType.toString() == LexerTypes.ERROR.toString() ||
+                        it::class.java == PsiErrorElementImpl::class.java
+                }
+            ) {
                 return ValidationResult(false, "Invalid for-block. $SYNTAX")
             }
         }
@@ -35,7 +40,7 @@ class ForBlockValidator {
     }
 
     companion object {
-        private val forClose = Regex("/\\{\\{[ \t]+/for[ \t]+}}/")
+        private val forClose = Regex("\\{\\{[ \t]*/for[ \t]*}}")
         private const val SYNTAX = "structure is: {{ for value of collection }} followed by {{ /for }}"
         private const val RULE = "Invalid for-block. $SYNTAX"
     }
