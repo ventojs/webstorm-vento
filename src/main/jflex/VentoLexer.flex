@@ -219,5 +219,7 @@ FROM = "from"
 %include includes/tokens-import.flex
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
+// improved pipe implementation
+%include includes/tokens-new-pipe.flex
 %include includes/tokens-expression.flex
 

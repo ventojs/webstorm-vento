@@ -82,6 +82,16 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testExportBlockWithSinglePipe() {
+        val code =
+            """
+            {{ export message |> toUpperCase }}
+            <h1>Hello World</h1>
+            {{ /export }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     /**
      * Tests parsing of an export with multiple chained pipe operators.
      * Verifies complex transformation chains: value |> transform1 |> transform2 |> transform3
@@ -130,6 +140,42 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         val code =
             """
             {{ export match = {a:1,b:{c:2}.d:"hello"} }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    // ========================================
+    // ERROR Expression Exports
+    // ========================================
+
+    fun testExportValueNoExpression() {
+        val code =
+            """
+            {{ export message = }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testExportNoValue() {
+        val code =
+            """
+            {{ export  = "foo" }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testExportNoEqual() {
+        val code =
+            """
+            {{ export message "foo" }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testExportNothing() {
+        val code =
+            """
+            {{ export  }}
             """.trimIndent()
         doCodeTest(code)
     }

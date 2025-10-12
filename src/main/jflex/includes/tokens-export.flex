@@ -18,12 +18,12 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <EXPORT> {
     {WHITESPACE}   {  }
 
-    {EXPORT} / {WHITESPACE} {
+    {EXPORT} / .+"=" {
         yybegin(EXPORT_VALUE);
         return LexerTypes.EXPORT_KEY;
     }
 
-    {EXPORT}{WHITESPACE}.*{OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
+    {EXPORT} / {WHITESPACE}[^=]+{OWS}{CBLOCK} {
         yybegin(EXPORT_BLOCK_MODE);
         yypushback(yylength()-6);
         return LexerTypes.EXPORT_KEY;
@@ -45,14 +45,15 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {WHITESPACE}   {  }
 
     {IDENT} { return LexerTypes.EXPORT_VAR; }
+
     "=" {
         enter(EXPRESSION);
-        return LexerTypes.EXPORT_EQ;
+        return LexerTypes.EQUAL;
     }
 
     {PIPE} {
         yypushback(yylength());
-        enter(PIPE);
+        enter(NEW_PIPE);
     }
 
     {CBLOCK} {
@@ -75,6 +76,11 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {WHITESPACE}   {  }
 
     {IDENT} { return LexerTypes.EXPORT_VAR; }
+
+    {PIPE} {
+        yypushback(yylength());
+        enter(NEW_PIPE);
+    }
 
     {CBLOCK} {
         yybegin(BLOCK);

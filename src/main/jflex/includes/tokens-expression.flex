@@ -18,13 +18,16 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
 <EXPRESSION> {
 
+    [ \t]+ { }
+
    //strings
-   [\"][^\"\n\r]*[\"] { return LexerTypes.STRING; }
+   \"([^\"\\]|\\.)*\" { return LexerTypes.STRING; }
 
-   [\'][^\'\n\r]*[\'] { return LexerTypes.STRING; }
+   \'([^\'\\]|\\.)*\' { return LexerTypes.STRING; }
 
-   [\`][^\`\n\r]*[\`] { return LexerTypes.STRING; }
+   \`([^\`\\]|\\.)*\` { return LexerTypes.STRING; }
 
+   // regex
    \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTypes.REGEX; }
 
    [.]  { return LexerTypes.DOT; }
@@ -48,11 +51,16 @@ import org.js.vento.plugin.lexer.LexerTypes;
    }
 
    [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
-   [ \t]+ { }
 
-   <<EOF>> { leave(); }
+   <<EOF>> {
+        leave();
+        return LexerTypes.UNKNOWN;
+   }
 
-   [^] { leave(); }
+   [^] {
+        leave();
+        return LexerTypes.UNKNOWN;
+   }
 }
 
 <EXP_OBJECT> {
