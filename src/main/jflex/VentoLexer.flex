@@ -112,10 +112,10 @@ FROM = "from"
     {WHITESPACE} { }
 
     {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
-          System.out.println("BLANK");
-          yypushback(yylength()-2);
-          closeType = LexerTypes.VARIABLE_END;
-          return LexerTypes.VARIABLE_START;}
+        yypushback(yylength()-2);
+        closeType = LexerTypes.VARIABLE_END;
+        return LexerTypes.VARIABLE_START;
+    }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
         yybegin(IMPORT);
@@ -150,10 +150,8 @@ FROM = "from"
         IElementType ct = closeType;
         closeType = null;
         if(ct != null){
-          System.out.println("CLOSE BLOCK OK");
            return ct;
         } else {
-          System.out.println("CLOSE BLOCK ERR");
            return LexerTypes.ERROR;
         }
     }
@@ -178,11 +176,7 @@ FROM = "from"
         return LexerTypes.FOR_START;
     }
 
-    [^] {
-        System.out.println("bad");
-//        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+    [^] { return LexerTypes.ERROR; }
 
 }
 
