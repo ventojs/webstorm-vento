@@ -103,10 +103,16 @@ class VentoParser : PsiParser {
         expect(builder, SET_START, "Expected '{{' ")
         expect(builder, SET_KEY, "Expected 'set' keyword")
         expect(builder, IDENTIFIER, "Expected identifier")
-        if (optional(builder, EQUAL, "Expected '=' keyword")) {
-            parseExpression(builder)
-            parsePipe(builder)
-        }
+
+        val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
+
+        val hasExp: Boolean = parseExpression(builder, hasEq)
+
+        if (hasEq && !hasExp) builder.error("Expected expression after '='")
+        if (!hasEq && hasExp) builder.error("Expected '='")
+
+        parsePipe(builder)
+
         expect(builder, SET_END, "Expected '}}' ")
 
         m.done(SET_ELEMENT)
@@ -160,7 +166,7 @@ class VentoParser : PsiParser {
         }
     }
 
-    private fun parseExpression(builder: PsiBuilder): Boolean {
+    private fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
         val m = builder.mark()
 
         var hasExpression = false
@@ -177,7 +183,7 @@ class VentoParser : PsiParser {
             )
         ) {
             if (builder.tokenType == UNKNOWN) {
-                builder.error("Unexpected expression content")
+                if (required) builder.error("Unexpected expression content")
             } else if (builder.tokenType == IDENTIFIER ||
                 builder.tokenType == EXPRESSION ||
                 builder.tokenType == STRING ||
@@ -187,7 +193,7 @@ class VentoParser : PsiParser {
             }
             builder.advanceLexer()
         }
-        if (!hasExpression) builder.error("Expected expression")
+        if (!hasExpression && required) builder.error("Expected expression")
         m.done(ParserTypes.EXPRESSION)
 
         return hasExpression

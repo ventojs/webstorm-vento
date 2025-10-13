@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [0.1.0] - 2025-10-11
+## [0.1.0] - 2025-10-13
 ### Added
 
 - Delegate parsing to the JetBrains JavaScript plugin. (#50)
@@ -13,6 +13,7 @@
 - For-block (`{{ for [value] of [collection] }}`) support (#43) (#77)
 - import (`{{ import { foo, bar } from "baz"}}`) support (#49) (#92)
 - export (`{{ export greeting = "Hello World!" }}`) support (#49) (#92)
+- set (`{{ set greeting = "Hello World!" }}`) support (#49) (#92)
 
 ### Fixed
 

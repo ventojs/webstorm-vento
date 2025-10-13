@@ -132,6 +132,13 @@ SET = "set"
         return LexerTypes.SET_CLOSE_START;
     }
 
+    {OBLOCK}{WHITESPACE}{SET} {
+            enter(SET);
+            yypushback(yylength()-2);
+            closeType = LexerTypes.SET_END;
+            return LexerTypes.SET_START;
+    }
+
     {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
         enter(SET);
         yypushback(yylength()-2);
