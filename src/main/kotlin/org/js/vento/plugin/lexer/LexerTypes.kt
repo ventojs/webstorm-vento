@@ -163,4 +163,13 @@ object LexerTypes {
 
     @JvmField
     val IDENTIFIER = LexerTokenType("VENTO_IDENTIFIER")
+
+    @JvmField
+    val SET_START = LexerTokenType("VENTO_SET_START")
+
+    @JvmField
+    val SET_KEY = LexerTokenType("VENTO_SET_KEY")
+
+    @JvmField
+    val SET_END = LexerTokenType("VENTO_SET_END")
 }

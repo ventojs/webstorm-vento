@@ -80,6 +80,7 @@ IMPORT = "import"
 EXPORT = "export"
 FUNCTION = "function"
 FROM = "from"
+SET = "set"
 
 %{
   private int objectDepth = 0;
@@ -122,6 +123,13 @@ FROM = "from"
         yypushback(yylength()-2);
         closeType = LexerTypes.IMPORT_END;
         return LexerTypes.IMPORT_START;
+    }
+
+    {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
+        enter(SET);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.SET_END;
+        return LexerTypes.SET_START;
     }
 
     {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
@@ -219,4 +227,5 @@ FROM = "from"
 // improved pipe implementation
 %include includes/tokens-new-pipe.flex
 %include includes/tokens-expression.flex
+%include includes/tokens-set.flex
 

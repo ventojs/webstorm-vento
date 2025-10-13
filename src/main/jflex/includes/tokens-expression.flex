@@ -57,7 +57,7 @@ import org.js.vento.plugin.lexer.LexerTypes;
         return LexerTypes.UNKNOWN;
    }
 
-   [^] {
+   [^ \t] {
         leave();
         return LexerTypes.UNKNOWN;
    }

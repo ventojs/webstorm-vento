@@ -66,6 +66,9 @@ class ColorSettingsPage : ColorSettingsPage {
           <h1>Hello {{ name }}!</h1>
           {{ /export }}
 
+        Vento Set:
+          {{ set message = "Hello World!" }}
+
         Javascript:
           {{> console.log('Hello World') }}
         """.trimIndent()

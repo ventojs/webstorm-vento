@@ -63,12 +63,26 @@ class VentoParser : PsiParser {
             LexerTypes.EXPORT_START -> parseExport(builder)
             LexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
             LexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
+            LexerTypes.SET_START -> parsSet(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(ParserTypes.VENTO_ELEMENT)
             }
         }
+    }
+
+    private fun parsSet(builder: PsiBuilder) {
+        val m = builder.mark()
+
+        expect(builder, LexerTypes.SET_START, "Expected '{{' ")
+        expect(builder, LexerTypes.SET_KEY, "Expected 'set' keyword")
+        expect(builder, LexerTypes.IDENTIFIER, "Expected identifier")
+        expect(builder, LexerTypes.EQUAL, "Expected '=' keyword")
+        parseExpression(builder)
+        expect(builder, LexerTypes.SET_END, "Expected '}}' ")
+
+        m.done(ParserTypes.SET_ELEMENT)
     }
 
     private fun parseImport(builder: PsiBuilder) {
