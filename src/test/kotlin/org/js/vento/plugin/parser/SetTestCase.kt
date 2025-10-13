@@ -5,30 +5,18 @@
 
 package org.js.vento.plugin.parser
 
-import org.js.vento.plugin.ParameterizedBaseTestCase
-import org.junit.Ignore
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.FieldSource
+import com.intellij.testFramework.ParsingTestCase
+import org.js.vento.plugin.VentoParserDefinition
 
-@Ignore("Run with JUnit 5")
-@TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class SetTestCase : ParameterizedBaseTestCase() {
-    companion object {
-        @Suppress("unused")
-        val expressions = expressionSet
-    }
-
-    @ParameterizedTest
-    @FieldSource("expressions")
-    fun testWithExpressionSet(exp: Pair<String, String>) {
-        assertSet(exp, "exp-set", "{{ set myVar = %s }}")
-    }
-
-    @ParameterizedTest
-    @FieldSource("expressions")
-    fun testWithExpressionSetWithPipe(exp: Pair<String, String>) {
-        assertSet(exp, "exp-set-with-pipe", "{{ set myVar = %s |> JSON.stringify }}")
+class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+    fun testSetBlock() {
+        val code =
+            """
+            {{ set myVar }}
+            <h1>Hello, world!</h1>
+            {{ /set }}
+            """.trimIndent()
+        doCodeTest(code)
     }
 
     /**

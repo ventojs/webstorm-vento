@@ -16,9 +16,11 @@ import org.js.vento.plugin.ExportOpenBaseElement
 import org.js.vento.plugin.ForBlockElement
 import org.js.vento.plugin.ImportBaseElement
 import org.js.vento.plugin.JavaScriptBaseElement
+import org.js.vento.plugin.SetCloseElement
 import org.js.vento.plugin.SetElement
 import org.js.vento.plugin.VariablePsiBaseElement
 import org.js.vento.plugin.VentoElement
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTypes.SET_START
 
 /**
@@ -66,6 +68,9 @@ object ParserTypes {
     @JvmField
     val SET_ELEMENT: IElementType = VentoParserElementType("VENTO_SET_ELEMENT")
 
+    @JvmField
+    val SET_CLOSE_ELEMENT: IElementType = VentoParserElementType("VENTO_SET_CLOSE_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -84,6 +89,7 @@ object ParserTypes {
                 EXPORT_CLOSE_ELEMENT -> ExportCloseBaseElement(node)
                 EXPORT_FUNCTION_ELEMENT -> ExportFunctionBaseElement(node)
                 SET_START -> SetElement(node)
+                SET_CLOSE_START -> SetCloseElement(node)
                 else -> DefaultBaseElement(node)
             }
     }

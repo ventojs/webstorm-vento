@@ -14,13 +14,15 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
     {WHITESPACE}   {  }
 
-    "set" /{OWS}{IDENT}{OWS}"=" {
-        return  LexerTypes.SET_KEY;
-    }
+    \/"set" { return LexerTypes.SET_CLOSE_KEY; }
 
-    {IDENT} {
-          return LexerTypes.IDENTIFIER;
-      }
+    "set" /{OWS}{IDENT}{OWS}"=" { return LexerTypes.SET_KEY; }
+
+    "set" /{OWS}{IDENT}{OWS}"}}" { return  LexerTypes.SET_KEY; }
+
+    "set" /{OWS}{IDENT}{OWS}"|>" { return  LexerTypes.SET_KEY; }
+
+    {IDENT} { return LexerTypes.IDENTIFIER; }
 
     "=" {
         enter(EXPRESSION);

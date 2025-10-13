@@ -28,6 +28,7 @@ abstract class ParameterizedBaseTestCase : ParsingTestCase("", "vto", VentoParse
     @BeforeEach
     fun setUpTest() {
         setUp()
+        this.name = testName
     }
 
     @AfterEach
@@ -42,11 +43,6 @@ abstract class ParameterizedBaseTestCase : ParsingTestCase("", "vto", VentoParse
         output += code + "\n"
         doCodeTest(code)
     }
-
-    /**
-     * @return path to test data file directory relative to root of this module.
-     */
-    override fun getTestDataPath(): String = "src/test/resources/testdata/set"
 
     override fun includeRanges(): Boolean = true
 }

@@ -125,6 +125,13 @@ SET = "set"
         return LexerTypes.IMPORT_START;
     }
 
+    {OBLOCK}/{OWS}[/]{SET} {
+        enter(SET);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.SET_CLOSE_END;
+        return LexerTypes.SET_CLOSE_START;
+    }
+
     {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
         enter(SET);
         yypushback(yylength()-2);

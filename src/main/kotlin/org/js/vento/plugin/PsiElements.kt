@@ -37,6 +37,8 @@ class ForBlockElement(node: ASTNode) : BaseElementImpl(node)
 
 class SetElement(node: ASTNode) : BaseElementImpl(node)
 
+class SetCloseElement(node: ASTNode) : BaseElementImpl(node)
+
 /**
  * Represents a PSI element for JavaScript blocks in Vento templates.
  * This class is a specific implementation of `VentoPsiElementImpl` and implements

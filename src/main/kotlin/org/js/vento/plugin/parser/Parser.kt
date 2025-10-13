@@ -18,11 +18,15 @@ import org.js.vento.plugin.lexer.LexerTypes.EXPRESSION
 import org.js.vento.plugin.lexer.LexerTypes.IDENTIFIER
 import org.js.vento.plugin.lexer.LexerTypes.PIPE_ELEMENT
 import org.js.vento.plugin.lexer.LexerTypes.REGEX
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTypes.SET_END
 import org.js.vento.plugin.lexer.LexerTypes.SET_KEY
 import org.js.vento.plugin.lexer.LexerTypes.SET_START
 import org.js.vento.plugin.lexer.LexerTypes.STRING
 import org.js.vento.plugin.lexer.LexerTypes.UNKNOWN
+import org.js.vento.plugin.parser.ParserTypes.SET_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserTypes.SET_ELEMENT
 
 /**
@@ -76,6 +80,7 @@ class VentoParser : PsiParser {
             LexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
             LexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
             SET_START -> parsSet(builder)
+            SET_CLOSE_START -> parsSetClose(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -84,15 +89,24 @@ class VentoParser : PsiParser {
         }
     }
 
+    private fun parsSetClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, SET_CLOSE_START, "Expected '{{' ")
+        expect(builder, SET_CLOSE_KEY, "Expected '/set' keyword")
+        expect(builder, SET_CLOSE_END, "Expected '}}' ")
+        m.done(SET_CLOSE_ELEMENT)
+    }
+
     private fun parsSet(builder: PsiBuilder) {
         val m = builder.mark()
 
         expect(builder, SET_START, "Expected '{{' ")
         expect(builder, SET_KEY, "Expected 'set' keyword")
         expect(builder, IDENTIFIER, "Expected identifier")
-        expect(builder, EQUAL, "Expected '=' keyword")
-        parseExpression(builder)
-        parsePipe(builder)
+        if (optional(builder, EQUAL, "Expected '=' keyword")) {
+            parseExpression(builder)
+            parsePipe(builder)
+        }
         expect(builder, SET_END, "Expected '}}' ")
 
         m.done(SET_ELEMENT)
