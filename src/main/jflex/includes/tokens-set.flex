@@ -27,6 +27,11 @@ import org.js.vento.plugin.lexer.LexerTypes;
         return LexerTypes.EQUAL;
     }
 
+    {PIPE} {
+        yypushback(yylength());
+        enter(NEW_PIPE);
+    }
+
     "}}" {
         yypushback(yylength());
         leave();

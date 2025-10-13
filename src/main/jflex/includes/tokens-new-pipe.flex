@@ -16,11 +16,9 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
     {WHITESPACE} {  }
 
-    {PIPE} / .*{CBLOCK} { return LexerTypes.PIPE_ELEMENT; }
-
-    [^|][^>]+{OWS}"}}" {
-        yypushback(yylength());
+    {PIPE} / .*{CBLOCK} {
         enter(EXPRESSION);
+        return LexerTypes.PIPE_ELEMENT;
     }
 
     {CBLOCK} {
