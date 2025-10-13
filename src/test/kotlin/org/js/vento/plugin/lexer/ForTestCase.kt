@@ -210,11 +210,11 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
      * Tests malformed closing tag with incorrect keyword.
      * Invalid syntax: {{ /fr }} instead of {{ /for }}
      */
-    fun `test broken closing for`() = lexAndTest("{{ /fr }}", arrayOf("{{", "/fr", "}}"))
+    fun `test broken closing for`() = lexAndTest("{{ /fr }}", arrayOf("{{", "/", "fr }}"))
 
     /**
      * Tests malformed closing tag without spacing.
      * Invalid syntax: {{/fr}} instead of {{ /for }}
      */
-    fun `test trimmed broken closing for`() = lexAndTest("{{/fr}}", arrayOf("{{", "/fr", "}}"))
+    fun `test trimmed broken closing for`() = lexAndTest("{{/fr}}", arrayOf("{{", "/", "fr}}"))
 }

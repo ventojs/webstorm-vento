@@ -99,7 +99,6 @@ FROM = "from"
     {OBLOCK} {
         yypushback(2);
         yybegin(BLOCK);
-        // foo
         // TODO: consider adding a Vento block token
     }
 
@@ -111,6 +110,12 @@ FROM = "from"
 
 <BLOCK> {
     {WHITESPACE} { }
+
+    {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
+        yypushback(yylength()-2);
+        closeType = LexerTypes.VARIABLE_END;
+        return LexerTypes.VARIABLE_START;
+    }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
         yybegin(IMPORT);
@@ -166,20 +171,12 @@ FROM = "from"
         return LexerTypes.VARIABLE_START;
     }
 
-    \{\{ / [ \t]?"/fr" {
-        yybegin(FOR_CONTENT);
-        return LexerTypes.FOR_START;
-    }
-
     \{\{ / .*[/]?{FOR_KEY} {
         yybegin(FOR_CONTENT);
         return LexerTypes.FOR_START;
     }
 
-    [^] {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+    [^] { return LexerTypes.ERROR; }
 
 }
 

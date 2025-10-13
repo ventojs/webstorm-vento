@@ -194,9 +194,14 @@ class VentoParser : PsiParser {
             (
                 builder.tokenType == LexerTypes.VARIABLE_ELEMENT ||
                     builder.tokenType == LexerTypes.PIPE_ELEMENT ||
-                    builder.tokenType == LexerTypes.STRING
+                    builder.tokenType == LexerTypes.STRING ||
+                    builder.tokenType == LexerTypes.ERROR ||
+                    builder.tokenType == LexerTypes.UNKNOWN
             )
         ) {
+            if (builder.tokenType == LexerTypes.ERROR || builder.tokenType == LexerTypes.UNKNOWN) {
+                builder.error("Unexpected variable content")
+            }
             builder.advanceLexer()
         }
 
@@ -204,7 +209,7 @@ class VentoParser : PsiParser {
         if (builder.tokenType == LexerTypes.VARIABLE_END) {
             builder.advanceLexer()
         } else {
-            builder.error("Expected '}}' to close variable")
+            builder.error("Unexpected variable content")
         }
 
         m.done(ParserTypes.JAVACRIPT_VARIABLE_ELEMENT)

@@ -66,6 +66,26 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testBrokenForCloseFollowedByBlock() {
+        val code =
+            """
+            {{ /fo }}
+            {{ "hello"}}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testRecover() {
+        val code =
+            """
+            {{ for number of [1,2,3] }}
+            {{ "hello " + number }}
+            {{  / }}
+            {{ "hi!" }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/for"
 
     override fun includeRanges(): Boolean = true
