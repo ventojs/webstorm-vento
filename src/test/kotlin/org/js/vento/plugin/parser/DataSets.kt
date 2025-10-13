@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-var expressionSet =
+var expressionSet: Set<Pair<String, String>> =
     setOfNotNull(
         Pair(
             "string",

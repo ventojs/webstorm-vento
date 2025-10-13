@@ -5,32 +5,30 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-import org.junit.jupiter.api.assertAll
+import org.js.vento.plugin.ParameterizedBaseTestCase
+import org.junit.Ignore
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.FieldSource
 
-class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
-    fun testWithExpressionSet() {
-        assertSet(expressionSet, "exp-set", "{{ set myVar = %s }}")
+@Ignore("Run with JUnit 5")
+@TestInstance(TestInstance.Lifecycle.PER_METHOD)
+class SetTestCase : ParameterizedBaseTestCase() {
+    companion object {
+        @Suppress("unused")
+        val expressions = expressionSet
     }
 
-    fun testWithExpressionSetWithPipe() {
-        assertSet(expressionSet, "exp-set-with-pipe", "{{ set myVar = %s |> JSON.stringify }}")
+    @ParameterizedTest
+    @FieldSource("expressions")
+    fun testWithExpressionSet(exp: Pair<String, String>) {
+        assertSet(exp, "exp-set", "{{ set myVar = %s }}")
     }
 
-    private fun assertSet(set: Set<Pair<String, String>>, filenamePrefix: String, template: String) {
-        var codes: List<String> = listOf()
-        assertAll(
-            set.map {
-                {
-                    this.name = "$filenamePrefix-${it.first}"
-                    val code = template.format(it.second)
-                    codes = codes.plus(code)
-                    doCodeTest(code)
-                }
-            } +
-                { println(codes.joinToString("\n")) },
-        )
+    @ParameterizedTest
+    @FieldSource("expressions")
+    fun testWithExpressionSetWithPipe(exp: Pair<String, String>) {
+        assertSet(exp, "exp-set-with-pipe", "{{ set myVar = %s |> JSON.stringify }}")
     }
 
     /**
