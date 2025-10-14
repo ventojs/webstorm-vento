@@ -1,5 +1,5 @@
 Vento File(0,10)
-  VentoPsiElement: VENTO_FOR_ELEMENT(0,10)
+  Element: VENTO_FOR_ELEMENT(0,10)
     PsiElement(VENTO_FOR_START_TOKEN)('{{')(0,2)
-    PsiElement(VENTO_CLOSE_FOR_KEY_TOKEN)(' /for')(2,7)
+    PsiElement(VENTO_FOR_CLOSE_KEY_TOKEN)(' /for')(2,7)
     PsiElement(VENTO_FOR_END_TOKEN)(' }}')(7,10)

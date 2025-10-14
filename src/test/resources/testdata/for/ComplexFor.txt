@@ -1,5 +1,5 @@
 Vento File(0,52)
-  VentoPsiElement: VENTO_FOR_ELEMENT(0,52)
+  Element: VENTO_FOR_ELEMENT(0,52)
     PsiElement(VENTO_FOR_START_TOKEN)('{{')(0,2)
     PsiElement(VENTO_FOR_KEY_TOKEN)(' for')(2,6)
     PsiElement(VENTO_FOR_VALUE_TOKEN)(' odd_number')(6,17)

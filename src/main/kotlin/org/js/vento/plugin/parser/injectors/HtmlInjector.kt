@@ -9,7 +9,7 @@ import com.intellij.lang.html.HTMLLanguage
 import com.intellij.lang.injection.MultiHostInjector
 import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.psi.PsiElement
-import org.js.vento.plugin.VentoElement
+import org.js.vento.plugin.HtmlElement
 
 /**
  * Injects HTML language into default content blocks of Vento templates.
@@ -20,7 +20,7 @@ import org.js.vento.plugin.VentoElement
  */
 class HtmlInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
-        if (context is VentoElement) {
+        if (context is HtmlElement) {
             val textLength = context.textLength
             if (textLength > 0) {
                 val range = context.getContentRange()
@@ -34,5 +34,5 @@ class HtmlInjector : MultiHostInjector {
         }
     }
 
-    override fun elementsToInjectIn(): List<Class<out PsiElement>> = listOf(VentoElement::class.java)
+    override fun elementsToInjectIn(): List<Class<out PsiElement>> = listOf(HtmlElement::class.java)
 }

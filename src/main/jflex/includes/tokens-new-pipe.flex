@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 
@@ -17,9 +17,9 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {WHITESPACE} {  }
 
     {PIPE} / .*{CBLOCK} {
-        enter(EXPRESSION);
-        return LexerTypes.PIPE_ELEMENT;
-    }
+                enter(EXPRESSION);
+                return LexerTokens.PIPE;
+            }
 
     {CBLOCK} {
         yypushback(yylength());
@@ -27,11 +27,11 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
-    [^] { return LexerTypes.UNKNOWN; }
+    [^] { return LexerTokens.UNKNOWN; }
 }
 
 

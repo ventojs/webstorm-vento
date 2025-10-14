@@ -1,5 +1,5 @@
 Vento File(0,18)
-  VentoPsiElement: VENTO_COMMENT_BLOCK(0,18)
+  Element: VENTO_COMMENT_BLOCK(0,18)
     PsiElement(VENTO_COMMENT_START_TOKEN)('{{#-')(0,4)
     PsiElement(VENTO_COMMENT_CONTENT_TOKEN)(' left trim ')(4,15)
     PsiElement(VENTO_COMMENT_END_TOKEN)('#}}')(15,18)

@@ -8,7 +8,7 @@ package org.js.vento.plugin.highlighting.validator
 import com.intellij.lang.tree.util.children
 import com.intellij.psi.impl.source.tree.PsiErrorElementImpl
 import org.js.vento.plugin.ForBlockElement
-import org.js.vento.plugin.lexer.LexerTypes
+import org.js.vento.plugin.lexer.LexerTokens
 
 /**
  * Validates JavaScript expressions for use within Vento variable blocks.
@@ -28,7 +28,7 @@ class ForBlockValidator {
             return ValidationResult(true, "Valide closing for-block found.")
         } else {
             if (content.node.children().any {
-                    it.elementType.toString() == LexerTypes.ERROR.toString() ||
+                    it.elementType.toString() == LexerTokens.UNKNOWN.toString() ||
                         it::class.java == PsiErrorElementImpl::class.java
                 }
             ) {

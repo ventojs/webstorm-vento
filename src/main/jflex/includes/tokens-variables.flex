@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -20,180 +20,180 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
    //strings
     \" {
-        yybegin(JS_STRING_DOUBLE_QOUTE);
-        return LexerTypes.STRING;
-    }
+            yybegin(JS_STRING_DOUBLE_QOUTE);
+            return LexerTokens.STRING;
+        }
 
     ' {
-        yybegin(JS_STRING_SINGLE_QUOTE);
-        return LexerTypes.STRING;
-      }
+            yybegin(JS_STRING_SINGLE_QUOTE);
+            return LexerTokens.STRING;
+          }
 
     ` {
-        yybegin(JS_STRING_BACK_TICK);
-        return LexerTypes.STRING;
-    }
+            yybegin(JS_STRING_BACK_TICK);
+            return LexerTokens.STRING;
+        }
 
     //regex
     \/  {
-        yybegin(JS_REGEX);
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
+            yybegin(JS_REGEX);
+            return LexerTokens.VARIABLE_ELEMENT;
+        }
 
     //object
     \{ {
-        objectDepth=1;
-        yybegin(JS_OBJECT);
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
+            objectDepth=1;
+            yybegin(JS_OBJECT);
+            return LexerTokens.VARIABLE_ELEMENT;
+        }
 
-    "|>" { return LexerTypes.PIPE_ELEMENT; }
+    "|>" { return LexerTokens.PIPE; }
 
-    \- / [^}] {return LexerTypes.VARIABLE_ELEMENT;}
+    \- / [^}] {return LexerTokens.VARIABLE_ELEMENT;}
 
-    [^\/\"'`{}\- \t]+ { return LexerTypes.VARIABLE_ELEMENT; }
+    [^\/\"'`{}\- \t]+ { return LexerTokens.VARIABLE_ELEMENT; }
 
     {WHITESPACE} { }
 
     {CVAR} {
-        yybegin(YYINITIAL);
-        return LexerTypes.VARIABLE_END;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.VARIABLE_END;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
-   [^] { return LexerTypes.ERROR; }
+   [^] { return LexerTokens.UNKNOWN; }
 }
 
 <JS_OBJECT> {
 
     \{ {
-        objectDepth++;
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
+            objectDepth++;
+            return LexerTokens.VARIABLE_ELEMENT;
+        }
 
-    [^}{\"]+ { return LexerTypes.VARIABLE_ELEMENT; }
+    [^}{\"]+ { return LexerTokens.VARIABLE_ELEMENT; }
 
     \} {
-        objectDepth--;
-        if (objectDepth == 0) {
-            yybegin(VARIABLE_CONTENT);
+            objectDepth--;
+            if (objectDepth == 0) {
+                yybegin(VARIABLE_CONTENT);
+            }
+            return LexerTokens.VARIABLE_ELEMENT;
         }
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     \" {
-        yybegin(JSON_STRING);
-        return LexerTypes.STRING;
-    }
+            yybegin(JSON_STRING);
+            return LexerTokens.STRING;
+        }
 
 }
 
 <JSON_STRING> {
 
-    [^\"]+ { return LexerTypes.STRING;}
+    [^\"]+ { return LexerTokens.STRING;}
 
     \" {
-        yybegin(JS_OBJECT);
-        return LexerTypes.STRING;
-    }
+            yybegin(JS_OBJECT);
+            return LexerTokens.STRING;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <JS_STRING_DOUBLE_QOUTE> {
 
-    "\\\"" { return LexerTypes.STRING;}
+    "\\\"" { return LexerTokens.STRING;}
 
-    [^\\\"]+ { return LexerTypes.STRING;}
+    [^\\\"]+ { return LexerTokens.STRING;}
 
     [\"]+ {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.STRING;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.STRING;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <JS_STRING_SINGLE_QUOTE> {
 
-    "\\'" { return LexerTypes.STRING;}
-    [^']+ { return LexerTypes.STRING;}
+    "\\'" { return LexerTokens.STRING;}
+    [^']+ { return LexerTokens.STRING;}
 
     ' {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.STRING;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.STRING;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <JS_STRING_BACK_TICK> {
 
-    [^`]+ { return LexerTypes.STRING;}
+    [^`]+ { return LexerTokens.STRING;}
 
     ` {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.STRING;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.STRING;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <JS_REGEX> {
 
     \[ {
-        yybegin(BRACKET);
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
+            yybegin(BRACKET);
+            return LexerTokens.VARIABLE_ELEMENT;
+        }
 
-    [^\/\[]+ { return LexerTypes.VARIABLE_ELEMENT;}
+    [^\/\[]+ { return LexerTokens.VARIABLE_ELEMENT;}
 
     \/ {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.VARIABLE_ELEMENT;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.VARIABLE_ELEMENT;
+        }
 
     <<EOF>> {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.ERROR;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <BRACKET> {
 
-    "]"        { yybegin(JS_REGEX); return LexerTypes.VARIABLE_ELEMENT; }
-    [^\]]+     { return LexerTypes.VARIABLE_ELEMENT; }   // any char except ']'
+    "]"        { yybegin(JS_REGEX); return LexerTokens.VARIABLE_ELEMENT; }
+    [^\]]+     { return LexerTokens.VARIABLE_ELEMENT; }   // any char except ']'
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 }
 
-<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return LexerTypes.ERROR; }
+<JS_STRING_DOUBLE_QOUTE,JS_STRING_SINGLE_QUOTE,JS_STRING_BACK_TICK,JS_REGEX,BRACKET,JSON_STRING,JS_OBJECT> [^] { return LexerTokens.UNKNOWN; }

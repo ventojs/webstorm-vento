@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 
@@ -20,17 +20,17 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
 
     {WHITESPACE} {  }
 
-    {PIPE} / .*{CBLOCK} { return LexerTypes.PIPE_ELEMENT; }
+    {PIPE} / .*{CBLOCK} { return LexerTokens.PIPE; }
 
-    {IDENT} { return LexerTypes.VARIABLE_ELEMENT; }
+    {IDENT} { return LexerTokens.VARIABLE_ELEMENT; }
 
-    {FUNC_PARAM} { return LexerTypes.VARIABLE_ELEMENT; }
+    {FUNC_PARAM} { return LexerTokens.VARIABLE_ELEMENT; }
 
-    \. { return LexerTypes.VARIABLE_ELEMENT; }
+    \. { return LexerTokens.VARIABLE_ELEMENT; }
 
-    {REGEX} { return LexerTypes.VARIABLE_ELEMENT; }
+    {REGEX} { return LexerTokens.VARIABLE_ELEMENT; }
 
-    {STRING} { return LexerTypes.STRING; }
+    {STRING} { return LexerTokens.STRING; }
 
     {CBLOCK} {
         yypushback(yylength());
@@ -38,11 +38,11 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
-    [^] { return LexerTypes.UNKNOWN; }
+    [^] { return LexerTokens.UNKNOWN; }
 }
 
 

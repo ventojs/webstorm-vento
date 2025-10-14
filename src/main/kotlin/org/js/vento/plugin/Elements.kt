@@ -18,20 +18,18 @@ import com.intellij.psi.PsiLanguageInjectionHost
  * @param node The AST node corresponding to this PSI element.
  */
 sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
-    override fun toString(): String = "VentoPsiElement: ${node.elementType}"
+    override fun toString(): String = "Element: ${node.elementType}"
 }
 
-class DefaultBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ImportElement(node: ASTNode) : BaseElementImpl(node)
 
-class ImportBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportOpenElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportOpenBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportCloseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportCloseBaseElement(node: ASTNode) : BaseElementImpl(node)
-
-class ExportFunctionBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportFunctionElement(node: ASTNode) : BaseElementImpl(node)
 
 class ForBlockElement(node: ASTNode) : BaseElementImpl(node)
 
@@ -47,7 +45,7 @@ class SetCloseElement(node: ASTNode) : BaseElementImpl(node)
  * @constructor Creates a new instance with the given AST node.
  * @param node The AST node associated with this PSI element.
  */
-class JavaScriptBaseElement(node: ASTNode) :
+class JavaScriptElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
@@ -55,7 +53,7 @@ class JavaScriptBaseElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<JavaScriptBaseElement>(this) {
+        return object : LiteralTextEscaper<JavaScriptElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -89,7 +87,7 @@ class JavaScriptBaseElement(node: ASTNode) :
  * PSI element representing a Vento variable block that contains a JavaScript expression.
  * This element enables JavaScript language injection for variable expressions.
  */
-class VariablePsiBaseElement(node: ASTNode) :
+class VariableElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
@@ -97,7 +95,7 @@ class VariablePsiBaseElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VariablePsiBaseElement>(this) {
+        return object : LiteralTextEscaper<VariableElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -136,10 +134,10 @@ class VariablePsiBaseElement(node: ASTNode) :
     }
 }
 
-class VentoElement(node: ASTNode) :
+class HtmlElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
-    override fun toString(): String = "VentoElement: ${node.elementType}"
+    override fun toString(): String = "HtmlElement: ${node.elementType}"
 
     // Enable language injection (e.g., HTML) into default content blocks
     override fun isValidHost(): Boolean = true
@@ -147,7 +145,7 @@ class VentoElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VentoElement>(this) {
+        return object : LiteralTextEscaper<HtmlElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)

@@ -1,5 +1,5 @@
 Vento File(0,45)
-  VentoPsiElement: VENTO_VARIABLE_ELEMENT(0,45)
+  Element: VENTO_VARIABLE_ELEMENT(0,45)
     PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(0,2)
     PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)(' {')(2,4)
     PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)('a:')(4,6)
