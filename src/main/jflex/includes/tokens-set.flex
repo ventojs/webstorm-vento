@@ -15,6 +15,8 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <SET> {
     {WHITESPACE}   {  }
 
+    [/]{SET} / {OWS}{CBLOCK} { return LexerTypes.SET_CLOSE_KEY; }
+
     {SET} / .+"=" {
         enter(SET_VALUE);
         return LexerTypes.SET_KEY;
@@ -99,7 +101,6 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     [^|}] {
-        System.out.println("3");
         yypushback(yylength());
         leave();
     }

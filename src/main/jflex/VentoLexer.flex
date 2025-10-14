@@ -55,7 +55,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %}
 
 
-DEFAULT_HTML = [^{]+
+DEFAULT_HTML = [^]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
@@ -103,7 +103,7 @@ SET = "set"
         // TODO: consider adding a Vento block token
     }
 
-    {DEFAULT_HTML} { return ParserTypes.HTML_ELEMENT; }
+    ([^\{][^\{]?)+ { return ParserTypes.HTML_ELEMENT; }
 
     [^]   { return LexerTypes.ERROR; }
 

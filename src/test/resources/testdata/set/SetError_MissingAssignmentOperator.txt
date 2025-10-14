@@ -3,8 +3,6 @@ Vento File(0,32)
     PsiElement(VENTO_SET_START_TOKEN)('{{')(0,2)
     PsiElement(VENTO_SET_KEY_TOKEN)(' set')(2,6)
     PsiElement(VENTO_IDENTIFIER_TOKEN)(' myVar')(6,12)
-    VentoPsiElement: VENTO_EXPRESSION(12,12)
-      <empty list>
     PsiErrorElement:Expected '}}' (12,12)
       <empty list>
   VentoElement: VENTO_ELEMENT(12,15)

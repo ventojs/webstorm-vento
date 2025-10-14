@@ -4,7 +4,6 @@ Vento File(0,22)
     PsiElement(VENTO_EXPORT_KEY_TOKEN)(' export')(2,9)
     PsiElement(VENTO_EXPORT_VAR_TOKEN)(' message')(9,17)
     PsiElement(VENTO_EQUAL_TOKEN)(' =')(17,19)
-    VentoPsiElement: VENTO_EXPRESSION(19,19)
-      PsiErrorElement:Expected expression(19,19)
-        <empty list>
+    PsiErrorElement:Expected expression(19,19)
+      <empty list>
     PsiElement(VENTO_EXPORT_END_TOKEN)(' }}')(19,22)

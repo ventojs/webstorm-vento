@@ -194,7 +194,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
         if (!hasExpression && required) builder.error("Expected expression")
-        m.done(ParserTypes.EXPRESSION)
+        if (hasExpression) m.done(ParserTypes.EXPRESSION) else m.drop()
 
         return hasExpression
     }

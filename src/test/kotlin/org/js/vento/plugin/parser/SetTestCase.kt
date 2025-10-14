@@ -31,6 +31,21 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    /**
+     *
+     */
+    fun testSetBlockWithCss() {
+        val code =
+            """
+            {{ set css }}
+                body::after {
+                    content: "Hello, the CSS world!";
+                }
+            {{ /set }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     // Error Cases - Invalid Syntax
 
     /**

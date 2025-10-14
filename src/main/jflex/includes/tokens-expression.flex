@@ -54,12 +54,10 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
    <<EOF>> {
         leave();
-        System.out.println("1");
         return LexerTypes.UNKNOWN;
    }
 
    [^ \t] {
-          System.out.println("2");
         leave();
         return LexerTypes.UNKNOWN;
    }
