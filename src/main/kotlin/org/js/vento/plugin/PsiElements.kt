@@ -21,17 +21,17 @@ sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "VentoPsiElement: ${node.elementType}"
 }
 
-class DefaultBaseElement(node: ASTNode) : BaseElementImpl(node)
+class DefaultElement(node: ASTNode) : BaseElementImpl(node)
 
-class ImportBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ImportElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportOpenBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportOpenElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportCloseBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportCloseElement(node: ASTNode) : BaseElementImpl(node)
 
-class ExportFunctionBaseElement(node: ASTNode) : BaseElementImpl(node)
+class ExportFunctionElement(node: ASTNode) : BaseElementImpl(node)
 
 class ForBlockElement(node: ASTNode) : BaseElementImpl(node)
 
@@ -47,7 +47,7 @@ class SetCloseElement(node: ASTNode) : BaseElementImpl(node)
  * @constructor Creates a new instance with the given AST node.
  * @param node The AST node associated with this PSI element.
  */
-class JavaScriptBaseElement(node: ASTNode) :
+class JavaScripElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
@@ -55,7 +55,7 @@ class JavaScriptBaseElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<JavaScriptBaseElement>(this) {
+        return object : LiteralTextEscaper<JavaScripElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -89,7 +89,7 @@ class JavaScriptBaseElement(node: ASTNode) :
  * PSI element representing a Vento variable block that contains a JavaScript expression.
  * This element enables JavaScript language injection for variable expressions.
  */
-class VariablePsiBaseElement(node: ASTNode) :
+class VariableElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
@@ -97,7 +97,7 @@ class VariablePsiBaseElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VariablePsiBaseElement>(this) {
+        return object : LiteralTextEscaper<VariableElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)

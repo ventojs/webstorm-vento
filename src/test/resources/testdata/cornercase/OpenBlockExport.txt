@@ -4,6 +4,6 @@ Vento File(0,6)
     PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(1,3)
     PsiErrorElement:Unexpected variable content(3,3)
       <empty list>
-    PsiElement(VENTO_ERROR_TOKEN)(' \n\n')(3,6)
+    PsiElement(VENTO_UNKNOWN_TOKEN)(' \n\n')(3,6)
     PsiErrorElement:Unexpected variable content(6,6)
       <empty list>

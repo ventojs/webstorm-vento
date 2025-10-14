@@ -22,7 +22,7 @@ Vento File(0,72)
     PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(52,54)
     PsiErrorElement:Unexpected variable content(54,54)
       <empty list>
-    PsiElement(VENTO_ERROR_TOKEN)('  /')(54,57)
+    PsiElement(VENTO_UNKNOWN_TOKEN)('  /')(54,57)
     PsiElement(VENTO_VARIABLE_END_TOKEN)(' }}')(57,60)
   PsiWhiteSpace('\n')(60,61)
   VentoPsiElement: VENTO_VARIABLE_ELEMENT(61,72)

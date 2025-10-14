@@ -5,5 +5,5 @@ Vento File(0,9)
     PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)('fo }}')(4,9)
     PsiErrorElement:Expected '}}' to close variable(9,9)
       <empty list>
-  VentoElement: VENTO_ELEMENT(9,9)
+  VentoElement: UNKNOWN_ELEMENT(9,9)
     <empty list>

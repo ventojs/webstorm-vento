@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 
@@ -15,18 +15,18 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <SET> {
     {WHITESPACE}   {  }
 
-    [/]{SET} / {OWS}{CBLOCK} { return LexerTypes.SET_CLOSE_KEY; }
+    [/]{SET} / {OWS}{CBLOCK} { return LexerTokens.SET_CLOSE_KEY; }
 
     {SET} / .+"=" {
-        enter(SET_VALUE);
-        return LexerTypes.SET_KEY;
-    }
+            enter(SET_VALUE);
+            return LexerTokens.SET_KEY;
+        }
 
     {SET} / {WHITESPACE}[^=]+{OWS}{CBLOCK} {
-        enter(SET_BLOCK_MODE);
-        yypushback(yylength()-3);
-        return LexerTypes.SET_KEY;
-    }
+            enter(SET_BLOCK_MODE);
+            yypushback(yylength()-3);
+            return LexerTokens.SET_KEY;
+        }
 
     {CBLOCK} {
         yypushback(yylength());
@@ -39,9 +39,9 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        leave();
-        return LexerTypes.ERROR;
-    }
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());
@@ -52,12 +52,12 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <SET_VALUE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return LexerTypes.IDENTIFIER; }
+    {IDENT} { return LexerTokens.IDENTIFIER; }
 
     "=" {
-        enter(EXPRESSION);
-        return LexerTypes.EQUAL;
-    }
+            enter(EXPRESSION);
+            return LexerTokens.EQUAL;
+        }
 
     {PIPE} {
         yypushback(yylength());
@@ -70,20 +70,20 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        leave();
-        return LexerTypes.ERROR;
-    }
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
-        return LexerTypes.UNKNOWN;
-    }
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <SET_BLOCK_MODE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return LexerTypes.IDENTIFIER; }
+    {IDENT} { return LexerTokens.IDENTIFIER; }
 
     {PIPE} {
         yypushback(yylength());

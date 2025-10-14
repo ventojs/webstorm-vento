@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 
@@ -19,21 +19,21 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {WHITESPACE}   {  }
 
     {EXPORT} / .+"=" {
-        yybegin(EXPORT_VALUE);
-        return LexerTypes.EXPORT_KEY;
-    }
+            yybegin(EXPORT_VALUE);
+            return LexerTokens.EXPORT_KEY;
+        }
 
     {EXPORT} / {WHITESPACE}[^=]+{OWS}{CBLOCK} {
-        yybegin(EXPORT_BLOCK_MODE);
-        yypushback(yylength()-6);
-        return LexerTypes.EXPORT_KEY;
-    }
+            yybegin(EXPORT_BLOCK_MODE);
+            yypushback(yylength()-6);
+            return LexerTokens.EXPORT_KEY;
+        }
 
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());
@@ -44,12 +44,12 @@ import org.js.vento.plugin.lexer.LexerTypes;
 <EXPORT_VALUE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return LexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTokens.EXPORT_VAR; }
 
     "=" {
-        enter(EXPRESSION);
-        return LexerTypes.EQUAL;
-    }
+            enter(EXPRESSION);
+            return LexerTokens.EQUAL;
+        }
 
     {PIPE} {
         yypushback(yylength());
@@ -62,20 +62,20 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
-        return LexerTypes.UNKNOWN;
-    }
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
 <EXPORT_BLOCK_MODE> {
     {WHITESPACE}   {  }
 
-    {IDENT} { return LexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTokens.EXPORT_VAR; }
 
     {PIPE} {
         yypushback(yylength());
@@ -88,11 +88,11 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
-    [^] { return LexerTypes.UNKNOWN; }
+    [^] { return LexerTokens.UNKNOWN; }
 
 }
 
@@ -100,14 +100,14 @@ import org.js.vento.plugin.lexer.LexerTypes;
     {WHITESPACE} {  }
 
     [/]{EXPORT} / {OWS}{CBLOCK} {
-        yybegin(BLOCK);
-        return LexerTypes.EXPORT_CLOSE_KEY;
-    }
+            yybegin(BLOCK);
+            return LexerTokens.EXPORT_CLOSE_KEY;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());
@@ -119,13 +119,13 @@ import org.js.vento.plugin.lexer.LexerTypes;
 
     {WHITESPACE} { }
 
-    {EXPORT} { return LexerTypes.EXPORT_KEY; }
+    {EXPORT} { return LexerTokens.EXPORT_KEY; }
 
-    {FUNCTION} { return LexerTypes.EXPORT_FUNCTION_KEY; }
+    {FUNCTION} { return LexerTokens.EXPORT_FUNCTION_KEY; }
 
-    {IDENT} { return LexerTypes.EXPORT_VAR; }
+    {IDENT} { return LexerTokens.EXPORT_VAR; }
 
-    "("{IDENT}?([,]{IDENT})*")" { return LexerTypes.EXPORT_FUNCTION_ARGS; }
+    "("{IDENT}?([,]{IDENT})*")" { return LexerTokens.EXPORT_FUNCTION_ARGS; }
 
     {PIPE} {
         yypushback(yylength());
@@ -138,11 +138,11 @@ import org.js.vento.plugin.lexer.LexerTypes;
     }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
-    [^] { return LexerTypes.UNKNOWN; }
+    [^] { return LexerTokens.UNKNOWN; }
 
 }
 

@@ -1,5 +1,5 @@
 Vento File(0,26)
-  VentoElement: VENTO_ELEMENT(0,5)
+  VentoElement: UNKNOWN_ELEMENT(0,5)
     PsiElement(VENTO_HTML_ELEMENT)('<h1> ')(0,5)
   VentoPsiElement: VENTO_COMMENT_BLOCK(5,26)
     PsiElement(VENTO_COMMENT_START_TOKEN)('{{#')(5,8)

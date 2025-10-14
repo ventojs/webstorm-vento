@@ -11,7 +11,7 @@ import com.intellij.psi.impl.source.tree.PsiErrorElementImpl
 import com.intellij.psi.util.elementType
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import com.jetbrains.rd.util.printlnError
-import org.js.vento.plugin.ExportBaseElement
+import org.js.vento.plugin.ExportElement
 
 /**
  * Test suite for ForBlockValidator functionality.
@@ -56,10 +56,10 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
      * @param block The template string containing the for block to parse
      * @return ForBlockElement created from the first child node of the parsed template
      */
-    private fun returnFirstBlockElement(block: String): ExportBaseElement {
+    private fun returnFirstBlockElement(block: String): ExportElement {
         val file: PsiFile? = myFixture.configureByText("test.vto", block)
 //        file?.node?.getChildren(null)?.forEach { println(it.text) }
-        val element = ExportBaseElement(file?.node?.firstChildNode!!)
+        val element = ExportElement(file?.node?.firstChildNode!!)
         return element
     }
 
@@ -69,7 +69,7 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
      * @param content The ForBlockElement to validate
      * @param isValid Expected validity state (default: true)
      */
-    private fun assertValid(content: ExportBaseElement, isValid: Boolean = true) {
+    private fun assertValid(content: ExportElement, isValid: Boolean = true) {
         val passes = mutableListOf<Pair<Int, PsiElement>>()
         content.children.forEachIndexed { index, it ->
             if (it::class.java == PsiErrorElementImpl::class.java) passes.add(Pair(index, it))
@@ -86,7 +86,7 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
         }
     }
 
-    protected fun lexAndPrint(content: ExportBaseElement) {
+    protected fun lexAndPrint(content: ExportElement) {
         printlnError("-".repeat(30))
         printlnError("Template:")
         printlnError("-".repeat(30))

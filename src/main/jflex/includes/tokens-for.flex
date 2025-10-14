@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 // BLOCK 2 - START
@@ -21,28 +21,28 @@ FOR_KEY = "for"
     {WHITESPACE} {  }
 
     {FOR_KEY} / [ \t].*"}}" {
-        yybegin(FOR_VALUE);
-        return LexerTypes.FOR_KEY;
-    }
+            yybegin(FOR_VALUE);
+            return LexerTokens.FOR_KEY;
+        }
 
-    [/]{FOR_KEY} { return LexerTypes.CLOSE_FOR_KEY; }
+    [/]{FOR_KEY} { return LexerTokens.CLOSE_FOR_KEY; }
 
-    [/][f]?[o]?[r]? { return LexerTypes.ERROR; }
+    [/][f]?[o]?[r]? { return LexerTokens.UNKNOWN; }
 
     "}}" {
-        yybegin(YYINITIAL);
-        return LexerTypes.FOR_END;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.FOR_END;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^/] {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
@@ -51,31 +51,31 @@ FOR_KEY = "for"
     {WHITESPACE} {  }
 
     [^ \t]+"await"?"index,"?.+ / [ \t]+"of"[ \t]+   {
-        value = true;
-        return LexerTypes.FOR_VALUE;
-    }
+            value = true;
+            return LexerTokens.FOR_VALUE;
+        }
 
     "of" {
-        if(value == true) {
-            value= false;
-            yybegin(FOR_COLLECTION);
-            return LexerTypes.FOR_OF;
-        }   else {
-            value= false;
-            yybegin(FOR_COLLECTION);
-            return LexerTypes.ERROR;
+            if(value == true) {
+                value= false;
+                yybegin(FOR_COLLECTION);
+                return LexerTokens.FOR_OF;
+            }   else {
+                value= false;
+                yybegin(FOR_COLLECTION);
+                return LexerTokens.UNKNOWN;
+            }
         }
-    }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
-        yybegin(FOR_COLLECTION);
-        return LexerTypes.ERROR;
-    }
+            yybegin(FOR_COLLECTION);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
@@ -84,40 +84,40 @@ FOR_KEY = "for"
     {WHITESPACE} {  }
 
     \{ {
-        objectDepth = 0;
-        objectDepth++;
-        yybegin(FOR_OBJECT);
-        return LexerTypes.FOR_COLLECTION;
-    }
+            objectDepth = 0;
+            objectDepth++;
+            yybegin(FOR_OBJECT);
+            return LexerTokens.FOR_COLLECTION;
+        }
 
     \[ {
-        objectDepth = 0;
-        objectDepth++;
-        yybegin(FOR_ARRAY);
-        return LexerTypes.FOR_COLLECTION;
-    }
+            objectDepth = 0;
+            objectDepth++;
+            yybegin(FOR_ARRAY);
+            return LexerTokens.FOR_COLLECTION;
+        }
 
     [^}{\]\[]+ {
-        collection = true;
-        return LexerTypes.FOR_COLLECTION;
-    }
+            collection = true;
+            return LexerTokens.FOR_COLLECTION;
+        }
 
     "}}"  {
-        if(collection == true){
-            collection = false;
-            yybegin(YYINITIAL);
-            return LexerTypes.FOR_END;
-        } else {
-            collection = false;
-            yybegin(YYINITIAL);
-            return LexerTypes.ERROR;
+            if(collection == true){
+                collection = false;
+                yybegin(YYINITIAL);
+                return LexerTokens.FOR_END;
+            } else {
+                collection = false;
+                yybegin(YYINITIAL);
+                return LexerTokens.UNKNOWN;
+            }
         }
-    }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yybegin(FOR_VALUE);
@@ -130,24 +130,24 @@ FOR_KEY = "for"
     {WHITESPACE} {  }
 
     \{ {
-        objectDepth++;
-        return LexerTypes.FOR_COLLECTION;
-    }
+            objectDepth++;
+            return LexerTokens.FOR_COLLECTION;
+        }
 
-    [^}{]+ {return LexerTypes.FOR_COLLECTION;}
+    [^}{]+ {return LexerTokens.FOR_COLLECTION;}
 
     \} {
-        objectDepth--;
-        if (objectDepth == 0) {
-            yybegin(FOR_PIPE);
+            objectDepth--;
+            if (objectDepth == 0) {
+                yybegin(FOR_PIPE);
+            }
+            return LexerTokens.FOR_COLLECTION;
         }
-        return LexerTypes.FOR_COLLECTION;
-    }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
@@ -156,32 +156,32 @@ FOR_KEY = "for"
     {WHITESPACE} {  }
 
     \[ {
-        objectDepth++;
-        return LexerTypes.FOR_COLLECTION;
-    }
+            objectDepth++;
+            return LexerTokens.FOR_COLLECTION;
+        }
 
-    [^\]\[]+ {return LexerTypes.FOR_COLLECTION;}
+    [^\]\[]+ {return LexerTokens.FOR_COLLECTION;}
 
     \] {
-        objectDepth--;
-        if (objectDepth == 0) {
-            yybegin(FOR_PIPE);
+            objectDepth--;
+            if (objectDepth == 0) {
+                yybegin(FOR_PIPE);
+            }
+            return LexerTokens.FOR_COLLECTION;
         }
-        return LexerTypes.FOR_COLLECTION;
-    }
 
     \][ \t]*[.].*\(.*\) {
-        objectDepth--;
-        if (objectDepth == 0) {
-            yybegin(FOR_PIPE);
+            objectDepth--;
+            if (objectDepth == 0) {
+                yybegin(FOR_PIPE);
+            }
+            return LexerTokens.FOR_COLLECTION;
         }
-        return LexerTypes.FOR_COLLECTION;
-    }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
 }
 
@@ -190,14 +190,14 @@ FOR_KEY = "for"
      {WHITESPACE} {  }
 
     "|> ".+ / [ \t]"}}" {
-        yybegin(FOR_CONTENT);
-        return LexerTypes.FOR_COLLECTION;
-    }
+            yybegin(FOR_CONTENT);
+            return LexerTokens.FOR_COLLECTION;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yybegin(FOR_CONTENT);
