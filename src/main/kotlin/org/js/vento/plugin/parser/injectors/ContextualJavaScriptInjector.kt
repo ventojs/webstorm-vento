@@ -13,8 +13,8 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.util.PsiTreeUtil
-import org.js.vento.plugin.JavaScriptBaseElement
-import org.js.vento.plugin.VariablePsiBaseElement
+import org.js.vento.plugin.JavaScriptElement
+import org.js.vento.plugin.VariableElement
 
 /**
  * Contextual JavaScript injector that creates a shared scope with common
@@ -32,7 +32,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
 
             // Add common Vento context at the beginning using the first element
             val firstElement = allJsElements.first()
-            if (firstElement is JavaScriptBaseElement || firstElement is VariablePsiBaseElement) {
+            if (firstElement is JavaScriptElement || firstElement is VariableElement) {
                 val emptyRange = TextRange(0, 0)
                 registrar.addPlace(
                     getVentoContextPrefix(),
@@ -44,14 +44,14 @@ class ContextualJavaScriptInjector : MultiHostInjector {
 
             allJsElements.forEachIndexed { index, element ->
                 when (element) {
-                    is JavaScriptBaseElement -> {
+                    is JavaScriptElement -> {
                         val contentRange = element.getContentRange()
                         if (contentRange.length > 0) {
                             registrar.addPlace("\n// Variable $index evaluation\n", "\n", element, contentRange)
                         }
                     }
 
-                    is VariablePsiBaseElement -> {
+                    is VariableElement -> {
                         val contentRange = element.getContentRange()
                         if (contentRange.length > 0) {
 //                            println("\n// Variable $index evaluation\noutput_$index = "+element.text)
@@ -65,8 +65,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         }
     }
 
-    override fun elementsToInjectIn(): List<Class<out PsiElement>> =
-        listOf(JavaScriptBaseElement::class.java, VariablePsiBaseElement::class.java)
+    override fun elementsToInjectIn(): List<Class<out PsiElement>> = listOf(JavaScriptElement::class.java, VariableElement::class.java)
 
     private fun getVentoContextPrefix(): String =
         """
@@ -99,11 +98,11 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         val jsElements = mutableListOf<PsiElement>()
 
         PsiTreeUtil
-            .findChildrenOfType(file, JavaScriptBaseElement::class.java)
+            .findChildrenOfType(file, JavaScriptElement::class.java)
             .forEach { jsElements.add(it) }
 
         PsiTreeUtil
-            .findChildrenOfType(file, VariablePsiBaseElement::class.java)
+            .findChildrenOfType(file, VariableElement::class.java)
             .forEach { jsElements.add(it) }
 
         return jsElements.sortedBy { it.textOffset }
@@ -115,7 +114,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         // Pre-declare variables that might be used across blocks
         allJsElements.forEachIndexed { index, element ->
             when (element) {
-                is VariablePsiBaseElement -> {
+                is VariableElement -> {
                     declarations.append("\nlet output_$index;")
                 }
             }

@@ -1,7 +1,7 @@
 Vento File(0,13)
-  VentoPsiElement: VENTO_EXPORT_OPEN_ELEMENT(0,13)
-    PsiElement(VENTO_EXPORT_START_TOKEN)('{{')(0,2)
-    PsiElement(VENTO_EXPORT_KEY_TOKEN)(' export')(2,9)
+  Element: EXPORT_OPEN_ELEMENT(0,13)
+    PsiElement(EXPORT_START_TOKEN)('{{')(0,2)
+    PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
     PsiErrorElement:Expected variable(9,9)
       <empty list>
-    PsiElement(VENTO_EXPORT_END_TOKEN)('  }}')(9,13)
+    PsiElement(EXPORT_END_TOKEN)('  }}')(9,13)

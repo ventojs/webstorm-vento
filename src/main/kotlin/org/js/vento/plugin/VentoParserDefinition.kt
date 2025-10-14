@@ -17,8 +17,8 @@ import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 import org.js.vento.plugin.filetype.VentoFile
 import org.js.vento.plugin.lexer.LexerAdapter
-import org.js.vento.plugin.lexer.LexerTypes
-import org.js.vento.plugin.parser.ParserTypes
+import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.parser.ParserElements
 import org.js.vento.plugin.parser.VentoParser
 
 /**
@@ -54,11 +54,11 @@ class VentoParserDefinition : ParserDefinition {
 
     override fun getFileNodeType(): IFileElementType = IFileElementType(VentoLanguage)
 
-    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTypes.COMMENT)
+    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT)
 
-    override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTypes.STRING)
+    override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTokens.STRING)
 
-    override fun createElement(node: ASTNode): PsiElement = ParserTypes.Factory.createElement(node)
+    override fun createElement(node: ASTNode): PsiElement = ParserElements.Factory.createElement(node)
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 }

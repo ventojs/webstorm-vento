@@ -1,5 +1,5 @@
 // BLOCK 1 - START
-import org.js.vento.plugin.lexer.LexerTypes;
+import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 1 - END
 %%
 
@@ -20,19 +20,19 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
     {WHITESPACE} {  }
 
     {IMPORT} / [ \t] {
-        yybegin(VALUES);
-        return LexerTypes.IMPORT_KEY;
-    }
+            yybegin(VALUES);
+            return LexerTokens.IMPORT_KEY;
+        }
 
     {FROM} {
-        yybegin(FILE);
-        return LexerTypes.IMPORT_FROM;
-    }
+            yybegin(FILE);
+            return LexerTokens.IMPORT_FROM;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());
@@ -44,27 +44,27 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
     {WHITESPACE} {  }
 
     "{"{OWS}{IMP_ID}{OWS}(,{OWS}{IMP_ID}{OWS})*"}" {
-        yybegin(IMPORT);
-        return LexerTypes.IMPORT_VALUES;
-    }
+            yybegin(IMPORT);
+            return LexerTokens.IMPORT_VALUES;
+        }
 
-    \, { return LexerTypes.IMPORT_VALUES; }
+    \, { return LexerTokens.IMPORT_VALUES; }
 
     {FROM}.*{CBLOCK} {
         yypushback(yylength());
         yybegin(IMPORT);
     }
 
-    {IMP_ID} { return LexerTypes.IMPORT_VALUES; }
+    {IMP_ID} { return LexerTokens.IMPORT_VALUES; }
     {IMP_ID} / {WHITESPACE}{FROM} {
-        yybegin(IMPORT);
-        return LexerTypes.IMPORT_VALUES;
-    }
+            yybegin(IMPORT);
+            return LexerTokens.IMPORT_VALUES;
+        }
 
     <<EOF>> {
-        yybegin(IMPORT);
-        return LexerTypes.UNKNOWN;
-    }
+            yybegin(IMPORT);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());
@@ -77,19 +77,19 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
     {WHITESPACE} {  }
 
     [\"][.]?[/]?.*[\"] / {WHITESPACE}{CBLOCK} {
-        yybegin(BLOCK);
-        return LexerTypes.IMPORT_FILE;
-    }
+            yybegin(BLOCK);
+            return LexerTokens.IMPORT_FILE;
+        }
 
     [^ \t].+ / {WHITESPACE}{CBLOCK} {
-        yybegin(BLOCK);
-        return LexerTypes.UNKNOWN;
-    }
+            yybegin(BLOCK);
+            return LexerTokens.UNKNOWN;
+        }
 
     <<EOF>> {
-        yybegin(YYINITIAL);
-        return LexerTypes.ERROR;
-    }
+            yybegin(YYINITIAL);
+            return LexerTokens.UNKNOWN;
+        }
 
     [^] {
         yypushback(yylength());

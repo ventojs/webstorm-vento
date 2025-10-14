@@ -6,7 +6,7 @@ package org.js.vento.plugin.lexer;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import org.js.vento.plugin.parser.ParserTypes;
+import org.js.vento.plugin.parser.ParserElements;
 import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %%
@@ -94,7 +94,7 @@ SET = "set"
 
 <YYINITIAL> {
 
-    {EMPTY_LINE} { return LexerTypes.EMPTY_LINE; }
+    {EMPTY_LINE} { return LexerTokens.EMPTY_LINE; }
     {WHITESPACE} { return WHITE_SPACE; }
 
     {OBLOCK} {
@@ -103,9 +103,9 @@ SET = "set"
         // TODO: consider adding a Vento block token
     }
 
-    ([^\{][^\{]?)+ { return ParserTypes.HTML_ELEMENT; }
+    ([^\{][^\{]?)+ { return LexerTokens.HTML; }
 
-    [^]   { return LexerTypes.ERROR; }
+    [^]   { return LexerTokens.UNKNOWN; }
 
 }
 
@@ -113,123 +113,123 @@ SET = "set"
     {WHITESPACE} { }
 
     {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
-        yypushback(yylength()-2);
-        closeType = LexerTypes.VARIABLE_END;
-        return LexerTypes.VARIABLE_START;
-    }
+            yypushback(yylength()-2);
+            closeType = LexerTokens.VARIABLE_END;
+            return LexerTokens.VARIABLE_START;
+        }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
-        yybegin(IMPORT);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.IMPORT_END;
-        return LexerTypes.IMPORT_START;
-    }
+            yybegin(IMPORT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.IMPORT_END;
+            return LexerTokens.IMPORT_START;
+        }
 
     {OBLOCK}/{OWS}[/]{SET} {
-        enter(SET);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.SET_CLOSE_END;
-        return LexerTypes.SET_CLOSE_START;
-    }
-
-    {OBLOCK}{WHITESPACE}{SET} {
             enter(SET);
             yypushback(yylength()-2);
-            closeType = LexerTypes.SET_END;
-            return LexerTypes.SET_START;
-    }
+            closeType = LexerTokens.SET_CLOSE_END;
+            return LexerTokens.SET_CLOSE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}{SET} {
+                enter(SET);
+                yypushback(yylength()-2);
+                closeType = LexerTokens.SET_END;
+                return LexerTokens.SET_START;
+        }
 
     {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
-        enter(SET);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.SET_END;
-        return LexerTypes.SET_START;
-    }
+            enter(SET);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.SET_END;
+            return LexerTokens.SET_START;
+        }
 
     {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
-        yybegin(EXPORT_FUNCTION_BLOCK);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.EXPORT_FUNCTION_END;
-        return LexerTypes.EXPORT_FUNCTION_START;
-    }
+            yybegin(EXPORT_FUNCTION_BLOCK);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.EXPORT_FUNCTION_END;
+            return LexerTokens.EXPORT_FUNCTION_START;
+        }
 
     {OBLOCK}{OWS}{EXPORT} {
-        yybegin(EXPORT);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.EXPORT_END;
-        return LexerTypes.EXPORT_START;
-    }
+            yybegin(EXPORT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.EXPORT_END;
+            return LexerTokens.EXPORT_START;
+        }
 
     {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-        yybegin(EXPORT_CLOSE);
-        yypushback(yylength()-2);
-        closeType = LexerTypes.EXPORT_CLOSE_END;
-        return LexerTypes.EXPORT_CLOSE_START;
-    }
+            yybegin(EXPORT_CLOSE);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.EXPORT_CLOSE_END;
+            return LexerTokens.EXPORT_CLOSE_START;
+        }
 
     {CBLOCK} {
-        yybegin(YYINITIAL);
-        IElementType ct = closeType;
-        closeType = null;
-        if(ct != null){
-           return ct;
-        } else {
-           return LexerTypes.ERROR;
+            yybegin(YYINITIAL);
+            IElementType ct = closeType;
+            closeType = null;
+            if(ct != null){
+               return ct;
+            } else {
+               return LexerTokens.UNKNOWN;
+            }
         }
-    }
 
     {OCOMMENT} {
-        yybegin(COMMENT);
-        return LexerTypes.COMMENT_START;
-    }
+            yybegin(COMMENT);
+            return LexerTokens.COMMENT_START;
+        }
 
     {OJS} {
-        yybegin(SCRIPT_CONTENT);
-        return LexerTypes.JAVASCRIPT_START;
-    }
+            yybegin(SCRIPT_CONTENT);
+            return LexerTokens.JAVASCRIPT_START;
+        }
 
     {OVAR} {
-        yybegin(VARIABLE_CONTENT);
-        return LexerTypes.VARIABLE_START;
-    }
+            yybegin(VARIABLE_CONTENT);
+            return LexerTokens.VARIABLE_START;
+        }
 
     \{\{ / .*[/]?{FOR_KEY} {
-        yybegin(FOR_CONTENT);
-        return LexerTypes.FOR_START;
-    }
+            yybegin(FOR_CONTENT);
+            return LexerTokens.FOR_START;
+        }
 
-    [^] { return LexerTypes.ERROR; }
+    [^] { return LexerTokens.UNKNOWN; }
 
 }
 
 <SCRIPT_CONTENT> {
 
-   ([^}]|"}"[^}])+ { return ParserTypes.JAVASCRIPT_ELEMENT; }
+   ([^}]|"}"[^}])+ { return ParserElements.JAVASCRIPT_ELEMENT; }
    {CBLOCK} {
-           yybegin(YYINITIAL);
-           return LexerTypes.JAVASCRIPT_END;
-      }
+              yybegin(YYINITIAL);
+              return LexerTokens.JAVASCRIPT_END;
+         }
 
    [^] {
-          yybegin(YYINITIAL);
-          return LexerTypes.ERROR;
-      }
+             yybegin(YYINITIAL);
+             return LexerTokens.UNKNOWN;
+         }
 
 }
 
 <COMMENT> {
 
     // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#])+ { return LexerTypes.COMMENT_CONTENT; }
+    ([^#-]|"#"[^}]|"-"[^#])+ { return LexerTokens.COMMENT_CONTENT; }
 
     // Handle single characters that might be part of closing sequences
-    "#" { return LexerTypes.COMMENT_CONTENT; }
-    "-" { return LexerTypes.COMMENT_CONTENT; }
+    "#" { return LexerTokens.COMMENT_CONTENT; }
+    "-" { return LexerTokens.COMMENT_CONTENT; }
 
     {CCOMMENT} {
-            yybegin(YYINITIAL);
-            return LexerTypes.COMMENT_END;
-        }
+                yybegin(YYINITIAL);
+                return LexerTokens.COMMENT_END;
+            }
 
 }
 
