@@ -55,7 +55,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %}
 
 
-DEFAULT_HTML = [^{]+
+DEFAULT_HTML = [^]+
 EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
@@ -80,6 +80,7 @@ IMPORT = "import"
 EXPORT = "export"
 FUNCTION = "function"
 FROM = "from"
+SET = "set"
 
 %{
   private int objectDepth = 0;
@@ -102,7 +103,7 @@ FROM = "from"
         // TODO: consider adding a Vento block token
     }
 
-    {DEFAULT_HTML} { return ParserTypes.HTML_ELEMENT; }
+    ([^\{][^\{]?)+ { return ParserTypes.HTML_ELEMENT; }
 
     [^]   { return LexerTypes.ERROR; }
 
@@ -122,6 +123,27 @@ FROM = "from"
         yypushback(yylength()-2);
         closeType = LexerTypes.IMPORT_END;
         return LexerTypes.IMPORT_START;
+    }
+
+    {OBLOCK}/{OWS}[/]{SET} {
+        enter(SET);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.SET_CLOSE_END;
+        return LexerTypes.SET_CLOSE_START;
+    }
+
+    {OBLOCK}{WHITESPACE}{SET} {
+            enter(SET);
+            yypushback(yylength()-2);
+            closeType = LexerTypes.SET_END;
+            return LexerTypes.SET_START;
+    }
+
+    {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
+        enter(SET);
+        yypushback(yylength()-2);
+        closeType = LexerTypes.SET_END;
+        return LexerTypes.SET_START;
     }
 
     {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
@@ -219,4 +241,5 @@ FROM = "from"
 // improved pipe implementation
 %include includes/tokens-new-pipe.flex
 %include includes/tokens-expression.flex
+%include includes/tokens-set.flex
 

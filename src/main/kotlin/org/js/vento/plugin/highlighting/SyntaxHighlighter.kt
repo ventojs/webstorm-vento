@@ -48,6 +48,7 @@ import org.js.vento.plugin.lexer.LexerTypes.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTypes.FOR_OF
 import org.js.vento.plugin.lexer.LexerTypes.FOR_START
 import org.js.vento.plugin.lexer.LexerTypes.FOR_VALUE
+import org.js.vento.plugin.lexer.LexerTypes.IDENTIFIER
 import org.js.vento.plugin.lexer.LexerTypes.IMPORT_END
 import org.js.vento.plugin.lexer.LexerTypes.IMPORT_FILE
 import org.js.vento.plugin.lexer.LexerTypes.IMPORT_FROM
@@ -57,6 +58,12 @@ import org.js.vento.plugin.lexer.LexerTypes.IMPORT_VALUES
 import org.js.vento.plugin.lexer.LexerTypes.JAVASCRIPT_END
 import org.js.vento.plugin.lexer.LexerTypes.JAVASCRIPT_START
 import org.js.vento.plugin.lexer.LexerTypes.PIPE_ELEMENT
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTypes.SET_END
+import org.js.vento.plugin.lexer.LexerTypes.SET_KEY
+import org.js.vento.plugin.lexer.LexerTypes.SET_START
 import org.js.vento.plugin.lexer.LexerTypes.TEXT
 import org.js.vento.plugin.lexer.LexerTypes.TRIM_COMMENT_END
 import org.js.vento.plugin.lexer.LexerTypes.TRIM_COMMENT_START
@@ -123,6 +130,13 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_FUNCTION_END -> BLOCK
                 EXPORT_FUNCTION_START -> BLOCK
                 LexerTypes.STRING -> STRING
+                SET_START -> BLOCK
+                SET_KEY -> KEY_WORD
+                SET_END -> BLOCK
+                IDENTIFIER -> VALUES
+                SET_CLOSE_START -> BLOCK
+                SET_CLOSE_KEY -> KEY_WORD
+                SET_CLOSE_END -> BLOCK
                 else -> null
             }
 

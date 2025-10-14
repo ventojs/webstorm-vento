@@ -46,8 +46,8 @@ import org.js.vento.plugin.lexer.LexerTypes;
    }
 
    "|>" {
-        enter(EXPRESSION);
-        return LexerTypes.PIPE_ELEMENT;
+        yypushback(yylength());
+        leave();
    }
 
    [^\/\"'`(){} \t\n\r]+ { return LexerTypes.EXPRESSION; }
@@ -57,7 +57,7 @@ import org.js.vento.plugin.lexer.LexerTypes;
         return LexerTypes.UNKNOWN;
    }
 
-   [^] {
+   [^ \t] {
         leave();
         return LexerTypes.UNKNOWN;
    }

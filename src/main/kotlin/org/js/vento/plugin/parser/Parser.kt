@@ -11,7 +11,23 @@ import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTypes
+import org.js.vento.plugin.lexer.LexerTypes.BRACKET
+import org.js.vento.plugin.lexer.LexerTypes.DOT
+import org.js.vento.plugin.lexer.LexerTypes.EQUAL
+import org.js.vento.plugin.lexer.LexerTypes.EXPRESSION
+import org.js.vento.plugin.lexer.LexerTypes.IDENTIFIER
+import org.js.vento.plugin.lexer.LexerTypes.PIPE_ELEMENT
+import org.js.vento.plugin.lexer.LexerTypes.REGEX
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTypes.SET_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTypes.SET_END
+import org.js.vento.plugin.lexer.LexerTypes.SET_KEY
+import org.js.vento.plugin.lexer.LexerTypes.SET_START
+import org.js.vento.plugin.lexer.LexerTypes.STRING
 import org.js.vento.plugin.lexer.LexerTypes.UNKNOWN
+import org.js.vento.plugin.parser.ParserTypes.SET_CLOSE_ELEMENT
+import org.js.vento.plugin.parser.ParserTypes.SET_ELEMENT
 
 /**
  * A parser implementation for Vento template files.
@@ -63,11 +79,49 @@ class VentoParser : PsiParser {
             LexerTypes.EXPORT_START -> parseExport(builder)
             LexerTypes.EXPORT_CLOSE_START -> parseExportClose(builder)
             LexerTypes.EXPORT_FUNCTION_START -> parseExportFunction(builder)
+            SET_START -> parsSet(builder)
+            SET_CLOSE_START -> parsSetClose(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(ParserTypes.VENTO_ELEMENT)
             }
+        }
+    }
+
+    private fun parsSetClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, SET_CLOSE_START, "Expected '{{' ")
+        expect(builder, SET_CLOSE_KEY, "Expected '/set' keyword")
+        expect(builder, SET_CLOSE_END, "Expected '}}' ")
+        m.done(SET_CLOSE_ELEMENT)
+    }
+
+    private fun parsSet(builder: PsiBuilder) {
+        val m = builder.mark()
+
+        expect(builder, SET_START, "Expected '{{' ")
+        expect(builder, SET_KEY, "Expected 'set' keyword")
+        expect(builder, IDENTIFIER, "Expected identifier")
+
+        val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
+
+        val hasExp: Boolean = parseExpression(builder, hasEq)
+
+        if (hasEq && !hasExp) builder.error("Expected expression after '='")
+        if (!hasEq && hasExp) builder.error("Expected '='")
+
+        parsePipe(builder)
+
+        expect(builder, SET_END, "Expected '}}' ")
+
+        m.done(SET_ELEMENT)
+    }
+
+    private fun parsePipe(builder: PsiBuilder) {
+        if (builder.tokenType == PIPE_ELEMENT) {
+            expect(builder, PIPE_ELEMENT, "Expected pipe (|>)")
+            parseExpression(builder)
         }
     }
 
@@ -91,13 +145,13 @@ class VentoParser : PsiParser {
         expect(builder, LexerTypes.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, LexerTypes.EXPORT_VAR, "Expected variable", true)
 
-        val hasEq = optional(builder, LexerTypes.EQUAL, "Expected '=' keyword")
+        val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
         var hasVal = false
         if (hasEq) hasVal = parseExpression(builder)
         if (hasEq && !hasVal) builder.error("Expected expression after '='")
 
-        while (!builder.eof() && builder.tokenType == LexerTypes.PIPE_ELEMENT) {
-            val hasPipe = optional(builder, LexerTypes.PIPE_ELEMENT, "Expected pipe (|>)")
+        while (!builder.eof() && builder.tokenType == PIPE_ELEMENT) {
+            val hasPipe = optional(builder, PIPE_ELEMENT, "Expected pipe (|>)")
             var hasPipeExpression = false
             if (hasPipe) hasPipeExpression = parseExpression(builder)
             if (hasPipe && !hasPipeExpression) builder.error("Expected expression after '|>'")
@@ -112,25 +166,35 @@ class VentoParser : PsiParser {
         }
     }
 
-    private fun parseExpression(builder: PsiBuilder): Boolean {
+    private fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
         val m = builder.mark()
 
         var hasExpression = false
         while (
             !builder.eof() &&
             (
-                builder.tokenType == LexerTypes.EXPRESSION ||
-                    builder.tokenType == LexerTypes.STRING ||
-                    builder.tokenType == LexerTypes.REGEX ||
-                    builder.tokenType == LexerTypes.BRACKET ||
-                    builder.tokenType == LexerTypes.DOT
+                builder.tokenType == EXPRESSION ||
+                    builder.tokenType == STRING ||
+                    builder.tokenType == REGEX ||
+                    builder.tokenType == BRACKET ||
+                    builder.tokenType == DOT ||
+                    builder.tokenType == IDENTIFIER ||
+                    builder.tokenType == UNKNOWN
             )
         ) {
-            hasExpression = true
+            if (builder.tokenType == UNKNOWN) {
+                if (required) builder.error("Unexpected expression content")
+            } else if (builder.tokenType == IDENTIFIER ||
+                builder.tokenType == EXPRESSION ||
+                builder.tokenType == STRING ||
+                builder.tokenType == REGEX
+            ) {
+                hasExpression = true
+            }
             builder.advanceLexer()
         }
-
-        m.done(ParserTypes.EXPRESSION)
+        if (!hasExpression && required) builder.error("Expected expression")
+        if (hasExpression) m.done(ParserTypes.EXPRESSION) else m.drop()
 
         return hasExpression
     }
@@ -193,13 +257,13 @@ class VentoParser : PsiParser {
             !builder.eof() &&
             (
                 builder.tokenType == LexerTypes.VARIABLE_ELEMENT ||
-                    builder.tokenType == LexerTypes.PIPE_ELEMENT ||
-                    builder.tokenType == LexerTypes.STRING ||
+                    builder.tokenType == PIPE_ELEMENT ||
+                    builder.tokenType == STRING ||
                     builder.tokenType == LexerTypes.ERROR ||
-                    builder.tokenType == LexerTypes.UNKNOWN
+                    builder.tokenType == UNKNOWN
             )
         ) {
-            if (builder.tokenType == LexerTypes.ERROR || builder.tokenType == LexerTypes.UNKNOWN) {
+            if (builder.tokenType == LexerTypes.ERROR || builder.tokenType == UNKNOWN) {
                 builder.error("Unexpected variable content")
             }
             builder.advanceLexer()

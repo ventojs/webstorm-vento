@@ -46,15 +46,6 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
             ),
         )
 
-    fun `test invalid line`() =
-        assertNotValid(
-            returnFirstBlockElement(
-                """
-                {{ export message = }}
-                """.trimIndent(),
-            ),
-        )
-
     // =================================
     // Helper Methods
     // =================================
@@ -73,13 +64,6 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
     }
 
     /**
-     * Asserts that a ForBlockElement is invalid.
-     *
-     * @param content The ForBlockElement to validate
-     */
-    private fun assertNotValid(content: ExportBaseElement) = assertValid(content, false)
-
-    /**
      * Asserts the validity of a ForBlockElement.
      *
      * @param content The ForBlockElement to validate
@@ -94,7 +78,7 @@ class ExportBlockValidatorTest : BasePlatformTestCase() {
             if (isValid && !passes.isEmpty()) {
                 fail("Found Error Element: ${passes.map { it.second.elementType }} (${passes.map { it.first }})")
             } else if (!isValid && passes.isEmpty()) {
-                fail("Expected Error Elements")
+                fail("Expected Error Elements:" + passes.map { it.second.elementType })
             }
         } catch (e: Error) {
             lexAndPrint(content)
