@@ -8,6 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.DefaultElement
 import org.js.vento.plugin.ExportCloseElement
 import org.js.vento.plugin.ExportElement
 import org.js.vento.plugin.ExportFunctionElement
@@ -28,51 +29,51 @@ import org.js.vento.plugin.VariableElement
 object ParserElements {
     // Basic Vento elements
     @JvmField
-    val COMMENT_BLOCK = VentoParserElementType("VENTO_COMMENT_BLOCK")
+    val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
 
     @JvmField
-    val EXPRESSION = VentoParserElementType("VENTO_EXPRESSION")
+    val EXPRESSION = ParserElement("EXPRESSION")
 
     @JvmField
-    val HTML_ELEMENT = VentoParserElementType("VENTO_HTML_ELEMENT")
+    val HTML_ELEMENT = ParserElement("HTML_ELEMENT")
 
     @JvmField
-    val DEFAULT_ELEMENT = VentoParserElementType("VENTO_ELEMENT")
+    val DEFAULT_ELEMENT = ParserElement("ELEMENT")
 
     // JavaScript and variable elements
     @JvmField
-    val JAVACRIPT_VARIABLE_ELEMENT = VentoParserElementType("VENTO_VARIABLE_ELEMENT")
+    val JAVACRIPT_VARIABLE_ELEMENT = ParserElement("VARIABLE_ELEMENT")
 
     @JvmField
-    val JAVASCRIPT_ELEMENT = VentoParserElementType("VENTO_JAVASCRIPT_ELEMENT")
+    val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
 
     // Control flow elements
     @JvmField
-    val VENTO_FOR_ELEMENT: IElementType = VentoParserElementType("VENTO_FOR_ELEMENT")
+    val FOR_ELEMENT: IElementType = ParserElement("FOR_ELEMENT")
 
     // Import elements
     @JvmField
-    val IMPORT_ELEMENT: IElementType = VentoParserElementType("VENTO_IMPORT_ELEMENT")
+    val IMPORT_ELEMENT: IElementType = ParserElement("IMPORT_ELEMENT")
 
     // Export elements
     @JvmField
-    val EXPORT_CLOSE_ELEMENT: IElementType = VentoParserElementType("VENTO_EXPORT_CLOSE_ELEMENT")
+    val EXPORT_CLOSE_ELEMENT: IElementType = ParserElement("EXPORT_CLOSE_ELEMENT")
 
     @JvmField
-    val EXPORT_ELEMENT: IElementType = VentoParserElementType("VENTO_EXPORT_ELEMENT")
+    val EXPORT_ELEMENT: IElementType = ParserElement("EXPORT_ELEMENT")
 
     @JvmField
-    val EXPORT_FUNCTION_ELEMENT: IElementType = VentoParserElementType("VENTO_EXPORT_FUNCTION_ELEMENT")
+    val EXPORT_FUNCTION_ELEMENT: IElementType = ParserElement("EXPORT_FUNCTION_ELEMENT")
 
     @JvmField
-    val EXPORT_OPEN_ELEMENT: IElementType = VentoParserElementType("VENTO_EXPORT_OPEN_ELEMENT")
+    val EXPORT_OPEN_ELEMENT: IElementType = ParserElement("EXPORT_OPEN_ELEMENT")
 
     // Set elements
     @JvmField
-    val SET_CLOSE_ELEMENT: IElementType = VentoParserElementType("VENTO_SET_CLOSE_ELEMENT")
+    val SET_CLOSE_ELEMENT: IElementType = ParserElement("SET_CLOSE_ELEMENT")
 
     @JvmField
-    val SET_ELEMENT: IElementType = VentoParserElementType("VENTO_SET_ELEMENT")
+    val SET_ELEMENT: IElementType = ParserElement("SET_ELEMENT")
 
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
@@ -85,7 +86,7 @@ object ParserElements {
                 HTML_ELEMENT -> HtmlElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VariableElement(node)
-                VENTO_FOR_ELEMENT -> ForBlockElement(node)
+                FOR_ELEMENT -> ForBlockElement(node)
                 IMPORT_ELEMENT -> ImportElement(node)
                 EXPORT_ELEMENT -> ExportElement(node)
                 EXPORT_OPEN_ELEMENT -> ExportOpenElement(node)
@@ -93,7 +94,7 @@ object ParserElements {
                 EXPORT_FUNCTION_ELEMENT -> ExportFunctionElement(node)
                 SET_ELEMENT -> SetElement(node)
                 SET_CLOSE_ELEMENT -> SetCloseElement(node)
-                else -> HtmlElement(node)
+                else -> DefaultElement(node)
             }
     }
 }

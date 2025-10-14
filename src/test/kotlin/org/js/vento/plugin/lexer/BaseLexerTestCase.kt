@@ -41,7 +41,7 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
                         lexer.tokenStart,
                         lexer.tokenEnd,
                     ),
-                token == null || token.toString() == "VENTO_UNKNOWN_TOKEN",
+                token == null || token.toString() == "UNKNOWN_TOKEN",
             )
             passed = true
         } finally {

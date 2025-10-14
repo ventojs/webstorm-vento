@@ -1,4 +1,4 @@
 Vento File(0,8)
-  Element: VENTO_COMMENT_BLOCK(0,8)
-    PsiElement(VENTO_COMMENT_START_TOKEN)('{{#-')(0,4)
-    PsiElement(VENTO_COMMENT_END_TOKEN)('-#}}')(4,8)
+  Element: COMMENT_BLOCK(0,8)
+    PsiElement(COMMENT_START_TOKEN)('{{#-')(0,4)
+    PsiElement(COMMENT_END_TOKEN)('-#}}')(4,8)

@@ -103,7 +103,7 @@ SET = "set"
         // TODO: consider adding a Vento block token
     }
 
-    ([^\{][^\{]?)+ { return ParserElements.HTML_ELEMENT; }
+    ([^\{][^\{]?)+ { return LexerTokens.HTML; }
 
     [^]   { return LexerTokens.UNKNOWN; }
 

@@ -245,7 +245,7 @@ class VentoParser : PsiParser {
             builder.advanceLexer()
         }
 
-        m.done(ParserElements.VENTO_FOR_ELEMENT)
+        m.done(ParserElements.FOR_ELEMENT)
     }
 
     private fun parseVariable(builder: PsiBuilder) {
@@ -325,7 +325,7 @@ class VentoParser : PsiParser {
  * Represents an element type for the Vento language.
  * Typically used for syntax/AST nodes in the PSI tree.
  */
-class VentoParserElementType(debugName: String) : IElementType(debugName, VentoLanguage)
+class ParserElement(debugName: String) : IElementType(debugName, VentoLanguage)
 
 private fun expect(builder: PsiBuilder, expected: IElementType, message: String, expectMultipleTokens: Boolean = false): Boolean {
     return if (builder.tokenType == expected) {

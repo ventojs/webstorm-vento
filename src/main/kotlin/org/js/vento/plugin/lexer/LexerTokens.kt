@@ -15,171 +15,174 @@ import com.intellij.psi.tree.IElementType
 object LexerTokens {
     // Comment tokens
     @JvmField
-    val COMMENT = LexerToken("VENTO_COMMENT")
+    val COMMENT = LexerToken("COMMENT")
 
     @JvmField
-    var COMMENT_CONTENT: IElementType = LexerToken("VENTO_COMMENT_CONTENT")
+    var COMMENT_CONTENT: IElementType = LexerToken("COMMENT_CONTENT")
 
     @JvmField
-    var COMMENT_END: IElementType = LexerToken("VENTO_COMMENT_END")
+    var COMMENT_END: IElementType = LexerToken("COMMENT_END")
 
     @JvmField
-    var COMMENT_START: IElementType = LexerToken("VENTO_COMMENT_START")
+    var COMMENT_START: IElementType = LexerToken("COMMENT_START")
 
     @JvmField
-    var TRIM_COMMENT_END: IElementType = LexerToken("VENTO_TRIM_COMMENT_END")
+    var TRIM_COMMENT_END: IElementType = LexerToken("TRIM_COMMENT_END")
 
     @JvmField
-    var TRIM_COMMENT_START: IElementType = LexerToken("VENTO_TRIM_COMMENT_START")
+    var TRIM_COMMENT_START: IElementType = LexerToken("TRIM_COMMENT_START")
 
     // JavaScript tokens
     @JvmField
-    val EXPRESSION = LexerToken("VENTO_EXPRESSION")
+    val EXPRESSION = LexerToken("EXPRESSION")
 
     @JvmField
-    var JAVASCRIPT_END: IElementType = LexerToken("VENTO_JAVASCRIPT_END")
+    var JAVASCRIPT_END: IElementType = LexerToken("JAVASCRIPT_END")
 
     @JvmField
-    var JAVASCRIPT_START: IElementType = LexerToken("VENTO_JAVASCRIPT_START")
+    var JAVASCRIPT_START: IElementType = LexerToken("JAVASCRIPT_START")
 
     // Variable tokens
     @JvmField
-    val VARIABLE_ELEMENT = LexerToken("VENTO_VARIABLE_ELEMENT")
+    val VARIABLE_ELEMENT = LexerToken("VARIABLE_ELEMENT")
 
     @JvmField
-    var VARIABLE_END: IElementType = LexerToken("VENTO_VARIABLE_END")
+    var VARIABLE_END: IElementType = LexerToken("VARIABLE_END")
 
     @JvmField
-    var VARIABLE_START: IElementType = LexerToken("VENTO_VARIABLE_START")
+    var VARIABLE_START: IElementType = LexerToken("VARIABLE_START")
 
     // For loop tokens
     @JvmField
-    var FOR_CLOSE_KEY: IElementType = LexerToken("VENTO_FOR_CLOSE_KEY")
+    var FOR_CLOSE_KEY: IElementType = LexerToken("FOR_CLOSE_KEY")
 
     @JvmField
-    var FOR_COLLECTION: IElementType = LexerToken("VENTO_FOR_COLLECTION")
+    var FOR_COLLECTION: IElementType = LexerToken("FOR_COLLECTION")
 
     @JvmField
-    var FOR_END: IElementType = LexerToken("VENTO_FOR_END")
+    var FOR_END: IElementType = LexerToken("FOR_END")
 
     @JvmField
-    var FOR_KEY: IElementType = LexerToken("VENTO_FOR_KEY")
+    var FOR_KEY: IElementType = LexerToken("FOR_KEY")
 
     @JvmField
-    var FOR_OF: IElementType = LexerToken("VENTO_FOR_OF")
+    var FOR_OF: IElementType = LexerToken("FOR_OF")
 
     @JvmField
-    var FOR_START: IElementType = LexerToken("VENTO_FOR_START")
+    var FOR_START: IElementType = LexerToken("FOR_START")
 
     @JvmField
-    var FOR_VALUE: IElementType = LexerToken("VENTO_FOR_VALUE")
+    var FOR_VALUE: IElementType = LexerToken("FOR_VALUE")
 
     // Import tokens
     @JvmField
-    val IMPORT_END = LexerToken("VENTO_IMPORT_END")
+    val IMPORT_END = LexerToken("IMPORT_END")
 
     @JvmField
-    val IMPORT_FILE = LexerToken("VENTO_IMPORT_FILE")
+    val IMPORT_FILE = LexerToken("IMPORT_FILE")
 
     @JvmField
-    val IMPORT_FROM = LexerToken("VENTO_IMPORT_FROM")
+    val IMPORT_FROM = LexerToken("IMPORT_FROM")
 
     @JvmField
-    val IMPORT_KEY = LexerToken("VENTO_IMPORT_KEY")
+    val IMPORT_KEY = LexerToken("IMPORT_KEY")
 
     @JvmField
-    val IMPORT_START = LexerToken("VENTO_IMPORT_START")
+    val IMPORT_START = LexerToken("IMPORT_START")
 
     @JvmField
-    val IMPORT_VALUES = LexerToken("VENTO_IMPORT_VALUES")
+    val IMPORT_VALUES = LexerToken("IMPORT_VALUES")
 
     // Export tokens
     @JvmField
-    val EXPORT_CLOSE_END = LexerToken("VENTO_CLOSE_EXPORT_END")
+    val EXPORT_CLOSE_END = LexerToken("CLOSE_EXPORT_END")
 
     @JvmField
-    val EXPORT_CLOSE_KEY = LexerToken("VENTO_EXPORT_KEY")
+    val EXPORT_CLOSE_KEY = LexerToken("EXPORT_KEY")
 
     @JvmField
-    val EXPORT_CLOSE_START = LexerToken("VENTO_CLOSE_EXPORT_START")
+    val EXPORT_CLOSE_START = LexerToken("CLOSE_EXPORT_START")
 
     @JvmField
-    val EXPORT_END = LexerToken("VENTO_EXPORT_END")
+    val EXPORT_END = LexerToken("EXPORT_END")
 
     @JvmField
-    val EXPORT_EQ = LexerToken("VENTO_EXPORT_EQUAL")
+    val EXPORT_EQ = LexerToken("EXPORT_EQUAL")
 
     @JvmField
-    val EXPORT_FUNCTION_ARGS = LexerToken("VENTO_FUNCTION_ARGS")
+    val EXPORT_FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
 
     @JvmField
-    val EXPORT_FUNCTION_END = LexerToken("VENTO_EXPORT_FUNCTION_END")
+    val EXPORT_FUNCTION_END = LexerToken("EXPORT_FUNCTION_END")
 
     @JvmField
-    val EXPORT_FUNCTION_KEY = LexerToken("VENTO_EXPORT_FUNCTION_KEY")
+    val EXPORT_FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
 
     @JvmField
-    val EXPORT_FUNCTION_START = LexerToken("VENTO_EXPORT_FUNCTION_START")
+    val EXPORT_FUNCTION_START = LexerToken("EXPORT_FUNCTION_START")
 
     @JvmField
-    val EXPORT_KEY = LexerToken("VENTO_EXPORT_KEY")
+    val EXPORT_KEY = LexerToken("EXPORT_KEY")
 
     @JvmField
-    val EXPORT_START = LexerToken("VENTO_EXPORT_START")
+    val EXPORT_START = LexerToken("EXPORT_START")
 
     @JvmField
-    val EXPORT_VALUE = LexerToken("VENTO_EXPORT_VALUE")
+    val EXPORT_VALUE = LexerToken("EXPORT_VALUE")
 
     @JvmField
-    val EXPORT_VAR = LexerToken("VENTO_EXPORT_VAR")
+    val EXPORT_VAR = LexerToken("EXPORT_VAR")
 
     // Set tokens
     @JvmField
-    val SET_CLOSE_END = LexerToken("VENTO_SET_CLOSE_END")
+    val SET_CLOSE_END = LexerToken("SET_CLOSE_END")
 
     @JvmField
-    val SET_CLOSE_KEY = LexerToken("VENTO_SET_CLOSE_KEY")
+    val SET_CLOSE_KEY = LexerToken("SET_CLOSE_KEY")
 
     @JvmField
-    val SET_CLOSE_START = LexerToken("VENTO_SET_CLOSE_START")
+    val SET_CLOSE_START = LexerToken("SET_CLOSE_START")
 
     @JvmField
-    val SET_END = LexerToken("VENTO_SET_END")
+    val SET_END = LexerToken("SET_END")
 
     @JvmField
-    val SET_KEY = LexerToken("VENTO_SET_KEY")
+    val SET_KEY = LexerToken("SET_KEY")
 
     @JvmField
-    val SET_START = LexerToken("VENTO_SET_START")
+    val SET_START = LexerToken("SET_START")
 
     // General tokens
     @JvmField
-    val BRACKET = LexerToken("VENTO_BRACKET")
+    val BRACKET = LexerToken("BRACKET")
 
     @JvmField
-    val DOT = LexerToken("VENTO_DOT")
+    val DOT = LexerToken("DOT")
 
     @JvmField
-    val EMPTY_LINE = LexerToken("VENTO_EMPTY_LINE")
+    val EMPTY_LINE = LexerToken("EMPTY_LINE")
 
     @JvmField
-    val EQUAL = LexerToken("VENTO_EQUAL")
+    val EQUAL = LexerToken("EQUAL")
 
     @JvmField
-    val IDENTIFIER = LexerToken("VENTO_IDENTIFIER")
+    val IDENTIFIER = LexerToken("IDENTIFIER")
 
     @JvmField
-    val PIPE = LexerToken("VENTO_PIPE")
+    val PIPE = LexerToken("PIPE")
 
     @JvmField
-    val REGEX = LexerToken("VENTO_REGEX")
+    val REGEX = LexerToken("REGEX")
 
     @JvmField
-    val STRING = LexerToken("VENTO_STRING")
+    val STRING = LexerToken("STRING")
 
     @JvmField
-    val TEXT = LexerToken("VENTO_HTML_TAG")
+    val TEXT = LexerToken("TEXT")
 
     @JvmField
-    val UNKNOWN = LexerToken("VENTO_UNKNOWN")
+    val HTML = LexerToken("HTML")
+
+    @JvmField
+    val UNKNOWN = LexerToken("UNKNOWN")
 }

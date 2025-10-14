@@ -21,6 +21,8 @@ sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "Element: ${node.elementType}"
 }
 
+class DefaultElement(node: ASTNode) : BaseElementImpl(node)
+
 class ImportElement(node: ASTNode) : BaseElementImpl(node)
 
 class ExportElement(node: ASTNode) : BaseElementImpl(node)

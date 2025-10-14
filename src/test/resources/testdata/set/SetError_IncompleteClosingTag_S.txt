@@ -1,8 +1,8 @@
 Vento File(0,8)
-  Element: VENTO_VARIABLE_ELEMENT(0,8)
-    PsiElement(VENTO_VARIABLE_START_TOKEN)('{{')(0,2)
-    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)(' /')(2,4)
-    PsiElement(VENTO_VARIABLE_ELEMENT_TOKEN)('s }}')(4,8)
+  Element: VARIABLE_ELEMENT(0,8)
+    PsiElement(VARIABLE_START_TOKEN)('{{')(0,2)
+    PsiElement(VARIABLE_ELEMENT_TOKEN)(' /')(2,4)
+    PsiElement(VARIABLE_ELEMENT_TOKEN)('s }}')(4,8)
     PsiErrorElement:Unexpected variable content(8,8)
       <empty list>
     PsiErrorElement:Unexpected variable content(8,8)
