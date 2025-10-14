@@ -25,7 +25,7 @@ FOR_KEY = "for"
             return LexerTokens.FOR_KEY;
         }
 
-    [/]{FOR_KEY} { return LexerTokens.CLOSE_FOR_KEY; }
+    [/]{FOR_KEY} { return LexerTokens.FOR_CLOSE_KEY; }
 
     [/][f]?[o]?[r]? { return LexerTokens.UNKNOWN; }
 

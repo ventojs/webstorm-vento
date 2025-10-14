@@ -85,7 +85,7 @@ object LexerTokens {
     var FOR_END: IElementType = LexerToken("VENTO_FOR_END")
 
     @JvmField
-    var CLOSE_FOR_KEY: IElementType = LexerToken("VENTO_CLOSE_FOR_KEY")
+    var FOR_CLOSE_KEY: IElementType = LexerToken("VENTO_FOR_CLOSE_KEY")
 
     // Import tokens
     @JvmField

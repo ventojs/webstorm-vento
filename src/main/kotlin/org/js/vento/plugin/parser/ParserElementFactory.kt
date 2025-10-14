@@ -24,7 +24,7 @@ import org.js.vento.plugin.VentoElement
  * A factory to create PSI nodes from AST nodes, typically referenced
  * by your parser definition in createElement(node: ASTNode).
  */
-object PareserElementFactory {
+object ParserElementFactory {
     fun createElement(node: ASTNode): PsiElement =
         when (node.elementType) {
             ParserElements.UNKNOWN_ELEMENT -> VentoElement(node)
