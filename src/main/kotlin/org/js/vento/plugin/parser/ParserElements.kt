@@ -75,6 +75,12 @@ object ParserElements {
     @JvmField
     val SET_ELEMENT: IElementType = ParserElement("SET_ELEMENT")
 
+    @JvmField
+    val LAYOUT_ELEMENT: IElementType = ParserElement("LAYOUT_ELEMENT")
+
+    @JvmField
+    val LAYOUT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_CLOSE_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).

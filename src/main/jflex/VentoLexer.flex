@@ -81,6 +81,7 @@ EXPORT = "export"
 FUNCTION = "function"
 FROM = "from"
 SET = "set"
+LAYOUT = "layout"
 
 %{
   private int objectDepth = 0;
@@ -112,10 +113,25 @@ SET = "set"
 <BLOCK> {
     {WHITESPACE} { }
 
+    // TODO: there's a problem here
     {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
             yypushback(yylength()-2);
             closeType = LexerTokens.VARIABLE_END;
             return LexerTokens.VARIABLE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}[/]{LAYOUT} {
+            enter(LAYOUT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_CLOSE_END;
+            return LexerTokens.LAYOUT_CLOSE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}{LAYOUT} {
+            enter(LAYOUT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_END;
+            return LexerTokens.LAYOUT_START;
         }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
@@ -242,4 +258,29 @@ SET = "set"
 %include includes/tokens-new-pipe.flex
 %include includes/tokens-expression.flex
 %include includes/tokens-set.flex
+%include includes/tokens-layout.flex
+%include includes/tokens-file.flex
+
+<LAYOUT, NEW_FILE> {
+    {CBLOCK} {
+        yypushback(yylength());
+        leave();
+    }
+
+    {OBLOCK} {
+        yypushback(yylength());
+        leave();
+    }
+
+    <<EOF>> {
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
+
+    [^] {
+        yypushback(yylength());
+        leave();
+    }
+}
+
 

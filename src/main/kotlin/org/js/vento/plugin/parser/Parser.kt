@@ -15,7 +15,14 @@ import org.js.vento.plugin.lexer.LexerTokens.BRACKET
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPRESSION
+import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.IDENTIFIER
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.REGEX
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
@@ -26,6 +33,8 @@ import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SET_START
 import org.js.vento.plugin.lexer.LexerTokens.STRING
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
+import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.LAYOUT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_ELEMENT
 
@@ -79,6 +88,8 @@ class VentoParser : PsiParser {
             LexerTokens.EXPORT_START -> parseExport(builder)
             LexerTokens.EXPORT_CLOSE_START -> parseExportClose(builder)
             LexerTokens.EXPORT_FUNCTION_START -> parseExportFunction(builder)
+            LexerTokens.LAYOUT_START -> parseLayout(builder)
+            LexerTokens.LAYOUT_CLOSE_START -> parseLayoutClose(builder)
             SET_START -> parsSet(builder)
             SET_CLOSE_START -> parsSetClose(builder)
             else -> {
@@ -87,6 +98,23 @@ class VentoParser : PsiParser {
                 marker.done(ParserElements.DEFAULT_ELEMENT)
             }
         }
+    }
+
+    private fun parseLayout(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, LAYOUT_START, "Expected '{{' ")
+        expect(builder, LAYOUT_KEY, "Expected layout keyword")
+        expect(builder, FILE, "Expected filepath")
+        expect(builder, LAYOUT_END, "Expected '}}'")
+        m.done(LAYOUT_ELEMENT)
+    }
+
+    private fun parseLayoutClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, LAYOUT_CLOSE_START, "Expected '{{' ")
+        expect(builder, LAYOUT_CLOSE_KEY, "Expected /layout keyword")
+        expect(builder, LAYOUT_CLOSE_END, "Expected '}}'")
+        m.done(LAYOUT_CLOSE_ELEMENT)
     }
 
     private fun parsSetClose(builder: PsiBuilder) {

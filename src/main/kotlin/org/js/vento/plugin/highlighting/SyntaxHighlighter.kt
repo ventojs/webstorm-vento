@@ -38,6 +38,7 @@ import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VALUE
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VAR
+import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_COLLECTION
 import org.js.vento.plugin.lexer.LexerTokens.FOR_END
@@ -54,6 +55,12 @@ import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_END
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
@@ -114,6 +121,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 IDENTIFIER -> VALUES
                 IMPORT_END -> BLOCK
                 IMPORT_FILE -> STRING
+                FILE -> STRING
                 IMPORT_FROM -> KEY_WORD
                 IMPORT_KEY -> KEY_WORD
                 IMPORT_START -> BLOCK
@@ -134,6 +142,12 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 VARIABLE_ELEMENT -> VARIABLE
                 VARIABLE_END -> BLOCK
                 VARIABLE_START -> BLOCK
+                LAYOUT_START -> BLOCK
+                LAYOUT_END -> BLOCK
+                LAYOUT_KEY -> KEY_WORD
+                LAYOUT_CLOSE_START -> BLOCK
+                LAYOUT_CLOSE_END -> BLOCK
+                LAYOUT_CLOSE_KEY -> KEY_WORD
                 else -> null
             }
 
