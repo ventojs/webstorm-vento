@@ -82,6 +82,7 @@ FUNCTION = "function"
 FROM = "from"
 SET = "set"
 LAYOUT = "layout"
+SLOT = "slot"
 
 %{
   private int objectDepth = 0;
@@ -132,6 +133,20 @@ LAYOUT = "layout"
             yypushback(yylength()-2);
             closeType = LexerTokens.LAYOUT_END;
             return LexerTokens.LAYOUT_START;
+        }
+
+    {OBLOCK}{WHITESPACE}[/]{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_SLOT_CLOSE_END;
+            return LexerTokens.LAYOUT_SLOT_CLOSE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_SLOT_END;
+            return LexerTokens.LAYOUT_SLOT_START;
         }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
@@ -255,23 +270,14 @@ LAYOUT = "layout"
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
 // improved pipe implementation
-%include includes/tokens-new-pipe.flex
+%include includes/tokens-pipe.flex
 %include includes/tokens-expression.flex
 %include includes/tokens-set.flex
 %include includes/tokens-layout.flex
 %include includes/tokens-file.flex
+%include includes/tokens-objects.flex
 
-<LAYOUT, NEW_FILE> {
-    {CBLOCK} {
-        yypushback(yylength());
-        leave();
-    }
-
-    {OBLOCK} {
-        yypushback(yylength());
-        leave();
-    }
-
+<LAYOUT, SLOT, FILE, PIPE> {
     <<EOF>> {
             leave();
             return LexerTokens.UNKNOWN;
@@ -282,5 +288,4 @@ LAYOUT = "layout"
         leave();
     }
 }
-
 

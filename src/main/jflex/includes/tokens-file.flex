@@ -5,7 +5,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
 // BLOCK 2 - START
 
-%state NEW_FILE
+%state FILE
 
 
 
@@ -14,15 +14,14 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
 
 
-<NEW_FILE> {
+<FILE> {
 
     {WHITESPACE} {  }
 
-    [\"][.]?[/]?.*[\"] {
+    [\"][.]?[/]?.*[\"] / {WHITESPACE} {
             leave();
             return LexerTokens.FILE;
         }
-
 
 }
 

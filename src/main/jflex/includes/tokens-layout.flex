@@ -6,6 +6,9 @@ import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 2 - START
 
 %state LAYOUT
+%state SLOT
+
+SLOT = "layout"
 
 // BLOCK 2 - END
 %%
@@ -16,7 +19,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
     {WHITESPACE} {  }
 
     {LAYOUT} {
-            enter(NEW_FILE);
+            enter(FILE);
             return LexerTokens.LAYOUT_KEY;
         }
 
@@ -24,5 +27,57 @@ import org.js.vento.plugin.lexer.LexerTokens;
             leave();
             return LexerTokens.LAYOUT_CLOSE_KEY;
         }
+
+    \{ {
+            yypushback(yylength());
+            enter(OBJECT);
+        }
+
+    {PIPE} {
+            yypushback(yylength());
+            enter(PIPE);
+        }
+
+    {CBLOCK} {
+            yypushback(yylength());
+            leave();
+        }
+
+    {OBLOCK} {
+            yypushback(yylength());
+            leave();
+        }
+
+}
+
+
+<SLOT> {
+
+    {WHITESPACE} {  }
+
+    {SLOT} { return LexerTokens.LAYOUT_SLOT_KEY; }
+
+    {IDENT} { return LexerTokens.IDENTIFIER; }
+
+    [/]{SLOT}  {
+            leave();
+            return LexerTokens.LAYOUT_SLOT_CLOSE_KEY;
+        }
+
+    {PIPE} {
+            yypushback(yylength());
+            enter(PIPE);
+        }
+
+    {CBLOCK} {
+            yypushback(yylength());
+            leave();
+        }
+
+    {OBLOCK} {
+            yypushback(yylength());
+            leave();
+        }
+
 
 }

@@ -12,17 +12,31 @@ import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTokens
 import org.js.vento.plugin.lexer.LexerTokens.BRACKET
+import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
+import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_START
+import org.js.vento.plugin.lexer.LexerTokens.EXPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPRESSION
 import org.js.vento.plugin.lexer.LexerTokens.FILE
+import org.js.vento.plugin.lexer.LexerTokens.FOR_START
 import org.js.vento.plugin.lexer.LexerTokens.IDENTIFIER
+import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
+import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
+import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.REGEX
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
@@ -32,9 +46,13 @@ import org.js.vento.plugin.lexer.LexerTokens.SET_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SET_START
 import org.js.vento.plugin.lexer.LexerTokens.STRING
+import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
+import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_START
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.LAYOUT_SLOT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_ELEMENT
 
@@ -80,18 +98,21 @@ class VentoParser : PsiParser {
         val tokenType = builder.tokenType
         builder.setDebugMode(true)
         when (tokenType) {
-            LexerTokens.COMMENT_START, LexerTokens.TRIM_COMMENT_START -> parseCommentBlock(builder)
-            LexerTokens.JAVASCRIPT_START -> parseJavaScript(builder)
-            LexerTokens.VARIABLE_START -> parseVariable(builder)
-            LexerTokens.FOR_START -> parseFor(builder)
-            LexerTokens.IMPORT_START -> parseImport(builder)
-            LexerTokens.EXPORT_START -> parseExport(builder)
-            LexerTokens.EXPORT_CLOSE_START -> parseExportClose(builder)
-            LexerTokens.EXPORT_FUNCTION_START -> parseExportFunction(builder)
-            LexerTokens.LAYOUT_START -> parseLayout(builder)
-            LexerTokens.LAYOUT_CLOSE_START -> parseLayoutClose(builder)
+            COMMENT_START, TRIM_COMMENT_START -> parseCommentBlock(builder)
+            JAVASCRIPT_START -> parseJavaScript(builder)
+            VARIABLE_START -> parseVariable(builder)
+            FOR_START -> parseFor(builder)
+            IMPORT_START -> parseImport(builder)
+            EXPORT_START -> parseExport(builder)
+            EXPORT_CLOSE_START -> parseExportClose(builder)
+            EXPORT_FUNCTION_START -> parseExportFunction(builder)
+            LAYOUT_START -> parseLayout(builder)
+            LAYOUT_CLOSE_START -> parseLayoutClose(builder)
             SET_START -> parsSet(builder)
             SET_CLOSE_START -> parsSetClose(builder)
+//            STRING, REGEX, BRACKET, DOT, IDENTIFIER, EXPRESSION, UNKNOWN -> parseExpression(builder)
+            LAYOUT_SLOT_START -> parseSlot(builder)
+            LAYOUT_SLOT_CLOSE_START -> parseSlotClose(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
@@ -100,11 +121,31 @@ class VentoParser : PsiParser {
         }
     }
 
+    private fun parseSlotClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, LAYOUT_SLOT_CLOSE_START, "Expected '{{' ")
+        expect(builder, LAYOUT_SLOT_CLOSE_KEY, "Expected slot keyword")
+        expect(builder, LAYOUT_SLOT_CLOSE_END, "Expected '}}'")
+        m.done(LAYOUT_SLOT_CLOSE_ELEMENT)
+    }
+
+    private fun parseSlot(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, LAYOUT_SLOT_START, "Expected '{{' ")
+        expect(builder, LAYOUT_SLOT_KEY, "Expected slot keyword")
+        expect(builder, IDENTIFIER, "Expected identifier")
+        parsePipe(builder)
+        expect(builder, LAYOUT_SLOT_END, "Expected '}}'")
+        m.done(LAYOUT_SLOT_ELEMENT)
+    }
+
     private fun parseLayout(builder: PsiBuilder) {
         val m = builder.mark()
         expect(builder, LAYOUT_START, "Expected '{{' ")
         expect(builder, LAYOUT_KEY, "Expected layout keyword")
         expect(builder, FILE, "Expected filepath")
+        parsePipe(builder)
+        optional(builder, OBJECT, "Expected object literal", true)
         expect(builder, LAYOUT_END, "Expected '}}'")
         m.done(LAYOUT_ELEMENT)
     }
@@ -156,7 +197,7 @@ class VentoParser : PsiParser {
     private fun parseImport(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, LexerTokens.IMPORT_START, "Expected '{{' ")
+        expect(builder, IMPORT_START, "Expected '{{' ")
         expect(builder, LexerTokens.IMPORT_KEY, "Expected 'import' keyword")
         expect(builder, LexerTokens.IMPORT_VALUES, "Expected import values", true)
         expect(builder, LexerTokens.IMPORT_FROM, "Expected 'from' keyword")
@@ -169,7 +210,7 @@ class VentoParser : PsiParser {
     private fun parseExport(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, LexerTokens.EXPORT_START, "Expected '{{' ")
+        expect(builder, EXPORT_START, "Expected '{{' ")
         expect(builder, LexerTokens.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, LexerTokens.EXPORT_VAR, "Expected variable", true)
 
@@ -230,7 +271,7 @@ class VentoParser : PsiParser {
     private fun parseExportClose(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, LexerTokens.EXPORT_CLOSE_START, "Expected '{{/' ")
+        expect(builder, EXPORT_CLOSE_START, "Expected '{{/' ")
         expect(builder, LexerTokens.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
         expect(builder, LexerTokens.EXPORT_CLOSE_END, "Expected '}}' ")
 
@@ -240,7 +281,7 @@ class VentoParser : PsiParser {
     private fun parseExportFunction(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, LexerTokens.EXPORT_FUNCTION_START, "Expected '{{' ")
+        expect(builder, EXPORT_FUNCTION_START, "Expected '{{' ")
         expect(builder, LexerTokens.EXPORT_KEY, "Expected 'export' keyword")
         expect(builder, LexerTokens.EXPORT_FUNCTION_KEY, "Expected 'function' keyword")
         expect(builder, LexerTokens.EXPORT_VAR, "Expected function name")
@@ -310,7 +351,7 @@ class VentoParser : PsiParser {
     private fun parseJavaScript(builder: PsiBuilder) {
         val marker = builder.mark()
 
-        if (builder.tokenType == LexerTokens.JAVASCRIPT_START) {
+        if (builder.tokenType == JAVASCRIPT_START) {
             builder.advanceLexer()
         }
 
