@@ -19,6 +19,7 @@ import org.js.vento.plugin.ImportElement
 import org.js.vento.plugin.JavaScriptElement
 import org.js.vento.plugin.LayoutCloseElement
 import org.js.vento.plugin.LayoutElement
+import org.js.vento.plugin.ObjectElement
 import org.js.vento.plugin.SetCloseElement
 import org.js.vento.plugin.SetElement
 import org.js.vento.plugin.VariableElement
@@ -89,6 +90,9 @@ object ParserElements {
     @JvmField
     val LAYOUT_SLOT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_CLOSE_ELEMENT")
 
+    @JvmField
+    val OBJECT_ELEMENT: IElementType = ParserElement("OBJECT_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -110,6 +114,7 @@ object ParserElements {
                 SET_CLOSE_ELEMENT -> SetCloseElement(node)
                 LAYOUT_ELEMENT -> LayoutElement(node)
                 LAYOUT_CLOSE_ELEMENT -> LayoutCloseElement(node)
+                OBJECT_ELEMENT -> ObjectElement(node)
                 else -> DefaultElement(node)
             }
     }

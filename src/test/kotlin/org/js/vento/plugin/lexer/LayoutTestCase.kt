@@ -27,7 +27,7 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test layout with data`() {
         lexAndTest(
             """
-            {{ layout "myfile.vto" {name:"World"} }}
+            {{ layout "myfile.vto" {name:"\"World\""} }}
             <h1>Hello {{ name }}!</h1>
             {{ /layout }}
             """.trimIndent(),

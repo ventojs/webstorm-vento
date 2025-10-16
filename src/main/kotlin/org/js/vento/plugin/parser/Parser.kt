@@ -53,6 +53,7 @@ import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_SLOT_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.OBJECT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.SET_ELEMENT
 
@@ -113,12 +114,27 @@ class VentoParser : PsiParser {
 //            STRING, REGEX, BRACKET, DOT, IDENTIFIER, EXPRESSION, UNKNOWN -> parseExpression(builder)
             LAYOUT_SLOT_START -> parseSlot(builder)
             LAYOUT_SLOT_CLOSE_START -> parseSlotClose(builder)
+            OBJECT -> parseObject(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(ParserElements.DEFAULT_ELEMENT)
             }
         }
+    }
+
+    private fun parseObject(builder: PsiBuilder) {
+        val m = builder.mark()
+        while (
+            !builder.eof() &&
+            (
+                builder.tokenType == OBJECT ||
+                    builder.tokenType == STRING
+            )
+        ) {
+            builder.advanceLexer()
+        }
+        m.done(OBJECT_ELEMENT)
     }
 
     private fun parseSlotClose(builder: PsiBuilder) {
@@ -145,7 +161,9 @@ class VentoParser : PsiParser {
         expect(builder, LAYOUT_KEY, "Expected layout keyword")
         expect(builder, FILE, "Expected filepath")
         parsePipe(builder)
-        optional(builder, OBJECT, "Expected object literal", true)
+        if (builder.tokenType == OBJECT) {
+            parseObject(builder)
+        }
         expect(builder, LAYOUT_END, "Expected '}}'")
         m.done(LAYOUT_ELEMENT)
     }

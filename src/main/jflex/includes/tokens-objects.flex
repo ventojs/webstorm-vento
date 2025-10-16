@@ -26,8 +26,8 @@ import org.js.vento.plugin.lexer.LexerTokens;
         }
 
     \" {
-          enter(OBJECT_STRING);
-          return LexerTokens.OBJECT;
+          yypushback(yylength());
+          enter(STRING);
       }
 
 }

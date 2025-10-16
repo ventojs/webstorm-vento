@@ -92,6 +92,29 @@ SLOT = "slot"
 
 %}
 
+%{
+  // Accumulator for template chunks
+  private final StringBuilder sb = new StringBuilder();
+
+  // Brace depth for nested blocks inside ${ ... }
+  private int tplBraceDepth = 0;
+
+  // --- IntelliJ skeleton fields (populated by generated code) ---
+  /** The token start offset (generated skeleton uses zzStartRead). */
+  private int tokenStart = 0;
+  /** The token end offset (generated skeleton uses zzMarkedPos). */
+  private int tokenEnd = 0;
+  /** Current token type — the skeleton expects us to return it from actions. */
+  private IElementType myTokenType;
+
+  public IElementType getTokenType() { return myTokenType; }
+
+
+
+  // Small helpers so actions read nicer
+  private IElementType t(IElementType tt) { myTokenType = tt; return tt; }
+%}
+
 %%
 
 <YYINITIAL> {
@@ -276,6 +299,7 @@ SLOT = "slot"
 %include includes/tokens-layout.flex
 %include includes/tokens-file.flex
 %include includes/tokens-objects.flex
+%include includes/tokens-string.flex
 
 <LAYOUT, SLOT, FILE, PIPE> {
     <<EOF>> {

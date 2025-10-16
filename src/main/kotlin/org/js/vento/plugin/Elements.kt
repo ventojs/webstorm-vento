@@ -43,6 +43,8 @@ class LayoutElement(node: ASTNode) : BaseElementImpl(node)
 
 class LayoutCloseElement(node: ASTNode) : BaseElementImpl(node)
 
+class ObjectElement(node: ASTNode) : BaseElementImpl(node)
+
 /**
  * Represents a PSI element for JavaScript blocks in Vento templates.
  * This class is a specific implementation of `VentoPsiElementImpl` and implements

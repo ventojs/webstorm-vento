@@ -60,7 +60,14 @@ import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_START
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_END
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
+import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
@@ -148,6 +155,13 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 LAYOUT_CLOSE_START -> BLOCK
                 LAYOUT_CLOSE_END -> BLOCK
                 LAYOUT_CLOSE_KEY -> KEY_WORD
+                LAYOUT_SLOT_START -> BLOCK
+                LAYOUT_SLOT_END -> BLOCK
+                LAYOUT_SLOT_KEY -> KEY_WORD
+                LAYOUT_SLOT_CLOSE_START -> BLOCK
+                LAYOUT_SLOT_CLOSE_END -> BLOCK
+                LAYOUT_SLOT_CLOSE_KEY -> KEY_WORD
+                OBJECT -> VALUES
                 else -> null
             }
 

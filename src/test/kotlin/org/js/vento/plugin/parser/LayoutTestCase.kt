@@ -21,7 +21,7 @@ class LayoutTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     /**
      * Tests parsing of a valid set block that captures content between opening and closing tags.
      */
-    fun testSetBlockWithContent() {
+    fun testLayoutWithContent() {
         val code =
             """
             {{ layout "section.vto" {department: "Marketing"} }}
@@ -30,6 +30,21 @@ class LayoutTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
              {{ /slot }}
              <p>Content of the section</p>
              {{ /layout }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    /**
+     * Tests parsing of a valid set block that captures content between opening and closing tags.
+     */
+    fun testLayoutWithProblem() {
+        val code =
+            """
+            {{ layout "section.vto" {name:"true"} }}
+                <p>Content of the section</p>
+            {{ /layout }}
+
+            {{ layout "myfile.vto" }}
             """.trimIndent()
         doCodeTest(code)
     }
