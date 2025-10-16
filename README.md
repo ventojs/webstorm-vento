@@ -62,6 +62,12 @@ The rest of the features are still under development. (see: [backlog](https://gi
 
 ![vento-syntax-highlighting](docs/assets/import.png)
 
+#### Vento `set`
+![vento-syntax-highlighting](docs/assets/set.png)
+
+#### Vento `layout` & `slot`
+![vento-syntax-highlighting](docs/assets/layout2.png)
+
 > [!IMPORTANT]
 > ### Note to plugin users
 >
