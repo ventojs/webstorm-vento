@@ -172,6 +172,13 @@ SLOT = "slot"
             return LexerTokens.LAYOUT_SLOT_START;
         }
 
+    {OBLOCK}-{WHITESPACE}{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-3);
+            closeType = LexerTokens.LAYOUT_SLOT_END;
+            return LexerTokens.LAYOUT_SLOT_START;
+        }
+
     {OBLOCK}{WHITESPACE}{IMPORT} {
             yybegin(IMPORT);
             yypushback(yylength()-2);
