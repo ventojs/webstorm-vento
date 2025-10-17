@@ -41,21 +41,21 @@ class ColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
-        Comments:
+        comments:
           {{# This is a sample web page #}}
           {{#- trimmed comment -#}}
 
-        Variable Block:
+        variable:
           {{ username || "unknown" }}
           {{ "Hello World!" |> toUpperCase }}
 
-        Vento Blocks:
+        for:
           {{ for value of collection |> toUpperCase}}
 
-        Vento import:
+        import:
           {{ import { component } from "path/to/file.vto" }}
 
-        Vento export:
+        export:
           {{ export message = "Hello World!" }}
 
           {{ export message }}
@@ -66,8 +66,16 @@ class ColorSettingsPage : ColorSettingsPage {
           <h1>Hello {{ name }}!</h1>
           {{ /export }}
 
-        Vento Set:
+        Set:
           {{ set message = "Hello World!" }}
+
+        layout:
+          {{ layout "section.vto" {department: "Marketing"} }}
+            {{ slot header |> toUpperCase }}
+              <h1>Section title</h1>
+            {{ /slot }}
+            <p>Content of the section</p>
+          {{ /layout }}
 
         Javascript:
           {{> console.log('Hello World') }}

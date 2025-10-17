@@ -7,7 +7,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
 %state IMPORT
 %state VALUES
-%state FILE
+%state OLD_FILE
 
 IMPORT = "import"
 FROM = "from"
@@ -25,7 +25,7 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
         }
 
     {FROM} {
-            yybegin(FILE);
+            yybegin(OLD_FILE);
             return LexerTokens.IMPORT_FROM;
         }
 
@@ -36,7 +36,7 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
 
     [^] {
         yypushback(yylength());
-        yybegin(FILE);
+        yybegin(OLD_FILE);
     }
 }
 
@@ -73,7 +73,7 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
 
 }
 
-<FILE> {
+<OLD_FILE> {
     {WHITESPACE} {  }
 
     [\"][.]?[/]?.*[\"] / {WHITESPACE}{CBLOCK} {

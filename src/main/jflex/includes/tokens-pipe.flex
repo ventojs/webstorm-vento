@@ -8,10 +8,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state PIPE
 
 
-FUNC_PARAM = "(".*")"
-
-REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
-
 // BLOCK 2 - END
 %%
 
@@ -20,29 +16,15 @@ REGEX = [\!]?\/.+\/({OWS}\.{IDENT}{OWS}{FUNC_PARAM})*
 
     {WHITESPACE} {  }
 
-    {PIPE} / .*{CBLOCK} { return LexerTokens.PIPE; }
-
-    {IDENT} { return LexerTokens.VARIABLE_ELEMENT; }
-
-    {FUNC_PARAM} { return LexerTokens.VARIABLE_ELEMENT; }
-
-    \. { return LexerTokens.VARIABLE_ELEMENT; }
-
-    {REGEX} { return LexerTokens.VARIABLE_ELEMENT; }
-
-    {STRING} { return LexerTokens.STRING; }
+    {PIPE} / .*{CBLOCK} {
+                enter(EXPRESSION);
+                return LexerTokens.PIPE;
+            }
 
     {CBLOCK} {
         yypushback(yylength());
         leave();
     }
-
-    <<EOF>> {
-            yybegin(YYINITIAL);
-            return LexerTokens.UNKNOWN;
-        }
-
-    [^] { return LexerTokens.UNKNOWN; }
 }
 
 

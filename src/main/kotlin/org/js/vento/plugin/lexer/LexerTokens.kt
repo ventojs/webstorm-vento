@@ -152,6 +152,43 @@ object LexerTokens {
     @JvmField
     val SET_START = LexerToken("SET_START")
 
+    // layout tokens
+    @JvmField
+    val LAYOUT_START = LexerToken("LAYOUT_START")
+
+    @JvmField
+    val LAYOUT_CLOSE_START = LexerToken("LAYOUT_CLOSE_START")
+
+    @JvmField
+    val LAYOUT_KEY = LexerToken("LAYOUT_KEY")
+
+    @JvmField
+    val LAYOUT_CLOSE_KEY = LexerToken("LAYOUT_CLOSE_KEY")
+
+    @JvmField
+    val LAYOUT_CLOSE_END = LexerToken("LAYOUT_CLOSE_END")
+
+    @JvmField
+    val LAYOUT_END = LexerToken("LAYOUT_END")
+
+    @JvmField
+    val LAYOUT_SLOT_START = LexerToken("LAYOUT_SLOT_START")
+
+    @JvmField
+    val LAYOUT_SLOT_END = LexerToken("LAYOUT_SLOT_END")
+
+    @JvmField
+    val LAYOUT_SLOT_CLOSE_START = LexerToken("LAYOUT_SLOT_CLOSE_START")
+
+    @JvmField
+    val LAYOUT_SLOT_CLOSE_END = LexerToken("LAYOUT_SLOT_CLOSE_END")
+
+    @JvmField
+    val LAYOUT_SLOT_KEY = LexerToken("LAYOUT_SLOT_KEY")
+
+    @JvmField
+    val LAYOUT_SLOT_CLOSE_KEY = LexerToken("LAYOUT_SLOT_CLOSE")
+
     // General tokens
     @JvmField
     val BRACKET = LexerToken("BRACKET")
@@ -185,4 +222,10 @@ object LexerTokens {
 
     @JvmField
     val UNKNOWN = LexerToken("UNKNOWN")
+
+    @JvmField
+    val FILE = LexerToken("FILE")
+
+    @JvmField
+    val OBJECT = LexerToken("OBJECT")
 }

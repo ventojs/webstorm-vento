@@ -53,7 +53,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {PIPE} {
         yypushback(yylength());
-        enter(NEW_PIPE);
+        enter(PIPE);
     }
 
     {CBLOCK} {
@@ -79,7 +79,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {PIPE} {
         yypushback(yylength());
-        enter(NEW_PIPE);
+        enter(PIPE);
     }
 
     {CBLOCK} {

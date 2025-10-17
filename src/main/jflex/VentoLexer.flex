@@ -81,6 +81,8 @@ EXPORT = "export"
 FUNCTION = "function"
 FROM = "from"
 SET = "set"
+LAYOUT = "layout"
+SLOT = "slot"
 
 %{
   private int objectDepth = 0;
@@ -88,6 +90,29 @@ SET = "set"
   private boolean collection = false;
   private IElementType closeType = null;
 
+%}
+
+%{
+  // Accumulator for template chunks
+  private final StringBuilder sb = new StringBuilder();
+
+  // Brace depth for nested blocks inside ${ ... }
+  private int tplBraceDepth = 0;
+
+  // --- IntelliJ skeleton fields (populated by generated code) ---
+  /** The token start offset (generated skeleton uses zzStartRead). */
+  private int tokenStart = 0;
+  /** The token end offset (generated skeleton uses zzMarkedPos). */
+  private int tokenEnd = 0;
+  /** Current token type — the skeleton expects us to return it from actions. */
+  private IElementType myTokenType;
+
+  public IElementType getTokenType() { return myTokenType; }
+
+
+
+  // Small helpers so actions read nicer
+  private IElementType t(IElementType tt) { myTokenType = tt; return tt; }
 %}
 
 %%
@@ -112,10 +137,46 @@ SET = "set"
 <BLOCK> {
     {WHITESPACE} { }
 
+    // TODO: there's a problem here
     {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
             yypushback(yylength()-2);
             closeType = LexerTokens.VARIABLE_END;
             return LexerTokens.VARIABLE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}[/]{LAYOUT} {
+            enter(LAYOUT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_CLOSE_END;
+            return LexerTokens.LAYOUT_CLOSE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}{LAYOUT} {
+            enter(LAYOUT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_END;
+            return LexerTokens.LAYOUT_START;
+        }
+
+    {OBLOCK}{WHITESPACE}[/]{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_SLOT_CLOSE_END;
+            return LexerTokens.LAYOUT_SLOT_CLOSE_START;
+        }
+
+    {OBLOCK}{WHITESPACE}{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.LAYOUT_SLOT_END;
+            return LexerTokens.LAYOUT_SLOT_START;
+        }
+
+    {OBLOCK}-{WHITESPACE}{SLOT} {
+            enter(SLOT);
+            yypushback(yylength()-3);
+            closeType = LexerTokens.LAYOUT_SLOT_END;
+            return LexerTokens.LAYOUT_SLOT_START;
         }
 
     {OBLOCK}{WHITESPACE}{IMPORT} {
@@ -167,7 +228,7 @@ SET = "set"
             return LexerTokens.EXPORT_CLOSE_START;
         }
 
-    {CBLOCK} {
+    -?{CBLOCK} {
             yybegin(YYINITIAL);
             IElementType ct = closeType;
             closeType = null;
@@ -239,7 +300,23 @@ SET = "set"
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
 // improved pipe implementation
-%include includes/tokens-new-pipe.flex
+%include includes/tokens-pipe.flex
 %include includes/tokens-expression.flex
 %include includes/tokens-set.flex
+%include includes/tokens-layout.flex
+%include includes/tokens-file.flex
+%include includes/tokens-objects.flex
+%include includes/tokens-string.flex
+
+<LAYOUT, SLOT, FILE, PIPE> {
+    <<EOF>> {
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
+
+    [^] {
+        yypushback(yylength());
+        leave();
+    }
+}
 
