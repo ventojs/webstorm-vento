@@ -68,6 +68,8 @@ The rest of the features are still under development. (see: [backlog](https://gi
 #### Vento `layout` & `slot`
 ![vento-syntax-highlighting](docs/assets/layout2.png)
 
+#### Vento `include`
+
 > [!IMPORTANT]
 > ### Note to plugin users
 >
