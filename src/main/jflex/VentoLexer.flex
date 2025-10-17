@@ -137,6 +137,13 @@ SLOT = "slot"
 <BLOCK> {
     {WHITESPACE} { }
 
+    {OBLOCK}{WHITESPACE}{INCLUDE} {
+            enter(INCLUDE);
+            yypushback(yylength()-2);
+            closeType = LexerTokens.INCLUDE_END;
+            return LexerTokens.INCLUDE_START;
+        }
+
     // TODO: there's a problem here
     {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
             yypushback(yylength()-2);
@@ -299,16 +306,15 @@ SLOT = "slot"
 %include includes/tokens-import.flex
 %include includes/tokens-export.flex
 %include includes/tokens-pipe.flex
-// improved pipe implementation
-%include includes/tokens-pipe.flex
 %include includes/tokens-expression.flex
 %include includes/tokens-set.flex
 %include includes/tokens-layout.flex
 %include includes/tokens-file.flex
 %include includes/tokens-objects.flex
 %include includes/tokens-string.flex
+%include includes/tokens-include.flex
 
-<LAYOUT, SLOT, FILE, PIPE> {
+<LAYOUT, SLOT, FILE, PIPE, INCLUDE> {
     <<EOF>> {
             leave();
             return LexerTokens.UNKNOWN;
