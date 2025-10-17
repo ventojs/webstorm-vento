@@ -38,7 +38,7 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
                 "{",
                 "name:",
                 "\"",
-                "World",
+                "\\\"World\\\"",
                 "\"",
                 "}",
                 "}}",
@@ -58,9 +58,9 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
         lexAndTest(
             """
             {{ layout "section.vto" }}
-            {{ slot header |> toUpperCase }}
+            {{- slot header |> toUpperCase }}
             <h1>Section title</h1>
-            {{ /slot }}
+            {{ /slot -}}
             <p>Content of the section</p>
             {{ /layout }}
             """.trimIndent(),
@@ -70,7 +70,7 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
                 "\"section.vto\"",
                 "}}",
                 "\n",
-                "{{",
+                "{{-",
                 "slot",
                 "header",
                 "|>",
@@ -79,7 +79,7 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
                 "\n<h1>Section title</h1>\n",
                 "{{",
                 "/slot",
-                "}}",
+                "-}}",
                 "\n<p>Content of the section</p>\n",
                 "{{",
                 "/layout",

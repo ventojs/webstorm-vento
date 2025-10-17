@@ -43,7 +43,7 @@ SLOT = "layout"
             leave();
         }
 
-    {OBLOCK} {
+    {OBLOCK}-? {
             yypushback(yylength());
             leave();
         }
@@ -69,7 +69,7 @@ SLOT = "layout"
             enter(PIPE);
         }
 
-    {CBLOCK} {
+    -?{CBLOCK} {
             yypushback(yylength());
             leave();
         }

@@ -25,10 +25,10 @@ class LayoutTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         val code =
             """
             {{ layout "section.vto" {department: "Marketing"} }}
-             {{ slot header |> toUpperCase }}
-             <h1>Section title</h1>
-             {{ /slot }}
-             <p>Content of the section</p>
+             {{- slot header |> toUpperCase }}
+                <h1>Section title</h1>
+             {{ /slot -}}
+                <p>Content of the section</p>
              {{ /layout }}
             """.trimIndent()
         doCodeTest(code)

@@ -221,7 +221,7 @@ SLOT = "slot"
             return LexerTokens.EXPORT_CLOSE_START;
         }
 
-    {CBLOCK} {
+    -?{CBLOCK} {
             yybegin(YYINITIAL);
             IElementType ct = closeType;
             closeType = null;
