@@ -354,16 +354,17 @@ state grLayout {
     layout --> layoutexp
     layoutexp --> data
 }
-    slot --> slotName
     data --> close7
     layoutexp --> close7
 
     open7 --> clayout
     clayout --> close7
 grSlot: Slot
-state slotName {
+state grSlot {
     state "/slot" as cslot
     state "slot" as slot
+    slot --> slotName
+
 
  }
     open7 --> slot
@@ -372,7 +373,6 @@ state slotName {
 
 
     slotName --> close7
-    slot --> close7
 
     open7 --> cslot
     cslot --> close7
