@@ -29,7 +29,8 @@ state "{{" as open1
 state "}}" as close1
     open1 --> ohash
 
-state "Comment" as grComment {
+grComment: Comment
+state  grComment {
     ocdash --> comment
     comment --> ccdash
 
@@ -75,12 +76,18 @@ stateDiagram-v2
     odash2 --> vawait
     vawait --> expression
 
-state "Variable" as grVariable {
+grVariable: Variable
+state  grVariable {
     state "[js expression]" as expression
     state "await" as vawait
+}
+
+grEcho: Echo
+state  grEcho{
     state "echo" as echo
     state "/echo" as cecho
-}
+
+ }
     expression --> pipe
 
 
@@ -124,7 +131,8 @@ stateDiagram-v2
     state "{{" as open3
     state "}}" as close3
     open3 --> gt
-state "JavaScript" as grJavaScript {
+    grJavaScript: Javascript
+state  grJavaScript {
 state ">" as gt
     gt --> js
 }
@@ -164,7 +172,8 @@ stateDiagram-v2
 state "{{" as open8
 state "}}" as close8
     open8 --> set
-state "Set" as grSet {
+grSet : Set
+state grSet {
     state "/set" as cset
     set --> equals
     equals --> setexp
@@ -208,8 +217,8 @@ stateDiagram-v2
 state "{{" as open9
 state "}}" as close9
     open9 --> for
-
-state "For" as grFor {
+grFor: For
+state grFor {
     state "/for" as cfor
     for --> await
     await --> forValue
@@ -252,7 +261,8 @@ stateDiagram-v2
     state "{{" as open6
     state "}}" as close6
     open6 --> if
-state "If" as grIf {
+grIf: If
+state grIf {
     state "if" as if
     state "else" as else
     state "else if" as elseif
@@ -299,7 +309,8 @@ stateDiagram-v2
 %% include
 
     open --> include
-state "Include" as grInclude {
+    grInclude: Include
+state  grInclude {
     include --> includeexp
     includeexp --> data
     }
@@ -337,7 +348,8 @@ stateDiagram-v2
     state "-" as odash7
     state "-" as cdash7
     open7 --> layout
-state "Layout" as grLayout {
+    grLayout: Layout
+state grLayout {
     state "/layout" as clayout
     layout --> layoutexp
     layoutexp --> data
@@ -348,8 +360,8 @@ state "Layout" as grLayout {
 
     open7 --> clayout
     clayout --> close7
-
-state "Slot" as slotName {
+grSlot: Slot
+state slotName {
     state "/slot" as cslot
     state "slot" as slot
 
@@ -393,7 +405,8 @@ stateDiagram-v2
 %% function
     open --> function
     open --> async
-state "Function" as grFunction {
+    grFunction: Function
+state grFunction {
     state "/function" as cfunction
     async --> function
     function --> functionSignature
@@ -438,13 +451,14 @@ state "{{" as open5
 state "}}" as close5
 
     open5 --> export
-state "Export" as grExport {
-    state "/export" as cexport
-    export --> identifier
-    identifier --> equals
-    equals --> exportexp
-    export --> exportfunction
-    exportfunction --> exportfunctionSignature
+    grExport: Export
+    state  grExport {
+        state "/export" as cexport
+        export --> identifier
+        identifier --> equals
+        equals --> exportexp
+        export --> exportfunction
+        exportfunction --> exportfunctionSignature
     }
     exportexp --> pipe
     pipe --> pipeExpression
@@ -489,7 +503,8 @@ stateDiagram-v2
 state "{{" as open4
 state "}}" as close4
     open4 --> import
-state "Import" as grImport {
+    grImport: Import
+state grImport {
     import --> destructimport
     destructimport --> from
     import --> defaultimport
