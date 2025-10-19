@@ -2,6 +2,212 @@
 
 This is a model of the Vento state machine. It's intended for plugin development purposes only.
 
+## Lexing Algorithm
+```mermaid
+stateDiagram-v2
+    direction LR
+
+    classDef highlight fill:#f00,color:white,font-weight:bold,stroke-width:2px,stroke:yellow
+
+    keyword:Keyword
+    state keyword {
+        direction LR
+
+        class echo highlight;
+
+        state "echo" as echo
+        state "function" as function
+        state "import" as import
+        state "export" as export
+        state "layout" as layout
+        state "include" as include
+        state "set" as set
+        state "slot" as slot
+        state "for" as for
+        state "if" as if
+        state "else" as else
+        state "else if" as elseif
+        state "statement" as statement0
+
+
+
+        state "data" as data
+        state "pipe" as pipe
+        state "-" as otrim
+        state "expression" as kexp0
+        state "=" as eq1
+        state "=" as eq2
+        state "expression" as exp0
+        state "symbol" as symbol
+        state "symbol" as symbol2
+        state "symbol" as symbol1
+
+        [*] --> echo
+        [*] --> otrim
+        otrim --> echo
+
+        otrim --> slot
+        [*] --> slot
+        slot --> symbol2
+        symbol2 --> [*]
+        symbol2 --> data
+        data-->[*]
+
+        [*] --> layout
+        layout --> file
+        [*] --> include
+        include --> file
+
+        file --> [*]
+        data --> pipe
+        file --> data
+        file --> pipe
+
+
+        [*] --> function
+        function --> statement0
+        [*] --> import
+        import --> statement0
+
+        [*] --> for
+        for --> value
+        value --> of
+        of --> collection
+        echo --> [*]
+        statement0 --> [*]
+
+        [*] --> set
+        set --> symbol1
+
+        symbol1 --> eq1
+        eq1 --> kexp0
+
+        kexp0 --> pipe
+        collection --> pipe
+
+        collection -->[*]
+        kexp0 --> [*]
+
+
+        [*] --> export
+        export --> symbol
+        symbol --> eq2
+        eq2 --> kexp0
+
+        exp0 --> [*]
+
+        [*] --> if
+        if --> exp0
+        [*] --> elseif
+        elseif --> exp0
+        [*] --> else
+        else --> [*]
+
+        pipe --> [*]
+
+
+
+}
+
+
+    ckeyword: Closing Keyword
+    state ckeyword {
+        direction LR
+        state "/echo" as cecho
+        state "/function" as cfunction
+        state "/export" as cexport
+        state "/layout" as clayout
+        state "/slot" as cslot
+        state "/for" as cfor
+        state "/if" as cif
+        state "-" as cktrim
+        [*] --> cecho
+        [*] --> cslot
+        [*] --> cfunction
+        [*] --> cexport
+        [*] --> clayout
+        [*] --> cfor
+        [*] --> cif
+        cecho --> cktrim
+        cslot --> cktrim
+        cecho --> [*]
+        cktrim --> [*]
+        cslot --> [*]
+        cfunction --> [*]
+        cexport --> [*]
+        clayout --> [*]
+        cfor --> [*]
+        cif --> [*]
+    }
+
+
+    nokeyword: No Keyword
+    state nokeyword {
+        direction LR
+        state "expression" as exp
+        state "expression" as exp1
+        state "expression" as exp2
+        state "expression" as exp3
+        state "javascript" as js
+        state ">" as mjs
+        state "-" as ontrim
+        state "-" as cntrim
+        [*] --> exp
+        [*] --> exp3
+        [*] --> mjs
+        [*] --> ontrim
+        ontrim --> exp1
+        ontrim --> exp2
+        exp1 --> cntrim
+        exp3 --> cntrim
+        exp --> [*]
+        exp2 --> [*]
+        cntrim --> [*]
+        js --> [*]
+        mjs --> js
+    }
+
+    comment:Comment
+    state comment {
+        direction LR
+        state "#" as oc
+        state "#-" as oct
+        state "#" as cc
+        state "-#" as ct
+        state "comment" as comment1
+
+        [*] --> oc
+        [*] --> oct
+        oc --> comment1
+        oct --> comment1
+        comment1 --> cc
+        comment1 --> ct
+        cc --> [*]
+        ct --> [*]
+    }
+
+    state "{{" as open
+    state "}}" as close
+
+    open --> keyword
+    keyword --> close
+
+    open --> nokeyword
+    nokeyword --> close
+
+    open --> ckeyword
+    ckeyword --> close
+
+    open --> comment
+    comment --> close
+
+
+```
+
+
+
+
+
 ## State Diagram
 ```mermaid
 ---
