@@ -63,10 +63,10 @@ stateDiagram-v2
         [*] --> include
         include --> file
 
-        file --> [*]
-        data --> pipe
         file --> data
         file --> pipe
+        file --> [*]
+        data --> pipe
 
 
         [*] --> import
@@ -77,21 +77,18 @@ stateDiagram-v2
         [*] --> for
         for --> value
         value --> of
-        of --> collection
+        of --> kexp0
         echo --> [*]
         statement0 --> [*]
 
         [*] --> set
         set --> symbol1
-
         symbol1 --> eq1
         eq1 --> kexp0
 
-        kexp0 --> pipe
-        collection --> pipe
-
-        collection -->[*]
         kexp0 --> [*]
+        kexp0 --> pipe0
+        pipe0 --> [*]
 
 
         [*] --> export
@@ -209,28 +206,28 @@ stateDiagram-v2
     open --> comment
     comment --> close
 
-    style echo stroke:#000000,fill:#FF6D00,color:#000000
-    style function stroke:#000000,fill:#FF6D00,color:#000000
-    style import stroke:#000000,fill:#FF6D00,color:#000000
-    style from stroke:#000000,fill:#FF6D00,color:#000000
-    style export stroke:#000000,fill:#FF6D00,color:#000000
-    style layout stroke:#000000,fill:#FF6D00,color:#000000
-    style include stroke:#000000,fill:#FF6D00,color:#000000
-    style set stroke:#000000,fill:#FF6D00,color:#000000
-    style slot stroke:#000000,fill:#FF6D00,color:#000000
-    style for stroke:#000000,fill:#FF6D00,color:#000000
-    style of stroke:#000000,fill:#FF6D00,color:#000000
-    style if stroke:#000000,fill:#FF6D00,color:#000000
-    style else stroke:#000000,fill:#FF6D00,color:#000000
-    style elseif stroke:#000000,fill:#FF6D00,color:#000000
-
-    style cecho stroke:#000000,fill:#FF6D00,color:#000000
-    style cfunction stroke:#000000,fill:#FF6D00,color:#000000
-    style cexport stroke:#000000,fill:#FF6D00,color:#000000
-    style clayout stroke:#000000,fill:#FF6D00,color:#000000
-    style cslot stroke:#000000,fill:#FF6D00,color:#000000
-    style cfor stroke:#000000,fill:#FF6D00,color:#000000
-    style cif stroke:#000000,fill:#FF6D00,color:#000000
+%%    style echo stroke:#000000,fill:#FF6D00,color:#000000
+%%    style function stroke:#000000,fill:#FF6D00,color:#000000
+%%    style import stroke:#000000,fill:#FF6D00,color:#000000
+%%    style from stroke:#000000,fill:#FF6D00,color:#000000
+%%    style export stroke:#000000,fill:#FF6D00,color:#000000
+%%    style layout stroke:#000000,fill:#FF6D00,color:#000000
+%%    style include stroke:#000000,fill:#FF6D00,color:#000000
+%%    style set stroke:#000000,fill:#FF6D00,color:#000000
+%%    style slot stroke:#000000,fill:#FF6D00,color:#000000
+%%    style for stroke:#000000,fill:#FF6D00,color:#000000
+%%    style of stroke:#000000,fill:#FF6D00,color:#000000
+%%    style if stroke:#000000,fill:#FF6D00,color:#000000
+%%    style else stroke:#000000,fill:#FF6D00,color:#000000
+%%    style elseif stroke:#000000,fill:#FF6D00,color:#000000
+%%
+%%    style cecho stroke:#000000,fill:#FF6D00,color:#000000
+%%    style cfunction stroke:#000000,fill:#FF6D00,color:#000000
+%%    style cexport stroke:#000000,fill:#FF6D00,color:#000000
+%%    style clayout stroke:#000000,fill:#FF6D00,color:#000000
+%%    style cslot stroke:#000000,fill:#FF6D00,color:#000000
+%%    style cfor stroke:#000000,fill:#FF6D00,color:#000000
+%%    style cif stroke:#000000,fill:#FF6D00,color:#000000
 
 ```
 
