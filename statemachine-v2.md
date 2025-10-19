@@ -32,7 +32,7 @@ stateDiagram-v2
         state "if" as if
         state "else" as else
         state "else if" as elseif
-        state "statement" as statement0
+        state "signature" as statement0
 
 
 
@@ -69,10 +69,10 @@ stateDiagram-v2
         file --> pipe
 
 
-        [*] --> function
-        function --> statement0
         [*] --> import
-        import --> statement0
+        import --> symbols
+        symbols --> from
+        from --> file
 
         [*] --> for
         for --> value
@@ -96,8 +96,12 @@ stateDiagram-v2
 
         [*] --> export
         export --> symbol
+        export --> function
         symbol --> eq2
         eq2 --> kexp0
+
+        [*] --> function
+        function --> statement0
 
         exp0 --> [*]
 
@@ -208,12 +212,14 @@ stateDiagram-v2
     style echo stroke:#000000,fill:#FF6D00,color:#000000
     style function stroke:#000000,fill:#FF6D00,color:#000000
     style import stroke:#000000,fill:#FF6D00,color:#000000
+    style from stroke:#000000,fill:#FF6D00,color:#000000
     style export stroke:#000000,fill:#FF6D00,color:#000000
     style layout stroke:#000000,fill:#FF6D00,color:#000000
     style include stroke:#000000,fill:#FF6D00,color:#000000
     style set stroke:#000000,fill:#FF6D00,color:#000000
     style slot stroke:#000000,fill:#FF6D00,color:#000000
     style for stroke:#000000,fill:#FF6D00,color:#000000
+    style of stroke:#000000,fill:#FF6D00,color:#000000
     style if stroke:#000000,fill:#FF6D00,color:#000000
     style else stroke:#000000,fill:#FF6D00,color:#000000
     style elseif stroke:#000000,fill:#FF6D00,color:#000000
