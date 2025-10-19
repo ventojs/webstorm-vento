@@ -206,28 +206,28 @@ stateDiagram-v2
     open --> comment
     comment --> close
 
-%%    style echo stroke:#000000,fill:#FF6D00,color:#000000
-%%    style function stroke:#000000,fill:#FF6D00,color:#000000
-%%    style import stroke:#000000,fill:#FF6D00,color:#000000
-%%    style from stroke:#000000,fill:#FF6D00,color:#000000
-%%    style export stroke:#000000,fill:#FF6D00,color:#000000
-%%    style layout stroke:#000000,fill:#FF6D00,color:#000000
-%%    style include stroke:#000000,fill:#FF6D00,color:#000000
-%%    style set stroke:#000000,fill:#FF6D00,color:#000000
-%%    style slot stroke:#000000,fill:#FF6D00,color:#000000
-%%    style for stroke:#000000,fill:#FF6D00,color:#000000
-%%    style of stroke:#000000,fill:#FF6D00,color:#000000
-%%    style if stroke:#000000,fill:#FF6D00,color:#000000
-%%    style else stroke:#000000,fill:#FF6D00,color:#000000
-%%    style elseif stroke:#000000,fill:#FF6D00,color:#000000
-%%
-%%    style cecho stroke:#000000,fill:#FF6D00,color:#000000
-%%    style cfunction stroke:#000000,fill:#FF6D00,color:#000000
-%%    style cexport stroke:#000000,fill:#FF6D00,color:#000000
-%%    style clayout stroke:#000000,fill:#FF6D00,color:#000000
-%%    style cslot stroke:#000000,fill:#FF6D00,color:#000000
-%%    style cfor stroke:#000000,fill:#FF6D00,color:#000000
-%%    style cif stroke:#000000,fill:#FF6D00,color:#000000
+    style echo stroke:#000000,fill:#FF6D00,color:#000000
+    style function stroke:#000000,fill:#FF6D00,color:#000000
+    style import stroke:#000000,fill:#FF6D00,color:#000000
+    style from stroke:#000000,fill:#FF6D00,color:#000000
+    style export stroke:#000000,fill:#FF6D00,color:#000000
+    style layout stroke:#000000,fill:#FF6D00,color:#000000
+    style include stroke:#000000,fill:#FF6D00,color:#000000
+    style set stroke:#000000,fill:#FF6D00,color:#000000
+    style slot stroke:#000000,fill:#FF6D00,color:#000000
+    style for stroke:#000000,fill:#FF6D00,color:#000000
+    style of stroke:#000000,fill:#FF6D00,color:#000000
+    style if stroke:#000000,fill:#FF6D00,color:#000000
+    style else stroke:#000000,fill:#FF6D00,color:#000000
+    style elseif stroke:#000000,fill:#FF6D00,color:#000000
+
+    style cecho stroke:#000000,fill:#FF6D00,color:#000000
+    style cfunction stroke:#000000,fill:#FF6D00,color:#000000
+    style cexport stroke:#000000,fill:#FF6D00,color:#000000
+    style clayout stroke:#000000,fill:#FF6D00,color:#000000
+    style cslot stroke:#000000,fill:#FF6D00,color:#000000
+    style cfor stroke:#000000,fill:#FF6D00,color:#000000
+    style cif stroke:#000000,fill:#FF6D00,color:#000000
 
 ```
 
