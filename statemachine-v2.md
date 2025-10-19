@@ -38,6 +38,7 @@ stateDiagram-v2
 
         state "data" as data
         state "pipe" as pipe
+        state "expression" as pipeExp
         state "-" as otrim
         state "expression" as kexp0
         state "=" as eq1
@@ -67,7 +68,7 @@ stateDiagram-v2
         file --> pipe
         file --> [*]
         data --> pipe
-
+        pipe --> pipeExp
 
         [*] --> import
         import --> symbols
@@ -88,9 +89,9 @@ stateDiagram-v2
         symbol1 --> eq1
         eq1 --> kexp0
 
+        kexp0 --> pipe
         kexp0 --> [*]
-        kexp0 --> pipe0
-        pipe0 --> [*]
+
 
 
         [*] --> export
@@ -114,7 +115,7 @@ stateDiagram-v2
         [*] --> else
         else --> [*]
 
-        pipe --> [*]
+        pipeExp --> [*]
 
 
 }
@@ -233,6 +234,7 @@ stateDiagram-v2
     style await stroke:#000000,fill:#FF6D00,color:#000000
     style await2 stroke:#000000,fill:#FF6D00,color:#000000
     style async stroke:#000000,fill:#FF6D00,color:#000000
+    style pipe stroke:#000000,fill:#FF6D00,color:#000000
 
     style cecho stroke:#000000,fill:#FF6D00,color:#000000
     style cfunction stroke:#000000,fill:#FF6D00,color:#000000
