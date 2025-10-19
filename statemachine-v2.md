@@ -4,16 +4,21 @@ This is a model of the Vento state machine. It's intended for plugin development
 
 ## Lexing Algorithm
 ```mermaid
+---
+title: Lexing Algo
+config:
+  theme: 'forest'
+  themeVariables:
+    darkmode: 'false'
+    background: '#ffffff'
+---
 stateDiagram-v2
     direction LR
 
-    classDef highlight fill:#f00,color:white,font-weight:bold,stroke-width:2px,stroke:yellow
 
     keyword:Keyword
     state keyword {
         direction LR
-
-        class echo highlight;
 
         state "echo" as echo
         state "function" as function
@@ -104,7 +109,6 @@ stateDiagram-v2
         else --> [*]
 
         pipe --> [*]
-
 
 
 }
@@ -201,6 +205,7 @@ stateDiagram-v2
     open --> comment
     comment --> close
 
+    style echo stroke:#000000,fill:#FF6D00,color:#000000
 
 ```
 
