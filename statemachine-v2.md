@@ -37,7 +37,7 @@ stateDiagram-v2
 
 
         state "data" as data
-        state "pipe" as pipe
+        state "|>" as pipe
         state "expression" as pipeExp
         state "-" as otrim
         state "expression" as kexp0
