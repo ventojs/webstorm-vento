@@ -75,6 +75,8 @@ stateDiagram-v2
         from --> file
 
         [*] --> for
+        for --> await
+        await --> value
         for --> value
         value --> of
         of --> kexp0
@@ -94,9 +96,12 @@ stateDiagram-v2
         [*] --> export
         export --> symbol
         export --> function
+        export --> async
         symbol --> eq2
         eq2 --> kexp0
 
+        [*] --> async
+        async --> function
         [*] --> function
         function --> statement0
 
@@ -149,23 +154,27 @@ stateDiagram-v2
     nokeyword: No Keyword
     state nokeyword {
         direction LR
-        state "expression" as exp
+
         state "expression" as exp1
         state "expression" as exp2
-        state "expression" as exp3
+
         state "javascript" as js
         state ">" as mjs
         state "-" as ontrim
         state "-" as cntrim
-        [*] --> exp
-        [*] --> exp3
-        [*] --> mjs
-        [*] --> ontrim
-        ontrim --> exp1
+        state "await" as await2
+        ontrim --> await2
         ontrim --> exp2
+        ontrim --> exp1
+        [*] --> exp2
+        [*] --> await2
+        await2--> exp2
+        [*] --> ontrim
+        [*] --> exp1
+        [*] --> mjs
+        await2--> exp1
         exp1 --> cntrim
-        exp3 --> cntrim
-        exp --> [*]
+
         exp2 --> [*]
         cntrim --> [*]
         js --> [*]
@@ -194,11 +203,12 @@ stateDiagram-v2
     state "{{" as open
     state "}}" as close
 
+    open --> nokeyword
+    nokeyword --> close
+
     open --> keyword
     keyword --> close
 
-    open --> nokeyword
-    nokeyword --> close
 
     open --> ckeyword
     ckeyword --> close
@@ -220,6 +230,9 @@ stateDiagram-v2
     style if stroke:#000000,fill:#FF6D00,color:#000000
     style else stroke:#000000,fill:#FF6D00,color:#000000
     style elseif stroke:#000000,fill:#FF6D00,color:#000000
+    style await stroke:#000000,fill:#FF6D00,color:#000000
+    style await2 stroke:#000000,fill:#FF6D00,color:#000000
+    style async stroke:#000000,fill:#FF6D00,color:#000000
 
     style cecho stroke:#000000,fill:#FF6D00,color:#000000
     style cfunction stroke:#000000,fill:#FF6D00,color:#000000
