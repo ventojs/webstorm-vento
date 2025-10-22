@@ -22,10 +22,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
     {EQUAL} { enter(EXPRESSION); return LexerTokens.EQUAL; }
     {PIPE} { enter(EXPRESSION); return LexerTokens.PIPE;}
     [^}=|] {  pushbackall(); enter(EXPRESSION); }
-    "}}" {
-        yypushback(yylength());
-        leave();
-    }
+
 }
 
 

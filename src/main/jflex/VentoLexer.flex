@@ -190,26 +190,34 @@ CVAR = -?{CBLOCK}
 
 %include includes/keywords.flex
 %include includes/keywords-export.flex
+%include includes/keywords-import.flex
 %include includes/general-expression.flex
 %include includes/general-pipe.flex
 %include includes/general-function.flex
+%include includes/general-file.flex
 
 <BLOCK> {
-        <<EOF>> { debug("<BLOCK> <<EOF>>");leave(); return LexerTokens.UNKNOWN; }
-        [a-zA-Z0-9]+ { debug("<BLOCK> [a-zA-Z0-9]+");  return LexerTokens.UNKNOWN; }
+        <<EOF>> {
+            //debug("<BLOCK> <<EOF>>");
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
+        [a-zA-Z0-9]+ {
+            //debug("<BLOCK> [a-zA-Z0-9]+");
+            return LexerTokens.UNKNOWN;
+        }
     }
 
-
-<EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
+<EXPORT, IMPORT, FILE, KEYWORDS, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
+        "}}" {
+            yypushback(yylength());
+            leave();
+        }
         <<EOF>> { leave(); }
-//        [^] { debug("*"); pushbackall(); leave(); }
-        [^] { debug("*");  leave(); return LexerTokens.UNKNOWN; }
-
-    }
-
-<KEYWORDS> {
-        <<EOF>> {leave(); }
-//        [^] { debug("kw"); pushbackall(); leave(); }
-        [^] { debug("kw");  leave(); return LexerTokens.UNKNOWN; }
+        [^] {
+            //debug("*");
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
     }
 

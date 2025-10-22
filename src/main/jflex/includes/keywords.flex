@@ -11,6 +11,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state ELSE
 %state ELSEIF
 %state EXPORT
+%state IMPORT
 %state FOR
 %state FUNCTION
 %state IF
@@ -25,13 +26,13 @@ ELSE = "else"
 ELSEIF = "elseif"
 EXPORT = "export"
 FOR="for"
-FUNCTION="function"
-IF="if"
-IMPORT="import"
-INCLUDE="include"
-LAYOUT="layout"
-SET="set"
-SLOT="slot"
+FUNCTION = "function"
+IF = "if"
+IMPORT = "import"
+INCLUDE = "include"
+LAYOUT = "layout"
+SET = "set"
+SLOT = "slot"
 
 KEYWORDS =  {ECHO}|{ELSE}|{ELSEIF}|{EXPORT}|{FOR}|{FUNCTION}|{IF} |{IMPORT} |{INCLUDE} |{LAYOUT} |{SET} |{SLOT}
 CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LAYOUT} |"/"{SET} |"/"{SLOT}
@@ -52,13 +53,16 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
 //    {FOR} { enter(FOR); return LexerTokens.FOR_KEY; }
 //    {FUNCTION} { enter(FUNCTION); return LexerTokens.FUNCTION_KEY; }
 //    {IF} { enter(IF); return LexerTokens.IF_KEY; }
-//    {IMPORT} { enter(IMPORT); return LexerTokens.IMPORT_KEY; }
+    {IMPORT} { enter(IMPORT); return LexerTokens.IMPORT_KEY; }
 //    {INCLUDE} { enter(INCLUDE); return LexerTokens.INCLUDE_KEY; }
 //    {LAYOUT} { enter(LAYOUT); return LexerTokens.LAYOUT_KEY; }
 //    {SET} { enter(SET); return LexerTokens.SET_KEY; }
 //    {SLOT} { enter(SLOT); return LexerTokens.LAYOUT_SLOT_KEY; }
 
-    [^}][^}]? { debug("<KEYWORDS> [^]+ / {CBLOCK}"); return LexerTokens.UNKNOWN; }
+    [^}][^}]? {
+        //debug("<KEYWORDS> [^]+ / {CBLOCK}");
+        return LexerTokens.UNKNOWN;
+    }
 
 }
 

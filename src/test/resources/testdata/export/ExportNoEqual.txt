@@ -4,7 +4,7 @@ Vento File(0,26)
     Element: EXPORT_OPEN_ELEMENT(2,23)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiElement(SYMBOL_TOKEN)(' message')(9,17)
-      PsiErrorElement:found: STRING_TOKEN(17,17)
+      PsiErrorElement:syntax error: export symbol | export symbol = expression(17,17)
         <empty list>
       PsiElement(STRING_TOKEN)(' "foo"')(17,23)
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(23,26)

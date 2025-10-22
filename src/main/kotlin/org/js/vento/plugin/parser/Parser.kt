@@ -21,6 +21,9 @@ import org.js.vento.plugin.lexer.LexerTokens.EXPRESSION
 import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARGS
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
+import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
+import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
@@ -126,7 +129,7 @@ class VentoParser : PsiParser {
 //            JAVASCRIPT_START -> parseJavaScript(builder)
 //            VARIABLE_START -> parseVariable(builder)
 //            FOR_START -> parseFor(builder)
-//            IMPORT_START -> parseImport(builder)
+            IMPORT_KEY -> parseImport(builder)
             EXPORT_KEY -> parseExport(builder)
             EXPORT_CLOSE_KEY -> parseExportClose(builder)
 //            EXPORT_FUNCTION_START -> parseExportFunction(builder)
@@ -250,12 +253,12 @@ class VentoParser : PsiParser {
     private fun parseImport(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, IMPORT_START, "Expected '{{' ")
-        expect(builder, LexerTokens.IMPORT_KEY, "Expected 'import' keyword")
-        expect(builder, LexerTokens.IMPORT_VALUES, "Expected import values", true)
-        expect(builder, LexerTokens.IMPORT_FROM, "Expected 'from' keyword")
-        expect(builder, LexerTokens.IMPORT_FILE, "Expected vento(.vto) path string")
-        expect(builder, LexerTokens.IMPORT_END, "Expected '}}'")
+        expect(builder, IMPORT_KEY, "Expected 'import' keyword")
+        expect(builder, IMPORT_VALUES, "Expected import values", true)
+        expect(builder, IMPORT_FROM, "Expected 'from' keyword")
+        expect(builder, FILE, "Expected path string")
+
+        closeOrError(builder, "syntax error: import {a,b} from 'path/to/file.js'")
 
         m.done(ParserElements.IMPORT_ELEMENT)
     }

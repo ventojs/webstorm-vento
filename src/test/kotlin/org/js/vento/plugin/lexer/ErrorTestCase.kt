@@ -26,4 +26,11 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf("\n", "{{", "export", "1", "2", "3", "4", "5", "}}", "\n"),
         )
     }
+
+    fun `test incorrect import`() {
+        lexAndTest(
+            "{{ import message = 10 }}",
+            arrayOf("\n", "{{", "export", "1", "2", "3", "4", "5", "}}", "\n"),
+        )
+    }
 }
