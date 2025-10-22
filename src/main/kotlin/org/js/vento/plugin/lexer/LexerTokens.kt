@@ -13,6 +13,12 @@ import com.intellij.psi.tree.IElementType
  * and any custom element types for the PSI structure.
  */
 object LexerTokens {
+    @JvmField
+    val VBLOCK_OPEN = LexerToken("VBLOCK_OPEN")
+
+    @JvmField
+    val VBLOCK_CLOSE = LexerToken("VBLOCK_CLOSE")
+
     // Comment tokens
     @JvmField
     val COMMENT = LexerToken("COMMENT")
@@ -98,7 +104,7 @@ object LexerTokens {
     val EXPORT_CLOSE_END = LexerToken("CLOSE_EXPORT_END")
 
     @JvmField
-    val EXPORT_CLOSE_KEY = LexerToken("EXPORT_KEY")
+    val EXPORT_CLOSE_KEY = LexerToken("EXPORT_CLOSE_KEY")
 
     @JvmField
     val EXPORT_CLOSE_START = LexerToken("CLOSE_EXPORT_START")
@@ -110,13 +116,13 @@ object LexerTokens {
     val EXPORT_EQ = LexerToken("EXPORT_EQUAL")
 
     @JvmField
-    val EXPORT_FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
+    val FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
 
     @JvmField
     val EXPORT_FUNCTION_END = LexerToken("EXPORT_FUNCTION_END")
 
     @JvmField
-    val EXPORT_FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
+    val FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
 
     @JvmField
     val EXPORT_FUNCTION_START = LexerToken("EXPORT_FUNCTION_START")
@@ -212,7 +218,7 @@ object LexerTokens {
     val EQUAL = LexerToken("EQUAL")
 
     @JvmField
-    val IDENTIFIER = LexerToken("IDENTIFIER")
+    val SYMBOL = LexerToken("SYMBOL")
 
     @JvmField
     val PIPE = LexerToken("PIPE")

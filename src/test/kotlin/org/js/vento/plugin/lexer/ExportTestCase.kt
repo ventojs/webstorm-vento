@@ -7,16 +7,24 @@ package org.js.vento.plugin.lexer
 
 @Suppress("ktlint:standard:blank-line-before-declaration")
 class ExportTestCase(name: String) : BaseLexerTestCase(name) {
-    fun `test simple export`() =
+    fun `test simple export string`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" }}",
             arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "}}"),
         )
 
+    fun `test simple close export`() = lexAndTest("{{ /export }}", arrayOf("{{", "/export", "}}"))
+
+    fun `test simple export number`() =
+        lexAndTest(
+            "{{ export score = 10 }}",
+            arrayOf("{{", "export", "score", "=", "10", "}}"),
+        )
+
     fun `test function export`() =
         lexAndTest(
-            "{{ export function message (name) }}foo{{/export}}",
-            arrayOf("{{", "export", "function", "message", "(name)", "}}", "foo", "{{", "/export", "}}"),
+            "{{ export function message (fname,lname) }}foo{{/export}}",
+            arrayOf("{{", "export", "function", "message", "(fname,lname)", "}}", "foo", "{{", "/export", "}}"),
         )
 
     fun `test export with pipe`() =

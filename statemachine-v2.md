@@ -21,17 +21,17 @@ stateDiagram-v2
         direction LR
 
         state "echo" as echo
-        state "function" as function
-        state "import" as import
+        state "else if" as elseif
+        state "else" as else
         state "export" as export
-        state "layout" as layout
+        state "for" as for
+        state "function" as function
+        state "if" as if
+        state "import" as import
         state "include" as include
+        state "layout" as layout
         state "set" as set
         state "slot" as slot
-        state "for" as for
-        state "if" as if
-        state "else" as else
-        state "else if" as elseif
         state "signature" as statement0
 
 
@@ -125,12 +125,13 @@ stateDiagram-v2
     state ckeyword {
         direction LR
         state "/echo" as cecho
-        state "/function" as cfunction
         state "/export" as cexport
-        state "/layout" as clayout
-        state "/slot" as cslot
         state "/for" as cfor
+        state "/function" as cfunction
         state "/if" as cif
+        state "/layout" as clayout
+        state "/set" as cset
+        state "/slot" as cslot
         state "-" as cktrim
         [*] --> cecho
         [*] --> cslot

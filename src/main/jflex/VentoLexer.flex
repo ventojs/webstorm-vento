@@ -25,16 +25,40 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state COMMENT
 %state SCRIPT_CONTENT
 %state BLOCK
+%state BLOCK_CONTENT
 
 
 %{
   private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
   private static final boolean DEBUG = false;
 
+  // Map state ids to readable names. JFlex generates int constants named like YYINITIAL, BLOCK, etc.
+  private static final java.util.Map<Integer, String> STATE_NAMES = new java.util.HashMap<>();
+  static {
+    STATE_NAMES.put(YYINITIAL, "YYINITIAL");
+    STATE_NAMES.put(COMMENT, "COMMENT");
+    STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
+    STATE_NAMES.put(BLOCK, "BLOCK");
+    STATE_NAMES.put(KEYWORDS, "KEYWORDS");
+    STATE_NAMES.put(KEYWORDS_CLOSE, "KEYWORDS_CLOSE");
+    STATE_NAMES.put(EXPORT, "EXPORT");
+    STATE_NAMES.put(EXPRESSION, "EXPRESSION");
+    STATE_NAMES.put(FUNCTION, "FUNCTION");
+//    BLOCK, KEYWORDS, EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE
+    // Add included states too (from include files) once compiled in:
+    // e.g. STATE_NAMES.put(KEYWORDS, "KEYWORDS"); STATE_NAMES.put(EXPORT, "EXPORT"); STATE_NAMES.put(EXPRESSION, "EXPRESSION"); etc.
+  }
+
+  private String stName(int s) {
+    String n = STATE_NAMES.get(s);
+    return n != null ? n : ("STATE#" + s);
+  }
+
   /** Enter 's', remembering where we came from (the caller). */
   private void enter(int s) {
     int caller = yystate();            // <-- push the *current* state
     stateStack.push(caller);
+    if (DEBUG) System.out.println("enter: " + stName(caller) + " -> " + stName(s));
     yybegin(s);
   }
 
@@ -43,15 +67,30 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
     if (stateStack.isEmpty())
       throw new IllegalStateException("leave() with empty state stack");
     int caller = stateStack.pop();
-    if (DEBUG) System.out.println("leave -> " + caller);
+    if (DEBUG) System.out.println("leave -> " + stName(caller));
     yybegin(caller);
   }
 
   /** Optional: hard jump (not LIFO) if you need to abort nested states. */
   private void resetAt(int s) {
     stateStack.clear();
+    if (DEBUG) System.out.println("resetAt -> " + stName(s));
     yybegin(s);
   }
+
+  private void debug(){ debug(null); }
+
+  private void debug(String rule){
+      if(rule!= null) System.out.println("DEBUG rule :" + rule);
+      System.out.println("DEBUG state:" + stName(yystate())+" ["+stateStack.size()+"]");
+      System.out.println("DEBUG pos  :" + zzCurrentPos + "; text:" + yytext() );
+      System.out.println("------------------");
+  }
+
+  private void pushbackall(){
+      yypushback(yylength());
+  }
+
 %}
 
 
@@ -61,7 +100,8 @@ WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
 STRING = [\"][^\"\n\r]*[\"]
 
-IDENT = [a-zA-Z_$]+[a-zA-Z_$0-9]*
+EQUAL = [=]
+SYMBOL = [a-zA-Z_$]+[a-zA-Z_$0-9]*
 PIPE = "|>"
 
 OBLOCK = "{{"
@@ -73,16 +113,6 @@ CCOMMENT = -?#{CBLOCK}
 OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
-
-FOR_KEY = "for"
-
-IMPORT = "import"
-EXPORT = "export"
-FUNCTION = "function"
-FROM = "from"
-SET = "set"
-LAYOUT = "layout"
-SLOT = "slot"
 
 %{
   private int objectDepth = 0;
@@ -119,210 +149,67 @@ SLOT = "slot"
 
 <YYINITIAL> {
 
-    {EMPTY_LINE} { return LexerTokens.EMPTY_LINE; }
     {WHITESPACE} { return WHITE_SPACE; }
 
     {OBLOCK} {
-        yypushback(2);
-        yybegin(BLOCK);
-        // TODO: consider adding a Vento block token
+        enter(BLOCK);
+        return LexerTokens.VBLOCK_OPEN;
     }
 
     ([^\{][^\{]?)+ { return LexerTokens.HTML; }
 
-    [^]   { return LexerTokens.UNKNOWN; }
+    [^]   { return LexerTokens.HTML; }
+
 
 }
+
+//<FRONTMATTER> {
+//
+//}
 
 <BLOCK> {
     {WHITESPACE} { }
+    {CBLOCK} { leave(); return LexerTokens.VBLOCK_CLOSE;}
+    {KEYWORDS} { pushbackall(); enter(KEYWORDS); }
+    {CLOSING_KEYWORDS} { pushbackall(); enter(KEYWORDS_CLOSE); }
 
-    {OBLOCK}{WHITESPACE}{INCLUDE} {
-            enter(INCLUDE);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.INCLUDE_END;
-            return LexerTokens.INCLUDE_START;
-        }
+//    {COMMENT} {
+//            yypushback(yylength());
+//            enter(COMMENT);
+//        }
+//    {NO_KEYWORD} {
+//            yypushback(yylength());
+//            enter(NO_KEYWORD);
+//        }
 
-    // TODO: there's a problem here
-    {OBLOCK}{OWS}[/]/{OWS}{CBLOCK} {
-            yypushback(yylength()-2);
-            closeType = LexerTokens.VARIABLE_END;
-            return LexerTokens.VARIABLE_START;
-        }
-
-    {OBLOCK}{WHITESPACE}[/]{LAYOUT} {
-            enter(LAYOUT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.LAYOUT_CLOSE_END;
-            return LexerTokens.LAYOUT_CLOSE_START;
-        }
-
-    {OBLOCK}{WHITESPACE}{LAYOUT} {
-            enter(LAYOUT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.LAYOUT_END;
-            return LexerTokens.LAYOUT_START;
-        }
-
-    {OBLOCK}{WHITESPACE}[/]{SLOT} {
-            enter(SLOT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.LAYOUT_SLOT_CLOSE_END;
-            return LexerTokens.LAYOUT_SLOT_CLOSE_START;
-        }
-
-    {OBLOCK}{WHITESPACE}{SLOT} {
-            enter(SLOT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.LAYOUT_SLOT_END;
-            return LexerTokens.LAYOUT_SLOT_START;
-        }
-
-    {OBLOCK}-{WHITESPACE}{SLOT} {
-            enter(SLOT);
-            yypushback(yylength()-3);
-            closeType = LexerTokens.LAYOUT_SLOT_END;
-            return LexerTokens.LAYOUT_SLOT_START;
-        }
-
-    {OBLOCK}{WHITESPACE}{IMPORT} {
-            yybegin(IMPORT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.IMPORT_END;
-            return LexerTokens.IMPORT_START;
-        }
-
-    {OBLOCK}/{OWS}[/]{SET} {
-            enter(SET);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.SET_CLOSE_END;
-            return LexerTokens.SET_CLOSE_START;
-        }
-
-    {OBLOCK}{WHITESPACE}{SET} {
-                enter(SET);
-                yypushback(yylength()-2);
-                closeType = LexerTokens.SET_END;
-                return LexerTokens.SET_START;
-        }
-
-    {OBLOCK}/{OWS}{SET}{WHITESPACE}{IDENT} {
-            enter(SET);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.SET_END;
-            return LexerTokens.SET_START;
-        }
-
-    {OBLOCK}{OWS}{EXPORT}{OWS}{FUNCTION} {
-            yybegin(EXPORT_FUNCTION_BLOCK);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.EXPORT_FUNCTION_END;
-            return LexerTokens.EXPORT_FUNCTION_START;
-        }
-
-    {OBLOCK}{OWS}{EXPORT} {
-            yybegin(EXPORT);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.EXPORT_END;
-            return LexerTokens.EXPORT_START;
-        }
-
-    {OBLOCK}{OWS}[/]{EXPORT}{OWS}{CBLOCK} {
-            yybegin(EXPORT_CLOSE);
-            yypushback(yylength()-2);
-            closeType = LexerTokens.EXPORT_CLOSE_END;
-            return LexerTokens.EXPORT_CLOSE_START;
-        }
-
-    -?{CBLOCK} {
-            yybegin(YYINITIAL);
-            IElementType ct = closeType;
-            closeType = null;
-            if(ct != null){
-               return ct;
-            } else {
-               return LexerTokens.UNKNOWN;
-            }
-        }
-
-    {OCOMMENT} {
-            yybegin(COMMENT);
-            return LexerTokens.COMMENT_START;
-        }
-
-    {OJS} {
-            yybegin(SCRIPT_CONTENT);
-            return LexerTokens.JAVASCRIPT_START;
-        }
-
-    {OVAR} {
-            yybegin(VARIABLE_CONTENT);
-            return LexerTokens.VARIABLE_START;
-        }
-
-    \{\{ / .*[/]?{FOR_KEY} {
-            yybegin(FOR_CONTENT);
-            return LexerTokens.FOR_START;
-        }
-
-    [^] { return LexerTokens.UNKNOWN; }
 
 }
 
-<SCRIPT_CONTENT> {
 
-   ([^}]|"}"[^}])+ { return ParserElements.JAVASCRIPT_ELEMENT; }
-   {CBLOCK} {
-              yybegin(YYINITIAL);
-              return LexerTokens.JAVASCRIPT_END;
-         }
 
-   [^] {
-             yybegin(YYINITIAL);
-             return LexerTokens.UNKNOWN;
-         }
 
-}
+%include includes/keywords.flex
+%include includes/keywords-export.flex
+%include includes/general-expression.flex
+%include includes/general-pipe.flex
+%include includes/general-function.flex
 
-<COMMENT> {
-
-    // Match everything that is not the start of a closing comment sequence
-    ([^#-]|"#"[^}]|"-"[^#])+ { return LexerTokens.COMMENT_CONTENT; }
-
-    // Handle single characters that might be part of closing sequences
-    "#" { return LexerTokens.COMMENT_CONTENT; }
-    "-" { return LexerTokens.COMMENT_CONTENT; }
-
-    {CCOMMENT} {
-                yybegin(YYINITIAL);
-                return LexerTokens.COMMENT_END;
-            }
-
-}
-
-%include includes/tokens-for.flex
-%include includes/tokens-variables.flex
-%include includes/tokens-import.flex
-%include includes/tokens-export.flex
-%include includes/tokens-pipe.flex
-%include includes/tokens-expression.flex
-%include includes/tokens-set.flex
-%include includes/tokens-layout.flex
-%include includes/tokens-file.flex
-%include includes/tokens-objects.flex
-%include includes/tokens-string.flex
-%include includes/tokens-include.flex
-
-<LAYOUT, SLOT, FILE, PIPE, INCLUDE> {
-    <<EOF>> {
-            leave();
-            return LexerTokens.UNKNOWN;
-        }
-
-    [^] {
-        yypushback(yylength());
-        leave();
+<BLOCK> {
+        <<EOF>> { debug("<BLOCK> <<EOF>>");leave(); return LexerTokens.UNKNOWN; }
+        [a-zA-Z0-9]+ { debug("<BLOCK> [a-zA-Z0-9]+");  return LexerTokens.UNKNOWN; }
     }
-}
+
+
+<EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
+        <<EOF>> { leave(); }
+//        [^] { debug("*"); pushbackall(); leave(); }
+        [^] { debug("*");  leave(); return LexerTokens.UNKNOWN; }
+
+    }
+
+<KEYWORDS> {
+        <<EOF>> {leave(); }
+//        [^] { debug("kw"); pushbackall(); leave(); }
+        [^] { debug("kw");  leave(); return LexerTokens.UNKNOWN; }
+    }
 

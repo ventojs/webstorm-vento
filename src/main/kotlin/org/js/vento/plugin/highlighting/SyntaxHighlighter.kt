@@ -25,14 +25,13 @@ import org.js.vento.plugin.lexer.LexerAdapter
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
+import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_END
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_EQ
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_ARGS
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_END
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_START
@@ -46,7 +45,8 @@ import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
 import org.js.vento.plugin.lexer.LexerTokens.FOR_START
 import org.js.vento.plugin.lexer.LexerTokens.FOR_VALUE
-import org.js.vento.plugin.lexer.LexerTokens.IDENTIFIER
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARGS
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_END
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FILE
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
@@ -78,12 +78,15 @@ import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_START
 import org.js.vento.plugin.lexer.LexerTokens.SET_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SET_START
+import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 import org.js.vento.plugin.lexer.LexerTokens.TEXT
 import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_ELEMENT
 import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_END
 import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_START
+import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
+import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
 import java.awt.Color
 import org.js.vento.plugin.lexer.LexerTokens.STRING as STRING_TOKEN
 
@@ -105,6 +108,10 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
+                VBLOCK_OPEN -> BLOCK
+                VBLOCK_CLOSE -> BLOCK
+                SYMBOL -> VARIABLE
+                EQUAL -> KEY_WORD
                 COMMENT_CONTENT -> COMMENTED_CONTENT
                 COMMENT_END -> COMMENT
                 COMMENT_START -> COMMENT
@@ -113,9 +120,9 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 EXPORT_CLOSE_START -> BLOCK
                 EXPORT_END -> BLOCK
                 EXPORT_EQ -> KEY_WORD
-                EXPORT_FUNCTION_ARGS -> ARGS
+                FUNCTION_ARGS -> ARGS
                 EXPORT_FUNCTION_END -> BLOCK
-                EXPORT_FUNCTION_KEY -> KEY_WORD
+                FUNCTION_KEY -> KEY_WORD
                 EXPORT_FUNCTION_START -> BLOCK
                 EXPORT_KEY -> KEY_WORD
                 EXPORT_START -> BLOCK
@@ -128,7 +135,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 FOR_OF -> KEY_WORD
                 FOR_START -> BLOCK
                 FOR_VALUE -> VALUES
-                IDENTIFIER -> VALUES
+                SYMBOL -> VALUES
                 IMPORT_END -> BLOCK
                 IMPORT_FILE -> STRING
                 FILE -> STRING
