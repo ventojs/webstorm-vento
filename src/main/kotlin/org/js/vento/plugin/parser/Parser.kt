@@ -24,7 +24,6 @@ import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
-import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_START
