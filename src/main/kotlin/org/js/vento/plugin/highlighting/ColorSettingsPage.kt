@@ -77,6 +77,9 @@ class ColorSettingsPage : ColorSettingsPage {
             <p>Content of the section</p>
           {{ /layout }}
 
+        include:
+            {{ include "/my-file.vto" {salute: "Good bye"} |> toUpperCase }}
+
         Javascript:
           {{> console.log('Hello World') }}
         """.trimIndent()

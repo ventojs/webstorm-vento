@@ -189,6 +189,15 @@ object LexerTokens {
     @JvmField
     val LAYOUT_SLOT_CLOSE_KEY = LexerToken("LAYOUT_SLOT_CLOSE")
 
+    @JvmField
+    val INCLUDE_START = LexerToken("INCLUDE_START")
+
+    @JvmField
+    val INCLUDE_KEY = LexerToken("INCLUDE_KEY")
+
+    @JvmField
+    val INCLUDE_END = LexerToken("INCLUDE_END")
+
     // General tokens
     @JvmField
     val BRACKET = LexerToken("BRACKET")

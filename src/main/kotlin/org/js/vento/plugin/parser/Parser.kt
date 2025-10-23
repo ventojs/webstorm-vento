@@ -23,6 +23,9 @@ import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_START
 import org.js.vento.plugin.lexer.LexerTokens.IDENTIFIER
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_START
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
@@ -115,12 +118,24 @@ class VentoParser : PsiParser {
             LAYOUT_SLOT_START -> parseSlot(builder)
             LAYOUT_SLOT_CLOSE_START -> parseSlotClose(builder)
             OBJECT -> parseObject(builder)
+            INCLUDE_START -> parseInclude(builder)
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
                 marker.done(ParserElements.DEFAULT_ELEMENT)
             }
         }
+    }
+
+    private fun parseInclude(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, INCLUDE_START, "Expected '{{' ")
+        expect(builder, INCLUDE_KEY, "Expected 'include' keyword' ")
+        parseExpression(builder)
+        parseObject(builder)
+        parsePipe(builder)
+        expect(builder, INCLUDE_END, "Expected '}}'")
+        m.done(ParserElements.INCLUDE_ELEMENT)
     }
 
     private fun parseObject(builder: PsiBuilder) {

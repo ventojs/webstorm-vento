@@ -53,6 +53,9 @@ import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_START
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_END
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
@@ -162,6 +165,9 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 LAYOUT_SLOT_CLOSE_END -> BLOCK
                 LAYOUT_SLOT_CLOSE_KEY -> KEY_WORD
                 OBJECT -> VALUES
+                INCLUDE_START -> BLOCK
+                INCLUDE_KEY -> KEY_WORD
+                INCLUDE_END -> BLOCK
                 else -> null
             }
 
