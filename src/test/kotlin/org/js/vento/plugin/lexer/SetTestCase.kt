@@ -15,4 +15,6 @@ package org.js.vento.plugin.lexer
 class SetTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple set`() =
         lexAndTest("{{ set greeting = \"Hello Worlds\"}}", arrayOf("{{", "set", "greeting", "=", "\"Hello Worlds\"", "}}"))
+
+    fun `test close set`() = lexAndTest("{{ /set }}", arrayOf("{{", "/set", "}}"))
 }

@@ -8,22 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.lang.ASTNode
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.DefaultElement
-import org.js.vento.plugin.ExportCloseElement
-import org.js.vento.plugin.ExportElement
-import org.js.vento.plugin.ExportFunctionElement
-import org.js.vento.plugin.ExportOpenElement
-import org.js.vento.plugin.ForBlockElement
-import org.js.vento.plugin.HtmlElement
-import org.js.vento.plugin.ImportElement
-import org.js.vento.plugin.IncludeElement
-import org.js.vento.plugin.JavaScriptElement
-import org.js.vento.plugin.LayoutCloseElement
-import org.js.vento.plugin.LayoutElement
-import org.js.vento.plugin.ObjectElement
-import org.js.vento.plugin.SetCloseElement
-import org.js.vento.plugin.SetElement
-import org.js.vento.plugin.VariableElement
+import org.js.vento.plugin.*
 
 /**
  * Defines token and element types for the Vento language.
@@ -97,6 +82,9 @@ object ParserElements {
     @JvmField
     val INCLUDE_ELEMENT: IElementType = ParserElement("INCLUDE_ELEMENT")
 
+    @JvmField
+    val VENTO_ELEMENT: IElementType = ParserElement("VENTO_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -104,6 +92,7 @@ object ParserElements {
     object Factory {
         fun createElement(node: ASTNode): PsiElement =
             when (node.elementType) {
+                VENTO_ELEMENT -> VentoElement(node)
                 DEFAULT_ELEMENT -> HtmlElement(node)
                 HTML_ELEMENT -> HtmlElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptElement(node)

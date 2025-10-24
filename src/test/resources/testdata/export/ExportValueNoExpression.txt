@@ -1,9 +1,10 @@
 Vento File(0,22)
-  Element: EXPORT_ELEMENT(0,22)
-    PsiElement(EXPORT_START_TOKEN)('{{')(0,2)
-    PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
-    PsiElement(EXPORT_VAR_TOKEN)(' message')(9,17)
-    PsiElement(EQUAL_TOKEN)(' =')(17,19)
-    PsiErrorElement:Expected expression(19,19)
-      <empty list>
-    PsiElement(EXPORT_END_TOKEN)(' }}')(19,22)
+  Element: VENTO_ELEMENT(0,22)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: EXPORT_ELEMENT(2,19)
+      PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
+      PsiElement(SYMBOL_TOKEN)(' message')(9,17)
+      PsiElement(EQUAL_TOKEN)(' =')(17,19)
+      PsiErrorElement:Expected expression(19,19)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(19,22)

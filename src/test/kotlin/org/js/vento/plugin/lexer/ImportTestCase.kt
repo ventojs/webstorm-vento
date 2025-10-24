@@ -22,7 +22,7 @@ class ImportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple import error`() =
         lexAndTest(
             "{{ import { foo  from \"./afile.vto\" }}",
-            arrayOf("{{", "import", "{ foo  from \"./afile.vto\"", "}}"),
+            arrayOf("{{", "import", "{ foo", "from", "\"./afile.vto\"", "}}"),
         )
 
     fun `test bare import`() =
@@ -41,6 +41,12 @@ class ImportTestCase(name: String) : BaseLexerTestCase(name) {
         lexAndTest(
             "{{ import foo from  }}",
             arrayOf("{{", "import", "foo", "from", "}}"),
+        )
+
+    fun `test no from`() =
+        lexAndTest(
+            "{{ import foo \"./afile.vto\" }}",
+            arrayOf("{{", "import", "foo", "\"./afile.vto\"", "}}"),
         )
 
     fun `test renamed import`() =
