@@ -43,12 +43,8 @@ import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
 import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.REGEX
-import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_START
-import org.js.vento.plugin.lexer.LexerTokens.SET_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
-import org.js.vento.plugin.lexer.LexerTokens.SET_START
 import org.js.vento.plugin.lexer.LexerTokens.STRING
 import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
@@ -134,8 +130,8 @@ class VentoParser : PsiParser {
 //            EXPORT_FUNCTION_START -> parseExportFunction(builder)
 //            LAYOUT_START -> parseLayout(builder)
 //            LAYOUT_CLOSE_START -> parseLayoutClose(builder)
-//            SET_START -> parsSet(builder)
-//            SET_CLOSE_START -> parsSetClose(builder)
+            SET_KEY -> parsSet(builder)
+            SET_CLOSE_KEY -> parsSetClose(builder)
 //            STRING, REGEX, BRACKET, DOT, IDENTIFIER, EXPRESSION, UNKNOWN -> parseExpression(builder)
 //            LAYOUT_SLOT_START -> parseSlot(builder)
 //            LAYOUT_SLOT_CLOSE_START -> parseSlotClose(builder)
@@ -215,16 +211,14 @@ class VentoParser : PsiParser {
 
     private fun parsSetClose(builder: PsiBuilder) {
         val m = builder.mark()
-        expect(builder, SET_CLOSE_START, "Expected '{{' ")
         expect(builder, SET_CLOSE_KEY, "Expected '/set' keyword")
-        expect(builder, SET_CLOSE_END, "Expected '}}' ")
+        closeOrError(builder, "syntax error: /set ")
         m.done(SET_CLOSE_ELEMENT)
     }
 
     private fun parsSet(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, SET_START, "Expected '{{' ")
         expect(builder, SET_KEY, "Expected 'set' keyword")
         expect(builder, SYMBOL, "Expected identifier")
 
@@ -237,7 +231,7 @@ class VentoParser : PsiParser {
 
         parsePipe(builder)
 
-        expect(builder, SET_END, "Expected '}}' ")
+        closeOrError(builder, "syntax error: set symbol | set symbol = expression")
 
         m.done(SET_ELEMENT)
     }

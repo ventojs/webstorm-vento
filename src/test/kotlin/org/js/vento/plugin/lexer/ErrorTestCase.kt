@@ -30,7 +30,28 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test incorrect import`() {
         lexAndTest(
             "{{ import message = 10 }}",
-            arrayOf("\n", "{{", "export", "1", "2", "3", "4", "5", "}}", "\n"),
+            arrayOf("{{", "import", "message", "=", " 1", "0 ", "}}"),
+        )
+    }
+
+    fun `test unclosed block`() {
+        lexAndTest(
+            "{{ /set {{ foo }}",
+            arrayOf("{{", "/set", "{{", "foo", "}}"),
+        )
+    }
+
+    fun `test unclosed block2`() {
+        lexAndTest(
+            "{{ foo {{ bar }}",
+            arrayOf("{{", "foo", "{{", "bar", "}}"),
+        )
+    }
+
+    fun `test keyword typo`() {
+        lexAndTest(
+            "{{ se foo = \"bar\" }}",
+            arrayOf("{{", "se", "foo", "=", "\"bar\"", "}}"),
         )
     }
 }

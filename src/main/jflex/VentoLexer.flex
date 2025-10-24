@@ -172,15 +172,14 @@ CVAR = -?{CBLOCK}
     {CBLOCK} { leave(); return LexerTokens.VBLOCK_CLOSE;}
     {KEYWORDS} { pushbackall(); enter(KEYWORDS); }
     {CLOSING_KEYWORDS} { pushbackall(); enter(KEYWORDS_CLOSE); }
-
+    [=\"] {return LexerTokens.UNKNOWN;}
+    [\w]{1,2}|[\w]{7}[\w]+ {pushbackall(); enter(NOKEYWORDS);}
+    "/"[\w]{1,2}|"/"[\w]{7}[\w]+ {return LexerTokens.UNKNOWN;}
 //    {COMMENT} {
 //            yypushback(yylength());
 //            enter(COMMENT);
 //        }
-//    {NO_KEYWORD} {
-//            yypushback(yylength());
-//            enter(NO_KEYWORD);
-//        }
+
 
 
 }
@@ -191,6 +190,10 @@ CVAR = -?{CBLOCK}
 %include includes/keywords.flex
 %include includes/keywords-export.flex
 %include includes/keywords-import.flex
+%include includes/keywords-set.flex
+
+%include includes/no-keywords.flex
+
 %include includes/general-expression.flex
 %include includes/general-pipe.flex
 %include includes/general-function.flex
@@ -206,10 +209,13 @@ CVAR = -?{CBLOCK}
             //debug("<BLOCK> [a-zA-Z0-9]+");
             return LexerTokens.UNKNOWN;
         }
+        {OBLOCK} {
+                return LexerTokens.UNKNOWN;
+            }
     }
 
-<EXPORT, IMPORT, FILE, KEYWORDS, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
-        "}}" {
+<EXPORT, IMPORT, SET, SET_VALUE, SET_BLOCK_MODE, FILE, KEYWORDS, NOKEYWORDS, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
+        "}}"|"{{" {
             yypushback(yylength());
             leave();
         }

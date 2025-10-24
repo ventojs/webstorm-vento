@@ -25,7 +25,7 @@ ECHO = "echo"
 ELSE = "else"
 ELSEIF = "elseif"
 EXPORT = "export"
-FOR="for"
+FOR = "for"
 FUNCTION = "function"
 IF = "if"
 IMPORT = "import"
@@ -56,7 +56,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     {IMPORT} { enter(IMPORT); return LexerTokens.IMPORT_KEY; }
 //    {INCLUDE} { enter(INCLUDE); return LexerTokens.INCLUDE_KEY; }
 //    {LAYOUT} { enter(LAYOUT); return LexerTokens.LAYOUT_KEY; }
-//    {SET} { enter(SET); return LexerTokens.SET_KEY; }
+    {SET} { enter(SET); return LexerTokens.SET_KEY; }
 //    {SLOT} { enter(SLOT); return LexerTokens.LAYOUT_SLOT_KEY; }
 
     [^}][^}]? {
@@ -69,6 +69,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
 <KEYWORDS_CLOSE> {
     {WHITESPACE} {  }
     "/"{EXPORT} { return LexerTokens.EXPORT_CLOSE_KEY;}
+    "/"{SET} { return LexerTokens.SET_CLOSE_KEY;}
     {CBLOCK}  {
           yypushback(yylength());
           leave();
