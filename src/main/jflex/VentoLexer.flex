@@ -30,34 +30,42 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %{
   private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
-  private static final boolean DEBUG = false;
+  private static final boolean DEBUG = true;
 
   // Map state ids to readable names. JFlex generates int constants named like YYINITIAL, BLOCK, etc.
   private static final java.util.Map<Integer, String> STATE_NAMES = new java.util.HashMap<>();
   static {
-    STATE_NAMES.put(YYINITIAL, "YYINITIAL");
+    STATE_NAMES.put(ARRAY, "ARRAY");
+    STATE_NAMES.put(BEFORE_OF, "BEFORE_FOR");
     STATE_NAMES.put(BLOCK, "BLOCK");
     STATE_NAMES.put(COMMENT, "COMMENT");
+    STATE_NAMES.put(ECHO, "ECHO");
+    STATE_NAMES.put(ELSE, "ELSE");
+    STATE_NAMES.put(ELSEIF, "ELSEIF");
     STATE_NAMES.put(EXPORT, "EXPORT");
+    STATE_NAMES.put(EXPORT_CLOSE, "EXPORT_CLOSE");
     STATE_NAMES.put(EXPRESSION, "EXPRESSION");
     STATE_NAMES.put(FILE, "FILE");
     STATE_NAMES.put(FOR, "FOR");
-    STATE_NAMES.put(BEFORE_OF, "BEFORE_FOR");
     STATE_NAMES.put(FUNCTION, "FUNCTION");
+    STATE_NAMES.put(IF, "IF");
     STATE_NAMES.put(IMPORT, "IMPORT");
+    STATE_NAMES.put(INCLUDE, "INCLUDE");
     STATE_NAMES.put(KEYWORDS, "KEYWORDS");
     STATE_NAMES.put(KEYWORDS_CLOSE, "KEYWORDS_CLOSE");
+    STATE_NAMES.put(LAYOUT, "LAYOT");
     STATE_NAMES.put(NOKEYWORDS, "NOKEYWORDS");
+    STATE_NAMES.put(OBJECT, "OBJECT");
+    STATE_NAMES.put(OBJECT_STRING, "OBJECT_STRING");
+    STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
     STATE_NAMES.put(SET, "SET");
     STATE_NAMES.put(SET_BLOCK_MODE, "SET_BLOCK_MODE");
     STATE_NAMES.put(SET_VALUE, "SET_VALUE");
-    STATE_NAMES.put(OBJECT, "OBJECT");
-    STATE_NAMES.put(ARRAY, "ARRAY");
-    STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
     STATE_NAMES.put(STRING, "STRING");
+    STATE_NAMES.put(STRING_BKTK, "STRING_BKTK");
     STATE_NAMES.put(STRING_DUBL, "STRING_DUBL");
     STATE_NAMES.put(STRING_SNGL, "STRING_SNGL");
-    STATE_NAMES.put(STRING_BKTK, "STRING_BKTK");
+    STATE_NAMES.put(YYINITIAL, "YYINITIAL");
 //    BLOCK, KEYWORDS, EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE
     // Add included states too (from include files) once compiled in:
     // e.g. STATE_NAMES.put(KEYWORDS, "KEYWORDS"); STATE_NAMES.put(EXPORT, "EXPORT"); STATE_NAMES.put(EXPRESSION, "EXPRESSION"); etc.
@@ -108,6 +116,37 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
   private void pushbackall(){
       yypushback(yylength());
   }
+
+// 1) Provide a custom diagnostic printer we can call on demand
+  private void dumpDiag(String reason) {
+    int start = zzStartRead;
+    int cur = zzCurrentPos;
+    int marked = zzMarkedPos;
+
+    int previewRadius = 40;
+    int from = Math.max(0, cur - previewRadius);
+    int to = Math.min(zzEndRead, cur + previewRadius);
+
+    CharSequence buf = zzBuffer;
+    String before = buf.subSequence(from, Math.min(cur, zzEndRead)).toString();
+    String after = buf.subSequence(Math.min(cur, zzEndRead), to).toString();
+
+    String stateName = stName(yystate());
+    int stackDepth = stateStack.size();
+
+    StringBuilder caret = new StringBuilder();
+    for (int i = 0; i < before.length(); i++) caret.append(before.charAt(i) == '\n' ? '\n' : ' ');
+    caret.append('^');
+
+    System.err.println(
+      "LEX ERROR: " + reason + "\n" +
+      "  state      : " + stateName + " (depth=" + stackDepth + ")\n" +
+      "  offsets    : start=" + start + ", current=" + cur + ", marked=" + marked + ", endRead=" + zzEndRead + "\n" +
+      "  atEOF      : " + zzAtEOF + "\n" +
+      "  preview    :\n" + before + after + "\n" + caret + "\n"
+    );
+  }
+
 
 %}
 

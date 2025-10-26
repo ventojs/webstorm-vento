@@ -24,6 +24,11 @@ import org.js.vento.plugin.lexer.LexerTokens;
             return LexerTokens.BRACKET;
         }
 
+    "|>" {
+        yypushback(yylength());
+        leave();
+    }
+
     [^\[\],] {
           yypushback(yylength());
           enter(EXPRESSION);

@@ -18,6 +18,11 @@ import org.js.vento.plugin.lexer.LexerTokens;
         return LexerTokens.BRACE;
     }
 
+    "|>" {
+            yypushback(yylength());
+            leave();
+    }
+
     \} {
         objectDepth--;
         if (objectDepth == 0) { leave(); }

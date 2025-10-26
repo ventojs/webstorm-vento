@@ -350,7 +350,7 @@ class VentoParser : PsiParser {
     }
 
     private fun closeOrError(builder: PsiBuilder, errorMsg: String) {
-        while (builder.tokenType != VBLOCK_CLOSE) {
+        while (builder.tokenType != VBLOCK_CLOSE && !builder.eof()) {
             if (builder.tokenType == UNKNOWN) {
                 parseUnknown(builder)
             } else {

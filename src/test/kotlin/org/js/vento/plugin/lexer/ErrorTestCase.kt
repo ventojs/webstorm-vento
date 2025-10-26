@@ -190,4 +190,36 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
     }
+
+    fun `test open string`() {
+        lexAndTest(
+            "{{ export foo = \" }}",
+            arrayOf(
+                "{{",
+                "export",
+                "foo",
+                "=",
+                "\"",
+                "}}",
+            ),
+        )
+    }
+
+    fun `test nothing`() {
+        lexAndTest(
+            "",
+            arrayOf(
+                "",
+            ),
+        )
+    }
+
+    fun `test set that hangs IDE`() {
+        lexAndTest(
+            "{{ set myVar = /[Hh].*/.*[}]/ }}",
+            arrayOf(
+                "{{ set myVar = /[Hh].*/.*[}]/ }}",
+            ),
+        )
+    }
 }
