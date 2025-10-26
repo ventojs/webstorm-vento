@@ -89,6 +89,9 @@ object ParserElements {
     val STRING_ELEMENT: IElementType = ParserElement("STRING_ELEMENT")
 
     @JvmField
+    val REGEX_ELEMENT: IElementType = ParserElement("REGEX_ELEMENT")
+
+    @JvmField
     val ARRAY_ELEMENT: IElementType = ParserElement("ARRAY_ELEMENT")
 
     @JvmField
@@ -96,6 +99,9 @@ object ParserElements {
 
     @JvmField
     val UNKNOWN_ELEMENT: IElementType = ParserElement("UNKNOWN_ELEMENT")
+
+    @JvmField
+    val FUNCTION_ELEMENT: IElementType = ParserElement("FUNCTION_ELEMENT")
 
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced

@@ -48,6 +48,9 @@ object LexerTokens {
     @JvmField
     var JAVASCRIPT_START: IElementType = LexerToken("JAVASCRIPT_START")
 
+    @JvmField
+    var STATEMENT: IElementType = LexerToken("STATEMENT")
+
     // Variable tokens
     @JvmField
     val VARIABLE_ELEMENT = LexerToken("VARIABLE_ELEMENT")
@@ -245,6 +248,9 @@ object LexerTokens {
     val COLON = LexerToken("COLON")
 
     @JvmField
+    val SEMICOLON = LexerToken("SEMICOLON")
+
+    @JvmField
     val TEXT = LexerToken("TEXT")
 
     @JvmField
@@ -261,4 +267,7 @@ object LexerTokens {
 
     @JvmField
     val BRACE = LexerToken("BRACE")
+
+    @JvmField
+    val RETURN = LexerToken("RETURN")
 }

@@ -5,6 +5,9 @@ import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 2 - START
 
 %state EXPRESSION
+%state REGEX
+%state REGEX_ESCAPE
+%state REGEX_CLASS
 
 // BLOCK 2 - END
 %%
@@ -17,7 +20,10 @@ import org.js.vento.plugin.lexer.LexerTokens;
    \"|\'|\` {  yypushback(yylength()); enter(STRING); }
 
    // regex
-   \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTokens.REGEX; }
+   \/ {
+        enter(REGEX);
+        return LexerTokens.REGEX;
+   }
 
    [.]  { return LexerTokens.DOT; }
    [,]  { return LexerTokens.COMMA; }
@@ -49,6 +55,23 @@ import org.js.vento.plugin.lexer.LexerTokens;
           yypushback(yylength());
           leave();
       }
+}
+
+<REGEX> {
+    \/ { leave(); return LexerTokens.REGEX; }
+    [\\] { yypushback(yylength()); enter(REGEX_ESCAPE); }
+    \[ { enter(REGEX_CLASS);return LexerTokens.REGEX; }
+    [^/\\]+ { return LexerTokens.REGEX; }
+}
+
+<REGEX_CLASS> {
+    \] { leave(); return LexerTokens.REGEX;}
+    "\[" { return LexerTokens.REGEX; }
+    [^\]]+ { return LexerTokens.REGEX;}
+}
+
+<REGEX_ESCAPE> {
+    [\\][^] { leave(); return LexerTokens.REGEX;}
 }
 
 

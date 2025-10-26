@@ -29,7 +29,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
         leave();
     }
 
-    [^\[\],] {
+    [^\[\],}] {
           yypushback(yylength());
           enter(EXPRESSION);
       }

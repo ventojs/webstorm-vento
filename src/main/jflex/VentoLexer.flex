@@ -30,7 +30,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
 %{
   private final java.util.ArrayDeque<Integer> stateStack = new java.util.ArrayDeque<>();
-  private static final boolean DEBUG = true;
+  private static final boolean DEBUG = false;
 
   // Map state ids to readable names. JFlex generates int constants named like YYINITIAL, BLOCK, etc.
   private static final java.util.Map<Integer, String> STATE_NAMES = new java.util.HashMap<>();
@@ -57,6 +57,9 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
     STATE_NAMES.put(NOKEYWORDS, "NOKEYWORDS");
     STATE_NAMES.put(OBJECT, "OBJECT");
     STATE_NAMES.put(OBJECT_STRING, "OBJECT_STRING");
+    STATE_NAMES.put(REGEX, "REGEX");
+    STATE_NAMES.put(REGEX_ESCAPE, "REGEX_ESCAPE");
+    STATE_NAMES.put(REGEX_CLASS, "REGEX_CLASS");
     STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
     STATE_NAMES.put(SET, "SET");
     STATE_NAMES.put(SET_BLOCK_MODE, "SET_BLOCK_MODE");

@@ -11,6 +11,7 @@ import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
 import org.js.vento.plugin.lexer.LexerTokens.BRACKET
 import org.js.vento.plugin.lexer.LexerTokens.COMMA
@@ -51,8 +52,10 @@ import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PARENTHESIS
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.REGEX
+import org.js.vento.plugin.lexer.LexerTokens.SEMICOLON
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
+import org.js.vento.plugin.lexer.LexerTokens.STATEMENT
 import org.js.vento.plugin.lexer.LexerTokens.STRING
 import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
@@ -283,8 +286,18 @@ class VentoParser : PsiParser {
         expect(builder, SYMBOL, "Expected identifier")
 
         val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
-
-        val hasExp: Boolean = parseExpression(builder, hasEq)
+        val hasExp =
+            if (builder.tokenType == FUNCTION_KEY || (builder.tokenType == PARENTHESIS && builder.rawLookup(1) == FUNCTION_KEY)) {
+                val iife = optional(builder, PARENTHESIS, "Expected '('") { it.trim() == "(" }
+                val hasFunction = parseFunction(builder)
+                if (iife) {
+                    expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+                    expect(builder, FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])")
+                }
+                hasFunction
+            } else {
+                parseExpression(builder, hasEq)
+            }
 
         if (hasEq && !hasExp) builder.error("Expected expression after '='")
         if (!hasEq && hasExp) builder.error("Expected '='")
@@ -294,6 +307,57 @@ class VentoParser : PsiParser {
         closeOrError(builder, "syntax error: set symbol | set symbol = expression")
 
         m.done(SET_ELEMENT)
+    }
+
+    private fun parseFunction(builder: PsiBuilder): Boolean {
+        val m = builder.mark()
+
+        expect(builder, FUNCTION_KEY, "Expected 'function' keyword")
+//        expect(builder, PARENTHESIS, "Expected parenthesis '(' ") { it.trim() == "(" }
+//        if (builder.tokenType != PARENTHESIS && builder.tokenText?.trim() != ")") {
+//            parseExpression(builder)
+//            while (optional(builder, COMMA, "Expected ',' ")) {
+//                parseExpression(builder)
+//            }
+//            hasFunction = true
+//        }
+//        expect(builder, PARENTHESIS, "Expected parenthesis ')' ") { it.trim() == ")" }
+
+        var hasFunction = expect(builder, FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])")
+        expect(builder, BRACE, "Expected '{' ") { it.trim() == "{" }
+        var braceCounter = 1
+        while (
+            braceCounter > 0 &&
+            (
+                !builder.eof() &&
+                    (
+                        builder.tokenType == BRACE ||
+                            builder.tokenType == STATEMENT ||
+                            builder.tokenType == SEMICOLON ||
+                            builder.tokenType == UNKNOWN
+                    )
+            )
+        ) {
+            when (builder.tokenType) {
+                UNKNOWN -> parseUnknown(builder)
+                BRACE -> {
+                    if (builder.tokenText?.trim() == "{") braceCounter++
+                    if (builder.tokenText?.trim() == "}") braceCounter--
+                    if (braceCounter != 0) builder.advanceLexer()
+                }
+
+                STATEMENT -> {
+                    builder.advanceLexer()
+                    optional(builder, SEMICOLON, "Expected ';' ", true)
+                }
+
+                else -> builder.advanceLexer()
+            }
+        }
+        expect(builder, BRACE, "Expected '}' ") { it.trim() == "}" }
+
+        m.done(ParserElements.FUNCTION_ELEMENT)
+        return hasFunction
     }
 
     private fun parsePipe(builder: PsiBuilder) {
@@ -370,6 +434,7 @@ class VentoParser : PsiParser {
                 builder.tokenType == NUMBER ||
                     builder.tokenType == REGEX ||
                     builder.tokenType == SYMBOL ||
+                    builder.tokenType == BOOLEAN ||
                     builder.tokenType == STRING ||
                     (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
                     (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
@@ -388,11 +453,16 @@ class VentoParser : PsiParser {
                 parseArray(builder)
                 hasExpression = true
             } else if (
+                builder.tokenType == REGEX
+            ) {
+                parseRegex(builder)
+                hasExpression = true
+            } else if (
                 builder.tokenType == SYMBOL ||
+                builder.tokenType == BOOLEAN ||
                 builder.tokenType == NUMBER ||
                 builder.tokenType == DOT ||
-                builder.tokenType == PARENTHESIS ||
-                builder.tokenType == REGEX
+                builder.tokenType == PARENTHESIS
             ) {
                 builder.advanceLexer()
                 hasExpression = true
@@ -407,18 +477,22 @@ class VentoParser : PsiParser {
         return hasExpression
     }
 
+    private fun parseRegex(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, REGEX, "Expected REGEX", true)
+        m.done(ParserElements.REGEX_ELEMENT)
+    }
+
     private fun parseString(builder: PsiBuilder) {
         val m = builder.mark()
-
         expect(builder, STRING, "Expected string", true)
-
         m.done(ParserElements.STRING_ELEMENT)
     }
 
     private fun parseExportClose(builder: PsiBuilder) {
         val m = builder.mark()
 
-        expect(builder, LexerTokens.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
+        expect(builder, EXPORT_CLOSE_KEY, "Expected '/export' keyword")
 
         m.done(ParserElements.EXPORT_CLOSE_ELEMENT)
     }
@@ -616,11 +690,17 @@ private fun expect(
     }
 }
 
-private fun optional(builder: PsiBuilder, expected: IElementType, message: String, expectMultipleTokens: Boolean = false): Boolean {
+private fun optional(
+    builder: PsiBuilder,
+    expected: IElementType,
+    message: String,
+    expectMultipleTokens: Boolean = false,
+    test: (text: String) -> Boolean = { true },
+): Boolean {
     return if (builder.tokenType == expected) {
         builder.advanceLexer()
         return if (expectMultipleTokens && builder.tokenType == expected) {
-            expect(builder, expected, message, true)
+            expect(builder, expected, message, true, test)
         } else {
             true
         }

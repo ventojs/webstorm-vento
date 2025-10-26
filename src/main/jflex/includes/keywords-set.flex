@@ -44,6 +44,11 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {SYMBOL} { return LexerTokens.SYMBOL; }
 
+    "="/{OWS}[(]?{OWS}"function" {
+           enter(FUNCTION);
+           return LexerTokens.EQUAL;
+       }
+
     "=" {
             enter(EXPRESSION);
             return LexerTokens.EQUAL;
@@ -61,6 +66,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
 
 }
+
 
 <SET_BLOCK_MODE> {
     {WHITESPACE}   {  }

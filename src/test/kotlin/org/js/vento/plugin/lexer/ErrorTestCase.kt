@@ -200,7 +200,7 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
                 "foo",
                 "=",
                 "\"",
-                "}}",
+                " }}",
             ),
         )
     }
@@ -214,11 +214,24 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
-    fun `test set that hangs IDE`() {
+    fun `test broken regex that hangs IDE`() {
         lexAndTest(
             "{{ set myVar = /[Hh].*/.*[}]/ }}",
             arrayOf(
-                "{{ set myVar = /[Hh].*/.*[}]/ }}",
+                "{{",
+                "set",
+                "myVar",
+                "=",
+                "/",
+                "[Hh].*",
+                "/",
+                ".",
+                "*",
+                "[",
+                "}",
+                "]",
+                "/",
+                "}}",
             ),
         )
     }
