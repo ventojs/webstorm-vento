@@ -5,12 +5,14 @@
 
 import org.js.vento.plugin.lexer.ErrorTestCase
 import org.js.vento.plugin.lexer.ExportTestCase
+import org.js.vento.plugin.lexer.ForTestCase
 import org.js.vento.plugin.lexer.ImportTestCase
 import org.js.vento.plugin.lexer.SetTestCase
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 import org.junit.runners.Suite.SuiteClasses
 import org.js.vento.plugin.parser.ExportTestCase as ExportParserTestCase
+import org.js.vento.plugin.parser.ForTestCase as ForParserTestCase
 import org.js.vento.plugin.parser.ImportTestCase as ImportParserTestCase
 import org.js.vento.plugin.parser.SetTestCase as SetParserTestCase
 
@@ -23,5 +25,7 @@ import org.js.vento.plugin.parser.SetTestCase as SetParserTestCase
     ImportParserTestCase::class,
     SetTestCase::class,
     SetParserTestCase::class,
+    ForTestCase::class,
+    ForParserTestCase::class,
 )
 class MigrationSuiteTests

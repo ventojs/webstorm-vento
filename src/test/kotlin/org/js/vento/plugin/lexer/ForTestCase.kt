@@ -26,14 +26,51 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
      * Tests basic iteration over an array literal.
      * Syntax: {{ for variable of [elements] }}
      */
-    fun `test for array`() = lexAndTest("{{ for number of [1, 2, 3] }}", arrayOf("{{", "for", "number", "of", "[", "1, 2, 3", "]", "}}"))
+    fun `test for array`() =
+        lexAndTest(
+            "{{ for number of [1, 2, 3] }}",
+            arrayOf(
+                "{{",
+                "for",
+                "number",
+                "of",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                "]",
+                "}}",
+            ),
+        )
 
     /**
      * Tests iteration over an object literal with key-value destructuring.
      * Syntax: {{ for key,value of {key:value} }}
      */
     fun `test for object`() =
-        lexAndTest("{{ for key,value of {a:1,b:2} }}", arrayOf("{{", "for", "key,value", "of", "{", "a:1,b:2", "}", "}}"))
+        lexAndTest(
+            "{{ for key,value of {a:1,b:2} }}",
+            arrayOf(
+                "{{",
+                "for",
+                "key",
+                ",",
+                "value",
+                "of",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "2",
+                "}",
+                "}}",
+            ),
+        )
 
     // =============================================================================
     // Complex Data Structures
@@ -44,14 +81,60 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
      * Syntax: {{ for variable of [{...}] }}
      */
     fun `test for object array`() =
-        lexAndTest("{{ for value of [{a:1},{a:2}] }}", arrayOf("{{", "for", "value", "of", "[", "{a:1},{a:2}", "]", "}}"))
+        lexAndTest(
+            "{{ for value of [{a:1},{a:2}] }}",
+            arrayOf(
+                "{{",
+                "for",
+                "value",
+                "of",
+                "[",
+                "{",
+                "a",
+                ":",
+                "1",
+                "}",
+                ",",
+                "{",
+                "a",
+                ":",
+                "2",
+                "}",
+                "]",
+                "}}",
+            ),
+        )
 
     /**
      * Tests iteration over an array of objects with index and value destructuring.
      * Syntax: {{ for index, value of [...] }}
      */
     fun `test for object array with index`() =
-        lexAndTest("{{ for index, value of [{a:1},{a:2}] }}", arrayOf("{{", "for", "index, value", "of", "[", "{a:1},{a:2}", "]", "}}"))
+        lexAndTest(
+            "{{ for index, value of [{a:1},{a:2}] }}",
+            arrayOf(
+                "{{",
+                "for",
+                "index",
+                ",",
+                "value",
+                "of",
+                "[",
+                "{",
+                "a",
+                ":",
+                "1",
+                "}",
+                ",",
+                "{",
+                "a",
+                ":",
+                "2",
+                "}",
+                "]",
+                "}}",
+            ),
+        )
 
     /**
      * Tests iteration with complex destructuring pattern using index and object pattern.
@@ -59,7 +142,23 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
      * Validates correct tokenization of combined index and object destructuring.
      */
     fun `test for with many values`() =
-        lexAndTest("{{ for index, {name, value} of items }}", arrayOf("{{", "for", "index, {name, value}", "of", " items ", "}}"))
+        lexAndTest(
+            "{{ for index, {name, value} of items }}",
+            arrayOf(
+                "{{",
+                "for",
+                "index",
+                ",",
+                "{",
+                "name",
+                ",",
+                "value",
+                "}",
+                "of",
+                "items",
+                "}}",
+            ),
+        )
 
     /**
      * Tests iteration using array destructuring pattern.
@@ -67,7 +166,21 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
      * Validates correct tokenization of array destructuring syntax.
      */
     fun `test for with array values`() =
-        lexAndTest("{{ for [name, value] of items }}", arrayOf("{{", "for", "[name, value]", "of", " items ", "}}"))
+        lexAndTest(
+            "{{ for [name, value] of items }}",
+            arrayOf(
+                "{{",
+                "for",
+                "[",
+                "name",
+                ",",
+                "value",
+                "]",
+                "of",
+                "items",
+                "}}",
+            ),
+        )
 
     /**
      * Tests iteration with nested array destructuring pattern.
@@ -80,7 +193,11 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "for",
-                "[[n]]",
+                "[",
+                "[",
+                "n",
+                "]",
+                "]",
                 "of",
                 "[",
                 "[",
@@ -88,7 +205,7 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
                 "1",
                 "]",
                 "]",
-                ", ",
+                ",",
                 "[",
                 "[",
                 "2",
@@ -106,10 +223,33 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for of object`() =
         lexAndTest(
             """
-            |{{ for item of {a:1,b:{c:2}} }}
-            |{{ /for }}
+{{ for item of {a:1,b:{c:2}} }}
+{{ /for }}
             """.trimMargin(),
-            arrayOf("{{", "for", "item", "of", "{", "a:1,b:", "{", "c:2", "}", "}", "}}", "\n", "{{", "/for", "}}"),
+            arrayOf(
+                "{{",
+                "for",
+                "item",
+                "of",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "{",
+                "c",
+                ":",
+                "2",
+                "}",
+                "}",
+                "}}",
+                "\n",
+                "{{",
+                "/for",
+                "}}",
+            ),
         )
 
     /**
@@ -122,7 +262,29 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
             |{{ for item of {a:1,b:{c:2} }}
             |{{ /for }}
             """.trimMargin(),
-            arrayOf("{{", "for", "item", "of", "{", "a:1,b:", "{", "c:2", "}", "}", "}", "\n", "{{", "/for", "}}"),
+            arrayOf(
+                "{{",
+                "for",
+                "item",
+                "of",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "{",
+                "c",
+                ":",
+                "2",
+                "}",
+                "}",
+                "}",
+                "{{",
+                "/for",
+                "}}",
+            ),
         )
 
     // =============================================================================
@@ -136,7 +298,29 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for expression`() =
         lexAndTest(
             "{{ for odd_number of [1, 2, 3].filter((n) => n%2) }}",
-            arrayOf("{{", "for", "odd_number", "of", "[", "1, 2, 3", "].filter((n) => n%2)", "}}"),
+            arrayOf(
+                "{{",
+                "for",
+                "odd_number",
+                "of",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                "]",
+                ".",
+                "filter",
+                "(",
+                "(",
+                "n",
+                ")",
+                "=>",
+                "n%2",
+                ")",
+                "}}",
+            ),
         )
 
     /**
@@ -146,7 +330,33 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for with pipe`() =
         lexAndTest(
             "{{ for even_number of [1, 2, 3] |> filter((n) => n % 2 === 0) }}",
-            arrayOf("{{", "for", "even_number", "of", "[", "1, 2, 3", "]", "|> filter((n) => n % 2 === 0)", "}}"),
+            arrayOf(
+                "{{",
+                "for",
+                "even_number",
+                "of",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                "]",
+                "|>",
+                "filter",
+                "(",
+                "(",
+                "n",
+                ")",
+                "=>",
+                "n",
+                "%",
+                "2",
+                "===",
+                "0",
+                ")",
+                "}}",
+            ),
         )
 
     // =============================================================================
@@ -163,7 +373,7 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
             |{{ for item of items }}
             |{{ /for }}
             """.trimMargin(),
-            arrayOf("{{", "for", "item", "of", " items ", "}}", "\n", "{{", "/for", "}}"),
+            arrayOf("{{", "for", "item", "of", "items", "}}", "\n", "{{", "/for", "}}"),
         )
 
     /**
@@ -183,17 +393,17 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for of with missing value `() =
         lexAndTest(
             "{{ for of values }}",
-            arrayOf("{{", "for", "of", " values ", "}}"),
+            arrayOf("{{", "for", "of", "values", "}}"),
         )
 
     /**
      * Tests missing "of" keyword between variable and collection.
      * Invalid syntax: {{ for variable collection }}
      */
-    fun `test for of with missing for `() =
+    fun `test for of with missing of `() =
         lexAndTest(
             "{{ for value values }}",
-            arrayOf("{{", "for", "v", "alue values ", "}}"),
+            arrayOf("{{", "for", "value", "values", "}}"),
         )
 
     /**
@@ -203,18 +413,62 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for missing space`() =
         lexAndTest(
             "{{ forletter of \"abcd\" }}",
-            arrayOf("{{", "f", "orletter of \"abcd\" }}"),
+            arrayOf(
+                "{{",
+                "f",
+                "o",
+                "r",
+                "l",
+                "e",
+                "t",
+                "t",
+                "e",
+                "r",
+                " ",
+                "o",
+                "f",
+                " ",
+                "\"",
+                "a",
+                "b",
+                "c",
+                "d",
+                "\"",
+                " ",
+                "}}",
+            ),
         )
 
     /**
      * Tests malformed closing tag with incorrect keyword.
      * Invalid syntax: {{ /fr }} instead of {{ /for }}
      */
-    fun `test broken closing for`() = lexAndTest("{{ /fr }}", arrayOf("{{", "/", "fr }}"))
+    fun `test broken closing for`() =
+        lexAndTest(
+            "{{ /fr }}",
+            arrayOf(
+                "{{",
+                "/",
+                "f",
+                "r",
+                " ",
+                "}}",
+            ),
+        )
 
     /**
      * Tests malformed closing tag without spacing.
      * Invalid syntax: {{/fr}} instead of {{ /for }}
      */
-    fun `test trimmed broken closing for`() = lexAndTest("{{/fr}}", arrayOf("{{", "/", "fr}}"))
+    fun `test trimmed broken closing for`() =
+        lexAndTest(
+            "{{/fr}}",
+            arrayOf(
+                "{{",
+                "/",
+                "f",
+                "r",
+                "}}",
+            ),
+        )
 }

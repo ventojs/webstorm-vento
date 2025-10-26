@@ -50,7 +50,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
 //    {ELSE} { enter(LAYOUT); return LexerTokens.ELSE_KEY; }
 //    {ELSEIF} { enter(LAYOUT); return LexerTokens.ELSEIF_KEY; }
     {EXPORT} { enter(EXPORT); return LexerTokens.EXPORT_KEY; }
-//    {FOR} { enter(FOR); return LexerTokens.FOR_KEY; }
+    {FOR} / {WHITESPACE} { enter(FOR); return LexerTokens.FOR_KEY; }
 //    {FUNCTION} { enter(FUNCTION); return LexerTokens.FUNCTION_KEY; }
 //    {IF} { enter(IF); return LexerTokens.IF_KEY; }
     {IMPORT} { enter(IMPORT); return LexerTokens.IMPORT_KEY; }
@@ -59,10 +59,6 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     {SET} { enter(SET); return LexerTokens.SET_KEY; }
 //    {SLOT} { enter(SLOT); return LexerTokens.LAYOUT_SLOT_KEY; }
 
-    [^}][^}]? {
-        //debug("<KEYWORDS> [^]+ / {CBLOCK}");
-        return LexerTokens.UNKNOWN;
-    }
 
 }
 
@@ -70,6 +66,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     {WHITESPACE} {  }
     "/"{EXPORT} { return LexerTokens.EXPORT_CLOSE_KEY;}
     "/"{SET} { return LexerTokens.SET_CLOSE_KEY;}
+    "/"{FOR} { return LexerTokens.FOR_CLOSE_KEY;}
     {CBLOCK}  {
           yypushback(yylength());
           leave();

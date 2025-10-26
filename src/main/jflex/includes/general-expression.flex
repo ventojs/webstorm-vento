@@ -5,13 +5,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 2 - START
 
 %state EXPRESSION
-%state EXP_BRACKET
-%state EXP_JSON_STRING
-%state EXP_OBJECT
-%state EXP_REGEX
-%state EXP_STR_BK_TICK
-%state EXP_STR_DBL_QOUTE
-%state EXP_STR_SNGL_QUOTE
 
 // BLOCK 2 - END
 %%
@@ -21,23 +14,26 @@ import org.js.vento.plugin.lexer.LexerTokens;
     {WHITESPACE} { }
 
    //strings
-   \"([^\"\\]|\\.)*\" { return LexerTokens.STRING; }
-
-   \'([^\'\\]|\\.)*\' { return LexerTokens.STRING; }
-
-   \`([^\`\\]|\\.)*\` { return LexerTokens.STRING; }
+   \"|\'|\` {  yypushback(yylength()); enter(STRING); }
 
    // regex
    \/([^\\/\[]|\\.|(\[([^\]\\]|\\.)*\]))*\/ { return LexerTokens.REGEX; }
 
    [.]  { return LexerTokens.DOT; }
+   [,]  { return LexerTokens.COMMA; }
 
-   [()\[\]]  { return LexerTokens.BRACKET; }
+   [()]  { return LexerTokens.PARENTHESIS; }
+
+   \[ {
+            objectDepth=0;
+            yypushback(yylength());
+            enter(ARRAY);
+        }
 
    \{ {
-        objectDepth=1;
-        yybegin(EXP_OBJECT);
-        return LexerTokens.EXPRESSION;
+        objectDepth=0;
+        yypushback(yylength());
+        enter(OBJECT);
       }
 
    "|>" {
@@ -45,39 +41,14 @@ import org.js.vento.plugin.lexer.LexerTokens;
         leave();
     }
 
-   "}}" {
-        yypushback(yylength());
-        leave();
-   }
+   ([0-9][0-9_]?)*[0-9]+ {return LexerTokens.NUMBER;}
 
-   [^\/\"'`(){} \t\n\r]+ { return LexerTokens.EXPRESSION; }
+   [^\/\"'`()\[\]{},. \t\n\r]+ { return LexerTokens.SYMBOL; }
 
-}
-
-<EXP_OBJECT> {
-
-    \{ {
-            objectDepth++;
-            return LexerTokens.EXPRESSION;
-        }
-
-    [\"][^\"\n\r]*[\"] { return LexerTokens.STRING; }
-
-    [^}{\"]+ {return LexerTokens.EXPRESSION;}
-
-    \} {
-            objectDepth--;
-            if (objectDepth == 0) {
-                yybegin(EXPRESSION);
-            }
-            return LexerTokens.EXPRESSION;
-        }
-
-    <<EOF>> {
-             leave();
-             return LexerTokens.UNKNOWN;
-        }
-
+   [\]\}] {
+          yypushback(yylength());
+          leave();
+      }
 }
 
 

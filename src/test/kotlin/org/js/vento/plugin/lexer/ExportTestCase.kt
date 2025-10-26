@@ -10,7 +10,16 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple export string`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "message",
+                "=",
+                "\"",
+                "Hello, world!",
+                "\"",
+                "}}",
+            ),
         )
 
     fun `test simple close export`() = lexAndTest("{{ /export }}", arrayOf("{{", "/export", "}}"))
@@ -30,7 +39,18 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test export with pipe`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" |> toUpperCase }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "toUpperCase", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "message",
+                "=",
+                "\"",
+                "Hello, world!",
+                "\"",
+                "|>",
+                "toUpperCase",
+                "}}",
+            ),
         )
 
     fun `test export with pipe 2`() =
@@ -41,7 +61,9 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
                 "export",
                 "message",
                 "=",
-                "\"Hello, world!\"",
+                "\"",
+                "Hello, world!",
+                "\"",
                 "|>",
                 "filter",
                 "(",
@@ -55,7 +77,8 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
                 "===",
                 "0",
                 ")",
-                ".toString",
+                ".",
+                "toString",
                 "(",
                 ")",
                 "}}",
@@ -65,18 +88,64 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test export with pipe 3`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" |> !/[/\"\\]}]/.test('foo/bar') }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "!", "/[/\"\\]}]/", ".test", "(", "'foo/bar'", ")", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "message",
+                "=",
+                "\"",
+                "Hello, world!",
+                "\"",
+                "|>",
+                "!",
+                "/[/\"\\]}]/",
+                ".",
+                "test",
+                "(",
+                "'",
+                "foo/bar",
+                "'",
+                ")",
+                "}}",
+            ),
         )
 
     fun `test export with pipe 4`() =
         lexAndTest(
             "{{ export message = \"Hello, world!\" |> JSON.stringify }}",
-            arrayOf("{{", "export", "message", "=", "\"Hello, world!\"", "|>", "JSON.stringify", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "message",
+                "=",
+                "\"",
+                "Hello, world!",
+                "\"",
+                "|>",
+                "JSON",
+                ".",
+                "stringify",
+                "}}",
+            ),
         )
 
     fun `test export with expression`() =
         lexAndTest(
             "{{ export foo = JSON.parse(\"{}\") }}",
-            arrayOf("{{", "export", "foo", "=", "JSON.parse", "(", "\"{}\"", ")", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "foo",
+                "=",
+                "JSON",
+                ".",
+                "parse",
+                "(",
+                "\"",
+                "{}",
+                "\"",
+                ")",
+                "}}",
+            ),
         )
 }

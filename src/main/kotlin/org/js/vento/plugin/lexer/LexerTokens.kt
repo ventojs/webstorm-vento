@@ -209,7 +209,13 @@ object LexerTokens {
     val BRACKET = LexerToken("BRACKET")
 
     @JvmField
+    val PARENTHESIS = LexerToken("PARENTHESIS")
+
+    @JvmField
     val DOT = LexerToken("DOT")
+
+    @JvmField
+    val COMMA = LexerToken("COMMA")
 
     @JvmField
     val EMPTY_LINE = LexerToken("EMPTY_LINE")
@@ -230,6 +236,15 @@ object LexerTokens {
     val STRING = LexerToken("STRING")
 
     @JvmField
+    val NUMBER = LexerToken("NUMBER")
+
+    @JvmField
+    val BOOLEAN = LexerToken("BOOLEAN")
+
+    @JvmField
+    val COLON = LexerToken("COLON")
+
+    @JvmField
     val TEXT = LexerToken("TEXT")
 
     @JvmField
@@ -243,4 +258,7 @@ object LexerTokens {
 
     @JvmField
     val OBJECT = LexerToken("OBJECT")
+
+    @JvmField
+    val BRACE = LexerToken("BRACE")
 }

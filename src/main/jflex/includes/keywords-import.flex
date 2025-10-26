@@ -6,7 +6,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 2 - START
 
 %state IMPORT
-%state FILE
 
 IMPORT = "import"
 FROM = "from"

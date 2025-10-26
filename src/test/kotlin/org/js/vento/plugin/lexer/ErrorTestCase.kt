@@ -9,7 +9,33 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test no keyword`() {
         lexAndTest(
             "\n{{ notkeyword something }}\n",
-            arrayOf("\n", "{{", "notkeyword", "something", "}}", "\n"),
+            arrayOf(
+                "\n",
+                "{{",
+                "n",
+                "o",
+                "t",
+                "k",
+                "e",
+                "y",
+                "w",
+                "o",
+                "r",
+                "d",
+                " ",
+                "s",
+                "o",
+                "m",
+                "e",
+                "t",
+                "h",
+                "i",
+                "n",
+                "g",
+                " ",
+                "}}",
+                "\n",
+            ),
         )
     }
 
@@ -30,28 +56,138 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test incorrect import`() {
         lexAndTest(
             "{{ import message = 10 }}",
-            arrayOf("{{", "import", "message", "=", " 1", "0 ", "}}"),
+            arrayOf(
+                "{{",
+                "import",
+                "message",
+                "=",
+                "1",
+                "0",
+                " ",
+                "}}",
+            ),
         )
     }
 
     fun `test unclosed block`() {
         lexAndTest(
             "{{ /set {{ foo }}",
-            arrayOf("{{", "/set", "{{", "foo", "}}"),
+            arrayOf(
+                "{{",
+                "/set",
+                "{{",
+                "f",
+                "o",
+                "o",
+                " ",
+                "}}",
+            ),
         )
     }
 
     fun `test unclosed block2`() {
         lexAndTest(
             "{{ foo {{ bar }}",
-            arrayOf("{{", "foo", "{{", "bar", "}}"),
+            arrayOf(
+                "{{",
+                "f",
+                "o",
+                "o",
+                " ",
+                "{",
+                "{",
+                " ",
+                "b",
+                "a",
+                "r",
+                " ",
+                "}}",
+            ),
         )
     }
 
     fun `test keyword typo`() {
         lexAndTest(
             "{{ se foo = \"bar\" }}",
-            arrayOf("{{", "se", "foo", "=", "\"bar\"", "}}"),
+            arrayOf(
+                "{{",
+                "s",
+                "e",
+                " ",
+                "f",
+                "o",
+                "o",
+                " ",
+                "=",
+                " ",
+                "\"",
+                "b",
+                "a",
+                "r",
+                "\"",
+                " ",
+                "}}",
+            ),
+        )
+    }
+
+    fun `test recover`() {
+        lexAndTest(
+            """
+{{ for number of [1,2,3] }}
+{{ "hello " + number }}
+{{ / }}
+{{ "hi!" }}
+            """.trimIndent(),
+            arrayOf(
+                "{{",
+                "for",
+                "number",
+                "of",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                "]",
+                "}}",
+                "\n",
+                "{{",
+                "\"",
+                "h",
+                "e",
+                "l",
+                "l",
+                "o",
+                " ",
+                "\"",
+                " ",
+                "+",
+                " ",
+                "n",
+                "u",
+                "m",
+                "b",
+                "e",
+                "r",
+                " ",
+                "}}",
+                "\n",
+                "{{",
+                "/",
+                " ",
+                "}}",
+                "\n",
+                "{{",
+                "\"",
+                "h",
+                "i",
+                "!",
+                "\"",
+                " ",
+                "}}",
+            ),
         )
     }
 }

@@ -21,9 +21,6 @@ object ParserElements {
     val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
 
     @JvmField
-    val EXPRESSION = ParserElement("EXPRESSION")
-
-    @JvmField
     val HTML_ELEMENT = ParserElement("HTML_ELEMENT")
 
     @JvmField
@@ -39,6 +36,9 @@ object ParserElements {
     // Control flow elements
     @JvmField
     val FOR_ELEMENT: IElementType = ParserElement("FOR_ELEMENT")
+
+    @JvmField
+    val FOR_CLOSE_ELEMENT: IElementType = ParserElement("FOR_CLOSE_ELEMENT")
 
     // Import elements
     @JvmField
@@ -85,6 +85,18 @@ object ParserElements {
     @JvmField
     val VENTO_ELEMENT: IElementType = ParserElement("VENTO_ELEMENT")
 
+    @JvmField
+    val STRING_ELEMENT: IElementType = ParserElement("STRING_ELEMENT")
+
+    @JvmField
+    val ARRAY_ELEMENT: IElementType = ParserElement("ARRAY_ELEMENT")
+
+    @JvmField
+    val EXPRESSION_ELEMENT: IElementType = ParserElement("EXPRESSION_ELEMENT")
+
+    @JvmField
+    val UNKNOWN_ELEMENT: IElementType = ParserElement("UNKNOWN_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).
@@ -94,21 +106,23 @@ object ParserElements {
             when (node.elementType) {
                 VENTO_ELEMENT -> VentoElement(node)
                 DEFAULT_ELEMENT -> HtmlElement(node)
-                HTML_ELEMENT -> HtmlElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
                 JAVACRIPT_VARIABLE_ELEMENT -> VariableElement(node)
                 FOR_ELEMENT -> ForBlockElement(node)
+                FOR_CLOSE_ELEMENT -> ForBlockElement(node)
                 IMPORT_ELEMENT -> ImportElement(node)
                 EXPORT_ELEMENT -> ExportElement(node)
                 EXPORT_OPEN_ELEMENT -> ExportOpenElement(node)
                 EXPORT_CLOSE_ELEMENT -> ExportCloseElement(node)
                 EXPORT_FUNCTION_ELEMENT -> ExportFunctionElement(node)
+                EXPRESSION_ELEMENT -> ExpressionElement(node)
                 SET_ELEMENT -> SetElement(node)
                 SET_CLOSE_ELEMENT -> SetCloseElement(node)
                 LAYOUT_ELEMENT -> LayoutElement(node)
                 LAYOUT_CLOSE_ELEMENT -> LayoutCloseElement(node)
                 OBJECT_ELEMENT -> ObjectElement(node)
                 INCLUDE_ELEMENT -> IncludeElement(node)
+                STRING_ELEMENT -> StringElement(node)
                 else -> DefaultElement(node)
             }
     }

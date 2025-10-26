@@ -18,7 +18,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %type IElementType
 %unicode
 %char
-//%debug
 
 
 // STATES
@@ -26,6 +25,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 %state SCRIPT_CONTENT
 %state BLOCK
 %state BLOCK_CONTENT
+%state UNKNOWN
 
 
 %{
@@ -36,14 +36,28 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
   private static final java.util.Map<Integer, String> STATE_NAMES = new java.util.HashMap<>();
   static {
     STATE_NAMES.put(YYINITIAL, "YYINITIAL");
-    STATE_NAMES.put(COMMENT, "COMMENT");
-    STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
     STATE_NAMES.put(BLOCK, "BLOCK");
-    STATE_NAMES.put(KEYWORDS, "KEYWORDS");
-    STATE_NAMES.put(KEYWORDS_CLOSE, "KEYWORDS_CLOSE");
+    STATE_NAMES.put(COMMENT, "COMMENT");
     STATE_NAMES.put(EXPORT, "EXPORT");
     STATE_NAMES.put(EXPRESSION, "EXPRESSION");
+    STATE_NAMES.put(FILE, "FILE");
+    STATE_NAMES.put(FOR, "FOR");
+    STATE_NAMES.put(BEFORE_OF, "BEFORE_FOR");
     STATE_NAMES.put(FUNCTION, "FUNCTION");
+    STATE_NAMES.put(IMPORT, "IMPORT");
+    STATE_NAMES.put(KEYWORDS, "KEYWORDS");
+    STATE_NAMES.put(KEYWORDS_CLOSE, "KEYWORDS_CLOSE");
+    STATE_NAMES.put(NOKEYWORDS, "NOKEYWORDS");
+    STATE_NAMES.put(SET, "SET");
+    STATE_NAMES.put(SET_BLOCK_MODE, "SET_BLOCK_MODE");
+    STATE_NAMES.put(SET_VALUE, "SET_VALUE");
+    STATE_NAMES.put(OBJECT, "OBJECT");
+    STATE_NAMES.put(ARRAY, "ARRAY");
+    STATE_NAMES.put(SCRIPT_CONTENT, "SCRIPT_CONTENT");
+    STATE_NAMES.put(STRING, "STRING");
+    STATE_NAMES.put(STRING_DUBL, "STRING_DUBL");
+    STATE_NAMES.put(STRING_SNGL, "STRING_SNGL");
+    STATE_NAMES.put(STRING_BKTK, "STRING_BKTK");
 //    BLOCK, KEYWORDS, EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE
     // Add included states too (from include files) once compiled in:
     // e.g. STATE_NAMES.put(KEYWORDS, "KEYWORDS"); STATE_NAMES.put(EXPORT, "EXPORT"); STATE_NAMES.put(EXPRESSION, "EXPRESSION"); etc.
@@ -58,7 +72,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
   private void enter(int s) {
     int caller = yystate();            // <-- push the *current* state
     stateStack.push(caller);
-    if (DEBUG) System.out.println("enter: " + stName(caller) + " -> " + stName(s));
+    if (DEBUG) System.out.println((stName(caller) + " -> " + stName(s) + " ("+yytext()+"):"+remaining()).indent(stateStack.size()));
     yybegin(s);
   }
 
@@ -67,10 +81,14 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
     if (stateStack.isEmpty())
       throw new IllegalStateException("leave() with empty state stack");
     int caller = stateStack.pop();
-    if (DEBUG) System.out.println("leave -> " + stName(caller));
+    if (DEBUG) System.out.println((stName(caller)+" <- " + stName(yystate()) + " ("+yytext()+"):"+remaining()).indent(stateStack.size()+1));
     yybegin(caller);
   }
 
+  private String remaining() {
+    // from current position to end of input
+    return "\n"+zzBuffer.subSequence( zzCurrentPos, zzEndRead).toString()+"\n";
+  }
   /** Optional: hard jump (not LIFO) if you need to abort nested states. */
   private void resetAt(int s) {
     stateStack.clear();
@@ -99,6 +117,8 @@ EMPTY_LINE=(\r\n|\r|\n)[ \t]*(\r\n|\r|\n)
 WHITESPACE = [ \t\r\n]+
 OWS = [ \t\r\n]*
 STRING = [\"][^\"\n\r]*[\"]
+NUMBER = [0-9_]+
+BOOLEAN = "true"|"false"
 
 EQUAL = [=]
 SYMBOL = [a-zA-Z_$]+[a-zA-Z_$0-9]*
@@ -172,9 +192,7 @@ CVAR = -?{CBLOCK}
     {CBLOCK} { leave(); return LexerTokens.VBLOCK_CLOSE;}
     {KEYWORDS} { pushbackall(); enter(KEYWORDS); }
     {CLOSING_KEYWORDS} { pushbackall(); enter(KEYWORDS_CLOSE); }
-    [=\"] {return LexerTokens.UNKNOWN;}
-    [\w]{1,2}|[\w]{7}[\w]+ {pushbackall(); enter(NOKEYWORDS);}
-    "/"[\w]{1,2}|"/"[\w]{7}[\w]+ {return LexerTokens.UNKNOWN;}
+
 //    {COMMENT} {
 //            yypushback(yylength());
 //            enter(COMMENT);
@@ -184,11 +202,19 @@ CVAR = -?{CBLOCK}
 
 }
 
+<UNKNOWN> {
+
+    [^}] { return LexerTokens.UNKNOWN;}
+    "}}" { pushbackall(); leave();}
+
+}
+
 
 
 
 %include includes/keywords.flex
 %include includes/keywords-export.flex
+%include includes/keywords-for.flex
 %include includes/keywords-import.flex
 %include includes/keywords-set.flex
 
@@ -198,6 +224,9 @@ CVAR = -?{CBLOCK}
 %include includes/general-pipe.flex
 %include includes/general-function.flex
 %include includes/general-file.flex
+%include includes/general-object.flex
+%include includes/general-array.flex
+%include includes/general-string.flex
 
 <BLOCK> {
         <<EOF>> {
@@ -205,8 +234,8 @@ CVAR = -?{CBLOCK}
             leave();
             return LexerTokens.UNKNOWN;
         }
-        [a-zA-Z0-9]+ {
-            //debug("<BLOCK> [a-zA-Z0-9]+");
+        [^] {
+            enter(UNKNOWN);
             return LexerTokens.UNKNOWN;
         }
         {OBLOCK} {
@@ -214,16 +243,40 @@ CVAR = -?{CBLOCK}
             }
     }
 
-<EXPORT, IMPORT, SET, SET_VALUE, SET_BLOCK_MODE, FILE, KEYWORDS, NOKEYWORDS, EXPRESSION, FUNCTION, KEYWORDS_CLOSE> {
+< EXPORT, EXPRESSION, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  ARRAY > {
         "}}"|"{{" {
+            //debug("\"}}\"|\"{{\"");
             yypushback(yylength());
             leave();
         }
         <<EOF>> { leave(); }
         [^] {
-            //debug("*");
             leave();
             return LexerTokens.UNKNOWN;
         }
     }
 
+<BEFORE_OF> {
+        <<EOF>> { leave(); }
+        [^] {
+            //debug("*: "+yytext());
+            yypushback(yylength());
+            leave();
+        }
+    }
+
+
+<OBJECT> {
+        "{{" {
+
+            yypushback(yylength());
+            leave();
+        }
+
+        [^] {
+            leave();
+            return LexerTokens.UNKNOWN;
+        }
+
+        <<EOF>> { leave(); }
+    }
