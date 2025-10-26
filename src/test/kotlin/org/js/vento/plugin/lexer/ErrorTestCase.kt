@@ -235,4 +235,32 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
     }
+
+    fun `test failing include`() {
+        lexAndTest(
+            """{{ include "/sub/my-file.vto" { salute: "Very" + "" + "Welcome" } }}""",
+            arrayOf(
+                "{{",
+                "include",
+                "\"",
+                "/sub/my-file.vto",
+                "\"",
+                "{",
+                "salute",
+                ":",
+                "\"",
+                "Very",
+                "\"",
+                "+",
+                "\"",
+                "\"",
+                "+",
+                "\"",
+                "Welcome",
+                "\"",
+                "}",
+                "}}",
+            ),
+        )
+    }
 }

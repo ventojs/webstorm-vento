@@ -98,7 +98,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
 
   private String remaining() {
     // from current position to end of input
-    return "\n"+zzBuffer.subSequence( zzCurrentPos, zzEndRead).toString()+"\n";
+    return "\n"+zzBuffer.subSequence( zzCurrentPos+yylength(), zzEndRead).toString()+"\n";
   }
   /** Optional: hard jump (not LIFO) if you need to abort nested states. */
   private void resetAt(int s) {
@@ -259,6 +259,7 @@ CVAR = -?{CBLOCK}
 %include includes/keywords-for.flex
 %include includes/keywords-import.flex
 %include includes/keywords-set.flex
+%include includes/keywords-include.flex
 
 %include includes/no-keywords.flex
 
@@ -285,7 +286,7 @@ CVAR = -?{CBLOCK}
             }
     }
 
-< EXPORT, EXPRESSION, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  ARRAY > {
+< EXPORT, EXPRESSION, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  ARRAY, INCLUDE > {
         "}}"|"{{" {
             //debug("\"}}\"|\"{{\"");
             yypushback(yylength());
@@ -314,6 +315,7 @@ CVAR = -?{CBLOCK}
             yypushback(yylength());
             leave();
         }
+        [+] {return LexerTokens.PLUS;}
 
         [^] {
             leave();

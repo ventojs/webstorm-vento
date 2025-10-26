@@ -31,9 +31,7 @@ import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
-import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_START
 import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
@@ -51,6 +49,7 @@ import org.js.vento.plugin.lexer.LexerTokens.NUMBER
 import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PARENTHESIS
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
+import org.js.vento.plugin.lexer.LexerTokens.PLUS
 import org.js.vento.plugin.lexer.LexerTokens.REGEX
 import org.js.vento.plugin.lexer.LexerTokens.SEMICOLON
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
@@ -149,7 +148,7 @@ class VentoParser : PsiParser {
 //            LAYOUT_SLOT_START -> parseSlot(builder)
 //            LAYOUT_SLOT_CLOSE_START -> parseSlotClose(builder)
 //            OBJECT -> parseObject(builder)
-            INCLUDE_START -> parseInclude(builder)
+            INCLUDE_KEY -> parseInclude(builder)
             UNKNOWN -> parseUnknown(builder)
             else -> {
                 val marker = builder.mark()
@@ -168,29 +167,30 @@ class VentoParser : PsiParser {
 
     private fun parseInclude(builder: PsiBuilder) {
         val m = builder.mark()
-        expect(builder, INCLUDE_START, "Expected '{{' ")
         expect(builder, INCLUDE_KEY, "Expected 'include' keyword' ")
         parseExpression(builder)
-        parseObject(builder)
+        parseObject(builder, true)
         parsePipe(builder)
-        expect(builder, INCLUDE_END, "Expected '}}'")
+        closeOrError(builder, "syntax error: include 'path/to/file.js' | data | pipe")
         m.done(ParserElements.INCLUDE_ELEMENT)
     }
 
-    private fun parseObject(builder: PsiBuilder) {
-        val m = builder.mark()
+    private fun parseObject(builder: PsiBuilder, optional: Boolean = false) {
+        if (!optional || builder.tokenType == BRACE) {
+            val m = builder.mark()
 
-        expect(builder, BRACE, "Expected bracket", false) { it.trim() == "{" }
-        if (builder.tokenType != BRACE && builder.tokenText?.trim() != "}") {
-            parseObjectElement(builder)
-            while (!builder.eof() && builder.tokenType == COMMA) {
-                builder.advanceLexer() // comma
+            expect(builder, BRACE, "Expected brace", false) { it.trim() == "{" }
+            if (builder.tokenType != BRACE && builder.tokenText?.trim() != "}") {
                 parseObjectElement(builder)
+                while (!builder.eof() && builder.tokenType == COMMA) {
+                    builder.advanceLexer() // comma
+                    parseObjectElement(builder)
+                }
             }
-        }
-        expect(builder, BRACE, "Expected bracket", false) { it.trim() == "}" }
+            expect(builder, BRACE, "Expected brace", false) { it.trim() == "}" }
 
-        m.done(ParserElements.OBJECT_ELEMENT)
+            m.done(ParserElements.OBJECT_ELEMENT)
+        }
     }
 
     private fun parseObjectElement(builder: PsiBuilder) {
@@ -439,6 +439,7 @@ class VentoParser : PsiParser {
                     (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
                     (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
                     builder.tokenType == DOT ||
+                    builder.tokenType == PLUS ||
                     builder.tokenType == PARENTHESIS ||
                     builder.tokenType == UNKNOWN
             )
@@ -462,6 +463,7 @@ class VentoParser : PsiParser {
                 builder.tokenType == BOOLEAN ||
                 builder.tokenType == NUMBER ||
                 builder.tokenType == DOT ||
+                builder.tokenType == PLUS ||
                 builder.tokenType == PARENTHESIS
             ) {
                 builder.advanceLexer()

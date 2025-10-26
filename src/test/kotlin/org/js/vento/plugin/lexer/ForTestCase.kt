@@ -136,6 +136,35 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
 
+    fun `test for string array`() =
+        lexAndTest(
+            """{{ for value of ["a"+"b"+"c","hello"] }}""",
+            arrayOf(
+                "{{",
+                "for",
+                "value",
+                "of",
+                "[",
+                "\"",
+                "a",
+                "\"",
+                "+",
+                "\"",
+                "b",
+                "\"",
+                "+",
+                "\"",
+                "c",
+                "\"",
+                ",",
+                "\"",
+                "hello",
+                "\"",
+                "]",
+                "}}",
+            ),
+        )
+
     /**
      * Tests iteration with complex destructuring pattern using index and object pattern.
      * Syntax: {{ for index, {name, value} of items }}

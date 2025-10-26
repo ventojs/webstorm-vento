@@ -30,6 +30,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
           enter(STRING);
       }
 
+
 }
 
 <OBJECT_STRING> {

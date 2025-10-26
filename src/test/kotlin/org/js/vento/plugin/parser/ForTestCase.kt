@@ -28,6 +28,11 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testForObjectWithStrings() {
+        val code = """{{ for value of ["a"+"b"+"c","hello"] }}"""
+        doCodeTest(code)
+    }
+
     fun testCompleteForObject() {
         val code =
             """

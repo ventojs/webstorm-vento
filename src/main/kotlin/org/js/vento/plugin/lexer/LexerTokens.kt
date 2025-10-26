@@ -269,5 +269,8 @@ object LexerTokens {
     val BRACE = LexerToken("BRACE")
 
     @JvmField
+    val PLUS = LexerToken("PLUS")
+
+    @JvmField
     val RETURN = LexerToken("RETURN")
 }

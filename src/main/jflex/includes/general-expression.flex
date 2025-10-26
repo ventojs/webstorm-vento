@@ -27,6 +27,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
    [.]  { return LexerTokens.DOT; }
    [,]  { return LexerTokens.COMMA; }
+   [+]  { return LexerTokens.PLUS; }
 
    [()]  { return LexerTokens.PARENTHESIS; }
 
@@ -49,7 +50,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
    ([0-9][0-9_]?)*[0-9]+ {return LexerTokens.NUMBER;}
 
-   [^\/\"'`()\[\]{},. \t\n\r]+ { return LexerTokens.SYMBOL; }
+   [^\/\"'`()\[\]{}+,. \t\n\r]+ { return LexerTokens.SYMBOL; }
 
    [\]\}] {
           yypushback(yylength());
