@@ -31,7 +31,8 @@ class ColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Expression", SyntaxHighlighter.VALUES),
                 AttributesDescriptor("Keyword", SyntaxHighlighter.KEY_WORD),
                 AttributesDescriptor("String", SyntaxHighlighter.STRING),
-                AttributesDescriptor("Variable", SyntaxHighlighter.VARIABLE),
+                AttributesDescriptor("Signs", SyntaxHighlighter.SIGNS),
+                AttributesDescriptor("Symbol", SyntaxHighlighter.VARIABLES),
             )
     }
 
@@ -41,47 +42,40 @@ class ColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
-        comments:
-          {{# This is a sample web page #}}
-          {{#- trimmed comment -#}}
+        {{# This is a sample web page #}}
+        {{#- trimmed comment -#}}
 
-        variable:
-          {{ username || "unknown" }}
-          {{ "Hello World!" |> toUpperCase }}
+        {{ username || "unknown" }}
+        {{ "Hello World!" |> toUpperCase }}
 
-        for:
-          {{ for value of collection |> toUpperCase}}
+        {{ for value of collection |> toUpperCase}}
+          {{ value }}
+        {{ /for}}
+        {{ import { component } from "path/to/file.vto" }}
 
-        import:
-          {{ import { component } from "path/to/file.vto" }}
+        {{ export message = "Hello World!" }}
 
-        export:
-          {{ export message = "Hello World!" }}
+        {{ export message }}
+            <h1>Hello World!</h1>
+        {{ /export }}
 
-          {{ export message }}
-          <h1>Hello World!</h1>
-          {{ /export }}
+        {{ export function sayHello(name) }}
+            <h1>Hello {{ name }}!</h1>
+        {{ /export }}
 
-          {{ export function sayHello(name) }}
-          <h1>Hello {{ name }}!</h1>
-          {{ /export }}
+        {{ set message = "Hello World!" }}
 
-        Set:
-          {{ set message = "Hello World!" }}
+        {{ layout "section.vto" {department: "Marketing", active: true} }}
+          {{ slot header |> toUpperCase }}
+            <h1>Section title</h1>
+          {{ /slot }}
+          <p>Content of the section</p>
+        {{ /layout }}
 
-        layout:
-          {{ layout "section.vto" {department: "Marketing"} }}
-            {{ slot header |> toUpperCase }}
-              <h1>Section title</h1>
-            {{ /slot }}
-            <p>Content of the section</p>
-          {{ /layout }}
 
-        include:
-            {{ include "/my-file.vto" {salute: "Good bye"} |> toUpperCase }}
+        {{ include "/my-file.vto" {salute: "Good bye", size: 10 } |> toUpperCase }}
 
-        Javascript:
-          {{> console.log('Hello World') }}
+        {{> console.log('Hello World') }}
         """.trimIndent()
 
     override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? = null

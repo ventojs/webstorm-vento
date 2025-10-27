@@ -68,6 +68,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;
     STATE_NAMES.put(STRING_BKTK, "STRING_BKTK");
     STATE_NAMES.put(STRING_DUBL, "STRING_DUBL");
     STATE_NAMES.put(STRING_SNGL, "STRING_SNGL");
+    STATE_NAMES.put(UNKNOWN, "UNKNOWN");
     STATE_NAMES.put(YYINITIAL, "YYINITIAL");
 //    BLOCK, KEYWORDS, EXPORT, EXPRESSION, FUNCTION, KEYWORDS_CLOSE
     // Add included states too (from include files) once compiled in:
@@ -248,6 +249,7 @@ CVAR = -?{CBLOCK}
 
     [^}] { return LexerTokens.UNKNOWN;}
     "}}" { pushbackall(); leave();}
+    "}"{OWS}"}"{OWS}"}" { yypushback(2); leave();return LexerTokens.UNKNOWN;}
 
 }
 
