@@ -23,16 +23,23 @@ class ColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
             arrayOf(
+                AttributesDescriptor("Bad characters", SyntaxHighlighter.UNKNOWN_CONTENT),
+                AttributesDescriptor("Block / Comment", SyntaxHighlighter.CBLOCK),
+                AttributesDescriptor("Block / JavaScript", SyntaxHighlighter.JSBLOCK),
+                AttributesDescriptor("Block / Variable", SyntaxHighlighter.VBLOCK),
                 AttributesDescriptor("Args", SyntaxHighlighter.ARGS),
-                AttributesDescriptor("Block / Comment", SyntaxHighlighter.COMMENT),
-                AttributesDescriptor("Block / JavaScript", SyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Block / Variable", SyntaxHighlighter.BLOCK),
+                AttributesDescriptor("Braces", SyntaxHighlighter.BRACES),
+                AttributesDescriptor("Brackets", SyntaxHighlighter.BRACKETS),
+                AttributesDescriptor("Commas", SyntaxHighlighter.COMMAS),
                 AttributesDescriptor("Comment content", SyntaxHighlighter.COMMENTED_CONTENT),
-                AttributesDescriptor("Expression", SyntaxHighlighter.VALUES),
-                AttributesDescriptor("Keyword", SyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("Dots", SyntaxHighlighter.DOTS),
+                AttributesDescriptor("Keyword", SyntaxHighlighter.KEYWORDS),
+                AttributesDescriptor("Numbers", SyntaxHighlighter.NUMBERS),
+                AttributesDescriptor("Operations", SyntaxHighlighter.OPERATIONS),
                 AttributesDescriptor("String", SyntaxHighlighter.STRING),
-                AttributesDescriptor("Signs", SyntaxHighlighter.SIGNS),
-                AttributesDescriptor("Symbol", SyntaxHighlighter.VARIABLES),
+                AttributesDescriptor("Symbol", SyntaxHighlighter.SYMBOLS),
+                AttributesDescriptor("Values", SyntaxHighlighter.VALUES),
+                AttributesDescriptor("Vento keywords", SyntaxHighlighter.VENTO_KEYWORDS),
             )
     }
 
@@ -73,9 +80,11 @@ class ColorSettingsPage : ColorSettingsPage {
         {{ /layout }}
 
 
-        {{ include "/my-file.vto" {salute: "Good bye", size: 10 } |> toUpperCase }}
+        {{ include "/my-file.vto" { salutation: "Good bye", sizes: [10, 20, 30] } |> toUpperCase }}
 
         {{> console.log('Hello World') }}
+
+        {{ bad characters }}
         """.trimIndent()
 
     override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? = null
