@@ -1,9 +1,10 @@
 Vento File(0,31)
-  Element: IMPORT_ELEMENT(0,31)
-    PsiElement(IMPORT_START_TOKEN)('{{')(0,2)
-    PsiElement(IMPORT_KEY_TOKEN)(' import')(2,9)
-    PsiErrorElement:Expected import values(9,9)
-      <empty list>
-    PsiElement(IMPORT_FROM_TOKEN)(' from')(9,14)
-    PsiElement(IMPORT_FILE_TOKEN)(' "./afile.vto"')(14,28)
-    PsiElement(IMPORT_END_TOKEN)(' }}')(28,31)
+  Element: VENTO_ELEMENT(0,31)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: IMPORT_ELEMENT(2,28)
+      PsiElement(IMPORT_KEY_TOKEN)(' import')(2,9)
+      PsiErrorElement:Expected import values(9,9)
+        <empty list>
+      PsiElement(IMPORT_FROM_TOKEN)(' from')(9,14)
+      PsiElement(FILE_TOKEN)(' "./afile.vto"')(14,28)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(28,31)

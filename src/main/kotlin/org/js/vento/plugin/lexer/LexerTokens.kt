@@ -13,6 +13,12 @@ import com.intellij.psi.tree.IElementType
  * and any custom element types for the PSI structure.
  */
 object LexerTokens {
+    @JvmField
+    val VBLOCK_OPEN = LexerToken("VBLOCK_OPEN")
+
+    @JvmField
+    val VBLOCK_CLOSE = LexerToken("VBLOCK_CLOSE")
+
     // Comment tokens
     @JvmField
     val COMMENT = LexerToken("COMMENT")
@@ -41,6 +47,9 @@ object LexerTokens {
 
     @JvmField
     var JAVASCRIPT_START: IElementType = LexerToken("JAVASCRIPT_START")
+
+    @JvmField
+    var STATEMENT: IElementType = LexerToken("STATEMENT")
 
     // Variable tokens
     @JvmField
@@ -98,7 +107,7 @@ object LexerTokens {
     val EXPORT_CLOSE_END = LexerToken("CLOSE_EXPORT_END")
 
     @JvmField
-    val EXPORT_CLOSE_KEY = LexerToken("EXPORT_KEY")
+    val EXPORT_CLOSE_KEY = LexerToken("EXPORT_CLOSE_KEY")
 
     @JvmField
     val EXPORT_CLOSE_START = LexerToken("CLOSE_EXPORT_START")
@@ -110,13 +119,13 @@ object LexerTokens {
     val EXPORT_EQ = LexerToken("EXPORT_EQUAL")
 
     @JvmField
-    val EXPORT_FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
+    val FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
 
     @JvmField
     val EXPORT_FUNCTION_END = LexerToken("EXPORT_FUNCTION_END")
 
     @JvmField
-    val EXPORT_FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
+    val FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
 
     @JvmField
     val EXPORT_FUNCTION_START = LexerToken("EXPORT_FUNCTION_START")
@@ -203,7 +212,13 @@ object LexerTokens {
     val BRACKET = LexerToken("BRACKET")
 
     @JvmField
+    val PARENTHESIS = LexerToken("PARENTHESIS")
+
+    @JvmField
     val DOT = LexerToken("DOT")
+
+    @JvmField
+    val COMMA = LexerToken("COMMA")
 
     @JvmField
     val EMPTY_LINE = LexerToken("EMPTY_LINE")
@@ -212,7 +227,7 @@ object LexerTokens {
     val EQUAL = LexerToken("EQUAL")
 
     @JvmField
-    val IDENTIFIER = LexerToken("IDENTIFIER")
+    val SYMBOL = LexerToken("SYMBOL")
 
     @JvmField
     val PIPE = LexerToken("PIPE")
@@ -222,6 +237,18 @@ object LexerTokens {
 
     @JvmField
     val STRING = LexerToken("STRING")
+
+    @JvmField
+    val NUMBER = LexerToken("NUMBER")
+
+    @JvmField
+    val BOOLEAN = LexerToken("BOOLEAN")
+
+    @JvmField
+    val COLON = LexerToken("COLON")
+
+    @JvmField
+    val SEMICOLON = LexerToken("SEMICOLON")
 
     @JvmField
     val TEXT = LexerToken("TEXT")
@@ -237,4 +264,13 @@ object LexerTokens {
 
     @JvmField
     val OBJECT = LexerToken("OBJECT")
+
+    @JvmField
+    val BRACE = LexerToken("BRACE")
+
+    @JvmField
+    val PLUS = LexerToken("PLUS")
+
+    @JvmField
+    val RETURN = LexerToken("RETURN")
 }

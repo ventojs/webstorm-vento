@@ -1,11 +1,11 @@
 Vento File(0,9)
-  Element: VARIABLE_ELEMENT(0,9)
-    PsiElement(VARIABLE_START_TOKEN)('{{')(0,2)
-    PsiElement(VARIABLE_ELEMENT_TOKEN)(' /')(2,4)
-    PsiElement(VARIABLE_ELEMENT_TOKEN)('se }}')(4,9)
-    PsiErrorElement:Unexpected variable content(9,9)
-      <empty list>
-    PsiErrorElement:Unexpected variable content(9,9)
-      <empty list>
-    PsiErrorElement:Unexpected variable content(9,9)
-      <empty list>
+  Element: VENTO_ELEMENT(0,9)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: UNKNOWN_ELEMENT(2,7)
+      PsiElement(UNKNOWN_TOKEN)(' /')(2,4)
+      PsiElement(UNKNOWN_TOKEN)('s')(4,5)
+      PsiElement(UNKNOWN_TOKEN)('e')(5,6)
+      PsiElement(UNKNOWN_TOKEN)(' ')(6,7)
+      PsiErrorElement:Unexpected token(7,7)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)('}}')(7,9)

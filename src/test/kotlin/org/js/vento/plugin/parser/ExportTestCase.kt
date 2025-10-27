@@ -99,7 +99,7 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testExportWithChainedPipes() {
         val code =
             """
-            {{ export match = JSON.stringify({a:1,b:{c:2}.d:"hello"}) |> toUpperCase |> /HELLO/.test }}
+            {{ export match = JSON.stringify({a:1,b:{c:2},d:"hello"}) |> toUpperCase |> /HELLO/.test }}
             """.trimIndent()
         doCodeTest(code)
     }
@@ -139,7 +139,7 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testExportWithObjectLiteral() {
         val code =
             """
-            {{ export match = {a:1,b:{c:2}.d:"hello"} }}
+            {{ export match = {a:1,b:{c:2},d:"hello"} }}
             """.trimIndent()
         doCodeTest(code)
     }
@@ -176,6 +176,14 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         val code =
             """
             {{ export  }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testExportWithOpenString() {
+        val code =
+            """
+            {{ export foo = " }}
             """.trimIndent()
         doCodeTest(code)
     }

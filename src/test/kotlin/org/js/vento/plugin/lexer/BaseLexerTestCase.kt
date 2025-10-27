@@ -49,21 +49,52 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
         }
     }
 
+    protected fun countVentoBlocks(template: String, count: Int = 1) {
+        var passed = false
+        var openCount = 0
+        var closeCount = 0
+        try {
+            initLexer(template)
+
+            while (lexer.tokenEnd < template.length) {
+                val type = lexer.advance()
+                if (type == LexerTokens.VBLOCK_OPEN) openCount++
+                if (type == LexerTokens.VBLOCK_CLOSE) closeCount++
+            }
+
+//            assertEquals("number of {{ does not match number of }}: ", closeCount, openCount)
+            assertEquals("did not meet expected count: ", count * 2, closeCount + closeCount)
+
+            passed = true
+        } finally {
+            if (!passed) {
+                printlnError("[{{] found: $openCount expected: $count ")
+                printlnError("[}}] found: $closeCount expected: $count ")
+                lexAndPrint(template)
+            }
+        }
+    }
+
     protected fun lexAndPrint(template: String) {
         initLexer(template)
-        printlnError("-".repeat(30))
-        printlnError("Template:")
-        printlnError("-".repeat(30))
-        printlnError(template)
-        printlnError("-".repeat(30))
-        printlnError("Tokens:")
-        printlnError("-".repeat(30))
+        val output = StringBuilder()
+
+        output.appendLine("-".repeat(30))
+        output.appendLine("Template:")
+        output.appendLine("-".repeat(30))
+        output.appendLine(template)
+        output.appendLine("-".repeat(30))
+        output.appendLine("Tokens:")
+        output.appendLine("-".repeat(30))
+
         do {
             val token: Pair<IElementType?, String> = getNext(lexer, template)
-            printlnError(
+            output.appendLine(
                 "token: " + "${token.first}(${token.first?.index})".padEnd(40, ' ') + " = [${token.second}]",
             )
         } while (lexer.tokenEnd < template.length)
+
+        printlnError(output.toString())
     }
 
     private fun initLexer(string: String) {

@@ -13,6 +13,18 @@ class CornerCaseTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(" {{ \n\n")
     }
 
+    fun testNothing() {
+        doCodeTest("")
+    }
+
+    fun testSetCausingHanging() {
+        doCodeTest("{{ set myVar = [{a:1,b:2},{c:3,d:4}] |> JSON.stringify }}")
+    }
+
+    fun testBrokenRegex() {
+        doCodeTest("{{ set myVar = /[Hh].*/.*[}]/ }}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/cornercase"
 
     override fun includeRanges(): Boolean = true
