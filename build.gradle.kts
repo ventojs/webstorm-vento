@@ -393,7 +393,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
 
     // JUnit 6 (Jupiter) for tests
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
+    testImplementation(platform("org.junit:junit-bom:6.0.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 //    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.0")
@@ -401,7 +401,7 @@ dependencies {
 
     // Support for legacy JUnit 3/4 tests (e.g., classes extending TestCase)
     testImplementation("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:6.0.0")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:6.0.1")
 
     // Kotlin test assertions routed to JUnit Platform
     testImplementation(kotlin("test"))
