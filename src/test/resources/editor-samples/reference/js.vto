@@ -1,0 +1,20 @@
+<h1> TITLE </h1>
+
+<p> This is a paragraph
+with many words</p>
+
+{{#- This is where we are with highlighting -#}}
+
+{{ variable || "default" }}
+
+{{>
+
+ let greeting='Hello'
+ let name ="Vento"
+
+ if(greeting) {
+    console.log(`${greeting} ${name}!`)
+ }
+}}
+{{ variable || "default" }}
+

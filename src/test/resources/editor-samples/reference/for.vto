@@ -1,0 +1,79 @@
+
+{{ for number of [1,2,3] }}
+    {{ "hello " + number }}
+{{ /for }}
+
+{{ for key,value of {name:"Flo", age:12} }}
+    {{ key + ": " + value }}
+{{ /for }}
+
+{{ for odd_number of [1, 2, 3].filter((n) => n%2) }}
+  {{ odd_number }}
+{{ /for }}
+
+<ul>
+{{ for index, item of ['tea', 'coffee', 'water'] }}
+  <li>Item {{ index + 1 }}: {{ item }}</li>
+{{ /for }}
+</ul>
+
+{{ for await item of getItems() }}
+  {{ item }}
+{{ /for }}
+
+{{ for letter of "JOHNNY" }}
+  {{ letter }}
+{{ /for }}
+
+
+{{ for count of 10 }}
+  {{ count }}
+{{ /for }}
+
+{{ for count of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10] }}
+  {{ count }}
+{{ /for }}
+
+{{ for letter of "abcd" }}
+  {{ letter }}
+{{ /for }}
+
+{{ for item of undefined  }}
+  {{ item }}
+{{ /for }}
+
+{{ for even_number of [1, 2, 3] |> filter((n) => n % 2 === 0) }}
+  {{ even_number }}
+{{ /for }}
+
+{{ for key,value of {a:1,b:2} }}
+  #{{ key }}:{{value}}
+{{ /for }}
+
+{{ for [[n]] of [[[1]], [[2]]] }}
+{{ for [name, value] of items }}
+
+<!-- ++++++++++++++ -->
+<!--     ERRORS     -->
+<!-- ++++++++++++++ -->
+{{ forletter of "abcd" }}
+{{ for letter of"abcd" }}
+{{ for of "abcd" }}
+{{ fo letter of "abcd" }}
+  {{ letter }}
+{{ /for }}
+
+{{ for of  "abcd" }}
+  {{ letter }}
+{{ /for }}
+
+{{ for letter  "abcd" }}
+  {{ letter }}
+{{ /for }}
+
+<!-- RECOVER FROM ERROR-->
+
+{{ for number of [1,2,3] }}
+    {{ "hello " + number }}
+{{ / }}
+{{ "hi!" }}

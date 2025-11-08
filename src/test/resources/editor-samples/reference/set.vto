@@ -1,0 +1,47 @@
+{{ set myVar = "Hello World of \"vento\"!" }}
+{{ set myVar = 'Hello to the "World\'s People"!' }}
+{{ set myVar = `Hello ${user}!` }}
+{{ set myVar = /[Hh].*\/.*[}]/ }}
+{{ set myVar = "[Hello]/{World!}".match(/[Hh].*\/.*[}]/)  }}
+{{ set myVar = myTextVariable }}
+{{ set myVar = JSON.stringify(data) }}
+{{ set myVar = {a: 1, b: true, c:{d:"hello"}} }}
+{{ set myVar = {"a": 1, "b": true, "c":{"d":"hello"}} }}
+{{ set myVar = [1, 2, 3, 4] }}
+{{ set myVar = [{a:1,b:2},{c:3,d:4}] }}
+{{ set myVar = ["a","b","c","d"] }}
+{{ set myVar = (function() { return 'Hello World!' })() }}
+
+{{ set myVar = "Hello World of \"vento\"!" |> JSON.stringify }}
+{{ set myVar = 'Hello to the "World\'s People"!' |> JSON.stringify }}
+{{ set myVar = `Hello ${user}!` |> JSON.stringify }}
+{{ set myVar = /[Hh].*\/.*[}]/ |> JSON.stringify }}
+{{ set myVar = "[Hello]/{World!}".match(/[Hh].*\/.*[}]/)  |> JSON.stringify }}
+{{ set myVar = myTextVariable |> JSON.stringify }}
+{{ set myVar = JSON.stringify(data) |> JSON.stringify }}
+{{ set myVar = {a: 1, b: true, c:{d:"hello"}} |> JSON.stringify }}
+{{ set myVar = {"a": 1, "b": true, "c":{"d":"hello"}} |> JSON.stringify }}
+{{ set myVar = [1, 2, 3, 4] |> JSON.stringify }}
+{{ set myVar = [{a:1,b:2},{c:3,d:4}] |> JSON.stringify }}
+{{ set myVar = ["a","b","c","d"] |> JSON.stringify }}
+{{ set myVar = function() { return 'Hello World!' } }}
+
+{{ set myVar }}
+    <h1>Hello, world!</h1>
+{{ /set }}
+
+{{ set css }}
+    body::after {
+        content: "Hello, the CSS world!";
+    }
+{{ /set }}
+
+<!-- ERRORS -->
+
+{{ set foo =  }}
+{{ set foo  "set" }}
+{{ set  =  "set" }}
+{{ se foo = "bar" }}
+{{ set myVar = /[Hh].*/.*[}]/ }}
+{{ set myVar = "Hello World of "vento\"!" }}
+{{ set myVar = JSON stringify(data) }}

@@ -9,7 +9,6 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTokens
 import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
@@ -95,7 +94,7 @@ import org.js.vento.plugin.parser.ParserElements.VENTO_ELEMENT
  * - `VentoParserDefinition` for how this parser integrates with the IDE.
  * - `VentoJavaScriptInjector` for handling JavaScript code injection in parsed elements.
  */
-class VentoParser : PsiParser {
+class Parser : PsiParser {
     override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
         val rootMarker = builder.mark()
 
@@ -614,37 +613,6 @@ class VentoParser : PsiParser {
         m.done(ParserElements.FOR_ELEMENT)
     }
 
-    private fun parseVariable(builder: PsiBuilder) {
-        val m = builder.mark()
-        builder.advanceLexer() // consume {{ or {{-
-
-        // Consume content tokens until we see the end or EOF
-        while (
-            !builder.eof() &&
-            (
-                builder.tokenType == LexerTokens.VARIABLE_ELEMENT ||
-                    builder.tokenType == PIPE ||
-                    builder.tokenType == STRING ||
-
-                    builder.tokenType == UNKNOWN
-            )
-        ) {
-            if (builder.tokenType == UNKNOWN) {
-                parseUnknown(builder)
-            }
-            builder.advanceLexer()
-        }
-
-        // Expect end
-        if (builder.tokenType == LexerTokens.VARIABLE_END) {
-            builder.advanceLexer()
-        } else {
-            builder.error("Unexpected variable content")
-        }
-
-        m.done(ParserElements.JAVACRIPT_VARIABLE_ELEMENT)
-    }
-
     private fun parseJavaScript(builder: PsiBuilder) {
         val marker = builder.mark()
 
@@ -676,63 +644,5 @@ class VentoParser : PsiParser {
         }
 
         marker.done(ParserElements.COMMENT_BLOCK)
-    }
-}
-
-/**
- * Represents an element type for the Vento language.
- * Typically used for syntax/AST nodes in the PSI tree.
- */
-class ParserElement(debugName: String) : IElementType(debugName, VentoLanguage)
-
-private fun expect(
-    builder: PsiBuilder,
-    expected: IElementType,
-    message: String,
-    expectMultipleTokens: Boolean = false,
-    test: (text: String) -> Boolean = { true },
-): Boolean {
-    return if (builder.tokenType == expected) {
-        builder.tokenText?.let {
-            if (!test(it)) builder.error("Unexpected token. found: '$it' ${builder.tokenType} ; expected: '$expected' ; $message")
-        }
-
-        builder.advanceLexer()
-        return if (expectMultipleTokens && builder.tokenType == expected) {
-            expect(builder, expected, message, true)
-        } else {
-            true
-        }
-    } else {
-        // TODO: not sure why I am only handling unknown tokens here. I should handl anything that is not expected
-        if (builder.tokenType == UNKNOWN) {
-            builder.advanceLexer()
-        }
-        builder.error(message)
-        false
-    }
-}
-
-private fun optional(
-    builder: PsiBuilder,
-    expected: IElementType,
-    message: String,
-    expectMultipleTokens: Boolean = false,
-    test: (text: String) -> Boolean = { true },
-): Boolean {
-    return if (builder.tokenType == expected) {
-        builder.advanceLexer()
-        return if (expectMultipleTokens && builder.tokenType == expected) {
-            expect(builder, expected, message, true, test)
-        } else {
-            true
-        }
-    } else {
-        if (builder.tokenType == UNKNOWN) {
-            builder.advanceLexer()
-            builder.error(message)
-            return false
-        }
-        false
     }
 }

@@ -1,0 +1,20 @@
+
+{{ export message = "Hello World!" }}
+
+{{ export message = "Hello World!" |> toUpperCase }}
+
+{{ export message |> toUpperCase }}
+<h1>Hello World</h1>
+{{ /export }}
+
+{{ export function sayHello(name) }}
+<h1>Hello {{ name }}!</h1>
+{{ /export }}
+
+{{ export match = JSON.stringify({a:1,b:{c:false},d:"hello"}) |> toUpperCase |> /HELLO/.test }}
+
+<!-- ERRORS -->
+{{ export = "foo" }}
+{{ export message  "foo" }}
+{{ export message =  }}
+{{ export message  }}

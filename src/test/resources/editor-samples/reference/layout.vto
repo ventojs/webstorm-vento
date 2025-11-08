@@ -1,0 +1,24 @@
+
+{{ layout "myfile.vto" }}
+<h1>Hello World</h1>
+{{ /layout }}
+
+{{ layout "section.vto" {department: "Marketing", foo:true} }}
+    {{- slot header |> toUpperCase }}
+        <h1>Section 1</h1>
+    {{ /slot -}}
+    {{ slot header |> toUpperCase }}
+        <h1>Section 2</h1>
+    {{ /slot }}
+    <p>Content of the section</p>
+{{ /layout }}
+
+<!-- ERRORS -->
+
+{{ layout "myfile.vto }}
+<h1>Hello World</h1>
+{{ /layout }}
+
+{{ layout "myfile.vto" }}
+<h1>Hello World</h1>
+{{ /layou }}

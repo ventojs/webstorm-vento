@@ -1,0 +1,15 @@
+{{ include "/my-file.vto" }}
+
+{{ include "/sub/my-file.vto" { salute: "Very" + " " + "Welcome"} }}
+
+{{ include "/sub/my-file.vto" {
+  salute: "Very" + " " + "Welcome"
+} }}
+
+{{ include "/my-file.vto" {salute: "Good bye"} |> toUpperCase }}
+
+{{ include "/my-file.vto" {salute: "Hello from include"} }}
+
+{{ include `${file}.vto` { name: name } }}
+
+{{ include resolve({ path: "/my-file.vto" }) { name } }}
