@@ -11,10 +11,10 @@ import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.GLOBAL_VARIABLE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.KEYWORD
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.LOCAL_VARIABLE
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.STATIC_FIELD
+import com.intellij.openapi.editor.HighlighterColors.BAD_CHARACTER
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
 import com.intellij.openapi.editor.markup.TextAttributes
@@ -22,68 +22,57 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.intellij.ui.JBColor
 import org.js.vento.plugin.lexer.LexerAdapter
+import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
+import org.js.vento.plugin.lexer.LexerTokens.BRACE
+import org.js.vento.plugin.lexer.LexerTokens.BRACKET
+import org.js.vento.plugin.lexer.LexerTokens.COLON
+import org.js.vento.plugin.lexer.LexerTokens.COMMA
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.DOT
+import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_START
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_END
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_EQ
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_ARGS
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_END
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VALUE
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VAR
 import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_COLLECTION
-import org.js.vento.plugin.lexer.LexerTokens.FOR_END
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
-import org.js.vento.plugin.lexer.LexerTokens.FOR_START
 import org.js.vento.plugin.lexer.LexerTokens.FOR_VALUE
-import org.js.vento.plugin.lexer.LexerTokens.IDENTIFIER
-import org.js.vento.plugin.lexer.LexerTokens.IMPORT_END
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARGS
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FILE
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.IMPORT_START
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
-import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_END
 import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.INCLUDE_START
-import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_END
-import org.js.vento.plugin.lexer.LexerTokens.JAVASCRIPT_START
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.INSTANCEOF
+import org.js.vento.plugin.lexer.LexerTokens.JSBLOCK_CLOSE
+import org.js.vento.plugin.lexer.LexerTokens.JSBLOCK_OPEN
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_CLOSE_START
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_START
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_END
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_START
-import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_START
+import org.js.vento.plugin.lexer.LexerTokens.NEW
+import org.js.vento.plugin.lexer.LexerTokens.NUMBER
 import org.js.vento.plugin.lexer.LexerTokens.OBJECT
+import org.js.vento.plugin.lexer.LexerTokens.PARENTHESIS
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
-import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_END
+import org.js.vento.plugin.lexer.LexerTokens.SEMICOLON
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_START
-import org.js.vento.plugin.lexer.LexerTokens.SET_END
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
-import org.js.vento.plugin.lexer.LexerTokens.SET_START
+import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 import org.js.vento.plugin.lexer.LexerTokens.TEXT
 import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_START
+import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
 import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_ELEMENT
-import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_END
-import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_START
+import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
+import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
 import java.awt.Color
 import org.js.vento.plugin.lexer.LexerTokens.STRING as STRING_TOKEN
 
@@ -105,69 +94,58 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
+                BOOLEAN -> KEYWORDS
+                BRACE -> BRACES
+                BRACKET -> BRACKETS
+                COLON -> OPERATIONS
+                COMMA -> COMMAS
                 COMMENT_CONTENT -> COMMENTED_CONTENT
-                COMMENT_END -> COMMENT
-                COMMENT_START -> COMMENT
-                EXPORT_CLOSE_END -> BLOCK
-                EXPORT_CLOSE_KEY -> KEY_WORD
-                EXPORT_CLOSE_START -> BLOCK
-                EXPORT_END -> BLOCK
-                EXPORT_EQ -> KEY_WORD
-                EXPORT_FUNCTION_ARGS -> ARGS
-                EXPORT_FUNCTION_END -> BLOCK
-                EXPORT_FUNCTION_KEY -> KEY_WORD
-                EXPORT_FUNCTION_START -> BLOCK
-                EXPORT_KEY -> KEY_WORD
-                EXPORT_START -> BLOCK
+                COMMENT_END -> CBLOCK
+                COMMENT_START -> CBLOCK
+                DOT -> DOTS
+                EQUAL -> OPERATIONS
+                EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
+                EXPORT_EQ -> KEYWORDS
+                EXPORT_KEY -> VENTO_KEYWORDS
                 EXPORT_VALUE -> VALUES
                 EXPORT_VAR -> VALUES
-                FOR_CLOSE_KEY -> KEY_WORD
-                FOR_COLLECTION -> VALUES
-                FOR_END -> BLOCK
-                FOR_KEY -> KEY_WORD
-                FOR_OF -> KEY_WORD
-                FOR_START -> BLOCK
-                FOR_VALUE -> VALUES
-                IDENTIFIER -> VALUES
-                IMPORT_END -> BLOCK
-                IMPORT_FILE -> STRING
                 FILE -> STRING
-                IMPORT_FROM -> KEY_WORD
-                IMPORT_KEY -> KEY_WORD
-                IMPORT_START -> BLOCK
+                FOR_CLOSE_KEY -> VENTO_KEYWORDS
+                FOR_COLLECTION -> VALUES
+                FOR_KEY -> VENTO_KEYWORDS
+                FOR_OF -> VENTO_KEYWORDS
+                FOR_VALUE -> VALUES
+                FUNCTION_ARGS -> ARGS
+                FUNCTION_KEY -> VENTO_KEYWORDS
+                IMPORT_FILE -> STRING
+                IMPORT_FROM -> KEYWORDS
+                IMPORT_KEY -> VENTO_KEYWORDS
                 IMPORT_VALUES -> VALUES
-                JAVASCRIPT_END -> JAVASCRIPT
-                JAVASCRIPT_START -> JAVASCRIPT
-                PIPE -> KEY_WORD
-                SET_CLOSE_END -> BLOCK
-                SET_CLOSE_KEY -> KEY_WORD
-                SET_CLOSE_START -> BLOCK
-                SET_END -> BLOCK
-                SET_KEY -> KEY_WORD
-                SET_START -> BLOCK
-                STRING_TOKEN -> STRING
-                TEXT -> PLAIN_TEXT
-                TRIM_COMMENT_END -> COMMENT
-                TRIM_COMMENT_START -> COMMENT
-                VARIABLE_ELEMENT -> VARIABLE
-                VARIABLE_END -> BLOCK
-                VARIABLE_START -> BLOCK
-                LAYOUT_START -> BLOCK
-                LAYOUT_END -> BLOCK
-                LAYOUT_KEY -> KEY_WORD
-                LAYOUT_CLOSE_START -> BLOCK
-                LAYOUT_CLOSE_END -> BLOCK
-                LAYOUT_CLOSE_KEY -> KEY_WORD
-                LAYOUT_SLOT_START -> BLOCK
-                LAYOUT_SLOT_END -> BLOCK
-                LAYOUT_SLOT_KEY -> KEY_WORD
-                LAYOUT_SLOT_CLOSE_START -> BLOCK
-                LAYOUT_SLOT_CLOSE_END -> BLOCK
-                LAYOUT_SLOT_CLOSE_KEY -> KEY_WORD
+                INCLUDE_KEY -> VENTO_KEYWORDS
+                JSBLOCK_OPEN -> JSBLOCK
+                JSBLOCK_CLOSE -> JSBLOCK
+                LAYOUT_CLOSE_KEY -> VENTO_KEYWORDS
+                LAYOUT_KEY -> VENTO_KEYWORDS
+                LAYOUT_SLOT_CLOSE_KEY -> KEYWORDS
+                LAYOUT_SLOT_KEY -> KEYWORDS
+                NUMBER -> NUMBERS
                 OBJECT -> VALUES
-                INCLUDE_START -> BLOCK
-                INCLUDE_KEY -> KEY_WORD
-                INCLUDE_END -> BLOCK
+                PARENTHESIS -> KEYWORDS
+                PIPE -> VENTO_KEYWORDS
+                SEMICOLON -> KEYWORDS
+                SET_CLOSE_KEY -> VENTO_KEYWORDS
+                SET_KEY -> VENTO_KEYWORDS
+                STRING_TOKEN -> STRING
+                SYMBOL -> SYMBOLS
+                TEXT -> PLAIN_TEXT
+                TRIM_COMMENT_END -> CBLOCK
+                TRIM_COMMENT_START -> CBLOCK
+                VARIABLE_ELEMENT -> SYMBOLS
+                VBLOCK_CLOSE -> VBLOCK
+                VBLOCK_OPEN -> VBLOCK
+                UNKNOWN -> UNKNOWN_CONTENT
+                NEW -> KEYWORDS
+                INSTANCEOF -> KEYWORDS
                 else -> null
             }
 
@@ -189,18 +167,28 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val ventoGray = JBColor("gray", Color(28, 32, 40))
         val ventoLightRed = JBColor("light-red", Color(244, 100, 99))
         val ventoLightGray = JBColor("light-gray", Color(157, 166, 187))
-        val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))
+
         val JSBLOCK = createTextAttributesKey("JS_BLOCK", TextAttributes(ventoPink, ventoGray, null, null, 0))
-        val COMMENT = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
+        val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))
+        val VENTO_KEYWORDS = createTextAttributesKey("VENTO_VENTO_KEYWORDS", TextAttributes(ventoLightRed, ventoGray, null, null, 0))
+        val CBLOCK = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
         val COMMENTED_CONTENT = createTextAttributesKey("VENTO_COMMENT", DOC_COMMENT_MARKUP)
-        val JAVASCRIPT = createTextAttributesKey("VENTO_JAVASCRIPT", JSBLOCK)
-        val BLOCK = createTextAttributesKey("VENTO_VARIABLE", VBLOCK)
-        val VARIABLE = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", GLOBAL_VARIABLE)
-        val PLAIN_TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
-        val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
-        val KEY_WORD = createTextAttributesKey("VENTO_PIPE", KEYWORD)
+
         val ARGS = createTextAttributesKey("VENTO_ARGS", DefaultLanguageHighlighterColors.PARAMETER)
-        val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
+        val BRACES = createTextAttributesKey("VENTO_BRACE", DefaultLanguageHighlighterColors.BRACES)
+        val BRACKETS = createTextAttributesKey("VENTO_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
+        val COMMAS = createTextAttributesKey("VENTO_COMMAS", DefaultLanguageHighlighterColors.COMMA)
+        val DOTS = createTextAttributesKey("VENTO_DOTS", DefaultLanguageHighlighterColors.DOT)
+
+        val KEYWORDS = createTextAttributesKey("VENTO_KEYWORDS", KEYWORD)
+        val NUMBERS = createTextAttributesKey("VENTO_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
+        val OPERATIONS = createTextAttributesKey("VENTO_OPERANDS", DefaultLanguageHighlighterColors.OPERATION_SIGN)
+        val PLAIN_TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
         val STRING = createTextAttributesKey("VENTO_STRING", DefaultLanguageHighlighterColors.STRING)
+        val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
+        val SYMBOLS = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", LOCAL_VARIABLE)
+        val UNKNOWN_CONTENT = createTextAttributesKey("VENTO_UNKNOWN_CONTENT", BAD_CHARACTER)
+
+        val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
     }
 }

@@ -121,11 +121,11 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {EXPORT} { return LexerTokens.EXPORT_KEY; }
 
-    {FUNCTION} { return LexerTokens.EXPORT_FUNCTION_KEY; }
+    {FUNCTION} { return LexerTokens.FUNCTION_KEY; }
 
     {IDENT} { return LexerTokens.EXPORT_VAR; }
 
-    "("{IDENT}?([,]{IDENT})*")" { return LexerTokens.EXPORT_FUNCTION_ARGS; }
+    "("{IDENT}?([,]{IDENT})*")" { return LexerTokens.FUNCTION_ARGS; }
 
     {PIPE} {
         yypushback(yylength());

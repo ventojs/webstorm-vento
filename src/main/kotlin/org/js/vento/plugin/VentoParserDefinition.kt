@@ -47,8 +47,8 @@ import org.js.vento.plugin.parser.VentoParser
  * - `VentoParser` for parsing logic and syntax tree generation.
  * - `PsiFile`, `PsiElement`, `TokenSet` for IntelliJ PSI structure.
  */
-class VentoParserDefinition : ParserDefinition {
-    override fun createLexer(project: Project?): Lexer = LexerAdapter()
+class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
+    override fun createLexer(project: Project?): Lexer = LexerAdapter(debug)
 
     override fun createParser(project: Project?): PsiParser = VentoParser()
 

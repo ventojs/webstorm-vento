@@ -1,7 +1,8 @@
 Vento File(0,13)
-  Element: EXPORT_OPEN_ELEMENT(0,13)
-    PsiElement(EXPORT_START_TOKEN)('{{')(0,2)
-    PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
-    PsiErrorElement:Expected variable(9,9)
-      <empty list>
-    PsiElement(EXPORT_END_TOKEN)('  }}')(9,13)
+  Element: VENTO_ELEMENT(0,13)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: EXPORT_OPEN_ELEMENT(2,9)
+      PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
+      PsiErrorElement:Expected symbol(9,9)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)('  }}')(9,13)

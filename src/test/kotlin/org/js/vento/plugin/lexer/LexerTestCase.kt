@@ -23,7 +23,16 @@ class LexerTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test lexing javascript`() {
         lexAndTest(
             " {{> if(true){console.log('Hello World')} }} ",
-            arrayOf(" ", "{{>", " if(true){console.log('Hello World')} ", "}}", " "),
+            arrayOf(
+                " ",
+                "{{>",
+                " if(true)",
+                "{",
+                "console.log('Hello World')",
+                "}",
+                "}}",
+                " ",
+            ),
         )
     }
 
@@ -36,9 +45,12 @@ class LexerTestCase(name: String) : BaseLexerTestCase(name) {
             """.trimIndent(),
             arrayOf(
                 "{{>",
-                """ if(true){
+                " if(true)",
+                "{",
+                """
        console.log('Hello World')
-    } """,
+    """,
+                "}",
                 "}}",
             ),
         )

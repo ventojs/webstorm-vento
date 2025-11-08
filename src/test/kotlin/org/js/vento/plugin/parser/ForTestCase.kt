@@ -8,7 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.testFramework.ParsingTestCase
 import org.js.vento.plugin.VentoParserDefinition
 
-class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
     fun testSimpleFor() {
         val code = "{{ for item of items }}"
         doCodeTest(code)
@@ -25,6 +25,19 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
             |{{ for item of items }}
             |{{ /for }}
             """.trimMargin()
+        doCodeTest(code)
+    }
+
+    fun testForWithIndex() {
+        val code =
+            """
+            {{ for index, value of [{a:1},{a:2}] }}
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
+    fun testForObjectWithStrings() {
+        val code = """{{ for value of ["a"+"b"+"c","hello"] }}"""
         doCodeTest(code)
     }
 
@@ -83,6 +96,11 @@ class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
             {{  / }}
             {{ "hi!" }}
             """.trimIndent()
+        doCodeTest(code)
+    }
+
+    fun testComplexArray() {
+        val code = """{{ for [[n]] of [[[1]], [[2]]] }}""".trimIndent()
         doCodeTest(code)
     }
 
