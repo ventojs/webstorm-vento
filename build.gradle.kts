@@ -31,8 +31,17 @@ repositories {
 sourceSets {
     main {
         java.srcDirs("src/main/gen")
+        resources.srcDirs("src/main/resources")
     }
 }
+
+// Task to copy images from docs/assets to plugin resources
+val copyImagesToResources =
+    tasks.register<Copy>("copyImagesToResources") {
+        from(layout.projectDirectory.dir("docs/assets"))
+        into(layout.buildDirectory.dir("resources/main/assets"))
+        include("*.png", "*.jpg", "*.jpeg", "*.svg", "*.gif")
+    }
 
 // Task to prepare cleaned .flex files for generation
 val prepareFlexFiles =
@@ -367,6 +376,11 @@ tasks {
         dependsOn(generateLexer)
     }
 
+    // Ensure images are copied before processing resources
+    processResources {
+        dependsOn(copyImagesToResources)
+    }
+
     // Enable JUnit Platform for tests (Jupiter + Vintage)
     test {
         useJUnitPlatform()
@@ -421,17 +435,6 @@ dependencies {
 
 intellijPlatform {
 
-    pluginConfiguration {
-
-        version = providers.gradleProperty("pluginVersion")
-        description = providers.gradleProperty("pluginDescription")
-
-        ideaVersion {
-            sinceBuild = providers.gradleProperty("pluginSinceBuild")
-            untilBuild = providers.gradleProperty("pluginUntilBuild")
-        }
-    }
-
     signing {
         certificateChain = providers.environmentVariable("CERTIFICATE_CHAIN")
         privateKey = providers.environmentVariable("PRIVATE_KEY")
@@ -470,7 +473,14 @@ intellijPlatform {
                     if (!containsAll(listOf(start, end))) {
                         throw GradleException("Plugin description section not found in README.md:\n$start ... $end")
                     }
-                    subList(indexOf(start) + 1, indexOf(end)).joinToString("\n").let(::markdownToHTML)
+                    val descriptionText = subList(indexOf(start) + 1, indexOf(end)).joinToString("\n")
+                    // Replace docs/assets/ paths with plugin-relative paths
+                    val updatedText =
+                        descriptionText.replace(
+                            Regex("""docs/assets/([^"'\s)]+)"""),
+                            "assets/$1",
+                        )
+                    markdownToHTML(updatedText)
                 }
             }
 
