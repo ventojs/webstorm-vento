@@ -4,7 +4,7 @@
 <h1 align="center">
   <br />
     <a href="https://vento.js.org/">
-      <img src="https://vento.js.org/favicon.svg" alt="VentoJS Logo" width="200">
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDMyIDMyIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Ik0wIDBIMTFMMjUgMzJIMTVMMCAwWiIgZmlsbD0iIzAwQUFGRiIvPgogIDxwYXRoIGQ9Ik0yMSAwSDMyTDI1IDMySDE1TDIxIDBaIiBmaWxsPSIjRkYwMDgwIi8+CiAgPHBhdGggZD0iTTE4IDE2TDI1IDMySDE1TDE4IDE2WiIgZmlsbD0iIzAwMDA4MCIvPgo8L3N2Zz4=" alt="VentoJS Logo" width="200">
     </a>
   <br /><br />
   Vento for JetBrain's WebStorm & IntelliJ IDEA Ultimate IDE
