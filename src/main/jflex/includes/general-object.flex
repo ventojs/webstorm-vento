@@ -15,38 +15,40 @@ import org.js.vento.plugin.lexer.LexerTokens;
     {WHITESPACE} {  }
 
     "|>" { pushbackall(); leave(); }
+
     [,] { return LexerTokens.COMMA; }
+
     [:]  { enter(EXPRESSION); return LexerTokens.COLON; }
+
     [\"'`] { pushbackall(); enter(STRING); }
+
     [+] {return LexerTokens.PLUS;}
 
     \{ {
-            incObjDepth();
-            return LexerTokens.BRACE;
-        }
+          incObjDepth();
+          return LexerTokens.BRACE;
+      }
 
     \} {
-            decObjDepth();
-            if (currentDepth().getFirst() <= 0) { leave(); }
-            return LexerTokens.BRACE;
-       }
+          decObjDepth();
+          if (currentDepth().getFirst() <= 0) { leave(); }
+          return LexerTokens.BRACE;
+      }
 
     [^{}'\",: \t]+ / {OWS}[,}]  { return LexerTokens.SYMBOL; }
 
     [^{}'\",: \t]+ / {OWS}":"  { return LexerTokens.SYMBOL; }
 
     "{{" {
-        yypushback(yylength());
-        leave();
-    }
-
+          yypushback(yylength());
+          leave();
+      }
 
     [^] {
-        leave();
-        return LexerTokens.UNKNOWN;
-    }
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
 
     <<EOF>> { leave(); }
-
 
 }

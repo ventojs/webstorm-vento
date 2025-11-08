@@ -10,27 +10,26 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %%
 
 <ARRAY> {
-    {WHITESPACE} { }
-    \[ {
 
-            incArrDepth();
-            return LexerTokens.BRACKET;
-        }
+    {WHITESPACE} { }
+
+    \[ {
+          incArrDepth();
+          return LexerTokens.BRACKET;
+      }
 
     , { return LexerTokens.COMMA;}
 
     \] {
-            decArrDepth();
-            if (currentDepth().getSecond() <= 0) { leave(); }
-            return LexerTokens.BRACKET;
-        }
+          decArrDepth();
+          if (currentDepth().getSecond() <= 0) { leave(); }
+          return LexerTokens.BRACKET;
+      }
 
     [^\[\],] {
           pushbackall();
           enter(EXPRESSION);
-        }
-
-
+      }
 
 }
 

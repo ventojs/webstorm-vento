@@ -25,14 +25,14 @@ import org.js.vento.plugin.lexer.LexerTokens;
     {WHITESPACE} { }
 
     \{ {
-        incObjDepth();
-        return LexerTokens.JAVASCRIPT;
-    }
+          incObjDepth();
+          return LexerTokens.JAVASCRIPT;
+      }
 
     \} {
-        decObjDepth();
-        return LexerTokens.JAVASCRIPT;
-    }
+          decObjDepth();
+          return LexerTokens.JAVASCRIPT;
+      }
 
     {CBLOCK} {
           if (currentDepth().getFirst() == 0) {

@@ -396,8 +396,6 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:6.0.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//    testImplementation("org.junit.jupiter:junit-jupiter-api:6.0.0")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:6.0.0")
 
     // Support for legacy JUnit 3/4 tests (e.g., classes extending TestCase)
     testImplementation("junit:junit:4.13.2")

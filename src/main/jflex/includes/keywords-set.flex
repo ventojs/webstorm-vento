@@ -13,33 +13,35 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %%
 
 <SET> {
+
     {WHITESPACE}   {  }
 
     [/]{SET} { leave(); return LexerTokens.SET_CLOSE_KEY; }
 
     .+"=" {
-            yypushback(yylength());
-            enter(SET_VALUE);
-        }
+          pushbackall();
+          enter(SET_VALUE);
+      }
 
     {WHITESPACE}[^=]+{OWS}{CBLOCK} {
-            yypushback(yylength());
-            enter(SET_BLOCK_MODE);
-        }
+          pushbackall();
+          enter(SET_BLOCK_MODE);
+      }
 
     {CBLOCK} {
-        yypushback(yylength());
+        pushbackall();
         leave();
-    }
+      }
 
     {OBLOCK} {
-        yypushback(yylength());
+        pushbackall();
         leave();
-    }
+      }
 
 }
 
 <SET_VALUE> {
+
     {WHITESPACE}   {  }
 
     {SYMBOL} { return LexerTokens.SYMBOL; }
@@ -50,38 +52,38 @@ import org.js.vento.plugin.lexer.LexerTokens;
        }
 
     "=" {
-            enter(EXPRESSION);
-            return LexerTokens.EQUAL;
-        }
+          enter(EXPRESSION);
+          return LexerTokens.EQUAL;
+      }
 
     {PIPE} {
-        enter(EXPRESSION);
-        return LexerTokens.PIPE;
-    }
+          enter(EXPRESSION);
+          return LexerTokens.PIPE;
+     }
 
     {CBLOCK} {
-        yypushback(yylength());
+        pushbackall();
         leave();
     }
-
 
 }
 
 
 <SET_BLOCK_MODE> {
+
     {WHITESPACE}   {  }
 
     {SYMBOL} { return LexerTokens.SYMBOL; }
 
     {PIPE} {
-        enter(EXPRESSION);
-        return LexerTokens.PIPE;
-    }
+          enter(EXPRESSION);
+          return LexerTokens.PIPE;
+      }
 
     {CBLOCK} {
-        leave();
-        yypushback(yylength());
-    }
+          pushbackall();
+          leave();
+      }
 
 
 }

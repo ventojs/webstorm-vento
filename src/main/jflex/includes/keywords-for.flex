@@ -52,6 +52,14 @@ OF = "of"
     \[ { pushbackall(); enter(EXPRESSION); }
 
     {SYMBOL} { return LexerTokens.SYMBOL; }
+
+
+    [^] {
+          yypushback(yylength());
+          leave();
+      }
+
+    <<EOF>> { leave(); }
 }
 
 

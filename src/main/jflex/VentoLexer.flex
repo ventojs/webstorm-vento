@@ -97,24 +97,24 @@ CVAR = -?{CBLOCK}
     {WHITESPACE} { return WHITE_SPACE; }
 
     {OCOMMENT} {
-        enter(COMMENT);
-        return LexerTokens.COMMENT_START;
-    }
+          enter(COMMENT);
+          return LexerTokens.COMMENT_START;
+      }
 
     {OBLOCK} {
-        enter(BLOCK);
-        return LexerTokens.VBLOCK_OPEN;
-    }
+          enter(BLOCK);
+          return LexerTokens.VBLOCK_OPEN;
+      }
 
-     {OTBLOCK} {
-        enter(BLOCK);
-        return LexerTokens.VBLOCK_OPEN;
-     }
+    {OTBLOCK} {
+          enter(BLOCK);
+          return LexerTokens.VBLOCK_OPEN;
+      }
 
-     {JSBLOCK} {
-                enter(SCRIPT_CONTENT);
-                return LexerTokens.JSBLOCK_OPEN;
-               }
+    {JSBLOCK} {
+          enter(SCRIPT_CONTENT);
+          return LexerTokens.JSBLOCK_OPEN;
+      }
 
     ([^\{][^\{]?)+ { return LexerTokens.HTML; }
 
@@ -136,9 +136,16 @@ CVAR = -?{CBLOCK}
     "|>" { return LexerTokens.PIPE; }
 
     [^] {
-        pushbackall();
-        enter(EXPRESSION);
-    }
+          pushbackall();
+          enter(EXPRESSION);
+      }
+
+    {OBLOCK} { return LexerTokens.UNKNOWN; }
+
+    <<EOF>> {
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
 
 
 }
@@ -161,9 +168,9 @@ CVAR = -?{CBLOCK}
     "-" { return LexerTokens.COMMENT_CONTENT; }
 
     {CCOMMENT} {
-                leave();
-                return LexerTokens.COMMENT_END;
-            }
+          leave();
+          return LexerTokens.COMMENT_END;
+      }
 
 }
 
@@ -185,50 +192,28 @@ CVAR = -?{CBLOCK}
 %include includes/general-pipe.flex
 %include includes/general-function.flex
 %include includes/general-file.flex
-//%include includes/general-object.flex
-//%include includes/general-array.flex
 %include includes/general-string.flex
 
-<BLOCK> {
-        <<EOF>> {
-            //debug("<BLOCK> <<EOF>>");
-            leave();
-            return LexerTokens.UNKNOWN;
-        }
-        {OBLOCK} {
-                return LexerTokens.UNKNOWN;
-            }
-    }
 
 < EXPORT, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT> {
-        "}}"|"{{" {
-          debugMsg("*:"+yytext());
-            yypushback(yylength());
-            debugMsg("*");
-            leave();
-        }
 
-        "-}}" {
-                    //debug("\"}}\"|\"{{\"");
-                    yypushback(yylength());
-                    debugMsg("-}}");
-                    leave();
-        }
-        <<EOF>> {;leave(); }
-        [^] {
-           debugMsg("^: "+yytext());
-            leave();
-            return LexerTokens.UNKNOWN;
-        }
-    }
+    "}}"|"{{" {
+          yypushback(yylength());
+          leave();
+      }
 
-<BEFORE_OF> {
-        <<EOF>> { leave(); }
-        [^] {
-            //debug("*: "+yytext());
-            yypushback(yylength());
-            leave();
-        }
-    }
+    "-}}" {
+          yypushback(yylength());
+          debugMsg("-}}");
+          leave();
+      }
+
+    <<EOF>> { leave(); }
+
+    [^] {
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
+}
 
 

@@ -15,18 +15,19 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
 %%
 
 <IMPORT> {
+
     {WHITESPACE} {  }
 
     "{"{OWS}{IMP_ID}{OWS}(,{OWS}{IMP_ID}{OWS})*"}" {
-            return LexerTokens.IMPORT_VALUES;
-        }
+          return LexerTokens.IMPORT_VALUES;
+      }
 
     "{"{OWS}{IMP_ID}{OWS}(,{OWS}{IMP_ID}{OWS})* { yypushback(2); return LexerTokens.UNKNOWN;}
 
     {FROM} {
-            enter(FILE);
-            return LexerTokens.IMPORT_FROM;
-        }
+          enter(FILE);
+          return LexerTokens.IMPORT_FROM;
+      }
 
     \" {
           yypushback(yylength());
@@ -36,10 +37,10 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
     \, { return LexerTokens.IMPORT_VALUES; }
 
     {IMP_ID} { return LexerTokens.IMPORT_VALUES; }
-    {IMP_ID} / {WHITESPACE}{FROM} {
-            return LexerTokens.IMPORT_VALUES;
-        }
 
+    {IMP_ID} / {WHITESPACE}{FROM} {
+          return LexerTokens.IMPORT_VALUES;
+      }
 
 }
 

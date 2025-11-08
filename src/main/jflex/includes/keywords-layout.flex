@@ -19,10 +19,9 @@ SLOT = "slot"
     {WHITESPACE} {  }
 
     \{ {
-
-         pushbackall();
-         enter(EXPRESSION);
-    }
+          pushbackall();
+          enter(EXPRESSION);
+      }
 
     \" { pushbackall(); enter(FILE); }
 
