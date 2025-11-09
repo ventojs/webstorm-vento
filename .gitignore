@@ -51,3 +51,7 @@ out/
 /.idea/modules/webstorm-vento.main.iml
 /.idea/modules/webstorm-vento.test.iml
 !/.idea/modules/
+/src/test/resources/editor-samples/.idea/.gitignore
+/src/test/resources/editor-samples/.idea/misc.xml
+/src/test/resources/editor-samples/.idea/modules.xml
+/src/test/resources/editor-samples/.idea/vcs.xml
