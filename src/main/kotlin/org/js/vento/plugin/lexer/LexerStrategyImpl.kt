@@ -18,14 +18,13 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
 
     private var objectDepth = Triple<Int, Int, Int>(0, 0, 0)
 
-    private val stateStack = ArrayDeque<State>()
+    private val stateStack = ArrayDeque<LexerState>()
     private var debug = false
 
     init {
         debug = debugConfig
         stateNames =
             mapOf(
-                Pair(ARRAY, "ARRAY"),
                 Pair(BEFORE_OF, "BEFORE_FOR"),
                 Pair(BLOCK, "BLOCK"),
                 Pair(COMMENT, "COMMENT"),
@@ -33,11 +32,11 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
                 Pair(ELSE, "ELSE"),
                 Pair(ELSEIF, "ELSEIF"),
                 Pair(EXPORT, "EXPORT"),
-                Pair(EXPORT_CLOSE, "EXPORT_CLOSE"),
                 Pair(EXPRESSION, "EXPRESSION"),
                 Pair(FILE, "FILE"),
                 Pair(FOR, "FOR"),
                 Pair(FUNCTION, "FUNCTION"),
+                Pair(FUNCTION_BODY, "FUNCTION_BODY"),
                 Pair(IF, "IF"),
                 Pair(IMPORT, "IMPORT"),
                 Pair(INCLUDE, "INCLUDE"),
@@ -45,8 +44,6 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
                 Pair(KEYWORDS_CLOSE, "KEYWORDS_CLOSE"),
                 Pair(LAYOUT, "LAYOUT"),
                 Pair(NOKEYWORDS, "NOKEYWORDS"),
-                Pair(OBJECT, "OBJECT"),
-                Pair(OBJECT_STRING, "OBJECT_STRING"),
                 Pair(REGEX, "REGEX"),
                 Pair(REGEX_ESCAPE, "REGEX_ESCAPE"),
                 Pair(REGEX_CLASS, "REGEX_CLASS"),
@@ -73,7 +70,7 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
     /** Enter 'nextState', remembering where we came from (the caller).  */
     override fun enter(nextState: Int) {
         val currentState: Int = lexer.yystate()
-        stateStack.push(State(currentState, stName(currentState), this.objectDepth))
+        stateStack.push(LexerState(currentState, stName(currentState), this.objectDepth))
         if (debug) {
             println(
                 (stName(currentState) + " -> " + stName(nextState) + " (" + lexer.yytext() + "):" + remaining()).prependIndent(
@@ -91,7 +88,7 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
     override fun leave() {
         try {
             check(!stateStack.isEmpty()) { "leave() with empty state stack" }
-            val nextState: State = stateStack.pop()
+            val nextState: LexerState = stateStack.pop()
             if (debug) {
                 println(
                     (nextState.name + " <- " + stName(lexer.yystate()) + " (" + lexer.yytext() + "):" + remaining()).prependIndent(
@@ -251,5 +248,3 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
         return tt
     }
 }
-
-private class State(val state: Int, val name: String, val depth: Triple<Int, Int, Int>)

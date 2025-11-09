@@ -19,10 +19,7 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_END
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_FUNCTION_START
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VAR
 import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
@@ -54,11 +51,9 @@ import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.STATEMENT
 import org.js.vento.plugin.lexer.LexerTokens.STRING
 import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
-import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
-import org.js.vento.plugin.parser.ParserElements.EXPORT_FUNCTION_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_ELEMENT
@@ -111,7 +106,7 @@ class Parser : PsiParser {
         builder.setDebugMode(true)
 
         when (tokenType) {
-            COMMENT_START, TRIM_COMMENT_START -> parseCommentBlock(builder)
+            COMMENT_START -> parseCommentBlock(builder)
             JSBLOCK_OPEN -> parseJavaScript(builder)
             VBLOCK_OPEN -> {
                 val m = builder.mark()
@@ -309,15 +304,6 @@ class Parser : PsiParser {
         val m = builder.mark()
 
         expect(builder, FUNCTION_KEY, "Expected 'function' keyword")
-//        expect(builder, PARENTHESIS, "Expected parenthesis '(' ") { it.trim() == "(" }
-//        if (builder.tokenType != PARENTHESIS && builder.tokenText?.trim() != ")") {
-//            parseExpression(builder)
-//            while (optional(builder, COMMA, "Expected ',' ")) {
-//                parseExpression(builder)
-//            }
-//            hasFunction = true
-//        }
-//        expect(builder, PARENTHESIS, "Expected parenthesis ')' ") { it.trim() == ")" }
 
         val hasFunction = expect(builder, FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])")
         expect(builder, BRACE, "Expected '{' ") { it.trim() == "{" }
@@ -383,7 +369,7 @@ class Parser : PsiParser {
         if (optional(builder, FUNCTION_KEY, "Expected 'function' keyword")) {
             expect(builder, SYMBOL, "Expected function name")
             expect(builder, FUNCTION_ARGS, "Expected function name")
-            m.done(ParserElements.EXPORT_ELEMENT)
+            m.done(ParserElements.EXPORT_FUNCTION_ELEMENT)
         } else {
             expect(builder, SYMBOL, "Expected symbol", true)
 
@@ -511,19 +497,6 @@ class Parser : PsiParser {
         m.done(ParserElements.EXPORT_CLOSE_ELEMENT)
     }
 
-    private fun parseExportFunction(builder: PsiBuilder) {
-        val m = builder.mark()
-
-        expect(builder, EXPORT_FUNCTION_START, "Expected '{{' ")
-        expect(builder, EXPORT_KEY, "Expected 'export' keyword")
-        expect(builder, FUNCTION_KEY, "Expected 'function' keyword")
-        expect(builder, EXPORT_VAR, "Expected function name")
-        expect(builder, FUNCTION_ARGS, "Expected function arguments: (arg1[,arg2])", true)
-        expect(builder, EXPORT_FUNCTION_END, "Expected '}}' ")
-
-        m.done(EXPORT_FUNCTION_ELEMENT)
-    }
-
     private fun parseFor(builder: PsiBuilder) {
         val m = builder.mark()
 
@@ -610,7 +583,7 @@ class Parser : PsiParser {
         expect(builder, FOR_CLOSE_KEY, "Expected '/for' keyword")
         closeOrError(builder, "syntax error: for [value] in [collection]")
 
-        m.done(ParserElements.FOR_ELEMENT)
+        m.done(ParserElements.FOR_CLOSE_ELEMENT)
     }
 
     private fun parseJavaScript(builder: PsiBuilder) {
@@ -637,8 +610,7 @@ class Parser : PsiParser {
         }
 
         // Consume closing token if present
-        if (builder.tokenType == LexerTokens.COMMENT_END ||
-            builder.tokenType == LexerTokens.TRIM_COMMENT_END
+        if (builder.tokenType == LexerTokens.COMMENT_END
         ) {
             builder.advanceLexer()
         }

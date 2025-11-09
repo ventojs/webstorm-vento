@@ -4,7 +4,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %%
 // BLOCK 2 - START
 %state FUNCTION
-%state FUNCTION_ARGS
 %state FUNCTION_BODY
 // BLOCK 2 - END
 %%

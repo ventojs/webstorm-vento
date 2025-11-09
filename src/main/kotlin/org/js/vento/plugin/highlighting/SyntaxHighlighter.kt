@@ -13,7 +13,6 @@ import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.DOC_COMMENT_MARKUP
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.KEYWORD
 import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.LOCAL_VARIABLE
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors.STATIC_FIELD
 import com.intellij.openapi.editor.HighlighterColors.BAD_CHARACTER
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey
@@ -33,19 +32,13 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_EQ
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VALUE
-import org.js.vento.plugin.lexer.LexerTokens.EXPORT_VAR
 import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
-import org.js.vento.plugin.lexer.LexerTokens.FOR_COLLECTION
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
-import org.js.vento.plugin.lexer.LexerTokens.FOR_VALUE
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARGS
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
-import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FILE
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
@@ -59,18 +52,13 @@ import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.LAYOUT_SLOT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.NEW
 import org.js.vento.plugin.lexer.LexerTokens.NUMBER
-import org.js.vento.plugin.lexer.LexerTokens.OBJECT
 import org.js.vento.plugin.lexer.LexerTokens.PARENTHESIS
 import org.js.vento.plugin.lexer.LexerTokens.PIPE
 import org.js.vento.plugin.lexer.LexerTokens.SEMICOLON
 import org.js.vento.plugin.lexer.LexerTokens.SET_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
-import org.js.vento.plugin.lexer.LexerTokens.TEXT
-import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_END
-import org.js.vento.plugin.lexer.LexerTokens.TRIM_COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
-import org.js.vento.plugin.lexer.LexerTokens.VARIABLE_ELEMENT
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
 import java.awt.Color
@@ -105,19 +93,13 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 DOT -> DOTS
                 EQUAL -> OPERATIONS
                 EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
-                EXPORT_EQ -> KEYWORDS
                 EXPORT_KEY -> VENTO_KEYWORDS
-                EXPORT_VALUE -> VALUES
-                EXPORT_VAR -> VALUES
                 FILE -> STRING
                 FOR_CLOSE_KEY -> VENTO_KEYWORDS
-                FOR_COLLECTION -> VALUES
                 FOR_KEY -> VENTO_KEYWORDS
                 FOR_OF -> VENTO_KEYWORDS
-                FOR_VALUE -> VALUES
                 FUNCTION_ARGS -> ARGS
                 FUNCTION_KEY -> VENTO_KEYWORDS
-                IMPORT_FILE -> STRING
                 IMPORT_FROM -> KEYWORDS
                 IMPORT_KEY -> VENTO_KEYWORDS
                 IMPORT_VALUES -> VALUES
@@ -129,7 +111,6 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 LAYOUT_SLOT_CLOSE_KEY -> KEYWORDS
                 LAYOUT_SLOT_KEY -> KEYWORDS
                 NUMBER -> NUMBERS
-                OBJECT -> VALUES
                 PARENTHESIS -> KEYWORDS
                 PIPE -> VENTO_KEYWORDS
                 SEMICOLON -> KEYWORDS
@@ -137,10 +118,6 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 SET_KEY -> VENTO_KEYWORDS
                 STRING_TOKEN -> STRING
                 SYMBOL -> SYMBOLS
-                TEXT -> PLAIN_TEXT
-                TRIM_COMMENT_END -> CBLOCK
-                TRIM_COMMENT_START -> CBLOCK
-                VARIABLE_ELEMENT -> SYMBOLS
                 VBLOCK_CLOSE -> VBLOCK
                 VBLOCK_OPEN -> VBLOCK
                 UNKNOWN -> UNKNOWN_CONTENT
@@ -183,7 +160,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val KEYWORDS = createTextAttributesKey("VENTO_KEYWORDS", KEYWORD)
         val NUMBERS = createTextAttributesKey("VENTO_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
         val OPERATIONS = createTextAttributesKey("VENTO_OPERANDS", DefaultLanguageHighlighterColors.OPERATION_SIGN)
-        val PLAIN_TEXT = createTextAttributesKey("VENTO_TEXT", STATIC_FIELD)
+
         val STRING = createTextAttributesKey("VENTO_STRING", DefaultLanguageHighlighterColors.STRING)
         val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
         val SYMBOLS = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", LOCAL_VARIABLE)

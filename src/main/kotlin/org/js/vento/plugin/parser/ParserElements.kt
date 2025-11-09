@@ -11,8 +11,8 @@ import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.*
 
 /**
- * Defines token and element types for the Vento language.
- * This includes both basic token types (like COMMENT, KEYWORD, etc.)
+ * Defines element types for the Vento language.
+ * This includes both basic elements types (like COMMENT, KEYWORD, etc.)
  * and any custom element types for the PSI structure.
  */
 object ParserElements {
@@ -21,14 +21,7 @@ object ParserElements {
     val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
 
     @JvmField
-    val HTML_ELEMENT = ParserElement("HTML_ELEMENT")
-
-    @JvmField
     val DEFAULT_ELEMENT = ParserElement("ELEMENT")
-
-    // JavaScript and variable elements
-    @JvmField
-    val JAVACRIPT_VARIABLE_ELEMENT = ParserElement("VARIABLE_ELEMENT")
 
     @JvmField
     val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
@@ -113,7 +106,6 @@ object ParserElements {
                 VENTO_ELEMENT -> VentoElement(node)
                 DEFAULT_ELEMENT -> HtmlElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
-                JAVACRIPT_VARIABLE_ELEMENT -> VariableElement(node)
                 FOR_ELEMENT -> ForElement(node)
                 FOR_CLOSE_ELEMENT -> ForElement(node)
                 IMPORT_ELEMENT -> ImportElement(node)

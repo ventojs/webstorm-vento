@@ -1,7 +1,7 @@
 Vento File(0,69)
   Element: VENTO_ELEMENT(0,36)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: EXPORT_ELEMENT(2,33)
+    Element: EXPORT_FUNCTION_ELEMENT(2,33)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiElement(EXPORT_FUNCTION_KEY_TOKEN)(' function')(9,18)
       PsiElement(SYMBOL_TOKEN)(' sayHello')(18,27)

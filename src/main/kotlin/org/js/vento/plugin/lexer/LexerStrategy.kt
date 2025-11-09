@@ -7,6 +7,17 @@ package org.js.vento.plugin.lexer
 
 import com.intellij.psi.tree.IElementType
 
+/**
+ * Defines the strategy interface for lexical analysis operations in the Vento template engine.
+ * Provides methods for state management, token handling, and nested structure tracking
+ * during the lexical analysis of Vento templates.
+ *
+ * This interface handles:
+ * - State management for the lexical analyzer
+ * - Token type determination and manipulation
+ * - Depth tracking for objects, arrays, and parentheses
+ * - Debug functionality for lexer operations
+ */
 interface LexerStrategy {
     fun stName(s: Int): String
 

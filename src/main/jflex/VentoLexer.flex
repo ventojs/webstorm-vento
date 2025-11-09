@@ -25,7 +25,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
 %state COMMENT
 %state SCRIPT_CONTENT
 %state BLOCK
-%state BLOCK_CONTENT
 %state UNKNOWN
 
 
@@ -174,8 +173,6 @@ CVAR = -?{CBLOCK}
 
 }
 
-
-
 %include includes/keywords.flex
 %include includes/keywords-export.flex
 %include includes/keywords-for.flex
@@ -183,17 +180,13 @@ CVAR = -?{CBLOCK}
 %include includes/keywords-set.flex
 %include includes/keywords-include.flex
 %include includes/keywords-layout.flex
-
 %include includes/no-keywords.flex
-
 %include includes/variables.flex
-
 %include includes/general-expression.flex
 %include includes/general-pipe.flex
 %include includes/general-function.flex
 %include includes/general-file.flex
 %include includes/general-string.flex
-
 
 < EXPORT, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT> {
 

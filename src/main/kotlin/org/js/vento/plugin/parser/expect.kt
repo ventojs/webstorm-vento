@@ -10,6 +10,17 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.LexerTokens
 
+/**
+ * Validates if the next token in the PsiBuilder matches the expected token type.
+ * Advances the lexer if the token matches and validates multiple consecutive tokens if specified.
+ *
+ * @param builder The PSI builder containing the token stream
+ * @param expected The expected token type to match
+ * @param message Error message to display if validation fails
+ * @param expectMultipleTokens If true, validates multiple consecutive tokens of the same type
+ * @param test Optional predicate to perform additional validation on the token text
+ * @return true if validation succeeds, false otherwise
+ */
 fun expect(
     builder: PsiBuilder,
     expected: IElementType,

@@ -6,11 +6,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 // BLOCK 2 - START
 
 %state EXPORT
-%state EXPORT_CLOSE
-%state EXPORT_VALUE
-%state EXPORT_BLOCK_MODE
-%state EXPORT_FUNCTION_BLOCK
-
 
 // BLOCK 2 - END
 %%

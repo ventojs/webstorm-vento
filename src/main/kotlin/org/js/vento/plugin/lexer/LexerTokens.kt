@@ -38,44 +38,16 @@ object LexerTokens {
     @JvmField
     var COMMENT_START: IElementType = LexerToken("COMMENT_START")
 
-    @JvmField
-    var TRIM_COMMENT_END: IElementType = LexerToken("TRIM_COMMENT_END")
-
-    @JvmField
-    var TRIM_COMMENT_START: IElementType = LexerToken("TRIM_COMMENT_START")
-
-    @JvmField
-    var TRIM_OPEN: IElementType = LexerToken("TRIM_OPEN")
-
-    @JvmField
-    var TRIM_CLOSE: IElementType = LexerToken("TRIM_CLOSE")
-
     // JavaScript tokens
-    @JvmField
-    val EXPRESSION = LexerToken("EXPRESSION")
-
     @JvmField
     var JAVASCRIPT: IElementType = LexerToken("JAVASCRIPT")
 
     @JvmField
-    var JAVASCRIPT_START: IElementType = LexerToken("JAVASCRIPT_START")
-
-    @JvmField
     var STATEMENT: IElementType = LexerToken("STATEMENT")
-
-    // Variable tokens
-    @JvmField
-    val VARIABLE_ELEMENT = LexerToken("VARIABLE_ELEMENT")
-
-    @JvmField
-    var VARIABLE_END: IElementType = LexerToken("VARIABLE_END")
 
     // For loop tokens
     @JvmField
     var FOR_CLOSE_KEY: IElementType = LexerToken("FOR_CLOSE_KEY")
-
-    @JvmField
-    var FOR_COLLECTION: IElementType = LexerToken("FOR_COLLECTION")
 
     @JvmField
     var FOR_KEY: IElementType = LexerToken("FOR_KEY")
@@ -83,13 +55,7 @@ object LexerTokens {
     @JvmField
     var FOR_OF: IElementType = LexerToken("FOR_OF")
 
-    @JvmField
-    var FOR_VALUE: IElementType = LexerToken("FOR_VALUE")
-
     // Import tokens
-    @JvmField
-    val IMPORT_FILE = LexerToken("IMPORT_FILE")
-
     @JvmField
     val IMPORT_FROM = LexerToken("IMPORT_FROM")
 
@@ -104,28 +70,13 @@ object LexerTokens {
     val EXPORT_CLOSE_KEY = LexerToken("EXPORT_CLOSE_KEY")
 
     @JvmField
-    val EXPORT_EQ = LexerToken("EXPORT_EQUAL")
-
-    @JvmField
     val FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
-
-    @JvmField
-    val EXPORT_FUNCTION_END = LexerToken("EXPORT_FUNCTION_END")
 
     @JvmField
     val FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
 
     @JvmField
-    val EXPORT_FUNCTION_START = LexerToken("EXPORT_FUNCTION_START")
-
-    @JvmField
     val EXPORT_KEY = LexerToken("EXPORT_KEY")
-
-    @JvmField
-    val EXPORT_VALUE = LexerToken("EXPORT_VALUE")
-
-    @JvmField
-    val EXPORT_VAR = LexerToken("EXPORT_VAR")
 
     // Set tokens
     @JvmField
@@ -190,9 +141,6 @@ object LexerTokens {
     val SEMICOLON = LexerToken("SEMICOLON")
 
     @JvmField
-    val TEXT = LexerToken("TEXT")
-
-    @JvmField
     val HTML = LexerToken("HTML")
 
     @JvmField
@@ -200,9 +148,6 @@ object LexerTokens {
 
     @JvmField
     val FILE = LexerToken("FILE")
-
-    @JvmField
-    val OBJECT = LexerToken("OBJECT")
 
     @JvmField
     val BRACE = LexerToken("BRACE")

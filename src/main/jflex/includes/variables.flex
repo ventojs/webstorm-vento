@@ -10,12 +10,9 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %%
 
 <VARIABLE> {
-    > { enter(SCRIPT_CONTENT); return LexerTokens.JAVASCRIPT_START; }
-    - { enter(EXPRESSION); return LexerTokens.TRIM_OPEN;}
     \{ { pushbackall(); enter(EXPRESSION);}
     [^}] { pushbackall(); enter(EXPRESSION);}
     "}}" { pushbackall(); leave();}
-    - / "}}" { leave();return LexerTokens.TRIM_CLOSE;}
     "}"{OWS}"}"{OWS}"}" { yypushback(2); leave();return LexerTokens.UNKNOWN;}
     "{{" { pushbackall();leave(); }
 
