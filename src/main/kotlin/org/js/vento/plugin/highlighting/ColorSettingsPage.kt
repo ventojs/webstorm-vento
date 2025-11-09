@@ -23,15 +23,23 @@ class ColorSettingsPage : ColorSettingsPage {
     object Util {
         val DESCRIPTORS: Array<AttributesDescriptor> =
             arrayOf(
+                AttributesDescriptor("Bad characters", SyntaxHighlighter.UNKNOWN_CONTENT),
+                AttributesDescriptor("Block / Comment", SyntaxHighlighter.CBLOCK),
+                AttributesDescriptor("Block / JavaScript", SyntaxHighlighter.JSBLOCK),
+                AttributesDescriptor("Block / Variable", SyntaxHighlighter.VBLOCK),
                 AttributesDescriptor("Args", SyntaxHighlighter.ARGS),
-                AttributesDescriptor("Block / Comment", SyntaxHighlighter.COMMENT),
-                AttributesDescriptor("Block / JavaScript", SyntaxHighlighter.JAVASCRIPT),
-                AttributesDescriptor("Block / Variable", SyntaxHighlighter.BLOCK),
+                AttributesDescriptor("Braces", SyntaxHighlighter.BRACES),
+                AttributesDescriptor("Brackets", SyntaxHighlighter.BRACKETS),
+                AttributesDescriptor("Commas", SyntaxHighlighter.COMMAS),
                 AttributesDescriptor("Comment content", SyntaxHighlighter.COMMENTED_CONTENT),
-                AttributesDescriptor("Expression", SyntaxHighlighter.VALUES),
-                AttributesDescriptor("Keyword", SyntaxHighlighter.KEY_WORD),
+                AttributesDescriptor("Dots", SyntaxHighlighter.DOTS),
+                AttributesDescriptor("Keyword", SyntaxHighlighter.KEYWORDS),
+                AttributesDescriptor("Numbers", SyntaxHighlighter.NUMBERS),
+                AttributesDescriptor("Operations", SyntaxHighlighter.OPERATIONS),
                 AttributesDescriptor("String", SyntaxHighlighter.STRING),
-                AttributesDescriptor("Variable", SyntaxHighlighter.VARIABLE),
+                AttributesDescriptor("Symbol", SyntaxHighlighter.SYMBOLS),
+                AttributesDescriptor("Values", SyntaxHighlighter.VALUES),
+                AttributesDescriptor("Vento keywords", SyntaxHighlighter.VENTO_KEYWORDS),
             )
     }
 
@@ -41,47 +49,42 @@ class ColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
-        comments:
-          {{# This is a sample web page #}}
-          {{#- trimmed comment -#}}
+        {{# This is a sample web page #}}
+        {{#- trimmed comment -#}}
 
-        variable:
-          {{ username || "unknown" }}
-          {{ "Hello World!" |> toUpperCase }}
+        {{ username || "unknown" }}
+        {{ "Hello World!" |> toUpperCase }}
 
-        for:
-          {{ for value of collection |> toUpperCase}}
+        {{ for value of collection |> toUpperCase}}
+          {{ value }}
+        {{ /for}}
+        {{ import { component } from "path/to/file.vto" }}
 
-        import:
-          {{ import { component } from "path/to/file.vto" }}
+        {{ export message = "Hello World!" }}
 
-        export:
-          {{ export message = "Hello World!" }}
+        {{ export message }}
+            <h1>Hello World!</h1>
+        {{ /export }}
 
-          {{ export message }}
-          <h1>Hello World!</h1>
-          {{ /export }}
+        {{ export function sayHello(name) }}
+            <h1>Hello {{ name }}!</h1>
+        {{ /export }}
 
-          {{ export function sayHello(name) }}
-          <h1>Hello {{ name }}!</h1>
-          {{ /export }}
+        {{ set message = "Hello World!" }}
 
-        Set:
-          {{ set message = "Hello World!" }}
+        {{ layout "section.vto" {department: "Marketing", active: true} }}
+          {{ slot header |> toUpperCase }}
+            <h1>Section title</h1>
+          {{ /slot }}
+          <p>Content of the section</p>
+        {{ /layout }}
 
-        layout:
-          {{ layout "section.vto" {department: "Marketing"} }}
-            {{ slot header |> toUpperCase }}
-              <h1>Section title</h1>
-            {{ /slot }}
-            <p>Content of the section</p>
-          {{ /layout }}
 
-        include:
-            {{ include "/my-file.vto" {salute: "Good bye"} |> toUpperCase }}
+        {{ include "/my-file.vto" { salutation: "Good bye", sizes: [10, 20, 30] } |> toUpperCase }}
 
-        Javascript:
-          {{> console.log('Hello World') }}
+        {{> console.log('Hello World') }}
+
+        {{ bad characters }}
         """.trimIndent()
 
     override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? = null

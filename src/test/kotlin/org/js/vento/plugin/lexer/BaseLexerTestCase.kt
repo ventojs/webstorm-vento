@@ -10,28 +10,17 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.util.SlowOperations
 import com.jetbrains.rd.util.printlnError
 import junit.framework.TestCase
+import kotlin.math.abs
 
-abstract class BaseLexerTestCase(name: String) : TestCase(name) {
-    private lateinit var lexer: FlexLexer
-
-    @Suppress("UnstableApiUsage")
-    override fun setUp() {
-        super.setUp()
-        val lexer =
-            SlowOperations.knownIssue("IDEA-000000").use {
-                LexerAdapter.createTestLexer()
-            }
-        assertNotNull("Lexer should not be null", lexer)
-        this.lexer = lexer
-    }
-
-    protected fun lexAndTest(template: String, tokens: Array<String>) {
+abstract class BaseLexerTestCase(name: String, val debug: Boolean = false) : TestCase(name) {
+    protected fun lexAndTest(template: String, tokens: Array<String>, noErrors: Boolean = true) {
         var passed = false
         try {
-            initLexer(template)
+            val lexer = initLexer(template, debug)
             tokens.forEach { expected ->
-                val token = getNext(lexer, template)
-                assertEquals(expected, token.second)
+                val token: Pair<IElementType?, String> = getNext(lexer, template)
+                assertEquals("token mismatched", expected, token.second)
+                if (noErrors) assertNotSame("UNKNOWN token found.", LexerTokens.UNKNOWN, token.first)
             }
 
             val token: IElementType? = lexer.advance()
@@ -49,26 +38,69 @@ abstract class BaseLexerTestCase(name: String) : TestCase(name) {
         }
     }
 
+    protected fun countVentoBlocks(template: String, count: Int = 1) {
+        var passed = false
+        var openCount = 0
+        var closeCount = 0
+        try {
+            val lexer = initLexer(template, debug)
+
+            while (lexer.tokenEnd < template.length) {
+                val type = lexer.advance()
+                if (type == LexerTokens.VBLOCK_OPEN) openCount++
+                if (type == LexerTokens.VBLOCK_CLOSE) closeCount++
+            }
+
+//            assertEquals("number of {{ does not match number of }}: ", closeCount, openCount)
+            assertEquals(
+                "did not meet expected count (open:$openCount, close:$closeCount): ",
+                count,
+                ((openCount + closeCount) - abs(openCount - closeCount)) / 2,
+            )
+
+            passed = true
+        } finally {
+            if (!passed) {
+                printlnError("[{{] found: $openCount expected: $count ")
+                printlnError("[}}] found: $closeCount expected: $count ")
+                lexAndPrint(template)
+            }
+        }
+    }
+
     protected fun lexAndPrint(template: String) {
-        initLexer(template)
-        printlnError("-".repeat(30))
-        printlnError("Template:")
-        printlnError("-".repeat(30))
-        printlnError(template)
-        printlnError("-".repeat(30))
-        printlnError("Tokens:")
-        printlnError("-".repeat(30))
+        val lexer = initLexer(template, false)
+        val output = StringBuilder()
+
+        output.appendLine("-".repeat(30))
+        output.appendLine("Template:")
+        output.appendLine("-".repeat(30))
+        output.appendLine(template)
+        output.appendLine("-".repeat(30))
+        output.appendLine("Tokens:")
+        output.appendLine("-".repeat(30))
+
         do {
             val token: Pair<IElementType?, String> = getNext(lexer, template)
-            printlnError(
+            output.appendLine(
                 "token: " + "${token.first}(${token.first?.index})".padEnd(40, ' ') + " = [${token.second}]",
             )
         } while (lexer.tokenEnd < template.length)
+
+        printlnError(output.toString())
+        lexer.debugModeRestore()
     }
 
-    private fun initLexer(string: String) {
+    private fun initLexer(string: String, debug: Boolean = false): VentoLexer {
+        val lexer =
+            SlowOperations.knownIssue("IDEA-000000").use {
+                LexerAdapter.createTestLexer(debug)
+            }
+        assertNotNull("Lexer should not be null", lexer)
+
         lexer.apply {
             reset(string, 0, string.length, 0)
+            return lexer as VentoLexer
         }
     }
 

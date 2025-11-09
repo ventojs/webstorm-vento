@@ -1,9 +1,8 @@
 Vento File(0,6)
   PsiWhiteSpace(' ')(0,1)
-  Element: VARIABLE_ELEMENT(1,6)
-    PsiElement(VARIABLE_START_TOKEN)('{{')(1,3)
-    PsiErrorElement:Unexpected variable content(3,3)
-      <empty list>
-    PsiElement(UNKNOWN_TOKEN)(' \n\n')(3,6)
-    PsiErrorElement:Unexpected variable content(6,6)
-      <empty list>
+  Element: VENTO_ELEMENT(1,6)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(1,3)
+    Element: UNKNOWN_ELEMENT(3,6)
+      PsiElement(UNKNOWN_TOKEN)(' \n\n')(3,6)
+      PsiErrorElement:Unexpected token(6,6)
+        <empty list>

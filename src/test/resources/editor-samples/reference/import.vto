@@ -1,0 +1,17 @@
+
+{{ import { foo } from "./file.vto" }}
+{{ import foo  from "baz" }}
+{{ import { foo as f, bar,    _,	$ } from "./afile.vto" }}
+{{ import foo from "./file.vento" }}
+
+<!-- ERRORS -->
+{{ import {foo  from "./file.vto" }}
+{{ import from "./file.vto" }}
+{{ import foo  "./file.vto" }}
+{{ import foo fro "./file.vto" }}
+{{ import foo from }}
+{{ import foo from "./file.vto }}
+
+
+
+

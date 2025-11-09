@@ -8,7 +8,7 @@
 - Delegate parsing to the JetBrains JavaScript plugin. (#50)
 - Comment block (`{{# }}`) support. (#47)
 - Delegate parsing of the main body of a `.vto` file to the JetBrains HTML plugin. (#51)
-- Variable block with (`{{ }}`) and wihtout trimming (`{{- -}}`) support. (#36) (#38)
+- Variable block with (`{{ }}`) and without trimming (`{{- -}}`) support. (#36) (#38)
 - Variable pipe support (#39)
 - for support (#43) (#77)
 - import support (#49) (#92)
@@ -22,3 +22,4 @@
 - Fixed the plugin project (#25)
 - Fixed the GitHub workflow security issue (#55)
 - Fixed the release process (#60)
+- redesigned the lexer and parser (#94) (#113)

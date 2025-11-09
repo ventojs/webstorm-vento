@@ -1,9 +1,10 @@
 Vento File(0,18)
-  Element: SET_ELEMENT(0,18)
-    PsiElement(SET_START_TOKEN)('{{')(0,2)
-    PsiElement(SET_KEY_TOKEN)(' set')(2,6)
-    PsiElement(IDENTIFIER_TOKEN)(' myVar')(6,12)
-    PsiElement(EQUAL_TOKEN)(' =')(12,14)
-    PsiErrorElement:Expected expression(14,14)
-      <empty list>
-    PsiElement(SET_END_TOKEN)('  }}')(14,18)
+  Element: VENTO_ELEMENT(0,18)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: SET_ELEMENT(2,14)
+      PsiElement(SET_KEY_TOKEN)(' set')(2,6)
+      PsiElement(SYMBOL_TOKEN)(' myVar')(6,12)
+      PsiElement(EQUAL_TOKEN)(' =')(12,14)
+      PsiErrorElement:Expected expression(14,14)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)('  }}')(14,18)

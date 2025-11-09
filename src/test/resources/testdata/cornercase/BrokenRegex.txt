@@ -1,0 +1,30 @@
+Vento File(0,32)
+  Element: VENTO_ELEMENT(0,32)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: SET_ELEMENT(2,32)
+      PsiElement(SET_KEY_TOKEN)(' set')(2,6)
+      PsiElement(SYMBOL_TOKEN)(' myVar')(6,12)
+      PsiElement(EQUAL_TOKEN)(' =')(12,14)
+      Element: EXPRESSION_ELEMENT(14,26)
+        Element: REGEX_ELEMENT(14,23)
+          PsiElement(REGEX_TOKEN)(' /')(14,16)
+          PsiElement(REGEX_TOKEN)('[Hh].*')(16,22)
+          PsiElement(REGEX_TOKEN)('/')(22,23)
+        PsiElement(DOT_TOKEN)('.')(23,24)
+        PsiElement(SYMBOL_TOKEN)('*')(24,25)
+        Element: ARRAY_ELEMENT(25,26)
+          PsiElement(BRACKET_TOKEN)('[')(25,26)
+          PsiErrorElement:Expected expression(26,26)
+            <empty list>
+      PsiElement(BRACE_TOKEN)('}')(26,27)
+      PsiErrorElement:syntax error: set symbol | set symbol = expression(27,27)
+        <empty list>
+      PsiElement(BRACKET_TOKEN)(']')(27,28)
+      PsiErrorElement:syntax error: set symbol | set symbol = expression(28,28)
+        <empty list>
+      PsiElement(REGEX_TOKEN)('/')(28,29)
+      PsiErrorElement:syntax error: set symbol | set symbol = expression(29,29)
+        <empty list>
+      PsiElement(REGEX_TOKEN)(' }}')(29,32)
+    PsiErrorElement:Expected '}}' (32,32)
+      <empty list>

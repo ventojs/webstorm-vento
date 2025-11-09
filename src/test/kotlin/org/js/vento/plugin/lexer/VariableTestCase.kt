@@ -78,6 +78,12 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf("{{", "message", "?", "\"", "yes", "\"", ":", "\"", "no", "\"", "}}"),
         )
 
+    fun `test ternary operator`() =
+        lexAndTest(
+            "{{ foo ? bar : baz }}",
+            arrayOf("{{", "foo", "?", "bar", ":", "baz", "}}"),
+        )
+
     // ---------------------------
     // Strings, arrays, regex, literals
     // ---------------------------
@@ -97,7 +103,7 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test complex string`() =
         lexAndTest(
             """{{ "'\"'" }}""",
-            arrayOf("{{", "\"", "'", "\\\"", "'", "\"", "}}"),
+            arrayOf("{{", "\"", "'\\\"'", "\"", "}}"),
         )
 
     /**
@@ -105,7 +111,21 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
      * Input: {{ [1,2,3] }}
      * Expected: {{, [1,2,3], }}
      */
-    fun `test array`() = lexAndTest("""{{ [1,2,3] }}""", arrayOf("{{", "[1,2,3]", "}}"))
+    fun `test array`() =
+        lexAndTest(
+            """{{ [1,2,3] }}""",
+            arrayOf(
+                "{{",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                "]",
+                "}}",
+            ),
+        )
 
     /**
      * Verifies regex literal and method call tokenization including brackets and quotes.
@@ -115,18 +135,45 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test regex`() =
         lexAndTest(
             "{{ !/[/\"}]/.test('foo/bar') }}",
-            arrayOf("{{", "!", "/", "[", "/\"}", "]", "/", ".test(", "'", "foo/bar", "'", ")", "}}"),
+            arrayOf(
+                "{{",
+                "!",
+                "/",
+                "[",
+                "/\"}",
+                "]",
+                "/",
+                ".",
+                "test",
+                "(",
+                "'",
+                "foo/bar",
+                "'",
+                ")",
+                "}}",
+            ),
         )
 
     /**
      * Verifies template/string literal tokenization with nested escaped substitutions.
-     * Input: {{ html`foo \${bar \${baz}` }}
+     * Input: {{ html`foo \${bar} \${baz}` }}
      * Expected: {{, html, `, foo \${bar \${baz}, `, }}
      */
     fun `test string literal`() =
         lexAndTest(
-            "{{ html`foo \\\${bar \\\${baz}` }}",
-            arrayOf("{{", "html", "`", "foo \\\${bar \\\${baz}", "`", "}}"),
+            "{{ html`foo \${bar} \${baz}` }}",
+            arrayOf(
+                "{{",
+                "html",
+                "`",
+                "foo ",
+                "\$",
+                "{bar} ",
+                "\$",
+                "{baz}",
+                "`",
+                "}}",
+            ),
         )
 
     // ---------------------------
@@ -138,7 +185,23 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
      * Input: {{{a:1,b:2}}}
      * Expected: {{, {, a:1,b:2, }, }}
      */
-    fun `test object`() = lexAndTest("{{{a:1,b:2}}}", arrayOf("{{", "{", "a:1,b:2", "}", "}}"))
+    fun `test object`() =
+        lexAndTest(
+            "{{{a:1,b:2}}}",
+            arrayOf(
+                "{{",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "2",
+                "}",
+                "}}",
+            ),
+        )
 
     /**
      * Verifies nested object literals.
@@ -148,7 +211,23 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test deep object`() =
         lexAndTest(
             "{{{a:1,b:{c:2}}}}",
-            arrayOf("{{", "{", "a:1,b:", "{", "c:2", "}", "}", "}}"),
+            arrayOf(
+                "{{",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "{",
+                "c",
+                ":",
+                "2",
+                "}",
+                "}",
+                "}}",
+            ),
         )
 
     /**
@@ -159,7 +238,21 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test object with string`() =
         lexAndTest(
             "{{{a:1,b:\"abc\"}}}",
-            arrayOf("{{", "{", "a:1,b:", "\"", "abc", "\"", "}", "}}"),
+            arrayOf(
+                "{{",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "\"",
+                "abc",
+                "\"",
+                "}",
+                "}}",
+            ),
         )
 
     /**
@@ -167,7 +260,25 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
      * Input: {{{a:1,b:foo--}}}
      * Expected: {{, {, a:1,b:foo--, }, }}
      */
-    fun `test object with dashes`() = lexAndTest("{{{a:1,b:foo--}}}", arrayOf("{{", "{", "a:1,b:foo--", "}", "}}"))
+    fun `test object with dashes`() =
+        lexAndTest(
+            "{{{a:1,b:foo--}}}",
+            arrayOf(
+                "{{",
+                "{",
+                "a",
+                ":",
+                "1",
+                ",",
+                "b",
+                ":",
+                "foo",
+                "-",
+                "-",
+                "}",
+                "}}",
+            ),
+        )
 
     /**
      * Verifies JSON-like structure tokenization where keys are quoted.
@@ -177,7 +288,25 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test JSON`() =
         lexAndTest(
             "{{{\"a\":1,\"b\":\"abc\"}}}",
-            arrayOf("{{", "{", "\"", "a", "\"", ":1,", "\"", "b", "\"", ":", "\"", "abc", "\"", "}", "}}"),
+            arrayOf(
+                "{{",
+                "{",
+                "\"",
+                "a",
+                "\"",
+                ":",
+                "1",
+                ",",
+                "\"",
+                "b",
+                "\"",
+                ":",
+                "\"",
+                "abc",
+                "\"",
+                "}",
+                "}}",
+            ),
         )
 
     // ---------------------------
@@ -189,14 +318,24 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
      * Input: {{ foo--}}
      * Expected: {{, foo, -, -}}
      */
-    fun `test dashes`() = lexAndTest("{{ foo--}}", arrayOf("{{", "foo", "-", "-}}"))
+    fun `test dashes`() = lexAndTest("{{ foo---}}", arrayOf("{{", "foo", "-", "-", "-}}"))
 
     /**
      * Verifies tokenization when opening trimming and multiple trailing dashes are present.
      * Input: {{-foo---}}
      * Expected: {{-, foo, -, -, -}}
      */
-    fun `test many dashes`() = lexAndTest("{{-foo---}}", arrayOf("{{-", "foo", "-", "-", "-}}"))
+    fun `test many dashes`() =
+        lexAndTest(
+            "{{-foo---}}",
+            arrayOf(
+                "{{-",
+                "foo",
+                "-",
+                "-",
+                "-}}",
+            ),
+        )
 
     // ---------------------------
     // Complex scenario
@@ -212,7 +351,16 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test complex`() {
         lexAndTest(
             "{{> let foo = -2 }}\n1 + 1 = {{--foo}}",
-            arrayOf("{{>", " let foo = -2 ", "}}", "\n1 + 1 = ", "{{-", "-", "foo", "}}"),
+            arrayOf(
+                "{{>",
+                " let foo = -2 ",
+                "}}",
+                "\n1 + 1 = ",
+                "{{-",
+                "-",
+                "foo",
+                "}}",
+            ),
         )
     }
 }

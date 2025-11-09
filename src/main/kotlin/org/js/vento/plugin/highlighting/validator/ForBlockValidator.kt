@@ -7,7 +7,7 @@ package org.js.vento.plugin.highlighting.validator
 
 import com.intellij.lang.tree.util.children
 import com.intellij.psi.impl.source.tree.PsiErrorElementImpl
-import org.js.vento.plugin.ForBlockElement
+import org.js.vento.plugin.ForElement
 import org.js.vento.plugin.lexer.LexerTokens
 
 /**
@@ -22,10 +22,12 @@ import org.js.vento.plugin.lexer.LexerTokens
  * which includes an error message explaining the issue if the validation fails.
  */
 class ForBlockValidator {
-    fun isValidExpression(content: ForBlockElement): ValidationResult {
+    fun validate(content: ForElement): ValidationResult {
         if (content.text.isEmpty()) return ValidationResult(false, "Empty for-block found. $SYNTAX")
         if (content.text.matches(forClose)) {
             return ValidationResult(true, "Valide closing for-block found.")
+        } else if (!content.text.matches(forOpen)) {
+            return ValidationResult(false, RULE + " ${content.text}")
         } else {
             if (content.node.children().any {
                     it.elementType.toString() == LexerTokens.UNKNOWN.toString() ||
@@ -40,7 +42,8 @@ class ForBlockValidator {
     }
 
     companion object {
-        private val forClose = Regex("\\{\\{[ \t]*/for[ \t]*}}")
+        private val forOpen = Regex("[ \t]*for[ \t]+.+[ \t]+of[ \t]+.+[ \t]*")
+        private val forClose = Regex("[ \t]*/for[ \t]*")
         private const val SYNTAX = "structure is: {{ for value of collection }} followed by {{ /for }}"
         private const val RULE = "Invalid for-block. $SYNTAX"
     }

@@ -1,0 +1,75 @@
+{{ "Hello world" }}
+{{ undefined }}
+{{ content }}
+{{ null }}
+{{ it.message }}
+{{ m }}
+
+{{>
+/**
+ * Block comment
+ */
+let greeting = "Hi"
+}}
+
+{{ greeting || "Hello world" }}
+
+{{ "Hello, world!".toUpperCase() }}
+
+{{> let foo = -2 }}
+1 + 1 = {{--foo}}
+1 + 1 = {{--foo && --foo-}}
+1 + 1 = {{-foo---}}
+
+{{{a:"}}",b:{c:-1,d:--foo}}-}}
+
+{{ message ? "yes" : "no" }}
+
+{{ message ?? "no" }}
+
+{{ global.foo }}
+
+{{ foo }}
+
+<!-- Pipe Cases-->
+{{ "Hello, world!" |> toUpperCase }}
+
+{{ url |> await fetch |> await json |> JSON.stringify }}
+
+<{{ "foo" |> getAsync }}>
+
+{{ greeting |> toUpperCase }}
+
+{{ greeting |> toString |> toUpperCase }}
+
+{{ greeting |> slugify }}
+
+{{ {a:"hello",b:"world"} |> JSON.stringify }}
+
+
+<!-- Special Cases-->
+{{ "'\"'" }}
+
+{{ '\"/hi/\"' }}
+
+{{ html`
+<div>Hello World</div>
+` }}
+
+{{ !/[/"]/.test('foo/bar') }}
+
+{{ `foo \${bar ${baz}` }}
+{{ "hello" // foo bar }}
+{{ /** comment */ "Hello " +"World!" }}
+
+<!--error: more than one expression-->
+1 + 1 = {{--foo;--foo}}
+
+<!--error: statement instead of expression-->
+{{if(foo>0) console.log("foo")}}
+
+<!--error: two expressions and a pipe-->
+{{ greeting;foo |> JSON.stringify }}
+
+{{  { const foo=1 } }}
+

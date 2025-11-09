@@ -4,7 +4,7 @@
 <h1 align="center">
   <br />
     <a href="https://vento.js.org/">
-      <img src="https://vento.js.org/favicon.svg" alt="VentoJS Logo" width="200">
+        <img src="docs/assets/favicon.svg" alt="VentoJS Logo" width="200">
     </a>
   <br /><br />
   Vento for JetBrain's WebStorm & IntelliJ IDEA Ultimate IDE
