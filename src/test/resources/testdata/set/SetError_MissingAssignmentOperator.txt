@@ -7,25 +7,17 @@ Vento File(0,32)
       PsiElement(UNKNOWN_TOKEN)('  "')(12,15)
       PsiErrorElement:Expected '=' keyword(15,15)
         <empty list>
-      Element: EXPRESSION_ELEMENT(15,20)
-        Element: UNKNOWN_ELEMENT(15,17)
-          PsiElement(UNKNOWN_TOKEN)('H')(15,16)
-          PsiElement(UNKNOWN_TOKEN)('e')(16,17)
-          PsiErrorElement:Unexpected token(17,17)
-            <empty list>
-        PsiElement(SYMBOL_TOKEN)('llo')(17,20)
-      PsiErrorElement:Expected '='(20,20)
-        <empty list>
+      Element: UNKNOWN_ELEMENT(15,17)
+        PsiElement(UNKNOWN_TOKEN)('H')(15,16)
+        PsiElement(UNKNOWN_TOKEN)('e')(16,17)
+        PsiErrorElement:Unexpected token(17,17)
+          <empty list>
+      PsiElement(SYMBOL_TOKEN)('llo')(17,20)
       PsiElement(COMMA_TOKEN)(',')(20,21)
-      PsiErrorElement:syntax error: set symbol | set symbol = expression(21,21)
-        <empty list>
       PsiElement(SYMBOL_TOKEN)(' world!')(21,28)
-      PsiErrorElement:syntax error: set symbol | set symbol = expression(28,28)
-        <empty list>
-      PsiElement(STRING_TOKEN)('"')(28,29)
-      PsiErrorElement:syntax error: set symbol | set symbol = expression(29,29)
-        <empty list>
-      PsiElement(STRING_TOKEN)(' }}')(29,32)
+      Element: STRING_ELEMENT(28,32)
+        PsiElement(STRING_TOKEN)('"')(28,29)
+        PsiElement(STRING_TOKEN)(' }}')(29,32)
       Element: UNKNOWN_ELEMENT(32,32)
         PsiErrorElement:Unexpected token(32,32)
           <empty list>

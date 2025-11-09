@@ -84,7 +84,9 @@ class ColorSettingsPage : ColorSettingsPage {
 
         {{> console.log('Hello World') }}
 
-        {{ bad characters }}
+        {{ layout "myfile.vto }}
+            <h1>BAD CHARACTERS</h1>
+        {{ /layout }}
         """.trimIndent()
 
     override fun getAdditionalHighlightingTagToDescriptorMap(): MutableMap<String, TextAttributesKey>? = null
