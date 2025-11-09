@@ -8,7 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.testFramework.ParsingTestCase
 import org.js.vento.plugin.VentoParserDefinition
 
-class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
+class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testSimpleVariable() {
         val code = "{{ content }}"
         doCodeTest(code)

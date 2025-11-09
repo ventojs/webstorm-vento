@@ -32,18 +32,35 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
           } else {
               return LexerTokens.SYMBOL;
           }
-          }
+      }
 
+  "|>" {
+       pushbackall();
+       leave();
+     }
+
+   "=>" { return LexerTokens.SYMBOL; }
+
+   [=]  { return LexerTokens.SYMBOL; }
    [.]  { return LexerTokens.DOT; }
    [,]  { return LexerTokens.COMMA; }
    [+]  { return LexerTokens.PLUS; }
+   [*]  { return LexerTokens.SYMBOL; }
    [-]  { return LexerTokens.MINUS; }
    [:]  { return LexerTokens.COLON; }
    [;]  { return LexerTokens.SEMICOLON; }
    [-] / "-}}"  { return LexerTokens.MINUS; }
+   "||"|"&&"|"?"|"!"|"%"   { return LexerTokens.SYMBOL; }
    "true"|"false"  { return LexerTokens.BOOLEAN; }
    "new" { return LexerTokens.NEW; }
    "instanceof" { return LexerTokens.INSTANCEOF; }
+
+   "break"|"case"|"catch"|"class"|"const"|"continue"|"debugger"|"default"|"delete"|"do"|"else"|"enum"|"export"|"extends"|"finally"|"for"|"function"|"if"|"implements"|"import"|"in"|"interface"|"let"|"package"|"private"|"protected"|"public"|"return"|"super"|"switch"|"static"|"this"|"throw"|"try"|"typeof"|"var"|"void"|"while"|"with"|"yield" { return LexerTokens.UNKNOWN; }
+
+   {SYMBOL} { return LexerTokens.SYMBOL; }
+
+   ([0-9][0-9_]?)*[0-9]+{SYMBOL} {return LexerTokens.UNKNOWN;}
+   ([0-9][0-9_]?)*[0-9]+ {return LexerTokens.NUMBER;}
 
 
     \{ {
@@ -86,18 +103,6 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
           decParDepth();
           return LexerTokens.PARENTHESIS;
       }
-
-   "|>" {
-        pushbackall();
-        leave();
-      }
-
-   ([0-9][0-9_]?)*[0-9]+ {return LexerTokens.NUMBER;}
-
-   "break"|"case"|"catch"|"class"|"const"|"continue"|"debugger"|"default"|"delete"|"do"|"else"|"enum"|"export"|"extends"|"finally"|"for"|"function"|"if"|"implements"|"import"|"in"|"interface"|"let"|"package"|"private"|"protected"|"public"|"return"|"super"|"switch"|"static"|"this"|"throw"|"try"|"typeof"|"var"|"void"|"while"|"with"|"yield" { return LexerTokens.UNKNOWN; }
-
-
-   [^\/\"'`()\[\]{}+\-:;,. \t\n\r]+ { return LexerTokens.SYMBOL; }
 
    "}}"|"{{" {
           yypushback(yylength());

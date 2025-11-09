@@ -12,7 +12,7 @@ package org.js.vento.plugin.lexer
  * Each test includes a short description of the scenario and the expected tokenization.
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class SetTestCase(name: String) : BaseLexerTestCase(name, true) {
+class SetTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple set`() =
         lexAndTest(
             "{{ set greeting = \"Hello Worlds\"}}",

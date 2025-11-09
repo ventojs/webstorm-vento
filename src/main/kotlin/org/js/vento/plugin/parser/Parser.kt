@@ -10,6 +10,7 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.lexer.LexerTokens.ASTERISK
 import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
 import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
@@ -28,6 +29,7 @@ import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARG
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_NAME
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
@@ -133,12 +135,13 @@ class Parser : PsiParser {
         when (builder.tokenType) {
             ECHO_KEY -> parseEcho(builder)
             ECHO_CLOSE_KEY -> parseEchoClose(builder)
-            ASYNC_KEY -> parseFunction(builder)
+            ASYNC_KEY -> parseFunctionSignature(builder)
             EXPORT_CLOSE_KEY -> parseExportClose(builder)
             EXPORT_KEY -> parseExport(builder)
             FOR_CLOSE_KEY -> parseForClose(builder)
             FOR_KEY -> parseFor(builder)
             FUNCTION_KEY -> parseFunctionSignature(builder)
+            FUNCTION_CLOSE_KEY -> parseFunctionClose(builder)
             IMPORT_KEY -> parseImport(builder)
             INCLUDE_KEY -> parseInclude(builder)
             LAYOUT_CLOSE_KEY -> parseLayoutClose(builder)
@@ -155,6 +158,12 @@ class Parser : PsiParser {
                 }
             }
         }
+    }
+
+    private fun parseFunctionClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, FUNCTION_CLOSE_KEY, "Expected '/function' keyword'")
+        m.done(ParserElements.FUNCTION_CLOSE_ELEMENT)
     }
 
     private fun parseEchoClose(builder: PsiBuilder) {
@@ -396,7 +405,9 @@ class Parser : PsiParser {
         optional(builder, FUNCTION_NAME, "Expected function name")
 
         // ARGS
-        parseFunctionArguments(builder)
+        if (builder.tokenType == PARENTHESIS) {
+            parseFunctionArguments(builder)
+        }
 
         mark.done(ParserElements.FUNCTION_SIGNATURE_ELEMENT)
     }
@@ -404,11 +415,16 @@ class Parser : PsiParser {
     private fun parseFunctionArguments(builder: PsiBuilder) {
         val mark = builder.mark()
         expect(builder, PARENTHESIS, "Expected '('") { it.trim() == "(" }
-        if (builder.tokenType == FUNCTION_ARG) {
+        if (builder.tokenType == FUNCTION_ARG || (builder.tokenType == BRACE && builder.tokenText?.trim() == "{")) {
+            val isOpen = optional(builder, BRACE, "Expected '{'") { it.trim() == "{" }
             parseFunctionArg(builder)
             while (optional(builder, COMMA, "Expected ','")) {
                 parseFunctionArg(builder)
             }
+            if (isOpen) expect(builder, BRACE, "Expected '}'") { it.trim() == "}" }
+        }
+        if (optional(builder, SYMBOL, "Expected '='")) {
+            parseExpression(builder)
         }
         expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
         mark.done(ParserElements.FUNCTION_ARGUMENTS_ELEMENT)
@@ -416,8 +432,10 @@ class Parser : PsiParser {
 
     private fun parseFunctionArg(builder: PsiBuilder) {
         val mark = builder.mark()
+
         expect(builder, FUNCTION_ARG, "Expected function argument name")
         if (optional(builder, EQUAL, "Expected '='")) {
+            val isOpen = optional(builder, BRACE, "Expected '{'") { it.trim() == "{" }
             when (builder.tokenType) {
                 STRING -> parseString(builder)
                 NUMBER -> expect(builder, NUMBER, "Expected number", true)
@@ -427,7 +445,9 @@ class Parser : PsiParser {
                 BRACE -> parseObject(builder)
                 else -> builder.error("Expected string, number, boolean, regex, array, or object")
             }
+            if (isOpen) expect(builder, BRACE, "Expected '}'") { it.trim() == "}" }
         }
+
         mark.done(ParserElements.FUNCTION_ARG_ELEMENT)
     }
 
@@ -498,6 +518,7 @@ class Parser : PsiParser {
         val m = builder.mark()
 
         var hasExpression = false
+        var isParenOpen = 0
         while (
             !builder.eof() &&
             (
@@ -514,10 +535,17 @@ class Parser : PsiParser {
                     builder.tokenType == PLUS ||
                     builder.tokenType == PLUS ||
                     builder.tokenType == REGEX ||
-                    builder.tokenType == STRING ||
                     builder.tokenType == SYMBOL ||
-                    builder.tokenType == UNKNOWN ||
-                    builder.tokenType == NEW
+                    builder.tokenType == BOOLEAN ||
+                    builder.tokenType == ASTERISK ||
+                    builder.tokenType == STRING ||
+                    (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
+                    (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
+                    builder.tokenType == DOT ||
+                    builder.tokenType == PLUS ||
+                    (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == "(") ||
+                    (builder.tokenType == PARENTHESIS && isParenOpen > 0 && builder.tokenText?.trim() == ")") ||
+                    builder.tokenType == UNKNOWN
             )
         ) {
             if (builder.tokenType == BRACE) {
@@ -534,6 +562,16 @@ class Parser : PsiParser {
             ) {
                 parseRegex(builder)
                 hasExpression = true
+            } else if (builder.tokenType == PARENTHESIS) {
+                if (builder.tokenText?.trim() == "(") {
+                    expect(builder, PARENTHESIS, "Expected '('") { it.trim() == "(" }
+                    isParenOpen++
+                }
+
+                if (isParenOpen != 0 && builder.tokenText?.trim() == ")") {
+                    expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+                    isParenOpen--
+                }
             } else if (
                 builder.tokenType == BOOLEAN ||
                 builder.tokenType == COLON ||
@@ -546,6 +584,9 @@ class Parser : PsiParser {
                 builder.tokenType == PARENTHESIS ||
                 builder.tokenType == PLUS ||
                 builder.tokenType == PLUS ||
+                builder.tokenType == NEW ||
+                builder.tokenType == ASTERISK ||
+                builder.tokenType == INSTANCEOF ||
                 builder.tokenType == SYMBOL
             ) {
                 builder.advanceLexer()

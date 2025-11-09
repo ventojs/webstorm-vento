@@ -13,7 +13,7 @@ import org.junit.jupiter.params.provider.FieldSource
 
 @Ignore("Run with JUnit 5")
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-class SetParameterizedTestCase : ParameterizedBaseTestCase(true) {
+class SetParameterizedTestCase : ParameterizedBaseTestCase() {
     companion object {
         @Suppress("unused")
         val expressions = expressionSet

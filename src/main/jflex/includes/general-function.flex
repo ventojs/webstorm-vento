@@ -83,7 +83,19 @@ ARG = ({SYMBOL}([=]{OWS}([0-9]+[0-9_]?|[\"'].*[\"']))?)
 
     \) { leave(); return LexerTokens.PARENTHESIS; }
 
-    {SYMBOL} { return LexerTokens.FUNCTION_ARG; }
+    \{ {
+          incObjDepth();
+          return LexerTokens.BRACE;
+      }
+
+    \} {
+          decObjDepth();
+          if(currentDepth().getFirst() < 0){
+            return LexerTokens.UNKNOWN;
+          } else {
+            return LexerTokens.BRACE;
+          }
+      }
 
     [=] {
           enter(EXPRESSION);
@@ -92,6 +104,7 @@ ARG = ({SYMBOL}([=]{OWS}([0-9]+[0-9_]?|[\"'].*[\"']))?)
 
     [,] { return LexerTokens.COMMA;}
 
+    {SYMBOL} { return LexerTokens.FUNCTION_ARG; }
 }
 
 <FUNCTION_BODY>{

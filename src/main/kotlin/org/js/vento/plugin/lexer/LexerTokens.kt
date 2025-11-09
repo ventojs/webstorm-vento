@@ -174,6 +174,9 @@ object LexerTokens {
     val PLUS = LexerToken("PLUS")
 
     @JvmField
+    val ASTERISK = LexerToken("ASTERISK")
+
+    @JvmField
     val MINUS = LexerToken("MINUS")
 
     @JvmField

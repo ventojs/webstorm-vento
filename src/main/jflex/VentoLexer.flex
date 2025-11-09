@@ -134,7 +134,9 @@ CVAR = -?{CBLOCK}
 
     "|>" { return LexerTokens.PIPE; }
 
-    [^] {
+    [=] { return LexerTokens.EQUAL;}
+
+    [^=] {
           pushbackall();
           enter(EXPRESSION);
       }

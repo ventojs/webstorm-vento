@@ -69,7 +69,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     "/"{ECHO} { return LexerTokens.ECHO_CLOSE_KEY;}
     "/"{EXPORT} { return LexerTokens.EXPORT_CLOSE_KEY;}
     "/"{FOR} { return LexerTokens.FOR_CLOSE_KEY;}
-    "/"{FUNCTION} { return LexerTokens.FOR_CLOSE_KEY;}
+    "/"{FUNCTION} { return LexerTokens.FUNCTION_CLOSE_KEY;}
     "/"{LAYOUT} { return LexerTokens.LAYOUT_CLOSE_KEY;}
     "/"{SET} { return LexerTokens.SET_CLOSE_KEY;}
     "/"{SLOT} { return LexerTokens.LAYOUT_SLOT_CLOSE_KEY;}

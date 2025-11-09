@@ -109,6 +109,9 @@ object ParserElements {
     val FUNCTION_ELEMENT: IElementType = ParserElement("FUNCTION_ELEMENT")
 
     @JvmField
+    val FUNCTION_CLOSE_ELEMENT: IElementType = ParserElement("FUNCTION_CLOSE_ELEMENT")
+
+    @JvmField
     val ECHO_ELEMENT: IElementType = ParserElement("ECHO_ELEMENT")
 
     @JvmField
