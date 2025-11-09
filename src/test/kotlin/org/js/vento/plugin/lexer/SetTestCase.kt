@@ -12,7 +12,7 @@ package org.js.vento.plugin.lexer
  * Each test includes a short description of the scenario and the expected tokenization.
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
-class SetTestCase(name: String) : BaseLexerTestCase(name) {
+class SetTestCase(name: String) : BaseLexerTestCase(name, true) {
     fun `test simple set`() =
         lexAndTest(
             "{{ set greeting = \"Hello Worlds\"}}",
@@ -29,4 +29,76 @@ class SetTestCase(name: String) : BaseLexerTestCase(name) {
         )
 
     fun `test close set`() = lexAndTest("{{ /set }}", arrayOf("{{", "/set", "}}"))
+
+    fun `test set function`() =
+        lexAndTest(
+            "{{ set foo = function(){return 'Hi'} }}",
+            arrayOf(
+                "{{",
+                "set",
+                "foo",
+                "=",
+                "function",
+                "(",
+                ")",
+                "{",
+                "r",
+                "e",
+                "t",
+                "u",
+                "r",
+                "n",
+                " ",
+                "'",
+                "H",
+                "i",
+                "'",
+                "}",
+                "}}",
+            ),
+        )
+
+    fun `test set lambda with body`() =
+        lexAndTest(
+            "{{ set x = () => {return true} }}",
+            arrayOf(
+                "{{",
+                "set",
+                "x",
+                "=",
+                "(",
+                ")",
+                "=>",
+                "{",
+                "r",
+                "e",
+                "t",
+                "u",
+                "r",
+                "n",
+                " ",
+                "t",
+                "r",
+                "u",
+                "e",
+                "}",
+                "}}",
+            ),
+        )
+
+    fun `test set lambda`() =
+        lexAndTest(
+            "{{ set x = () => true }}",
+            arrayOf(
+                "{{",
+                "set",
+                "x",
+                "=",
+                "(",
+                ")",
+                "=>",
+                "true",
+                "}}",
+            ),
+        )
 }

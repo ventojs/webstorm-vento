@@ -63,4 +63,12 @@ var expressionSet: Set<Pair<String, String>> =
             "iife",
             """(function() { return 'Hello World!' })()""",
         ),
+        Pair(
+            "lambda-with-body",
+            """() => { return 'Hello World!' }""",
+        ),
+        Pair(
+            "lambda",
+            """() => 'Hello World!' """,
+        ),
     )

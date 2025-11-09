@@ -36,6 +36,8 @@ class ExpressionElement(node: ASTNode) : BaseElementImpl(node)
 
 class ForElement(node: ASTNode) : BaseElementImpl(node)
 
+class FunctionElement(node: ASTNode) : BaseElementImpl(node)
+
 class ImportElement(node: ASTNode) : BaseElementImpl(node)
 
 class IncludeElement(node: ASTNode) : BaseElementImpl(node)

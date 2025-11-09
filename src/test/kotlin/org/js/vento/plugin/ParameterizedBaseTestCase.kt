@@ -14,7 +14,7 @@ import org.junit.jupiter.api.TestInstance
 
 @Ignore("Run with JUnit 5")
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-abstract class ParameterizedBaseTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCase("", "vto", VentoParserDefinition(debug)) {
     companion object {
         var output = ""
 

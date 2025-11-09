@@ -50,6 +50,18 @@ object ParserElements {
     @JvmField
     val EXPORT_OPEN_ELEMENT: IElementType = ParserElement("EXPORT_OPEN_ELEMENT")
 
+    @JvmField
+    val FUNCTION_SIGNATURE_ELEMENT: IElementType = ParserElement("FUNCTION_SIGNATURE_ELEMENT")
+
+    @JvmField
+    val FUNCTION_ARGUMENTS_ELEMENT: IElementType = ParserElement("FUNCTION_ARGUMENTS_ELEMENT")
+
+    @JvmField
+    val FUNCTION_ARG_ELEMENT: IElementType = ParserElement("FUNCTION_ARG_ELEMENT")
+
+    @JvmField
+    val FUNCTION_BODY_ELEMENT: IElementType = ParserElement("FUNCTION_BODY_ELEMENT")
+
     // Set elements
     @JvmField
     val SET_CLOSE_ELEMENT: IElementType = ParserElement("SET_CLOSE_ELEMENT")
@@ -120,6 +132,7 @@ object ParserElements {
                 EXPORT_CLOSE_ELEMENT -> ExportCloseElement(node)
                 EXPORT_FUNCTION_ELEMENT -> ExportFunctionElement(node)
                 EXPRESSION_ELEMENT -> ExpressionElement(node)
+                FUNCTION_ELEMENT -> FunctionElement(node)
                 SET_ELEMENT -> SetElement(node)
                 SET_CLOSE_ELEMENT -> SetCloseElement(node)
                 LAYOUT_ELEMENT -> LayoutElement(node)

@@ -4,7 +4,11 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %%
 // BLOCK 2 - START
 %state FUNCTION
+%state FUNCTION_ARGS
 %state FUNCTION_BODY
+%state FUNCTION_LAMBDA
+
+ARG = ({SYMBOL}([=]{OWS}([0-9]+[0-9_]?|[\"'].*[\"']))?)
 // BLOCK 2 - END
 %%
 
@@ -12,39 +16,105 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {WHITESPACE} { }
 
-    \(|\) {return LexerTokens.PARENTHESIS;}
+    \( {
+          pushbackall();
+          enter(FUNCTION_ARGS);
+      }
+
+    "async" {return LexerTokens.ASYNC_KEY;}
 
     "function" {return LexerTokens.FUNCTION_KEY;}
 
-    {SYMBOL} { return LexerTokens.SYMBOL; }
+    {SYMBOL} { return LexerTokens.FUNCTION_NAME; }
 
-    "("{SYMBOL}?([,]{SYMBOL})*")" { return LexerTokens.FUNCTION_ARGS; }
+    \{ {
+          pushbackall();
+          enter(FUNCTION_BODY);
+      }
 
-    \{ { pushbackall();enter(FUNCTION_BODY);}
+    \} {
+        leave();
+        return LexerTokens.BRACE;
+    }
 
     {CBLOCK} | {PIPE}  {
-          yypushback(yylength());
+          pushbackall();
           leave();
       }
 }
 
-<FUNCTION_BODY>{
+<FUNCTION_LAMBDA> {
+    {WHITESPACE} { }
+
+    \( {
+          pushbackall();
+          enter(FUNCTION_ARGS);
+      }
+
+    "=>" {return LexerTokens.LAMBDA_ARROW;}
+
+
+    \{ {
+          pushbackall();
+          enter(FUNCTION_BODY);
+      }
+
+    \} {
+          leave();
+          return LexerTokens.BRACE;
+      }
+
+    "|>" {
+          pushbackall();
+          leave();
+      }
+
+    [^{}] {
+          pushbackall();
+          enter(EXPRESSION);
+      }
+}
+
+<FUNCTION_ARGS> {
 
     {WHITESPACE} { }
+
+    \( { return LexerTokens.PARENTHESIS; }
+
+    \) { leave(); return LexerTokens.PARENTHESIS; }
+
+    {SYMBOL} { return LexerTokens.FUNCTION_ARG; }
+
+    [=] {
+          enter(EXPRESSION);
+          return LexerTokens.EQUAL;
+      }
+
+    [,] { return LexerTokens.COMMA;}
+
+}
+
+<FUNCTION_BODY>{
+
+
 
     \{ {
           incObjDepth();
           return LexerTokens.BRACE;
        }
 
-    [^}{;\n\r] {return LexerTokens.STATEMENT;}
+    [^}{;] {return LexerTokens.STATEMENT;}
 
     ; { return LexerTokens.SEMICOLON; }
 
     \} {
         decObjDepth();
-        if(this.strategy.currentDepth().getFirst() ==0){ leave();}
-        return LexerTokens.BRACE;
+        if(this.strategy.currentDepth().getFirst() == 0){
+            pushbackall();
+            leave();
+        } else {
+            return LexerTokens.BRACE;
+        }
       }
 
 }
