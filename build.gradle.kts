@@ -455,11 +455,11 @@ intellijPlatform {
             // Webstorm
             ide("WS", "2024.3")
             ide("WS", "2025.2")
-            ide("WS", "253.28086.39")
+//            ide("WS", "253.28086.39")
             // IntelliJ Ultimate
             ide("IU", "2024.3")
             ide("IU", "2025.2")
-            ide("IU", "253.28086.51")
+//            ide("IU", "253.28086.51")
         }
     }
 
