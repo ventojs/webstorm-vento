@@ -413,22 +413,23 @@ class Parser : PsiParser {
         while (
             !builder.eof() &&
             (
-                builder.tokenType == NEW ||
-                    builder.tokenType == INSTANCEOF ||
-                    builder.tokenType == NUMBER ||
-                    builder.tokenType == MINUS ||
-                    builder.tokenType == PLUS ||
-                    builder.tokenType == COLON ||
-                    builder.tokenType == REGEX ||
-                    builder.tokenType == SYMBOL ||
-                    builder.tokenType == BOOLEAN ||
-                    builder.tokenType == STRING ||
+                (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
                     (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
-                    (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
+                    builder.tokenType == BOOLEAN ||
+                    builder.tokenType == COLON ||
+                    builder.tokenType == COMMA ||
                     builder.tokenType == DOT ||
-                    builder.tokenType == PLUS ||
+                    builder.tokenType == INSTANCEOF ||
+                    builder.tokenType == MINUS ||
+                    builder.tokenType == NUMBER ||
                     builder.tokenType == PARENTHESIS ||
-                    builder.tokenType == UNKNOWN
+                    builder.tokenType == PLUS ||
+                    builder.tokenType == PLUS ||
+                    builder.tokenType == REGEX ||
+                    builder.tokenType == STRING ||
+                    builder.tokenType == SYMBOL ||
+                    builder.tokenType == UNKNOWN ||
+                    builder.tokenType == NEW
             )
         ) {
             if (builder.tokenType == BRACE) {
@@ -446,17 +447,18 @@ class Parser : PsiParser {
                 parseRegex(builder)
                 hasExpression = true
             } else if (
-                builder.tokenType == SYMBOL ||
                 builder.tokenType == BOOLEAN ||
-                builder.tokenType == NUMBER ||
-                builder.tokenType == MINUS ||
-                builder.tokenType == PLUS ||
-                builder.tokenType == DOT ||
                 builder.tokenType == COLON ||
-                builder.tokenType == PLUS ||
-                builder.tokenType == NEW ||
+                builder.tokenType == COMMA ||
+                builder.tokenType == DOT ||
                 builder.tokenType == INSTANCEOF ||
-                builder.tokenType == PARENTHESIS
+                builder.tokenType == MINUS ||
+                builder.tokenType == NEW ||
+                builder.tokenType == NUMBER ||
+                builder.tokenType == PARENTHESIS ||
+                builder.tokenType == PLUS ||
+                builder.tokenType == PLUS ||
+                builder.tokenType == SYMBOL
             ) {
                 builder.advanceLexer()
                 hasExpression = true
@@ -610,8 +612,7 @@ class Parser : PsiParser {
         }
 
         // Consume closing token if present
-        if (builder.tokenType == LexerTokens.COMMENT_END
-        ) {
+        if (builder.tokenType == LexerTokens.COMMENT_END) {
             builder.advanceLexer()
         }
 
