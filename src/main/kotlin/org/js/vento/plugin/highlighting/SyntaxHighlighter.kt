@@ -30,6 +30,8 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
+import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
@@ -91,6 +93,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 COMMENT_END -> CBLOCK
                 COMMENT_START -> CBLOCK
                 DOT -> DOTS
+                ECHO_KEY -> VENTO_KEYWORDS
+                ECHO_CLOSE_KEY -> VENTO_KEYWORDS
                 EQUAL -> OPERATIONS
                 EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
                 EXPORT_KEY -> VENTO_KEYWORDS
@@ -112,7 +116,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 LAYOUT_SLOT_KEY -> KEYWORDS
                 NUMBER -> NUMBERS
                 PARENTHESIS -> KEYWORDS
-                PIPE -> VENTO_KEYWORDS
+                PIPE -> VENTO_PIPES
                 SEMICOLON -> KEYWORDS
                 SET_CLOSE_KEY -> VENTO_KEYWORDS
                 SET_KEY -> VENTO_KEYWORDS
@@ -148,6 +152,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val JSBLOCK = createTextAttributesKey("JS_BLOCK", TextAttributes(ventoPink, ventoGray, null, null, 0))
         val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))
         val VENTO_KEYWORDS = createTextAttributesKey("VENTO_VENTO_KEYWORDS", TextAttributes(ventoLightRed, ventoGray, null, null, 0))
+        val VENTO_PIPES = createTextAttributesKey("VENTO_VENTO_PIPE", TextAttributes(ventoPink, ventoGray, null, null, 0))
         val CBLOCK = createTextAttributesKey("VENTO_COMMENTED", DOC_COMMENT)
         val COMMENTED_CONTENT = createTextAttributesKey("VENTO_COMMENT", DOC_COMMENT_MARKUP)
 

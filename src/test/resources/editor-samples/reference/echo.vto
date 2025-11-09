@@ -1,0 +1,13 @@
+{{ echo "Hello, world!" }}
+
+{{ echo }}
+In Vento, {{ name }} will print the "name" variable.
+Use {{ name |> escape }} to HTML-escape its content
+{{ /echo }}
+
+{{ echo |> md }}
+## Header
+
+- First item.
+- Second item.
+{{ /echo }}
