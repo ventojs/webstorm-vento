@@ -5,8 +5,20 @@
 
 package org.js.vento.plugin.lexer
 
-class IfTestCase(name: String) : BaseLexerTestCase(name) {
+class IfTestCase(name: String) : BaseLexerTestCase(name, true) {
     fun `test if`() = lexAndTest("{{ if true }}", arrayOf("{{", "if", "true", "}}"))
+
+    fun `test if with pipe`() =
+        lexAndTest(
+            "{{ if \"one\" |> isOne }}",
+            arrayOf("{{", "if", "\"", "one", "\"", "|>", "isOne", "}}"),
+        )
+
+    fun `test if eval`() =
+        lexAndTest(
+            "{{ if name == \"Óscar\" || name == \"Flo\" }}",
+            arrayOf("{{", "if", "name", "==", "\"", "Óscar", "\"", "||", "name", "==", "\"", "Flo", "\"", "}}"),
+        )
 
     fun `test else`() = lexAndTest("{{ else }}", arrayOf("{{", "else", "}}"))
 

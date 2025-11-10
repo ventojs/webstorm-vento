@@ -104,6 +104,10 @@ AWAIT = "await"
           return LexerTokens.EQUAL;
       }
 
+    [==] {
+              enter(EXPRESSION);
+              return LexerTokens.SYMBOL;
+          }
     [,] { return LexerTokens.COMMA;}
 
     {SYMBOL} { return LexerTokens.FUNCTION_ARG; }

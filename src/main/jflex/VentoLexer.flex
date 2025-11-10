@@ -195,13 +195,12 @@ CVAR = -?{CBLOCK}
 < EXPORT, FILE, FOR, FUNCTION, FUNCTION_ARGS,FUNCTION_LAMBDA, IF, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
 
     "}}"|"{{" {
-          yypushback(yylength());
+          pushbackall();
           leave();
       }
 
     "-}}" {
-          yypushback(yylength());
-          debugMsg("-}}");
+          pushbackall();
           leave();
       }
 

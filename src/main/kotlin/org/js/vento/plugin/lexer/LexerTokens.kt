@@ -135,6 +135,9 @@ object LexerTokens {
     val EQUAL = LexerToken("EQUAL")
 
     @JvmField
+    val DOUBLEEQUAL = LexerToken("DOUBLEEQUAL")
+
+    @JvmField
     val SYMBOL = LexerToken("SYMBOL")
 
     @JvmField

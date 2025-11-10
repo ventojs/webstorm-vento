@@ -9,6 +9,7 @@
   No user found!
 {{ /if }}
 
+
 {{ if !it.user }}
   No user found!
 {{ else if !it.user.name }}
@@ -16,3 +17,8 @@
 {{ else }}
   The user is {{ it.user.name }}.
 {{ /if }}
+
+
+{{ if name == "Óscar" || name == "Flo" }}
+    Hi {{name}}!
+{{/if}}
