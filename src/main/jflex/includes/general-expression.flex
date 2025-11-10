@@ -41,7 +41,9 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
 
     "=>" { return LexerTokens.SYMBOL; }
 
+    "="  { return LexerTokens.SYMBOL; }
     "=="  { return LexerTokens.SYMBOL; }
+    "==="  { return LexerTokens.SYMBOL; }
     "!="  { return LexerTokens.SYMBOL; }
     [>]  { return LexerTokens.SYMBOL; }
     [<]  { return LexerTokens.SYMBOL; }
