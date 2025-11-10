@@ -1,0 +1,24 @@
+{{ if it.user }}
+  The user is {{ it.user }}.
+{{ /if }}
+
+
+{{ if it.user }}
+  The user is {{ it.user }}.
+{{ else }}
+  No user found!
+{{ /if }}
+
+
+{{ if !it.user }}
+  No user found!
+{{ else if !it.user.name }}
+  The user doesn't have name.s
+{{ else }}
+  The user is {{ it.user.name }}.
+{{ /if }}
+
+
+{{ if name == "Óscar" || name == "Flo" }}
+    Hi {{name}}!
+{{/if}}

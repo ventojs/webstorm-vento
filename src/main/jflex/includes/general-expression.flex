@@ -16,16 +16,16 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
 
     {WHITESPACE} { }
 
-   //strings
-   \"|\'|\` {  pushbackall(); enter(STRING); }
+    //strings
+    \"|\'|\` {  pushbackall(); enter(STRING); }
 
-   // regex
-   \/ {
+    // regex
+    \/ {
           enter(REGEX);
           return LexerTokens.REGEX;
           }
 
-   "of" {
+    "of" {
           if(parentStateIs(BEFORE_OF)){
              pushbackall();
              leave();
@@ -34,14 +34,21 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
           }
       }
 
-  "|>" {
+    "|>" {
        pushbackall();
        leave();
      }
 
-   "=>" { return LexerTokens.SYMBOL; }
+    "=>" { return LexerTokens.SYMBOL; }
 
-   [=]  { return LexerTokens.SYMBOL; }
+    "="  { return LexerTokens.SYMBOL; }
+    "=="  { return LexerTokens.SYMBOL; }
+    "==="  { return LexerTokens.SYMBOL; }
+    "!="  { return LexerTokens.SYMBOL; }
+    [>]  { return LexerTokens.SYMBOL; }
+    [<]  { return LexerTokens.SYMBOL; }
+    "<="  { return LexerTokens.SYMBOL; }
+    ">="  { return LexerTokens.SYMBOL; }
    [.]  { return LexerTokens.DOT; }
    [,]  { return LexerTokens.COMMA; }
    [+]  { return LexerTokens.PLUS; }

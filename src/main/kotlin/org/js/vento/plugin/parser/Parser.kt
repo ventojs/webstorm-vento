@@ -22,6 +22,8 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ELSEIF_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ELSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
@@ -33,6 +35,8 @@ import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARG
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_NAME
+import org.js.vento.plugin.lexer.LexerTokens.IF_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.IF_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
@@ -134,15 +138,19 @@ class Parser : PsiParser {
 
     private fun parseVentoElemenet(builder: PsiBuilder) {
         when (builder.tokenType) {
-            ECHO_KEY -> parseEcho(builder)
-            ECHO_CLOSE_KEY -> parseEchoClose(builder)
             ASYNC_KEY -> parseFunctionSignature(builder)
+            ECHO_CLOSE_KEY -> parseEchoClose(builder)
+            ECHO_KEY -> parseEcho(builder)
+            ELSEIF_KEY -> parseElseIf(builder)
+            ELSE_KEY -> parseElse(builder)
             EXPORT_CLOSE_KEY -> parseExportClose(builder)
             EXPORT_KEY -> parseExport(builder)
             FOR_CLOSE_KEY -> parseForClose(builder)
             FOR_KEY -> parseFor(builder)
-            FUNCTION_KEY -> parseFunctionSignature(builder, true)
             FUNCTION_CLOSE_KEY -> parseFunctionClose(builder)
+            FUNCTION_KEY -> parseFunctionSignature(builder, true)
+            IF_CLOSE_KEY -> parseIfClose(builder)
+            IF_KEY -> parseIf(builder)
             IMPORT_KEY -> parseImport(builder)
             INCLUDE_KEY -> parseInclude(builder)
             LAYOUT_CLOSE_KEY -> parseLayoutClose(builder)
@@ -161,9 +169,40 @@ class Parser : PsiParser {
         }
     }
 
+    private fun parseElseIf(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, ELSEIF_KEY, "Expected 'elseif' keyword")
+        parseExpression(builder)
+        closeOrError(builder, "syntax error: elseif expression")
+        m.done(ParserElements.ELSEIF_ELEMENT)
+    }
+
+    private fun parseElse(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, ELSE_KEY, "Expected 'else' keyword")
+        closeOrError(builder, "syntax error: else expression")
+        m.done(ParserElements.ELSE_ELEMENT)
+    }
+
+    private fun parseIfClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, IF_CLOSE_KEY, "Expected '/if' keyword")
+        closeOrError(builder, "syntax error: /if expression")
+        m.done(ParserElements.IF_CLOSE_ELEMENT)
+    }
+
+    private fun parseIf(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, IF_KEY, "Expected 'if' keyword' ")
+        parseExpression(builder)
+        closeOrError(builder, "syntax error: if expression")
+        m.done(ParserElements.IF_ELEMENT)
+    }
+
     private fun parseFunctionClose(builder: PsiBuilder) {
         val m = builder.mark()
         expect(builder, FUNCTION_CLOSE_KEY, "Expected '/function' keyword'")
+        closeOrError(builder, "syntax error: /function expression")
         m.done(ParserElements.FUNCTION_CLOSE_ELEMENT)
     }
 

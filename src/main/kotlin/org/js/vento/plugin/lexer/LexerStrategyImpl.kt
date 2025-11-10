@@ -75,11 +75,10 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
         stateStack.push(LexerState(currentState, stName(currentState), this.objectDepth))
         if (debug) {
             println(
-                (stName(currentState) + " -> " + stName(nextState) + " (" + lexer.yytext() + "):" + remaining()).prependIndent(
-                    " ".repeat(
-                        stateStack.size,
-                    ),
-                ),
+                (
+                    "${stName(currentState)}(${lexer.yytext()}) -> " +
+                        "${stName(nextState)}(${remaining().replace("\n", "")})\n"
+                ).prependIndent(" ".repeat(stateStack.size)),
             )
         }
         lexer.yybegin(nextState)
@@ -93,20 +92,21 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
             val nextState: LexerState = stateStack.pop()
             if (debug) {
                 println(
-                    (nextState.name + " <- " + stName(lexer.yystate()) + " (" + lexer.yytext() + "):" + remaining()).prependIndent(
-                        " ".repeat(
-                            stateStack.size + 1,
-                        ),
-                    ),
+                    (
+                        "${nextState.name}(${remaining()}) <- " +
+                            "${stName(lexer.yystate())}(${lexer.yytext()})\n"
+                    ).prependIndent(" ".repeat(stateStack.size + 1)),
                 )
             }
             lexer.yybegin(nextState.state)
             this.objectDepth = nextState.depth
         } catch (e: Exception) {
             throw IllegalStateException(
-                """Unable to leave() ${stName(
-                    lexer.yystate(),
-                )} handling [${lexer.yytext()}] at position:${lexer.getzzCurrentPos()}; reason: ${e.message}""",
+                """Unable to leave() ${
+                    stName(
+                        lexer.yystate(),
+                    )
+                } handling [${lexer.yytext()}] at position:${lexer.getzzCurrentPos()}; reason: ${e.message}""",
                 e,
             )
         }
@@ -114,7 +114,11 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
 
     override fun remaining(): String {
         if (lexer.getzzEndRead() <= lexer.getzzCurrentPos()) return ""
-        return "\n" + lexer.getzzBuffer().subSequence(lexer.getzzCurrentPos() + lexer.yylength(), lexer.getzzEndRead()).toString() + "\n"
+        return "\n" +
+            lexer
+                .getzzBuffer()
+                .subSequence(lexer.getzzCurrentPos() + lexer.yylength(), lexer.getzzEndRead())
+                .toString() + "\n"
     }
 
     /** Optional: hard jump (not LIFO) if you need to abort nested states.  */

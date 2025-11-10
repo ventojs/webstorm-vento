@@ -69,6 +69,16 @@ The rest of the features are still under development. (see: [backlog](https://gi
 ![vento-syntax-highlighting](docs/assets/layout2.png)
 
 #### Vento `include`
+![vento-syntax-highlighting](docs/assets/include.png)
+
+#### Vento `function`
+![vento-syntax-highlighting](docs/assets/function.png)
+
+#### Vento `echo`
+![vento-syntax-highlighting](docs/assets/echo.png)
+
+#### Vento `if`
+![vento-syntax-highlighting](docs/assets/if.png)
 
 > [!IMPORTANT]
 > ### Note to plugin users
