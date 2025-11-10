@@ -17,6 +17,8 @@ import org.js.vento.plugin.lexer.LexerTokens.COLON
 import org.js.vento.plugin.lexer.LexerTokens.COMMA
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
+import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
@@ -126,9 +128,8 @@ class Parser : PsiParser {
 
     private fun parseVentoElemenet(builder: PsiBuilder) {
         when (builder.tokenType) {
-//            COMMENT_START, TRIM_COMMENT_START -> parseCommentBlock(builder)
-//            JAVASCRIPT_START -> parseJavaScript(builder)
-//            EXPRESSION, SYMBOL, BRACE, BRACKET, PARENTHESIS, NUMBER, REGEX, BOOLEAN, STRING, PLUS, MINUS -> parseExpression(builder)
+            ECHO_KEY -> parseEcho(builder)
+            ECHO_CLOSE_KEY -> parseEchoClose(builder)
             EXPORT_CLOSE_KEY -> parseExportClose(builder)
             EXPORT_KEY -> parseExport(builder)
             FOR_CLOSE_KEY -> parseForClose(builder)
@@ -149,6 +150,26 @@ class Parser : PsiParser {
                 }
             }
         }
+    }
+
+    private fun parseEchoClose(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, ECHO_CLOSE_KEY, "Expected 'echo' keyword' ")
+        closeOrError(builder, "syntax error: /echo expression")
+        m.done(ParserElements.ECHO_CLOSE_ELEMENT)
+    }
+
+    private fun parseEcho(builder: PsiBuilder) {
+        val m = builder.mark()
+        expect(builder, ECHO_KEY, "Expected 'echo' keyword' ")
+        if (builder.tokenType == STRING) {
+            parseString(builder)
+        }
+        if (builder.tokenType == PIPE) {
+            parsePipe(builder)
+        }
+        closeOrError(builder, "syntax error: echo expression")
+        m.done(ParserElements.ECHO_ELEMENT)
     }
 
     private fun parseUnknown(builder: PsiBuilder) {

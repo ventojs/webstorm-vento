@@ -16,6 +16,7 @@
 - set support (#49) (#92)
 - layout and slot support (#46) (#108)
 - include support (#45) (#112)
+- echo support (#40) (#112)
 
 ### Fixed
 

@@ -100,6 +100,12 @@ object LexerTokens {
     @JvmField
     val INCLUDE_KEY = LexerToken("INCLUDE_KEY")
 
+    @JvmField
+    val ECHO_KEY = LexerToken("ECHO_KEY")
+
+    @JvmField
+    val ECHO_CLOSE_KEY = LexerToken("ECHO_CLOSE_KEY")
+
     // General tokens
     @JvmField
     val BRACKET = LexerToken("BRACKET")

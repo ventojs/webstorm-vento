@@ -40,6 +40,7 @@ class ColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Symbol", SyntaxHighlighter.SYMBOLS),
                 AttributesDescriptor("Values", SyntaxHighlighter.VALUES),
                 AttributesDescriptor("Vento keywords", SyntaxHighlighter.VENTO_KEYWORDS),
+                AttributesDescriptor("Vento pipe", SyntaxHighlighter.VENTO_PIPES),
             )
     }
 

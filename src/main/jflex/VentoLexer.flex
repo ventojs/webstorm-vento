@@ -173,22 +173,23 @@ CVAR = -?{CBLOCK}
 
 }
 
-%include includes/keywords.flex
+%include includes/general-expression.flex
+%include includes/general-file.flex
+%include includes/general-function.flex
+%include includes/general-pipe.flex
+%include includes/general-string.flex
+%include includes/keywords-echo.flex
 %include includes/keywords-export.flex
 %include includes/keywords-for.flex
 %include includes/keywords-import.flex
-%include includes/keywords-set.flex
 %include includes/keywords-include.flex
 %include includes/keywords-layout.flex
+%include includes/keywords-set.flex
+%include includes/keywords.flex
 %include includes/no-keywords.flex
 %include includes/variables.flex
-%include includes/general-expression.flex
-%include includes/general-pipe.flex
-%include includes/general-function.flex
-%include includes/general-file.flex
-%include includes/general-string.flex
 
-< EXPORT, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT> {
+< EXPORT, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
 
     "}}"|"{{" {
           yypushback(yylength());
