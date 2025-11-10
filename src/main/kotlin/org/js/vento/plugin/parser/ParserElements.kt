@@ -117,6 +117,18 @@ object ParserElements {
     @JvmField
     val ECHO_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
 
+    @JvmField
+    val IF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+
+    @JvmField
+    val ELSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+
+    @JvmField
+    val ELSEIF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+
+    @JvmField
+    val IF_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
      * by your parser definition in createElement(node: ASTNode).

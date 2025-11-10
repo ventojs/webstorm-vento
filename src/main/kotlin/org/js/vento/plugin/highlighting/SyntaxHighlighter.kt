@@ -34,6 +34,8 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ELSEIF_KEY
+import org.js.vento.plugin.lexer.LexerTokens.ELSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
@@ -44,6 +46,8 @@ import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARG
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
+import org.js.vento.plugin.lexer.LexerTokens.IF_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.IF_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_VALUES
@@ -87,6 +91,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
+                ASYNC_KEY -> KEYWORDS
+                AWAIT_KEY -> KEYWORDS
                 BOOLEAN -> KEYWORDS
                 BRACE -> BRACES
                 BRACKET -> BRACKETS
@@ -96,8 +102,10 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 COMMENT_END -> CBLOCK
                 COMMENT_START -> CBLOCK
                 DOT -> DOTS
-                ECHO_KEY -> VENTO_KEYWORDS
                 ECHO_CLOSE_KEY -> VENTO_KEYWORDS
+                ECHO_KEY -> VENTO_KEYWORDS
+                ELSEIF_KEY -> VENTO_KEYWORDS
+                ELSE_KEY -> VENTO_KEYWORDS
                 EQUAL -> OPERATIONS
                 EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
                 EXPORT_KEY -> VENTO_KEYWORDS
@@ -106,18 +114,22 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 FOR_KEY -> VENTO_KEYWORDS
                 FOR_OF -> VENTO_KEYWORDS
                 FUNCTION_ARG -> ARGS
-                FUNCTION_KEY -> VENTO_KEYWORDS
                 FUNCTION_CLOSE_KEY -> VENTO_KEYWORDS
+                FUNCTION_KEY -> VENTO_KEYWORDS
+                IF_CLOSE_KEY -> VENTO_KEYWORDS
+                IF_KEY -> VENTO_KEYWORDS
                 IMPORT_FROM -> KEYWORDS
                 IMPORT_KEY -> VENTO_KEYWORDS
                 IMPORT_VALUES -> VALUES
                 INCLUDE_KEY -> VENTO_KEYWORDS
-                JSBLOCK_OPEN -> JSBLOCK
+                INSTANCEOF -> KEYWORDS
                 JSBLOCK_CLOSE -> JSBLOCK
+                JSBLOCK_OPEN -> JSBLOCK
                 LAYOUT_CLOSE_KEY -> VENTO_KEYWORDS
                 LAYOUT_KEY -> VENTO_KEYWORDS
                 LAYOUT_SLOT_CLOSE_KEY -> KEYWORDS
                 LAYOUT_SLOT_KEY -> KEYWORDS
+                NEW -> KEYWORDS
                 NUMBER -> NUMBERS
                 PARENTHESIS -> KEYWORDS
                 PIPE -> VENTO_PIPES
@@ -126,13 +138,9 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 SET_KEY -> VENTO_KEYWORDS
                 STRING_TOKEN -> STRING
                 SYMBOL -> SYMBOLS
+                UNKNOWN -> UNKNOWN_CONTENT
                 VBLOCK_CLOSE -> VBLOCK
                 VBLOCK_OPEN -> VBLOCK
-                UNKNOWN -> UNKNOWN_CONTENT
-                NEW -> KEYWORDS
-                INSTANCEOF -> KEYWORDS
-                ASYNC_KEY -> KEYWORDS
-                AWAIT_KEY -> KEYWORDS
                 else -> null
             }
 

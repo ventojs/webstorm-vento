@@ -56,9 +56,9 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     {LAYOUT} {enter(LAYOUT); return LexerTokens.LAYOUT_KEY; }
     {SET} { enter(SET); return LexerTokens.SET_KEY; }
     {SLOT} { enter(SLOT); return LexerTokens.LAYOUT_SLOT_KEY; }
-//    {ELSEIF} { enter(LAYOUT); return LexerTokens.ELSEIF_KEY; }
-//    {ELSE} { enter(LAYOUT); return LexerTokens.ELSE_KEY; }
-//    {IF} { enter(IF); return LexerTokens.IF_KEY; }
+    {ELSEIF} { pushbackall(); enter(IF); }
+    {ELSE} { pushbackall(); enter(IF);}
+    {IF} { pushbackall(); enter(IF); }
 
 
 }
@@ -69,6 +69,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FUNCTION} |"/"{IF} |"/"{LA
     "/"{EXPORT} { return LexerTokens.EXPORT_CLOSE_KEY;}
     "/"{FOR} { return LexerTokens.FOR_CLOSE_KEY;}
     "/"{FUNCTION} { return LexerTokens.FUNCTION_CLOSE_KEY;}
+    "/"{IF} { return LexerTokens.IF_CLOSE_KEY;}
     "/"{LAYOUT} { return LexerTokens.LAYOUT_CLOSE_KEY;}
     "/"{SET} { return LexerTokens.SET_CLOSE_KEY;}
     "/"{SLOT} { return LexerTokens.LAYOUT_SLOT_CLOSE_KEY;}

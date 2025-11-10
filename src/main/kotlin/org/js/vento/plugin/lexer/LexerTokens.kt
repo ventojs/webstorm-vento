@@ -141,6 +141,18 @@ object LexerTokens {
     val PIPE = LexerToken("PIPE")
 
     @JvmField
+    val IF_KEY = LexerToken("IF_KEY")
+
+    @JvmField
+    val ELSE_KEY = LexerToken("ELSE_KEY")
+
+    @JvmField
+    val ELSEIF_KEY = LexerToken("ELSEIF_KEY")
+
+    @JvmField
+    val IF_CLOSE_KEY = LexerToken("IF_CLOSE_KEY")
+
+    @JvmField
     val REGEX = LexerToken("REGEX")
 
     @JvmField
