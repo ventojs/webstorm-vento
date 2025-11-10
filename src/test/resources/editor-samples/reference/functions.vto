@@ -1,0 +1,41 @@
+{{ export function message (name) }}
+  Hello, {{ name }}!
+{{ /export }}
+
+
+{{ set myVar = function(foo,bar) { return 'Hello World!' } }}
+
+
+{{ function hello }}
+  Hello, world!
+{{ /function }}
+
+
+{{ function hello(name = "world") }}
+  Hello, {{ name }}!
+{{ /function }}
+
+{{ hello() }}
+
+{{ hello("Vento") }}
+
+
+{{ async function hello }}
+  {{ await  Promise.resolve("Hello, world!") }}
+{{ /function }}
+
+{{ await hello() }}
+
+
+{{ async function hello }}
+{{> const text = await Promise.resolve("Hello world") }}
+{{ text }}
+{{ /function }}
+
+{{ await hello() }}
+
+
+<!-- ERRORS -->
+
+{{ function (name = "world") }}
+{{ export function (name) }}

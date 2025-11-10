@@ -8,7 +8,7 @@ package org.js.vento.plugin.parser
 import com.intellij.testFramework.ParsingTestCase
 import org.js.vento.plugin.VentoParserDefinition
 
-class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
+class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     fun testSimpleVariable() {
         val code = "{{ content }}"
         doCodeTest(code)
@@ -48,6 +48,11 @@ class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true))
         val code = "{{ new Date().getFullYear() }}"
         doCodeTest(code)
     }
+
+    fun testAwaitCall() =
+        doCodeTest(
+            "{{ await Promise.resolve(\"Hello, world!\") }}",
+        )
 
     override fun getTestDataPath(): String = "src/test/resources/testdata/variable"
 

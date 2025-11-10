@@ -70,10 +70,22 @@ object LexerTokens {
     val EXPORT_CLOSE_KEY = LexerToken("EXPORT_CLOSE_KEY")
 
     @JvmField
-    val FUNCTION_ARGS = LexerToken("FUNCTION_ARGS")
+    val FUNCTION_ARG = LexerToken("FUNCTION_ARG")
 
     @JvmField
-    val FUNCTION_KEY = LexerToken("EXPORT_FUNCTION_KEY")
+    val FUNCTION_KEY = LexerToken("FUNCTION_KEY")
+
+    @JvmField
+    val FUNCTION_NAME = LexerToken("FUNCTION_NAME")
+
+    @JvmField
+    val ASYNC_KEY = LexerToken("ASYNC_KEY")
+
+    @JvmField
+    val AWAIT_KEY = LexerToken("AWAIT_KEY")
+
+    @JvmField
+    val FUNCTION_CLOSE_KEY = LexerToken("FUNCTION_CLOSE_KEY")
 
     @JvmField
     val EXPORT_KEY = LexerToken("EXPORT_KEY")
@@ -159,7 +171,13 @@ object LexerTokens {
     val BRACE = LexerToken("BRACE")
 
     @JvmField
+    val LAMBDA_ARROW = LexerToken("LAMBDA_ARROW")
+
+    @JvmField
     val PLUS = LexerToken("PLUS")
+
+    @JvmField
+    val ASTERISK = LexerToken("ASTERISK")
 
     @JvmField
     val MINUS = LexerToken("MINUS")

@@ -12,7 +12,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
 <EXPORT> {
     {WHITESPACE}   { }
-    {FUNCTION} { enter(FUNCTION); return LexerTokens.FUNCTION_KEY; }
+    {FUNCTION} { pushbackall(); enter(FUNCTION); }
     {SYMBOL} { return LexerTokens.SYMBOL; }
     {EQUAL} { enter(EXPRESSION); return LexerTokens.EQUAL; }
     {PIPE} { enter(EXPRESSION); return LexerTokens.PIPE;}

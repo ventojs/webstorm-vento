@@ -11,6 +11,8 @@
 {{ set myVar = [{a:1,b:2},{c:3,d:4}] }}
 {{ set myVar = ["a","b","c","d"] }}
 {{ set myVar = (function() { return 'Hello World!' })() }}
+{{ set myVar = () => { return 'Hello World!' } }}
+{{ set myVar = () => 'Hello World!' |> JSON.stringify }}
 
 {{ set myVar = "Hello World of \"vento\"!" |> JSON.stringify }}
 {{ set myVar = 'Hello to the "World\'s People"!' |> JSON.stringify }}
@@ -24,7 +26,7 @@
 {{ set myVar = [1, 2, 3, 4] |> JSON.stringify }}
 {{ set myVar = [{a:1,b:2},{c:3,d:4}] |> JSON.stringify }}
 {{ set myVar = ["a","b","c","d"] |> JSON.stringify }}
-{{ set myVar = function() { return 'Hello World!' } }}
+{{ set myVar = function(foo,bar) { return 'Hello World!' } }}
 
 {{ set myVar }}
     <h1>Hello, world!</h1>

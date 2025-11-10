@@ -33,7 +33,22 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test function export`() =
         lexAndTest(
             "{{ export function message (fname,lname) }}foo{{/export}}",
-            arrayOf("{{", "export", "function", "message", "(fname,lname)", "}}", "foo", "{{", "/export", "}}"),
+            arrayOf(
+                "{{",
+                "export",
+                "function",
+                "message",
+                "(",
+                "fname",
+                ",",
+                "lname",
+                ")",
+                "}}",
+                "foo",
+                "{{",
+                "/export",
+                "}}",
+            ),
         )
 
     fun `test export with pipe`() =
@@ -74,7 +89,9 @@ class ExportTestCase(name: String) : BaseLexerTestCase(name) {
                 "n",
                 "%",
                 "2",
-                "===",
+                "=",
+                "=",
+                "=",
                 "0",
                 ")",
                 ".",

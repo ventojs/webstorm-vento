@@ -21,6 +21,8 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.intellij.ui.JBColor
 import org.js.vento.plugin.lexer.LexerAdapter
+import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
+import org.js.vento.plugin.lexer.LexerTokens.AWAIT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
 import org.js.vento.plugin.lexer.LexerTokens.BRACKET
@@ -39,7 +41,8 @@ import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
-import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARGS
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARG
+import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_FROM
 import org.js.vento.plugin.lexer.LexerTokens.IMPORT_KEY
@@ -102,8 +105,9 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 FOR_CLOSE_KEY -> VENTO_KEYWORDS
                 FOR_KEY -> VENTO_KEYWORDS
                 FOR_OF -> VENTO_KEYWORDS
-                FUNCTION_ARGS -> ARGS
+                FUNCTION_ARG -> ARGS
                 FUNCTION_KEY -> VENTO_KEYWORDS
+                FUNCTION_CLOSE_KEY -> VENTO_KEYWORDS
                 IMPORT_FROM -> KEYWORDS
                 IMPORT_KEY -> VENTO_KEYWORDS
                 IMPORT_VALUES -> VALUES
@@ -127,6 +131,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 UNKNOWN -> UNKNOWN_CONTENT
                 NEW -> KEYWORDS
                 INSTANCEOF -> KEYWORDS
+                ASYNC_KEY -> KEYWORDS
+                AWAIT_KEY -> KEYWORDS
                 else -> null
             }
 

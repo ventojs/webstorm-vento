@@ -8,6 +8,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state SET
 %state SET_VALUE
 %state SET_BLOCK_MODE
+%state SET_IIFE
 
 // BLOCK 2 - END
 %%
@@ -44,12 +45,36 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {WHITESPACE}   {  }
 
-    {SYMBOL} { return LexerTokens.SYMBOL; }
+    "function" {
+          pushbackall();
+          enter(FUNCTION);
+      }
+
+    "("{OWS}")"{OWS}"=>" {
+          pushbackall();
+          enter(FUNCTION_LAMBDA);
+      }
 
     "="/{OWS}[(]?{OWS}"function" {
-           enter(FUNCTION);
            return LexerTokens.EQUAL;
        }
+
+    "="/{OWS}"("{OWS}")"{OWS}"=>" {
+          return LexerTokens.EQUAL;
+       }
+
+    \(/{OWS}"function" {
+          return LexerTokens.PARENTHESIS;
+      }
+
+    \){OWS}\({OWS}\) {
+           pushbackall();
+           enter(SET_IIFE);
+      }
+
+
+    {SYMBOL} { return LexerTokens.SYMBOL; }
+
 
     "=" {
           enter(EXPRESSION);
@@ -86,6 +111,16 @@ import org.js.vento.plugin.lexer.LexerTokens;
       }
 
 
+}
+
+<SET_IIFE> {
+    {WHITESPACE}   {  }
+
+    \) {return LexerTokens.PARENTHESIS;}
+
+    \( {pushbackall(); enter(FUNCTION_ARGS);}
+
+    [^\)\(] {pushbackall(); leave();}
 }
 
 

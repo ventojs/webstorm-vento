@@ -84,6 +84,24 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf("{{", "foo", "?", "bar", ":", "baz", "}}"),
         )
 
+    fun `test await call`() =
+        lexAndTest(
+            "{{ await  Promise.resolve(\"Hello, world!\") }}",
+            arrayOf(
+                "{{",
+                "await",
+                "Promise",
+                ".",
+                "resolve",
+                "(",
+                "\"",
+                "Hello, world!",
+                "\"",
+                ")",
+                "}}",
+            ),
+        )
+
     // ---------------------------
     // Strings, arrays, regex, literals
     // ---------------------------

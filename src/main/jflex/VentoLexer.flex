@@ -134,7 +134,9 @@ CVAR = -?{CBLOCK}
 
     "|>" { return LexerTokens.PIPE; }
 
-    [^] {
+    [=] { return LexerTokens.EQUAL;}
+
+    [^=] {
           pushbackall();
           enter(EXPRESSION);
       }
@@ -189,7 +191,7 @@ CVAR = -?{CBLOCK}
 %include includes/no-keywords.flex
 %include includes/variables.flex
 
-< EXPORT, FILE, FOR, FUNCTION, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
+< EXPORT, FILE, FOR, FUNCTION, FUNCTION_ARGS,FUNCTION_LAMBDA, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
 
     "}}"|"{{" {
           yypushback(yylength());
