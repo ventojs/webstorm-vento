@@ -66,6 +66,8 @@ class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testFunctionWithoutName() = doCodeTest("{{ export function (name) }}")
+
     // ========================================
     // Exports with Pipe Operators
     // ========================================

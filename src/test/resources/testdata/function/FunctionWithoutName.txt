@@ -1,0 +1,13 @@
+Vento File(0,21)
+  Element: VENTO_ELEMENT(0,21)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: FUNCTION_SIGNATURE_ELEMENT(2,18)
+      PsiElement(FUNCTION_KEY_TOKEN)(' function')(2,11)
+      PsiErrorElement:Expected function name(11,11)
+        <empty list>
+      Element: FUNCTION_ARGUMENTS_ELEMENT(11,18)
+        PsiElement(PARENTHESIS_TOKEN)(' (')(11,13)
+        Element: FUNCTION_ARG_ELEMENT(13,17)
+          PsiElement(FUNCTION_ARG_TOKEN)('name')(13,17)
+        PsiElement(PARENTHESIS_TOKEN)(')')(17,18)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(18,21)

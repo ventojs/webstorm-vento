@@ -13,6 +13,8 @@ class FunctionTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
 
     fun testSimpleFunction() = doCodeTest("{{ function hello }}")
 
+    fun testFunctionWithoutName() = doCodeTest("{{ function (name) }}")
+
     fun testAsyncFunction() = doCodeTest("{{ async function hello }}")
 
     fun testSimpleFunctionClose() = doCodeTest("{{ /for }}")

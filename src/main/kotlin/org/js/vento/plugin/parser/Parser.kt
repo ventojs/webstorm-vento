@@ -141,7 +141,7 @@ class Parser : PsiParser {
             EXPORT_KEY -> parseExport(builder)
             FOR_CLOSE_KEY -> parseForClose(builder)
             FOR_KEY -> parseFor(builder)
-            FUNCTION_KEY -> parseFunctionSignature(builder)
+            FUNCTION_KEY -> parseFunctionSignature(builder, true)
             FUNCTION_CLOSE_KEY -> parseFunctionClose(builder)
             IMPORT_KEY -> parseImport(builder)
             INCLUDE_KEY -> parseInclude(builder)
@@ -398,12 +398,16 @@ class Parser : PsiParser {
         mark.done(ParserElements.FUNCTION_BODY_ELEMENT)
     }
 
-    private fun parseFunctionSignature(builder: PsiBuilder) {
+    private fun parseFunctionSignature(builder: PsiBuilder, nameRequired: Boolean = false) {
         val mark = builder.mark()
         optional(builder, ASYNC_KEY, "Expected 'async'")
 
         expect(builder, FUNCTION_KEY, "Expected 'function' keyword")
-        optional(builder, FUNCTION_NAME, "Expected function name")
+        if (nameRequired) {
+            expect(builder, FUNCTION_NAME, "Expected function name")
+        } else {
+            optional(builder, FUNCTION_NAME, "Expected function name")
+        }
 
         // ARGS
         if (builder.tokenType == PARENTHESIS) {
@@ -477,7 +481,7 @@ class Parser : PsiParser {
 
         expect(builder, EXPORT_KEY, "Expected 'export' keyword")
         if (builder.tokenType == FUNCTION_KEY || builder.tokenType == ASYNC_KEY) {
-            parseFunctionSignature(builder)
+            parseFunctionSignature(builder, true)
             m.done(ParserElements.EXPORT_OPEN_ELEMENT)
         } else {
             expect(builder, SYMBOL, "Expected symbol", true)
