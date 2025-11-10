@@ -22,6 +22,7 @@ import com.intellij.psi.tree.IElementType
 import com.intellij.ui.JBColor
 import org.js.vento.plugin.lexer.LexerAdapter
 import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
+import org.js.vento.plugin.lexer.LexerTokens.AWAIT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
 import org.js.vento.plugin.lexer.LexerTokens.BRACKET
@@ -131,6 +132,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 NEW -> KEYWORDS
                 INSTANCEOF -> KEYWORDS
                 ASYNC_KEY -> KEYWORDS
+                AWAIT_KEY -> KEYWORDS
                 else -> null
             }
 

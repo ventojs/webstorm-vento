@@ -12,6 +12,7 @@ import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.LexerTokens
 import org.js.vento.plugin.lexer.LexerTokens.ASTERISK
 import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
+import org.js.vento.plugin.lexer.LexerTokens.AWAIT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.BOOLEAN
 import org.js.vento.plugin.lexer.LexerTokens.BRACE
 import org.js.vento.plugin.lexer.LexerTokens.BRACKET
@@ -529,19 +530,16 @@ class Parser : PsiParser {
                     (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
                     (builder.tokenType == PARENTHESIS) ||
                     builder.tokenType == ASTERISK ||
-                    builder.tokenType == BOOLEAN ||
+                    builder.tokenType == AWAIT_KEY ||
                     builder.tokenType == BOOLEAN ||
                     builder.tokenType == COLON ||
                     builder.tokenType == COMMA ||
-                    builder.tokenType == DOT ||
                     builder.tokenType == DOT ||
                     builder.tokenType == INSTANCEOF ||
                     builder.tokenType == MINUS ||
                     builder.tokenType == NEW ||
                     builder.tokenType == NUMBER ||
                     builder.tokenType == PARENTHESIS ||
-                    builder.tokenType == PLUS ||
-                    builder.tokenType == PLUS ||
                     builder.tokenType == PLUS ||
                     builder.tokenType == REGEX ||
                     builder.tokenType == STRING ||
@@ -578,6 +576,7 @@ class Parser : PsiParser {
                 }
             } else if (
                 builder.tokenType == ASTERISK ||
+                builder.tokenType == AWAIT_KEY ||
                 builder.tokenType == BOOLEAN ||
                 builder.tokenType == COLON ||
                 builder.tokenType == COMMA ||

@@ -82,6 +82,9 @@ object LexerTokens {
     val ASYNC_KEY = LexerToken("ASYNC_KEY")
 
     @JvmField
+    val AWAIT_KEY = LexerToken("AWAIT_KEY")
+
+    @JvmField
     val FUNCTION_CLOSE_KEY = LexerToken("FUNCTION_CLOSE_KEY")
 
     @JvmField

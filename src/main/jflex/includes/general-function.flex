@@ -9,6 +9,8 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state FUNCTION_LAMBDA
 
 ARG = ({SYMBOL}([=]{OWS}([0-9]+[0-9_]?|[\"'].*[\"']))?)
+ASYNC = "async"
+AWAIT = "await"
 // BLOCK 2 - END
 %%
 
@@ -21,7 +23,7 @@ ARG = ({SYMBOL}([=]{OWS}([0-9]+[0-9_]?|[\"'].*[\"']))?)
           enter(FUNCTION_ARGS);
       }
 
-    "async" {return LexerTokens.ASYNC_KEY;}
+    {ASYNC} {return LexerTokens.ASYNC_KEY;}
 
     "function" {return LexerTokens.FUNCTION_KEY;}
 

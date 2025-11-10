@@ -21,7 +21,6 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state SET
 %state SLOT
 
-ASYNC = "async"
 ECHO = "echo"
 ELSE = "else"
 ELSEIF = "elseif"
