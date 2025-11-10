@@ -519,32 +519,33 @@ class Parser : PsiParser {
 
         var hasExpression = false
         var isParenOpen = 0
+        var exit = false
         while (
             !builder.eof() &&
+            !exit &&
             (
                 (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
+                    (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
                     (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
+                    (builder.tokenType == PARENTHESIS) ||
+                    builder.tokenType == ASTERISK ||
+                    builder.tokenType == BOOLEAN ||
                     builder.tokenType == BOOLEAN ||
                     builder.tokenType == COLON ||
                     builder.tokenType == COMMA ||
                     builder.tokenType == DOT ||
+                    builder.tokenType == DOT ||
                     builder.tokenType == INSTANCEOF ||
                     builder.tokenType == MINUS ||
+                    builder.tokenType == NEW ||
                     builder.tokenType == NUMBER ||
                     builder.tokenType == PARENTHESIS ||
                     builder.tokenType == PLUS ||
                     builder.tokenType == PLUS ||
-                    builder.tokenType == REGEX ||
-                    builder.tokenType == SYMBOL ||
-                    builder.tokenType == BOOLEAN ||
-                    builder.tokenType == ASTERISK ||
-                    builder.tokenType == STRING ||
-                    (builder.tokenType == BRACKET && builder.tokenText?.trim() == "[") ||
-                    (builder.tokenType == BRACE && builder.tokenText?.trim() == "{") ||
-                    builder.tokenType == DOT ||
                     builder.tokenType == PLUS ||
-                    (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == "(") ||
-                    (builder.tokenType == PARENTHESIS && isParenOpen > 0 && builder.tokenText?.trim() == ")") ||
+                    builder.tokenType == REGEX ||
+                    builder.tokenType == STRING ||
+                    builder.tokenType == SYMBOL ||
                     builder.tokenType == UNKNOWN
             )
         ) {
@@ -568,11 +569,15 @@ class Parser : PsiParser {
                     isParenOpen++
                 }
 
-                if (isParenOpen != 0 && builder.tokenText?.trim() == ")") {
+                if (isParenOpen == 0 && builder.tokenText?.trim() == ")") {
+                    exit = true
+                    isParenOpen = 0
+                } else if (builder.tokenText?.trim() == ")") {
                     expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
                     isParenOpen--
                 }
             } else if (
+                builder.tokenType == ASTERISK ||
                 builder.tokenType == BOOLEAN ||
                 builder.tokenType == COLON ||
                 builder.tokenType == COMMA ||
@@ -581,12 +586,7 @@ class Parser : PsiParser {
                 builder.tokenType == MINUS ||
                 builder.tokenType == NEW ||
                 builder.tokenType == NUMBER ||
-                builder.tokenType == PARENTHESIS ||
                 builder.tokenType == PLUS ||
-                builder.tokenType == PLUS ||
-                builder.tokenType == NEW ||
-                builder.tokenType == ASTERISK ||
-                builder.tokenType == INSTANCEOF ||
                 builder.tokenType == SYMBOL
             ) {
                 builder.advanceLexer()

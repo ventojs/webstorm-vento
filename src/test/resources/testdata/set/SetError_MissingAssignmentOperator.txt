@@ -15,8 +15,6 @@ Vento File(0,32)
       PsiElement(SYMBOL_TOKEN)('llo')(17,20)
       PsiElement(COMMA_TOKEN)(',')(20,21)
       PsiElement(SYMBOL_TOKEN)(' world')(21,27)
-      PsiErrorElement:syntax error: set symbol | set symbol = expression(27,27)
-        <empty list>
       PsiElement(SYMBOL_TOKEN)('!')(27,28)
       Element: STRING_ELEMENT(28,32)
         PsiElement(STRING_TOKEN)('"')(28,29)
