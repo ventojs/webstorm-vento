@@ -13,8 +13,9 @@ import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.util.PsiTreeUtil
+import org.js.vento.plugin.JavaScriptDataObjectElement
 import org.js.vento.plugin.JavaScriptElement
-import org.js.vento.plugin.JavascriptExpressionElement
+import org.js.vento.plugin.JavaScriptExpressionElement
 
 /**
  * Contextual JavaScript injector that creates a shared scope with common
@@ -32,7 +33,10 @@ class ContextualJavaScriptInjector : MultiHostInjector {
 
             // Add common Vento context at the beginning using the first element
             val firstElement = allJsElements.first()
-            if (firstElement is JavaScriptElement || firstElement is JavascriptExpressionElement) {
+            if (firstElement is JavaScriptElement ||
+                firstElement is JavaScriptExpressionElement ||
+                firstElement is JavaScriptDataObjectElement
+            ) {
                 val emptyRange = TextRange(0, 0)
                 registrar.addPlace(
                     getVentoContextPrefix(),
@@ -51,11 +55,28 @@ class ContextualJavaScriptInjector : MultiHostInjector {
                         }
                     }
 
-                    is JavascriptExpressionElement -> {
+                    is JavaScriptExpressionElement -> {
                         val contentRange = element.getContentRange()
                         if (contentRange.length > 0) {
 //                            println("\n// Variable $index evaluation\noutput_$index = "+element.text)
-                            registrar.addPlace("\n// Variable $index evaluation\noutput_$index = ", ";\n", element, contentRange)
+                            registrar.addPlace(
+                                "\n// Variable $index evaluation\noutput_$index = ",
+                                ";\n",
+                                element,
+                                contentRange,
+                            )
+                        }
+                    }
+
+                    is JavaScriptDataObjectElement -> {
+                        val contentRange = element.getContentRange()
+                        if (contentRange.length > 0) {
+                            registrar.addPlace(
+                                "\n// Variable $index evaluation\noutput_$index = ",
+                                ";\n",
+                                element,
+                                contentRange,
+                            )
                         }
                     }
                 }
@@ -66,7 +87,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
     }
 
     override fun elementsToInjectIn(): List<Class<out PsiElement>> =
-        listOf(JavaScriptElement::class.java, JavascriptExpressionElement::class.java)
+        listOf(JavaScriptElement::class.java, JavaScriptExpressionElement::class.java, JavaScriptDataObjectElement::class.java)
 
     private fun getVentoContextPrefix(): String =
         """
@@ -103,7 +124,11 @@ class ContextualJavaScriptInjector : MultiHostInjector {
             .forEach { jsElements.add(it) }
 
         PsiTreeUtil
-            .findChildrenOfType(file, JavascriptExpressionElement::class.java)
+            .findChildrenOfType(file, JavaScriptExpressionElement::class.java)
+            .forEach { jsElements.add(it) }
+
+        PsiTreeUtil
+            .findChildrenOfType(file, JavaScriptDataObjectElement::class.java)
             .forEach { jsElements.add(it) }
 
         return jsElements.sortedBy { it.textOffset }
@@ -115,7 +140,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         // Pre-declare variables that might be used across blocks
         allJsElements.forEachIndexed { index, element ->
             when (element) {
-                is JavascriptExpressionElement -> {
+                is JavaScriptExpressionElement -> {
                     declarations.append("\nlet output_$index;")
                 }
             }

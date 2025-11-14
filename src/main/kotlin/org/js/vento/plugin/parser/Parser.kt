@@ -66,6 +66,7 @@ import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
+import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_DATA_OBJECT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_EXPRESSION_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
@@ -237,11 +238,24 @@ class Parser : PsiParser {
     private fun parseInclude(builder: PsiBuilder) {
         val m = builder.mark()
         expect(builder, INCLUDE_KEY, "Expected 'include' keyword' ")
-        parseExpression(builder)
+        parseJavaScriptExpresion(builder)
         parseObject(builder, true)
         parsePipe(builder)
         closeOrError(builder, "syntax error: include 'path/to/file.js' | data | pipe")
         m.done(ParserElements.INCLUDE_ELEMENT)
+    }
+
+    private fun parseJsDataObject(builder: PsiBuilder) {
+        val marker = builder.mark()
+
+        while (!builder.eof() &&
+            builder.tokenType != PIPE &&
+            (builder.tokenType != VBLOCK_CLOSE && builder.tokenText?.trim() != "}}")
+        ) {
+            builder.advanceLexer()
+        }
+
+        marker.done(JAVASCRIPT_DATA_OBJECT_ELEMENT)
     }
 
     private fun parseObject(builder: PsiBuilder, optional: Boolean = false) {
@@ -325,10 +339,10 @@ class Parser : PsiParser {
         val m = builder.mark()
         expect(builder, LAYOUT_KEY, "Expected layout keyword")
         expect(builder, FILE, "Expected filepath")
-        parsePipe(builder)
         if (builder.tokenType == BRACE) {
-            parseObject(builder)
+            parseJsDataObject(builder)
         }
+        parsePipe(builder)
         closeOrError(builder, "syntax error: layout 'path/to/file.js' | data | pipe")
         m.done(LAYOUT_ELEMENT)
     }

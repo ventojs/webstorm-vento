@@ -10,8 +10,10 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import org.js.vento.plugin.ForElement
-import org.js.vento.plugin.JavascriptExpressionElement
+import org.js.vento.plugin.JavaScriptDataObjectElement
+import org.js.vento.plugin.JavaScriptExpressionElement
 import org.js.vento.plugin.highlighting.validator.ForBlockValidator
+import org.js.vento.plugin.highlighting.validator.JsDataObjectValidator
 import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
 
 /**
@@ -23,6 +25,7 @@ class Annotator : Annotator {
     /** Validator used to check JavaScript expression syntax and semantics */
     private val expressionValidator = JsExpressionValidator()
     private val forBlockValidator = ForBlockValidator()
+    private val dataValidator = JsDataObjectValidator()
 
     /**
      * Processes PSI elements to find and validate Vento variable expressions.
@@ -31,9 +34,14 @@ class Annotator : Annotator {
      * @param holder The holder to store annotations
      */
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        if (element is JavascriptExpressionElement) {
+        if (element is JavaScriptExpressionElement) {
             validateVariableExpression(element, holder)
         }
+
+        if (element is JavaScriptDataObjectElement) {
+            dataValidator.isValidDataObject(element.text, element.project)
+        }
+
         if (element is ForElement) {
             val result = forBlockValidator.validate(element)
 
@@ -52,7 +60,7 @@ class Annotator : Annotator {
      * @param element The variable PSI element to validate
      * @param holder The holder to store potential error annotations
      */
-    private fun validateVariableExpression(element: JavascriptExpressionElement, holder: AnnotationHolder) {
+    private fun validateVariableExpression(element: JavaScriptExpressionElement, holder: AnnotationHolder) {
         val contentRange = element.getContentRange()
         if (contentRange.length == 0) return
 
