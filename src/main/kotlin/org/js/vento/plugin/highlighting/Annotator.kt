@@ -10,7 +10,7 @@ import com.intellij.lang.annotation.Annotator
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.psi.PsiElement
 import org.js.vento.plugin.ForElement
-import org.js.vento.plugin.VariableElement
+import org.js.vento.plugin.JavascriptExpressionElement
 import org.js.vento.plugin.highlighting.validator.ForBlockValidator
 import org.js.vento.plugin.highlighting.validator.JsExpressionValidator
 
@@ -31,10 +31,9 @@ class Annotator : Annotator {
      * @param holder The holder to store annotations
      */
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
-        if (element is VariableElement) {
+        if (element is JavascriptExpressionElement) {
             validateVariableExpression(element, holder)
         }
-
         if (element is ForElement) {
             val result = forBlockValidator.validate(element)
 
@@ -53,11 +52,11 @@ class Annotator : Annotator {
      * @param element The variable PSI element to validate
      * @param holder The holder to store potential error annotations
      */
-    private fun validateVariableExpression(element: VariableElement, holder: AnnotationHolder) {
+    private fun validateVariableExpression(element: JavascriptExpressionElement, holder: AnnotationHolder) {
         val contentRange = element.getContentRange()
         if (contentRange.length == 0) return
 
-        val content = contentRange.substring(element.text)
+        val content = element.text
         val project = element.project
 
         val result = expressionValidator.isValidExpression(content, project)

@@ -67,6 +67,7 @@ import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
 import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.JAVASCRIPT_EXPRESSION_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_CLOSE_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_ELEMENT
 import org.js.vento.plugin.parser.ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT
@@ -161,7 +162,7 @@ class Parser : PsiParser {
             SET_KEY -> parsSet(builder)
             UNKNOWN -> parseUnknown(builder)
             else -> {
-                parseExpression(builder)
+                parseJavaScriptExpresion(builder)
                 while (!builder.eof() && builder.tokenType == PIPE) {
                     parsePipe(builder)
                 }
@@ -172,7 +173,7 @@ class Parser : PsiParser {
     private fun parseElseIf(builder: PsiBuilder) {
         val m = builder.mark()
         expect(builder, ELSEIF_KEY, "Expected 'elseif' keyword")
-        parseExpression(builder)
+        parseJavaScriptExpresion(builder)
         closeOrError(builder, "syntax error: elseif expression")
         m.done(ParserElements.ELSEIF_ELEMENT)
     }
@@ -194,7 +195,7 @@ class Parser : PsiParser {
     private fun parseIf(builder: PsiBuilder) {
         val m = builder.mark()
         expect(builder, IF_KEY, "Expected 'if' keyword' ")
-        parseExpression(builder)
+        parseJavaScriptExpresion(builder)
         closeOrError(builder, "syntax error: if expression")
         m.done(ParserElements.IF_ELEMENT)
     }
@@ -370,11 +371,11 @@ class Parser : PsiParser {
                 if (builder.tokenType == BRACE) {
                     parseFunctionBody(builder)
                 } else {
-                    parseExpression(builder)
+                    parseJavaScriptExpresion(builder)
                 }
                 true
             } else {
-                parseExpression(builder, hasEq)
+                parseJavaScriptExpresion(builder)
             }
 
         if (hasEq && !hasExp) builder.error("Expected expression after '='")
@@ -498,7 +499,7 @@ class Parser : PsiParser {
     private fun parsePipe(builder: PsiBuilder) {
         if (builder.tokenType == PIPE) {
             expect(builder, PIPE, "Expected pipe (|>)")
-            parseExpression(builder)
+            parseJavaScriptExpresion(builder)
         }
     }
 
@@ -527,13 +528,13 @@ class Parser : PsiParser {
 
             val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
             var hasExpression = false
-            if (hasEq) hasExpression = parseExpression(builder)
+            if (hasEq) hasExpression = parseJavaScriptExpresion(builder)
             if (hasEq && !hasExpression) builder.error("Expected expression after '='")
 
             while (!builder.eof() && builder.tokenType == PIPE) {
                 val hasPipe = optional(builder, PIPE, "Expected pipe (|>)")
                 var hasPipeExpression = false
-                if (hasPipe) hasPipeExpression = parseExpression(builder)
+                if (hasPipe) hasPipeExpression = parseJavaScriptExpresion(builder)
                 if (hasPipe && !hasPipeExpression) builder.error("Expected expression after '|>'")
             }
 
@@ -675,6 +676,24 @@ class Parser : PsiParser {
 
         expect(builder, FOR_KEY, "Expected 'for' keyword")
         // PARSE VALUE
+        var value = parseForValue(builder)
+//        var value = parseJavaScriptExpresion(builder)
+
+        if (!value) builder.error("Expected value")
+
+        expect(builder, FOR_OF, "Expected 'of' keyword")
+
+        // PARSE COLLECTION
+//        var collection = parseForCollection(builder)
+        var collection = parseJavaScriptExpresion(builder)
+        if (!collection) builder.error("Expected collection")
+        parsePipe(builder)
+        closeOrError(builder, "syntax error: for [value] in [collection]")
+
+        m.done(ParserElements.FOR_ELEMENT)
+    }
+
+    private fun parseForValue(builder: PsiBuilder): Boolean {
         var value = false
         while (
             !builder.eof() &&
@@ -696,12 +715,10 @@ class Parser : PsiParser {
                 parseArray(builder)
             }
         }
+        return value
+    }
 
-        if (!value) builder.error("Expected value")
-
-        expect(builder, FOR_OF, "Expected 'of' keyword")
-
-        // PARSE COLLECTION
+    private fun parseForCollection(builder: PsiBuilder): Boolean {
         var collection = false
         while (
             !builder.eof() &&
@@ -743,11 +760,7 @@ class Parser : PsiParser {
                 parseUnknown(builder)
             }
         }
-        if (!collection) builder.error("Expected collection")
-        parsePipe(builder)
-        closeOrError(builder, "syntax error: for [value] in [collection]")
-
-        m.done(ParserElements.FOR_ELEMENT)
+        return collection
     }
 
     private fun parseForClose(builder: PsiBuilder) {
@@ -767,6 +780,23 @@ class Parser : PsiParser {
         expect(builder, JSBLOCK_CLOSE, "Expected javascript element")
 
         marker.done(JAVASCRIPT_ELEMENT)
+    }
+
+    private fun parseJavaScriptExpresion(builder: PsiBuilder): Boolean {
+        val marker = builder.mark()
+
+        var hasExpression = false
+        while (!builder.eof() &&
+            builder.tokenType != PIPE &&
+            builder.tokenType != FOR_OF &&
+            (builder.tokenType != VBLOCK_CLOSE && builder.tokenText?.trim() != "}}")
+        ) {
+            builder.advanceLexer()
+            hasExpression = true
+        }
+
+        marker.done(JAVASCRIPT_EXPRESSION_ELEMENT)
+        return hasExpression
     }
 
     private fun parseCommentBlock(builder: PsiBuilder) {

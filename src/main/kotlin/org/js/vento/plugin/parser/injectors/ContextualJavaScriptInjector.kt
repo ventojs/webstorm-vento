@@ -14,7 +14,7 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
 import com.intellij.psi.util.PsiTreeUtil
 import org.js.vento.plugin.JavaScriptElement
-import org.js.vento.plugin.VariableElement
+import org.js.vento.plugin.JavascriptExpressionElement
 
 /**
  * Contextual JavaScript injector that creates a shared scope with common
@@ -32,7 +32,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
 
             // Add common Vento context at the beginning using the first element
             val firstElement = allJsElements.first()
-            if (firstElement is JavaScriptElement || firstElement is VariableElement) {
+            if (firstElement is JavaScriptElement || firstElement is JavascriptExpressionElement) {
                 val emptyRange = TextRange(0, 0)
                 registrar.addPlace(
                     getVentoContextPrefix(),
@@ -51,7 +51,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
                         }
                     }
 
-                    is VariableElement -> {
+                    is JavascriptExpressionElement -> {
                         val contentRange = element.getContentRange()
                         if (contentRange.length > 0) {
 //                            println("\n// Variable $index evaluation\noutput_$index = "+element.text)
@@ -65,7 +65,8 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         }
     }
 
-    override fun elementsToInjectIn(): List<Class<out PsiElement>> = listOf(JavaScriptElement::class.java, VariableElement::class.java)
+    override fun elementsToInjectIn(): List<Class<out PsiElement>> =
+        listOf(JavaScriptElement::class.java, JavascriptExpressionElement::class.java)
 
     private fun getVentoContextPrefix(): String =
         """
@@ -102,7 +103,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
             .forEach { jsElements.add(it) }
 
         PsiTreeUtil
-            .findChildrenOfType(file, VariableElement::class.java)
+            .findChildrenOfType(file, JavascriptExpressionElement::class.java)
             .forEach { jsElements.add(it) }
 
         return jsElements.sortedBy { it.textOffset }
@@ -114,7 +115,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         // Pre-declare variables that might be used across blocks
         allJsElements.forEachIndexed { index, element ->
             when (element) {
-                is VariableElement -> {
+                is JavascriptExpressionElement -> {
                     declarations.append("\nlet output_$index;")
                 }
             }

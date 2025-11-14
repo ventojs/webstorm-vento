@@ -80,10 +80,32 @@ class ColorSettingsPage : ColorSettingsPage {
           <p>Content of the section</p>
         {{ /layout }}
 
-
         {{ include "/my-file.vto" { salutation: "Good bye", sizes: [10, 20, 30] } |> toUpperCase }}
 
-        {{> console.log('Hello World') }}
+        {{>
+            let greeting = "Hi" 
+            console.log(greeting + ' World!') 
+        }}
+
+        {{ echo }}
+            In Vento, {{ name }} will print the "name" variable.
+            Use {{ name |> escape }} to HTML-escape its content
+        {{ /echo }}
+        
+        {{ async function hello }}
+            {{> const text = await Promise.resolve("Hello world") }}
+            {{ text }}
+        {{ /function }}
+
+        {{ await hello() }}
+        
+        {{ if !it.user }}
+          No user found!
+        {{ else if !it.user.name }}
+          The user doesn't have name.s
+        {{ else }}
+          The user is {{ it.user.name }}.
+        {{ /if }}
 
         {{ layout "myfile.vto }}
             <h1>BAD CHARACTERS</h1>

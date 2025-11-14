@@ -21,15 +21,15 @@
 
 
 {{ async function hello }}
-  {{ await  Promise.resolve("Hello, world!") }}
+  {{ await Promise.resolve("Hello, world!") }}
 {{ /function }}
 
 {{ await hello() }}
 
 
 {{ async function hello }}
-{{> const text = await Promise.resolve("Hello world") }}
-{{ text }}
+    {{> const text = await Promise.resolve("Hello world") }}
+    {{ text }}
 {{ /function }}
 
 {{ await hello() }}

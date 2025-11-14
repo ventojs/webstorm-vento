@@ -26,6 +26,9 @@ object ParserElements {
     @JvmField
     val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
 
+    @JvmField
+    val JAVASCRIPT_EXPRESSION_ELEMENT = ParserElement("JAVASCRIPT_EXPRESSION_ELEMENT")
+
     // Control flow elements
     @JvmField
     val FOR_ELEMENT: IElementType = ParserElement("FOR_ELEMENT")
@@ -118,16 +121,16 @@ object ParserElements {
     val ECHO_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
 
     @JvmField
-    val IF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val IF_ELEMENT: IElementType = ParserElement("IF_ELEMENT")
 
     @JvmField
-    val ELSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val ELSE_ELEMENT: IElementType = ParserElement("ELSE_ELEMENT")
 
     @JvmField
-    val ELSEIF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val ELSEIF_ELEMENT: IElementType = ParserElement("ELSEIF_ELEMENT")
 
     @JvmField
-    val IF_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val IF_CLOSE_ELEMENT: IElementType = ParserElement("IF_CLOSE_ELEMENT")
 
     /**
      * A factory to create PSI nodes from AST nodes, typically referenced
@@ -139,6 +142,7 @@ object ParserElements {
                 VENTO_ELEMENT -> VentoElement(node)
                 DEFAULT_ELEMENT -> HtmlElement(node)
                 JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
+                JAVASCRIPT_EXPRESSION_ELEMENT -> JavascriptExpressionElement(node)
                 FOR_ELEMENT -> ForElement(node)
                 FOR_CLOSE_ELEMENT -> ForElement(node)
                 IMPORT_ELEMENT -> ImportElement(node)

@@ -106,7 +106,7 @@ class JavaScriptElement(node: ASTNode) :
  * PSI element representing a Vento variable block that contains a JavaScript expression.
  * This element enables JavaScript language injection for variable expressions.
  */
-class VariableElement(node: ASTNode) :
+class JavascriptExpressionElement(node: ASTNode) :
     BaseElementImpl(node),
     PsiLanguageInjectionHost {
     override fun isValidHost(): Boolean = true
@@ -114,7 +114,7 @@ class VariableElement(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
-        return object : LiteralTextEscaper<VariableElement>(this) {
+        return object : LiteralTextEscaper<JavascriptExpressionElement>(this) {
             override fun decode(rangeInsideHost: TextRange, outChars: StringBuilder): Boolean {
                 val content = rangeInsideHost.substring(myHost.text)
                 outChars.append(content)
@@ -124,33 +124,13 @@ class VariableElement(node: ASTNode) :
             override fun getOffsetInHost(offsetInDecoded: Int, rangeInsideHost: TextRange): Int =
                 rangeInsideHost.startOffset + offsetInDecoded
 
-            override fun getRelevantTextRange(): TextRange = getContentRange()
+//            override fun getRelevantTextRange(): TextRange = getContentRange()
 
             override fun isOneLine(): Boolean = false
         }
     }
 
-    /**
-     * Returns the content range of the JavaScript expression within the variable block,
-     * excluding the opening and closing delimiters.
-     */
-    fun getContentRange(): TextRange {
-        val text = this.text
-        val start =
-            when {
-                text.indexOf("{{-") > -1 -> text.indexOf("{{-") + 3
-                text.indexOf("{{") > -1 -> text.indexOf("{{") + 2
-                else -> 0
-            }
-        val end =
-            when {
-                text.endsWith("-}}") -> text.length - 3
-                text.endsWith("}}") -> text.length - 2
-                else -> text.length
-            }
-
-        return TextRange(start, end)
-    }
+    fun getContentRange(): TextRange = TextRange(0, this.text.length)
 }
 
 class HtmlElement(node: ASTNode) :
