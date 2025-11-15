@@ -5,6 +5,6 @@ Vento File(0,22)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiElement(SYMBOL_TOKEN)(' message')(9,17)
       PsiElement(EQUAL_TOKEN)(' =')(17,19)
-      PsiErrorElement:Expected expression(19,19)
+      PsiErrorElement:Expected expression after '='(19,19)
         <empty list>
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(19,22)

@@ -1,0 +1,8 @@
+Vento File(0,22)
+  Element: VENTO_ELEMENT(0,22)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: INCLUDE_ELEMENT(2,19)
+      PsiElement(INCLUDE_KEY_TOKEN)(' include')(2,10)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(10,19)
+        PsiElement(SYMBOL_TOKEN)(' filename')(10,19)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(19,22)

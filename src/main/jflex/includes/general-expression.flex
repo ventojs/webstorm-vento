@@ -39,7 +39,7 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
        leave();
      }
 
-    "=>" { return LexerTokens.SYMBOL; }
+    "=>" { return LexerTokens.LAMBDA_ARROW; }
 
     "="  { return LexerTokens.SYMBOL; }
     "=="  { return LexerTokens.SYMBOL; }

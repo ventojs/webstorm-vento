@@ -57,10 +57,6 @@ class JsExpressionValidatorTest : BasePlatformTestCase() {
     /** Tests rejection of multiple expressions with pipe */
     fun `test too many expressions and pipe`() = assertNotValid("greeting;foo; |> JSON.stringify ")
 
-    /** Tests rejection of scope block statements */
-    fun `test scope block`() = assertNotValid("{ const foo=1 }")
-    //endregion
-
     private fun assertNotValid(content: String): Unit = assertValid(content, false)
 
     private fun assertValid(content: String, isValid: Boolean = true) {

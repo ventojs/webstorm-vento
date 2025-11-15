@@ -6,7 +6,7 @@
   salute: "Very" + " " + "Welcome"
 } }}
 
-{{ include "/my-file.vto" {salute: "Good bye"} |> toUpperCase }}
+{{ include "/my-file.vto" {salute: translate("hello")} |> toUpperCase }}
 
 {{ include "/my-file.vto" {salute: "Hello from include"} }}
 

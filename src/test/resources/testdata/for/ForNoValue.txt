@@ -6,5 +6,6 @@ Vento File(0,19)
       PsiErrorElement:Expected value(6,6)
         <empty list>
       PsiElement(FOR_OF_TOKEN)(' of')(6,9)
-      PsiElement(SYMBOL_TOKEN)(' values')(9,16)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(9,16)
+        PsiElement(SYMBOL_TOKEN)(' values')(9,16)
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(16,19)
