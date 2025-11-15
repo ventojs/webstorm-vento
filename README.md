@@ -1,24 +1,18 @@
-<div id="readme-top"></div>
+<h1 align="center"> <a href="https://vento.js.org/"> <img src="assets/favicon.svg" alt="VentoJS Logo" width="200"></a> </h1>
 
 <!-- Plugin description -->
-<h1 align="center">
-  <br />
-    <a href="https://vento.js.org/">
-        <img src="docs/assets/favicon.svg" alt="VentoJS Logo" width="200">
-    </a>
-  <br /><br />
-  Vento for JetBrain's WebStorm & IntelliJ IDEA Ultimate IDE
-  <br /><br />
-</h1>
-<div align="center">
-Provides support for the <a href="https://vento.js.org/">VentoJs</a> template engine.
-The support includes:
-
-<h4>syntax highlighting</h4>
-<h4>syntax checking</h4>
-
+<h2> Vento plugin</h2>
+<h3>for JetBrain's WebStorm & IntelliJ IDEA Ultimate IDE </h3>
+<p>
+Provides support for the <a href="https://vento.js.org/">VentoJs</a> template engine. Vento is used in the SSG  <a href="https://lume.land/">Lume</a> framework to generate HTML sites.
+</p>
+<h3>key features:</h3>
+<ol>
+    <li>`*.vto` file type</li>
+    <li>Syntax highlighting</li>
+    <li>Syntax checking</li>
+</ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
-</div>
 <!-- Plugin description end -->
 <div align="center">
 
@@ -42,43 +36,56 @@ For more information visit <a href="https://vento.js.org/">Vento</a>.
 IntelliJ Ultimate and WebStorm IDEs.
 
 ### Implemented Features
+
 Take a look at the following screenshots to get a better idea of what the plugin can already do.
-The rest of the features are still under development. (see: [backlog](https://github.com/ventojs/webstorm-vento/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature))
+The rest of the features are still under development. (
+see: [backlog](https://github.com/ventojs/webstorm-vento/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature))
 
 #### Vento variables and scripts
-![vento-syntax-highlighting](docs/assets/variables_and_scripts.png)
+
+![vento-syntax-highlighting](assets/variables_and_scripts.png)
 
 #### Vento comments
-![vento-syntax-highlighting](docs/assets/comment.png)
+
+![vento-syntax-highlighting](assets/comment.png)
 
 #### HTML support
-![vento-syntax-highlighting](docs/assets/layout.png)
+
+![vento-syntax-highlighting](assets/layout.png)
 
 #### Vento `for` loops
-![vento-syntax-highlighting](docs/assets/for.png)
+
+![vento-syntax-highlighting](assets/for.png)
 
 #### Vento `export` & `import`
-![vento-syntax-highlighting](docs/assets/export.png)
 
-![vento-syntax-highlighting](docs/assets/import.png)
+![vento-syntax-highlighting](assets/export.png)
+
+![vento-syntax-highlighting](assets/import.png)
 
 #### Vento `set`
-![vento-syntax-highlighting](docs/assets/set.png)
+
+![vento-syntax-highlighting](assets/set.png)
 
 #### Vento `layout` & `slot`
-![vento-syntax-highlighting](docs/assets/layout2.png)
+
+![vento-syntax-highlighting](assets/layout2.png)
 
 #### Vento `include`
-![vento-syntax-highlighting](docs/assets/include.png)
+
+![vento-syntax-highlighting](assets/include.png)
 
 #### Vento `function`
-![vento-syntax-highlighting](docs/assets/function.png)
+
+![vento-syntax-highlighting](assets/function.png)
 
 #### Vento `echo`
-![vento-syntax-highlighting](docs/assets/echo.png)
+
+![vento-syntax-highlighting](assets/echo.png)
 
 #### Vento `if`
-![vento-syntax-highlighting](docs/assets/if.png)
+
+![vento-syntax-highlighting](assets/if.png)
 
 > [!IMPORTANT]
 > ### Note to plugin users

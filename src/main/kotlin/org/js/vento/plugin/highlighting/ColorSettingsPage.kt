@@ -50,6 +50,9 @@ class ColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
+            
+        NOTE: A lot of the formatting will be overriden by your Javascript highlighting setting.
+        
         {{# This is a sample web page #}}
         {{#- trimmed comment -#}}
 
