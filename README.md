@@ -1,4 +1,10 @@
 <h1 align="center"> <a href="https://vento.js.org/"> <img src="assets/favicon.svg" alt="VentoJS Logo" width="200"></a> </h1>
+<div align="center">
+
+[![Contributors][contributors_shield_url]][contributors_url]
+[![Issues][issues_shield_url]][issues_url]
+
+</div>
 
 <!-- Plugin description -->
 <h2> Vento plugin</h2>
@@ -14,11 +20,6 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
 <!-- Plugin description end -->
-<div align="center">
-
-[![Contributors][contributors_shield_url]][contributors_url]
-[![Issues][issues_shield_url]][issues_url]
-</div>
 
 ## Table of Contents
 
