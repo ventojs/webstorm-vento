@@ -5,7 +5,9 @@
 
 package org.js.vento.plugin
 
+import com.intellij.lang.DependentLanguage
 import com.intellij.lang.Language
+import com.intellij.lang.html.HTMLLanguage
 
 /**
  * Represents the Vento programming language within the IntelliJ Platform.
@@ -15,6 +17,6 @@ import com.intellij.lang.Language
  *
  * @constructor Creates an instance of [VentoLanguage] with the specified language ID.
  */
-object VentoLanguage : Language("Vento") {
+object VentoLanguage : Language(HTMLLanguage.INSTANCE, "Vento"), DependentLanguage {
     private fun readResolve(): Any = VentoLanguage
 }
