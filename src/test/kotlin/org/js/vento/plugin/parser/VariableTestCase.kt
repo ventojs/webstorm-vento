@@ -54,6 +54,11 @@ class VariableTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
             "{{ await Promise.resolve(\"Hello, world!\") }}",
         )
 
+    fun testComplexObject() =
+        doCodeTest(
+            "{{ {a:\"}}\",b:{c:-1,d:--foo}} }}",
+        )
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/variable"
 
     override fun includeRanges(): Boolean = true

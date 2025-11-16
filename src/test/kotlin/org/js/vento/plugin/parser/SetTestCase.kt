@@ -75,6 +75,14 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
      */
     fun testSetError_InvalidFunctionCall() = doCodeTest("""{{ set myVar = JSON stringify(data) }}""")
 
+    fun testObject() =
+        doCodeTest(
+            """
+            {{ set myVar = {"a": 1, "b": true, "c":{"d":"hello"}} }}
+            {{ set myVar = {"a": 1, "b": true, "c":{"d":"hello"} } }}
+            """.trimIndent(),
+        )
+
     // Error Cases - Malformed Closing Tags
 
     /**

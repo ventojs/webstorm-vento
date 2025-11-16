@@ -9,19 +9,21 @@ import com.intellij.testFramework.ParsingTestCase
 import org.js.vento.plugin.VentoParserDefinition
 
 class IncludeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
-    // Valid Cases
+    fun testIncludeFilenameString() = doCodeTest("""{{ include "filename.vto" }}""".trimIndent())
 
-    fun testInclude() {
-        val code =
-            """{{ include "myfile.vto" {salutation: "Good bye"} |> toUpperCase }}""".trimIndent()
-        doCodeTest(code)
-    }
+    fun testIncludeFilenameVariable() = doCodeTest("""{{ include filename }}""".trimIndent())
 
-    fun testBrockenInclude() {
-        val code =
-            """{{ include "myfile.vto" |> toUpperCase {salutation: "Good bye"} }}""".trimIndent()
-        doCodeTest(code)
-    }
+    fun testIncludeLookup() = doCodeTest("""{{ include resolve( pathname, true) }}""".trimIndent())
+
+    fun testIncludeLookupWithObject() = doCodeTest("""{{ include resolve({ path: "./section.vto" }) }}""".trimIndent())
+
+    fun testIncludeWithData() = doCodeTest("""{{ include "myfile.vto" {salutation: "Good bye"} }}""".trimIndent())
+
+    fun testIncludeWithDataAndPipe() =
+        doCodeTest("""{{ include "myfile.vto" {salutation: "Good bye"} |> toUpperCase }}""".trimIndent())
+
+    fun testBrockenInclude() =
+        doCodeTest("""{{ include "myfile.vto" |> toUpperCase {salutation: "Good bye"} }}""".trimIndent())
 
     /**
      * @return path to test data file directory relative to root of this module.

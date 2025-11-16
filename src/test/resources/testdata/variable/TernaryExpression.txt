@@ -1,7 +1,7 @@
 Vento File(0,21)
   Element: VENTO_ELEMENT(0,21)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: EXPRESSION_ELEMENT(2,18)
+    Element: JAVASCRIPT_EXPRESSION_ELEMENT(2,18)
       PsiElement(SYMBOL_TOKEN)(' foo')(2,6)
       PsiElement(SYMBOL_TOKEN)(' ?')(6,8)
       PsiElement(SYMBOL_TOKEN)(' bar')(8,12)

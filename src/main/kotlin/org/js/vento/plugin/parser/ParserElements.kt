@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.lang.ASTNode
-import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
-import org.js.vento.plugin.*
 
 /**
  * Defines element types for the Vento language.
@@ -25,6 +22,12 @@ object ParserElements {
 
     @JvmField
     val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
+
+    @JvmField
+    val JAVASCRIPT_EXPRESSION_ELEMENT = ParserElement("JAVASCRIPT_EXPRESSION_ELEMENT")
+
+    @JvmField
+    val JAVASCRIPT_DATA_OBJECT_ELEMENT = ParserElement("JAVASCRIPT_DATA_OBJECT_ELEMENT")
 
     // Control flow elements
     @JvmField
@@ -118,44 +121,14 @@ object ParserElements {
     val ECHO_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
 
     @JvmField
-    val IF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val IF_ELEMENT: IElementType = ParserElement("IF_ELEMENT")
 
     @JvmField
-    val ELSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val ELSE_ELEMENT: IElementType = ParserElement("ELSE_ELEMENT")
 
     @JvmField
-    val ELSEIF_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+    val ELSEIF_ELEMENT: IElementType = ParserElement("ELSEIF_ELEMENT")
 
     @JvmField
-    val IF_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
-
-    /**
-     * A factory to create PSI nodes from AST nodes, typically referenced
-     * by your parser definition in createElement(node: ASTNode).
-     */
-    object Factory {
-        fun createElement(node: ASTNode): PsiElement =
-            when (node.elementType) {
-                VENTO_ELEMENT -> VentoElement(node)
-                DEFAULT_ELEMENT -> HtmlElement(node)
-                JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
-                FOR_ELEMENT -> ForElement(node)
-                FOR_CLOSE_ELEMENT -> ForElement(node)
-                IMPORT_ELEMENT -> ImportElement(node)
-                EXPORT_ELEMENT -> ExportElement(node)
-                EXPORT_OPEN_ELEMENT -> ExportOpenElement(node)
-                EXPORT_CLOSE_ELEMENT -> ExportCloseElement(node)
-                EXPORT_FUNCTION_ELEMENT -> ExportFunctionElement(node)
-                EXPRESSION_ELEMENT -> ExpressionElement(node)
-                FUNCTION_ELEMENT -> FunctionElement(node)
-                SET_ELEMENT -> SetElement(node)
-                SET_CLOSE_ELEMENT -> SetCloseElement(node)
-                LAYOUT_ELEMENT -> LayoutElement(node)
-                LAYOUT_CLOSE_ELEMENT -> LayoutCloseElement(node)
-                OBJECT_ELEMENT -> ObjectElement(node)
-                INCLUDE_ELEMENT -> IncludeElement(node)
-                STRING_ELEMENT -> StringElement(node)
-                else -> DefaultElement(node)
-            }
-    }
+    val IF_CLOSE_ELEMENT: IElementType = ParserElement("IF_CLOSE_ELEMENT")
 }

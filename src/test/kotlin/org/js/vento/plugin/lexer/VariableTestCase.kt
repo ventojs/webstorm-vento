@@ -381,4 +381,36 @@ class VariableTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
     }
+
+    fun `test complex object`() {
+        lexAndTest(
+            "{{ {a:\"}}\",b:{c:-1,d:--foo}} }}",
+            arrayOf(
+                "{{",
+                "{",
+                "a",
+                ":",
+                "\"",
+                "}}",
+                "\"",
+                ",",
+                "b",
+                ":",
+                "{",
+                "c",
+                ":",
+                "-",
+                "1",
+                ",",
+                "d",
+                ":",
+                "-",
+                "-",
+                "foo",
+                "}",
+                "}",
+                "}}",
+            ),
+        )
+    }
 }

@@ -5,9 +5,8 @@ Vento File(0,20)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiElement(SYMBOL_TOKEN)(' foo')(9,13)
       PsiElement(EQUAL_TOKEN)(' =')(13,15)
-      Element: STRING_ELEMENT(15,20)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(15,20)
         PsiElement(STRING_TOKEN)(' "')(15,17)
         PsiElement(STRING_TOKEN)(' }}')(17,20)
-      Element: UNKNOWN_ELEMENT(20,20)
-        PsiErrorElement:Unexpected token(20,20)
-          <empty list>
+    PsiErrorElement:Expected '}}' (20,20)
+      <empty list>

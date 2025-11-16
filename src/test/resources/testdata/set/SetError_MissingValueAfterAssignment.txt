@@ -5,6 +5,6 @@ Vento File(0,18)
       PsiElement(SET_KEY_TOKEN)(' set')(2,6)
       PsiElement(SYMBOL_TOKEN)(' myVar')(6,12)
       PsiElement(EQUAL_TOKEN)(' =')(12,14)
-      PsiErrorElement:Expected expression(14,14)
+      PsiErrorElement:Expected expression after '='(14,14)
         <empty list>
     PsiElement(VBLOCK_CLOSE_TOKEN)('  }}')(14,18)

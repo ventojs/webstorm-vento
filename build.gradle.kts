@@ -38,7 +38,7 @@ sourceSets {
 // Task to copy images from docs/assets to plugin resources
 val copyImagesToResources =
     tasks.register<Copy>("copyImagesToResources") {
-        from(layout.projectDirectory.dir("docs/assets"))
+        from(layout.projectDirectory.dir("assets"))
         into(layout.buildDirectory.dir("resources/main/assets"))
         include("*.png", "*.jpg", "*.jpeg", "*.svg", "*.gif")
     }
@@ -481,7 +481,7 @@ intellijPlatform {
                     // Replace docs/assets/ paths with plugin-relative paths
                     val updatedText =
                         descriptionText.replace(
-                            Regex("""docs/assets/([^"'\s)]+)"""),
+                            Regex("""assets/([^"'\s)]+)"""),
                             "assets/$1",
                         )
                     markdownToHTML(updatedText)

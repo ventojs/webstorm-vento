@@ -51,6 +51,13 @@ class PipeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun `test complex pipe expression`() {
+        val code = """
+               {{ for even_number of [1, 2, 3] |> filter((n) => n % 2 === 0) }}
+                """
+        doCodeTest(code)
+    }
+
     /**
      * @return path to test data file directory relative to root of this module.
      */
