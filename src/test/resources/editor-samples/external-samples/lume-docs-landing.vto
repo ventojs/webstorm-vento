@@ -77,40 +77,21 @@ page_css: landing.css
       <h2>{{ examples.title }}</h2>
 
       <lume-carousel-controls target="#examples" class="lume-carousel-buttons">
-        <button
-          value="prev"
-          class="button is-secondary has-icon"
-          aria-label="Previous examples"
-        >
+        <button value="prev" class="button is-secondary has-icon" aria-label="Previous examples" >
           <img src='{{ "arrow-left" |> icon("phosphor") }}' inline>
         </button>
-        <button
-          value="next"
-          class="button is-secondary has-icon"
-          aria-label="Next examples"
-        >
+        <button value="next" class="button is-secondary has-icon" aria-label="Next examples" >
           <img src='{{ "arrow-right" |> icon("phosphor") }}' inline>
         </button>
       </lume-carousel-controls>
     </header>
 
-    <lume-carousel
-      role="region"
-      aria-label="Showcase"
-      tabindex="0"
-      class="landing-examples-sites"
-      id="examples"
-    >
+    <lume-carousel role="region" aria-label="Showcase" tabindex="0" class="landing-examples-sites" id="examples" >
       {{ set showcase = search.page("url=/showcase/") }}
       {{ for site of showcase.sites.filter((site) => site.img).slice(0, 8) }}
         <figure class="site">
           <a href="{{ site.url }}" class="site-image">
-            <img
-              src="{{ site.img }}"
-              alt="Screenshot of the site"
-              width="300"
-              height="200"
-            >
+            <img src="{{ site.img }}" alt="Screenshot of the site" width="300" height="200" >
           </a>
           <figcaption class="site-description">
             <p>
@@ -123,9 +104,7 @@ page_css: landing.css
           </figcaption>
         </figure>
       {{ /for }}
-      <a href="{{ examples.more.href }}" class="landing-examples-cta">{{
-        examples.more.text
-      }}</a>
+      <a href="{{ examples.more.href }}" class="landing-examples-cta">{{ examples.more.text }}</a>
     </lume-carousel>
   </section>
 

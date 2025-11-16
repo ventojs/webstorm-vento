@@ -442,7 +442,7 @@ intellijPlatform {
     }
 
     publishing {
-        token = providers.environmentVariable("PUBLISH_TOKEN")
+        token = providers.environmentVariable("JETBRAINS_PUBLISH_TOKEN")
         channels =
             providers
                 .gradleProperty("pluginVersion")
