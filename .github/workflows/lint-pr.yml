@@ -29,11 +29,14 @@ jobs:
             refactor
             test
           scopes: |
+            cicd
+            docs
+            editing
+            gradle
             lexer
             parser
-            highlighting
+            samples
             settings
-            editing
           ignoreLabels: |
             bot
             ignore-semantic-pull-request
