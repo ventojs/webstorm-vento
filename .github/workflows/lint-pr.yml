@@ -30,10 +30,10 @@ jobs:
             refactor
             test
           scopes: |
+            build
             cicd
             docs
             editing
-            gradle
             lexer
             main
             parser

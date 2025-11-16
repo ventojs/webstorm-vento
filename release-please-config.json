@@ -5,9 +5,7 @@
     ".": {
       "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
-      "extra-files": [
-        "gradle.properties"
-      ]
+      "extra-files": ["gradle.properties"]
     }
   }
 }
