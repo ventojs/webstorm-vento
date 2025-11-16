@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.2](https://github.com/ventojs/webstorm-vento/compare/v0.2.1...v0.2.2) (2025-11-16)
+
+
+### Bug Fixes
+
+* **cicd:** correct env variable name in release workflow ([69edf4d](https://github.com/ventojs/webstorm-vento/commit/69edf4d9c574b46848b3eccdd59d92ff6fdd980a))
+
 ## [0.2.1](https://github.com/ventojs/webstorm-vento/compare/v0.2.0...v0.2.1) (2025-11-16)
 
 
