@@ -5,20 +5,12 @@
 
 package org.js.vento.plugin
 
-import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
-import com.intellij.lang.PsiParser
-import com.intellij.lexer.Lexer
-import com.intellij.openapi.project.Project
+import com.intellij.lang.html.HTMLParserDefinition
 import com.intellij.psi.FileViewProvider
-import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
-import com.intellij.psi.tree.TokenSet
 import org.js.vento.plugin.filetype.VentoFile
-import org.js.vento.plugin.lexer.LexerAdapter
-import org.js.vento.plugin.lexer.LexerTokens
-import org.js.vento.plugin.parser.Parser
 
 /**
  * Defines the parser for Vento files, integrating key components such as Lexer, Parser, and PSI elements.
@@ -46,18 +38,20 @@ import org.js.vento.plugin.parser.Parser
  * - `VentoParser` for parsing logic and syntax tree generation.
  * - `PsiFile`, `PsiElement`, `TokenSet` for IntelliJ PSI structure.
  */
-class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
-    override fun createLexer(project: Project?): Lexer = LexerAdapter(debug)
+class VentoParserDefinition(val debug: Boolean = false) : HTMLParserDefinition(), ParserDefinition {
+    //    override fun createLexer(project: Project?): Lexer = LexerAdapter(debug)
 
-    override fun createParser(project: Project?): PsiParser = Parser()
+//    override fun createParser(project: Project?): PsiParser = Parser()
 
     override fun getFileNodeType(): IFileElementType = IFileElementType(VentoLanguage)
 
-    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT)
+//    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT)
 
-    override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTokens.STRING)
+//    override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTokens.STRING)
 
-    override fun createElement(node: ASTNode): PsiElement = PsiElementFactory.createElement(node)
+//    override fun createElement(node: ASTNode): PsiElement {
+//        return if(node.elementType == HTML) super.createElement(node) else PsiElementFactory.createElement(node)
+//    }
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 }
