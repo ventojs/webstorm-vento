@@ -23,17 +23,19 @@ jobs:
           # These are regex patterns auto-wrapped in `^ $`.
           # Default: https://github.com/commitizen/conventional-commit-types
           types: |
+            chore
+            doc
             fix
             feat
-            doc
             refactor
             test
           scopes: |
+            build
             cicd
             docs
             editing
-            gradle
             lexer
+            main
             parser
             samples
             settings

@@ -21,3 +21,20 @@ jobs:
         with:
           token: ${{ secrets.RELEASE_PLEASE_VENTO_PAT }}
           command: manifest
+          types: |
+            chore
+            doc
+            fix
+            feat
+            refactor
+            test
+          scopes: |
+            build
+            cicd
+            docs
+            editing
+            lexer
+            main
+            parser
+            samples
+            settings
