@@ -1,9 +1,10 @@
 name: Vento CI/CD
 run-name: "Vento CI/CD"
 
+# Workflow disabled - using release-please workflow instead
 on:
-  push:
-    branches: [ main ]
+#  push:
+#    branches: [ main ]
   workflow_dispatch:
 
 permissions:
