@@ -5,13 +5,7 @@
     ".": {
       "release-type": "simple",
       "changelog-path": "CHANGELOG.md",
-      "extra-files": [
-        {
-          "type": "generic",
-          "path": "gradle.properties",
-          "regex": "pluginVersion=(?<version>.*)"
-        }
-      ]
+      "extra-files": ["gradle.properties"]
     }
   }
 }
