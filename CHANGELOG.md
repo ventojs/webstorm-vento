@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/ventojs/webstorm-vento/compare/v0.2.0...v0.2.1) (2025-11-16)
+
+
+### Bug Fixes
+
+* **cicd:** update token names in release workflow and Gradle build configuration ([d5e1cc3](https://github.com/ventojs/webstorm-vento/commit/d5e1cc3e9f0fd8730ee11c21051774328544e6be))
+
 ## [0.2.0](https://github.com/ventojs/webstorm-vento/compare/v0.1.0...v0.2.0) (2025-11-16)
 
 
