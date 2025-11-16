@@ -7,7 +7,7 @@
       "changelog-path": "CHANGELOG.md",
       "extra-files": [
         {
-          "type": "plain",
+          "type": "generic",
           "path": "gradle.properties",
           "regex": "pluginVersion=(?<version>.*)"
         }
