@@ -11,7 +11,7 @@ import org.jlleitschuh.gradle.ktlint.tasks.KtLintFormatTask
 plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.2.21"
-    id("org.jetbrains.intellij.platform") version "2.10.4"
+    id("org.jetbrains.intellij.platform") version "2.10.5"
     id("org.jetbrains.grammarkit") version "2023.3.0.1"
     id("org.jlleitschuh.gradle.ktlint") version "14.0.1"
     id("org.jetbrains.changelog") version "2.4.0"
