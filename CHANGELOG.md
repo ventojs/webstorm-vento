@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/ventojs/webstorm-vento/compare/v0.2.1...v0.3.0) (2025-11-28)
+
+
+### Features
+
+* **parser:** improve HTML language support for Vento templates ([#76](https://github.com/ventojs/webstorm-vento/issues/76)) ([#141](https://github.com/ventojs/webstorm-vento/issues/141)) ([959ba34](https://github.com/ventojs/webstorm-vento/commit/959ba34cac3ab294ff1ebc6ee26c87309a9c550f))
+
+
+### Bug Fixes
+
+* **cicd:** correct env variable name in release workflow ([69edf4d](https://github.com/ventojs/webstorm-vento/commit/69edf4d9c574b46848b3eccdd59d92ff6fdd980a))
+
 ## [0.2.1](https://github.com/ventojs/webstorm-vento/compare/v0.2.0...v0.2.1) (2025-11-16)
 
 
