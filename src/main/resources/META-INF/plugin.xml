@@ -20,35 +20,17 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <!-- File Type Registration -->
-        <!-- Registers .vto files as Vento template files -->
-        <fileType name="Vento File"
-                  implementationClass="org.js.vento.plugin.filetype.VentoFileType"
-                  fieldName="INSTANCE"
-                  language="Vento"
-                  extensions="vto"/>
-
-        <!-- Parser Definition -->
-        <!-- Defines how Vento files should be parsed into a PSI tree -->
+        <fileType name="Vento File" implementationClass="org.js.vento.plugin.file.VentoFileType" fieldName="INSTANCE" language="Vento" extensions="vto"/>
+        <html.scriptContentProvider language="Vento" implementationClass="org.js.vento.plugin.highlighting.ScriptContentProvider"/>
+        <lang.fileViewProviderFactory language="Vento" implementationClass="org.js.vento.plugin.file.ViewProviderFactory"/>
         <lang.parserDefinition language="Vento" implementationClass="org.js.vento.plugin.VentoParserDefinition"/>
-
-        <!-- Syntax Highlighting -->
-        <!-- Provides syntax highlighting capabilities for Vento files -->
-        <lang.syntaxHighlighterFactory language="Vento"
-                                       implementationClass="org.js.vento.plugin.highlighting.SyntaxHighlighterFactory"/>
-        <!-- Adds color settings page to customize syntax highlighting -->
+        <lang.syntaxHighlighter language="Vento" implementationClass="org.js.vento.plugin.highlighting.SyntaxHighlighter"/>
+        <editorHighlighterProvider filetype="Vento File" implementationClass="org.js.vento.plugin.highlighting.HighlighterProvider"/>
         <colorSettingsPage implementation="org.js.vento.plugin.highlighting.ColorSettingsPage"/>
-
-        <!-- Language Injection -->
-        <!-- Injects JavaScript language support into Vento JavaScript blocks -->
-        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.ContextualJavaScriptInjector"/>
-        <!-- Injects HTML language support into Vento template content -->
-        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.HtmlInjector"/>
-
-        <!-- Code Analysis -->
-        <!-- Provides code analysis and error highlighting for Vento files -->
         <annotator language="Vento" implementationClass="org.js.vento.plugin.highlighting.Annotator"/>
-
+        <lang.psiStructureViewFactory language="Vento" implementationClass="org.js.vento.plugin.structure.StructureViewFactory"/>
+        <lang.ast.factory language="Vento" implementationClass="org.js.vento.plugin.lexer.AstFactory"/>
+        <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.ContextualJavaScriptInjector"/>
     </extensions>
 
     <actions>

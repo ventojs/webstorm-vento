@@ -13,7 +13,7 @@ fun parseStrictJavaScriptExpression(builder: PsiBuilder, required: Boolean = tru
 
     // starts with (,[,{, symbol, string, number, boolean, regex
 
-    var hasExpression = false
+    var hasExpression: Boolean
 
     when {
         optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" } -> {
@@ -207,7 +207,7 @@ fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
         } else {
             val m = builder.mark()
             hasExpression = false
-            builder.error("Unexpected token")
+            builder.error("Unexpected token(2)")
             builder.advanceLexer()
             m.done(ParserElements.UNKNOWN_ELEMENT)
         }

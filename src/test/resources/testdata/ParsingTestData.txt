@@ -1,4 +1,4 @@
-Vento File(0,60)
+VentoFile:a.vto(0,60)
   Element: COMMENT_BLOCK(0,15)
     PsiElement(COMMENT_START_TOKEN)('{{#')(0,3)
     PsiElement(COMMENT_CONTENT_TOKEN)(' comment ')(3,12)

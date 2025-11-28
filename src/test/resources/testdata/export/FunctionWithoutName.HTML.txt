@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,28)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ export function (name) }}')(0,28)

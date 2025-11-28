@@ -13,7 +13,7 @@
           <option value="test" />
         </list>
       </option>
-      <option name="vmOptions" />
+      <option name="vmOptions" value="-DdumpAstTypeNames=true" />
     </ExternalSystemSettings>
     <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
     <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>

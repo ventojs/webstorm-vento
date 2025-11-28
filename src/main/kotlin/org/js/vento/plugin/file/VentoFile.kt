@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.filetype
+package org.js.vento.plugin.file
 
 import com.intellij.extapi.psi.PsiFileBase
 import com.intellij.psi.FileViewProvider
@@ -17,5 +17,5 @@ import org.js.vento.plugin.VentoLanguage
 class VentoFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, VentoLanguage) {
     override fun getFileType() = VentoFileType
 
-    override fun toString(): String = "Vento File"
+    override fun toString(): String = "VentoFile:$name"
 }

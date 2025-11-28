@@ -1,0 +1,9 @@
+VentoFile:a.vto(0,20)
+  Element: VENTO_ELEMENT(0,20)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: FUNCTION_SIGNATURE_ELEMENT(2,17)
+      PsiElement(FUNCTION_KEY_TOKEN)(' function')(2,11)
+      PsiElement(FUNCTION_NAME_TOKEN)(' hello')(11,17)
+    PsiElement(UNKNOWN_TOKEN)(' }}')(17,20)
+    PsiErrorElement:Expected '}}' (20,20)
+      <empty list>

@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,69)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ set myVar = 'Hello to the "World\'s People"!' |> JSON.stringify }}')(0,69)

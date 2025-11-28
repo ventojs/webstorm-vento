@@ -1,0 +1,10 @@
+VentoFile:a.vto(0,22)
+  Element: VENTO_ELEMENT(0,22)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: INCLUDE_ELEMENT(2,22)
+      PsiElement(INCLUDE_KEY_TOKEN)(' include')(2,10)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(10,22)
+        PsiElement(SYMBOL_TOKEN)(' filename')(10,19)
+        PsiElement(UNKNOWN_TOKEN)(' }}')(19,22)
+        PsiErrorElement:Expected '('(22,22)
+          <empty list>

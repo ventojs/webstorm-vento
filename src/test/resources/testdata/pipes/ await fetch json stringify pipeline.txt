@@ -1,4 +1,4 @@
-Vento File(0,219)
+VentoFile:a.vto(0,219)
   PsiWhiteSpace('\n                ')(0,17)
   Element: VENTO_ELEMENT(17,202)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(17,19)

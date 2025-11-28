@@ -1,0 +1,12 @@
+VentoFile:a.vto(0,23)
+  Element: VENTO_ELEMENT(0,23)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: FOR_ELEMENT(2,23)
+      PsiElement(FOR_KEY_TOKEN)(' for')(2,6)
+      PsiElement(SYMBOL_TOKEN)(' item')(6,11)
+      PsiElement(FOR_OF_TOKEN)(' of')(11,14)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(14,23)
+        PsiElement(SYMBOL_TOKEN)(' items')(14,20)
+        PsiElement(UNKNOWN_TOKEN)(' }}')(20,23)
+    PsiErrorElement:Expected '}}' (23,23)
+      <empty list>

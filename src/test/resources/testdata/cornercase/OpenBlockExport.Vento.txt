@@ -1,0 +1,4 @@
+VentoFile:a.vto(0,6)
+  PsiWhiteSpace(' ')(0,1)
+  HtmlElement: CONTENT(1,6)
+    PsiElement(UNKNOWN_TOKEN)('{{ \n\n')(1,6)

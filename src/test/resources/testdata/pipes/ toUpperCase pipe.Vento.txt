@@ -1,0 +1,13 @@
+VentoFile:a.vto(0,36)
+  Element: VENTO_ELEMENT(0,36)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: JAVASCRIPT_EXPRESSION_ELEMENT(2,18)
+      PsiElement(STRING_TOKEN)(' "')(2,4)
+      PsiElement(STRING_TOKEN)('Hello, world!')(4,17)
+      PsiElement(STRING_TOKEN)('"')(17,18)
+    PsiElement(PIPE_TOKEN)(' |>')(18,21)
+    Element: JAVASCRIPT_EXPRESSION_ELEMENT(21,36)
+      PsiElement(SYMBOL_TOKEN)(' toUpperCase')(21,33)
+      PsiElement(UNKNOWN_TOKEN)(' }}')(33,36)
+    PsiErrorElement:Expected '}}' (36,36)
+      <empty list>

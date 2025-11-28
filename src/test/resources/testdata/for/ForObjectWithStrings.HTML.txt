@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,40)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ for value of ["a"+"b"+"c","hello"] }}')(0,40)

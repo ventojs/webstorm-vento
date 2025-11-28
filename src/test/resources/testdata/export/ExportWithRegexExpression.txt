@@ -1,4 +1,4 @@
-Vento File(0,40)
+VentoFile:a.vto(0,40)
   Element: VENTO_ELEMENT(0,40)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
     Element: EXPORT_ELEMENT(2,37)

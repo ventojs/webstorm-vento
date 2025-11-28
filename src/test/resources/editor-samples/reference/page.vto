@@ -14,12 +14,12 @@
         <p>There are many cool things to read here</p>
     </header>
     <main>
-        <h2 style="accent-color: aqua">{{ title }}</h2>
+        <h2 style="accent-color: {{ color }}" >{{ title }}</h2>
         <section>
             {{ content }}
         </section>
     </main>
-    <footer>
+    <footer id="{{ footerId }}">
         Copyright (c) {{ new Date().getFullYear() }} -- All rights reserved.
     </footer>
 </body>

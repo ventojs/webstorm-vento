@@ -36,7 +36,7 @@ import org.js.vento.plugin.lexer.LexerTokens.SET_KEY
 import org.js.vento.plugin.lexer.LexerTokens.UNKNOWN
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.VBLOCK_OPEN
-import org.js.vento.plugin.parser.ParserElements.VENTO_ELEMENT
+import org.js.vento.plugin.parser.ParserElements.VENTO_BLOCK
 
 /**
  * A parser implementation for Vento template files.
@@ -88,13 +88,13 @@ class Parser : PsiParser {
                 expect(builder, VBLOCK_OPEN, "Expected '{{' ")
                 parseVentoElemenet(builder)
                 expect(builder, VBLOCK_CLOSE, "Expected '}}' ")
-                m.done(VENTO_ELEMENT)
+                m.done(VENTO_BLOCK)
             }
 
             else -> {
                 val marker = builder.mark()
                 builder.advanceLexer()
-                marker.done(ParserElements.DEFAULT_ELEMENT)
+                marker.done(ParserElements.HTML_CONTENT)
             }
         }
     }

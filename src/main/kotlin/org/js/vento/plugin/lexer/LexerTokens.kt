@@ -14,6 +14,9 @@ import com.intellij.psi.tree.IElementType
  */
 object LexerTokens {
     @JvmField
+    val VENTO_OUTER = LexerToken("VENTO_OUTER")
+
+    @JvmField
     val JSBLOCK_OPEN = LexerToken("JSBLOCK_OPEN")
 
     @JvmField
@@ -133,9 +136,6 @@ object LexerTokens {
 
     @JvmField
     val EQUAL = LexerToken("EQUAL")
-
-    @JvmField
-    val DOUBLEEQUAL = LexerToken("DOUBLEEQUAL")
 
     @JvmField
     val SYMBOL = LexerToken("SYMBOL")

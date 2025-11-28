@@ -12,8 +12,8 @@ import org.js.vento.plugin.lexer.LexerTokens
 
 fun parseUnknown(builder: PsiBuilder) {
     val m = builder.mark()
-    expect(builder, LexerTokens.UNKNOWN, "Unexpected token", true)
-    builder.error("Unexpected token")
+    expect(builder, LexerTokens.UNKNOWN, "Unexpected token(3)", true)
+    builder.error("Unexpected token(1)")
     m.done(ParserElements.UNKNOWN_ELEMENT)
 }
 

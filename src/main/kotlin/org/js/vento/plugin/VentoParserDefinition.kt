@@ -7,17 +7,20 @@ package org.js.vento.plugin
 
 import com.intellij.lang.ASTNode
 import com.intellij.lang.ParserDefinition
+import com.intellij.lang.ParserDefinition.SpaceRequirements
 import com.intellij.lang.PsiParser
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.project.Project
 import com.intellij.psi.FileViewProvider
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
+import com.intellij.psi.stubs.PsiFileStub
 import com.intellij.psi.tree.IFileElementType
+import com.intellij.psi.tree.IStubFileElementType
 import com.intellij.psi.tree.TokenSet
-import org.js.vento.plugin.filetype.VentoFile
-import org.js.vento.plugin.lexer.LexerAdapter
+import org.js.vento.plugin.file.VentoFile
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.lexer.VentoMergingLexer
 import org.js.vento.plugin.parser.Parser
 
 /**
@@ -47,17 +50,23 @@ import org.js.vento.plugin.parser.Parser
  * - `PsiFile`, `PsiElement`, `TokenSet` for IntelliJ PSI structure.
  */
 class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
-    override fun createLexer(project: Project?): Lexer = LexerAdapter(debug)
+    companion object {
+        val FILE = IStubFileElementType<PsiFileStub<*>?>("Vento", VentoLanguage)
+    }
+
+    override fun getFileNodeType(): IFileElementType = FILE
+
+    override fun createLexer(project: Project?): Lexer = VentoMergingLexer()
 
     override fun createParser(project: Project?): PsiParser = Parser()
 
-    override fun getFileNodeType(): IFileElementType = IFileElementType(VentoLanguage)
+    override fun createElement(node: ASTNode): PsiElement = PsiElementFactory.createElement(node)
+
+    override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 
     override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT)
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTokens.STRING)
 
-    override fun createElement(node: ASTNode): PsiElement = PsiElementFactory.createElement(node)
-
-    override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
+    override fun spaceExistenceTypeBetweenTokens(left: ASTNode?, right: ASTNode?): SpaceRequirements = SpaceRequirements.MAY
 }

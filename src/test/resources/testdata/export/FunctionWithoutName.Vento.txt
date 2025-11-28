@@ -1,0 +1,17 @@
+VentoFile:a.vto(0,28)
+  Element: VENTO_ELEMENT(0,28)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: EXPORT_OPEN_ELEMENT(2,25)
+      PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
+      Element: FUNCTION_SIGNATURE_ELEMENT(9,25)
+        PsiElement(FUNCTION_KEY_TOKEN)(' function')(9,18)
+        PsiErrorElement:Expected function name(18,18)
+          <empty list>
+        Element: FUNCTION_ARGUMENTS_ELEMENT(18,25)
+          PsiElement(PARENTHESIS_TOKEN)(' (')(18,20)
+          Element: FUNCTION_ARG_ELEMENT(20,24)
+            PsiElement(FUNCTION_ARG_TOKEN)('name')(20,24)
+          PsiElement(PARENTHESIS_TOKEN)(')')(24,25)
+    PsiElement(UNKNOWN_TOKEN)(' }}')(25,28)
+    PsiErrorElement:Expected '}}' (28,28)
+      <empty list>

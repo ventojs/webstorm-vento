@@ -1,0 +1,12 @@
+HtmlFile:a.vto(0,69)
+  PsiElement(HTML_DOCUMENT)(0,56)
+    PsiElement(VENTO_OUTER_TOKEN)('{{ export function sayHello(name) }}')(0,36)
+    PsiWhiteSpace('\n')(36,37)
+    PsiElement(XML_PROLOG)(37,37)
+      <empty list>
+    XmlToken:XML_DATA_CHARACTERS('Hello,')(37,43)
+    PsiWhiteSpace(' ')(43,44)
+    PsiElement(VENTO_OUTER_TOKEN)('{{ name }}')(44,54)
+    XmlToken:XML_DATA_CHARACTERS('!')(54,55)
+    PsiWhiteSpace('\n')(55,56)
+  PsiElement(VENTO_OUTER_TOKEN)('{{ /export }}')(56,69)
