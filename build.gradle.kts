@@ -452,14 +452,15 @@ intellijPlatform {
     // Configure plugin verifier IDEs
     pluginVerification {
         ides {
+
             // Webstorm
-            ide("WS", "2024.3")
-            ide("WS", "2025.2")
-//            ide("WS", "253.28086.39")
+            create("WS", "2024.3")
+            create("WS", "2025.2")
+
             // IntelliJ Ultimate
-            ide("IU", "2024.3")
-            ide("IU", "2025.2")
-//            ide("IU", "253.28086.51")
+            create("IU", "2024.3")
+            create("IU", "2025.2")
+//            create("IU", "253.17525.95")
         }
     }
 
