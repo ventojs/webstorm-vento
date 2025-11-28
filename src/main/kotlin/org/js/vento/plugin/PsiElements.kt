@@ -7,9 +7,13 @@ package org.js.vento.plugin
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import com.intellij.navigation.ItemPresentation
+import com.intellij.navigation.ItemPresentationProviders
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.LiteralTextEscaper
 import com.intellij.psi.PsiLanguageInjectionHost
+import com.intellij.psi.PsiReference
+import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry
 
 /**
  * Base class for all PSI elements in the Vento language.
@@ -19,7 +23,10 @@ import com.intellij.psi.PsiLanguageInjectionHost
  */
 sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun toString(): String = "Element: ${node.elementType}"
-//     override fun toString(): String = "${this.javaClass.simpleName}: ${node.elementType}"
+
+    override fun getPresentation(): ItemPresentation? = ItemPresentationProviders.getItemPresentation(this)
+
+    override fun getReferences(): Array<PsiReference?> = ReferenceProvidersRegistry.getReferencesFromProviders(this)
 }
 
 class DefaultElement(node: ASTNode) : BaseElementImpl(node)

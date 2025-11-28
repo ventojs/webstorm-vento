@@ -18,7 +18,7 @@ object ParserElements {
     val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
 
     @JvmField
-    val DEFAULT_ELEMENT = ParserElement("ELEMENT")
+    val HTML_CONTENT = ParserElement("HTML_CONTENT")
 
     @JvmField
     val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
@@ -91,7 +91,7 @@ object ParserElements {
     val INCLUDE_ELEMENT: IElementType = ParserElement("INCLUDE_ELEMENT")
 
     @JvmField
-    val VENTO_ELEMENT: IElementType = ParserElement("VENTO_ELEMENT")
+    val VENTO_BLOCK: IElementType = ParserElement("VENTO_ELEMENT")
 
     @JvmField
     val STRING_ELEMENT: IElementType = ParserElement("STRING_ELEMENT")

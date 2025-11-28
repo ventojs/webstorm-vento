@@ -1,0 +1,11 @@
+HtmlFile:a.vto(0,48)
+  PsiElement(HTML_DOCUMENT)(0,35)
+    PsiElement(VENTO_OUTER_TOKEN)('{{ export message }}')(0,20)
+    PsiWhiteSpace('\n')(20,21)
+    PsiElement(XML_PROLOG)(21,21)
+      <empty list>
+    XmlToken:XML_DATA_CHARACTERS('Hello,')(21,27)
+    PsiWhiteSpace(' ')(27,28)
+    XmlToken:XML_DATA_CHARACTERS('world!')(28,34)
+    PsiWhiteSpace('\n')(34,35)
+  PsiElement(VENTO_OUTER_TOKEN)('{{ /export }}')(35,48)

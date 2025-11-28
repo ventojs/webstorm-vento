@@ -1,0 +1,8 @@
+VentoFile:a.vto(0,22)
+  Element: VENTO_ELEMENT(0,22)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: JAVASCRIPT_EXPRESSION_ELEMENT(2,22)
+      PsiElement(REGEX_TOKEN)(' /')(2,4)
+      PsiElement(UNKNOWN_TOKEN)('fo }}\n{{ "hello"}}')(4,22)
+    PsiErrorElement:Expected '}}' (22,22)
+      <empty list>

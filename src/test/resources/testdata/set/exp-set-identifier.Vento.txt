@@ -1,0 +1,12 @@
+VentoFile:a.vto(0,32)
+  Element: VENTO_ELEMENT(0,32)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: SET_ELEMENT(2,32)
+      PsiElement(SET_KEY_TOKEN)(' set')(2,6)
+      PsiElement(SYMBOL_TOKEN)(' myVar')(6,12)
+      PsiElement(EQUAL_TOKEN)(' =')(12,14)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(14,32)
+        PsiElement(SYMBOL_TOKEN)(' myTextVariable')(14,29)
+        PsiElement(UNKNOWN_TOKEN)(' }}')(29,32)
+    PsiErrorElement:Expected '}}' (32,32)
+      <empty list>

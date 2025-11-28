@@ -1,0 +1,5 @@
+VentoFile:a.vto(0,25)
+  Element: COMMENT_BLOCK(0,3)
+    PsiElement(COMMENT_START_TOKEN)('{{#')(0,3)
+  HtmlElement: CONTENT(3,25)
+    PsiElement(UNKNOWN_TOKEN)(' comment\n{{ content }}')(3,25)

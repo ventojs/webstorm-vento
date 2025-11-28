@@ -1,4 +1,4 @@
-Vento File(0,26)
+VentoFile:a.vto(0,26)
   Element: VENTO_ELEMENT(0,26)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
     Element: FUNCTION_SIGNATURE_ELEMENT(2,23)

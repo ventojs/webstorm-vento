@@ -1,0 +1,12 @@
+VentoFile:a.vto(0,20)
+  Element: VENTO_ELEMENT(0,20)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: EXPORT_ELEMENT(2,20)
+      PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
+      PsiElement(SYMBOL_TOKEN)(' foo')(9,13)
+      PsiElement(EQUAL_TOKEN)(' =')(13,15)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(15,20)
+        PsiElement(STRING_TOKEN)(' "')(15,17)
+        PsiElement(UNKNOWN_TOKEN)(' }}')(17,20)
+    PsiErrorElement:Expected '}}' (20,20)
+      <empty list>

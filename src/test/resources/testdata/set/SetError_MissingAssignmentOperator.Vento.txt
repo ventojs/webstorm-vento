@@ -1,0 +1,20 @@
+VentoFile:a.vto(0,32)
+  Element: VENTO_ELEMENT(0,32)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: SET_ELEMENT(2,32)
+      PsiElement(SET_KEY_TOKEN)(' set')(2,6)
+      PsiElement(UNKNOWN_TOKEN)(' myVar  "')(6,15)
+      PsiErrorElement:Expected identifier(15,15)
+        <empty list>
+      PsiElement(UNKNOWN_TOKEN)('He')(15,17)
+      PsiErrorElement:Expected '=' keyword(17,17)
+        <empty list>
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(17,32)
+        PsiElement(SYMBOL_TOKEN)('llo')(17,20)
+        PsiElement(COMMA_TOKEN)(',')(20,21)
+        PsiElement(SYMBOL_TOKEN)(' world')(21,27)
+        PsiElement(SYMBOL_TOKEN)('!')(27,28)
+        PsiElement(STRING_TOKEN)('"')(28,29)
+        PsiElement(UNKNOWN_TOKEN)(' }}')(29,32)
+      PsiErrorElement:Expected '='(32,32)
+        <empty list>

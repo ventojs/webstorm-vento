@@ -16,8 +16,8 @@ import org.js.vento.plugin.parser.ParserElements
 object PsiElementFactory {
     fun createElement(node: ASTNode): PsiElement =
         when (node.elementType) {
-            ParserElements.VENTO_ELEMENT -> VentoElement(node)
-            ParserElements.DEFAULT_ELEMENT -> HtmlElement(node)
+            ParserElements.VENTO_BLOCK -> VentoElement(node)
+            ParserElements.HTML_CONTENT -> HtmlElement(node)
             ParserElements.JAVASCRIPT_ELEMENT -> JavaScriptElement(node)
             ParserElements.JAVASCRIPT_EXPRESSION_ELEMENT -> JavaScriptExpressionElement(node)
             ParserElements.JAVASCRIPT_DATA_OBJECT_ELEMENT -> JavaScriptDataObjectElement(node)

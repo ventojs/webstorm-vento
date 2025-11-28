@@ -1,0 +1,13 @@
+VentoFile:a.vto(0,38)
+  Element: VENTO_ELEMENT(0,15)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: UNKNOWN_ELEMENT(2,15)
+      PsiElement(UNKNOWN_TOKEN)(' import { foo')(2,15)
+      PsiErrorElement:Unexpected token(15,15)
+        <empty list>
+  HtmlElement: CONTENT(15,21)
+    PsiElement(IMPORT_FROM_TOKEN)('  from')(15,21)
+  HtmlElement: CONTENT(21,35)
+    PsiElement(FILE_TOKEN)(' "./afile.vto"')(21,35)
+  HtmlElement: CONTENT(35,38)
+    PsiElement(UNKNOWN_TOKEN)(' }}')(35,38)

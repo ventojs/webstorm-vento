@@ -1,5 +1,5 @@
-Vento File(0,26)
-  HtmlElement: ELEMENT(0,5)
+VentoFile:a.vto(0,26)
+  HtmlElement: HTML_CONTENT(0,5)
     PsiElement(HTML_TOKEN)('<h1> ')(0,5)
   Element: COMMENT_BLOCK(5,26)
     PsiElement(COMMENT_START_TOKEN)('{{#')(5,8)

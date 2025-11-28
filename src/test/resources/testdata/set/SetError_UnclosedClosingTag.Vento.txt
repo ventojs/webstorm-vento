@@ -1,0 +1,11 @@
+VentoFile:a.vto(0,17)
+  Element: VENTO_ELEMENT(0,10)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: UNKNOWN_ELEMENT(2,10)
+      PsiElement(UNKNOWN_TOKEN)(' /set {{')(2,10)
+      PsiErrorElement:Unexpected token(10,10)
+        <empty list>
+  HtmlElement: CONTENT(10,14)
+    PsiElement(SYMBOL_TOKEN)(' foo')(10,14)
+  HtmlElement: CONTENT(14,17)
+    PsiElement(UNKNOWN_TOKEN)(' }}')(14,17)

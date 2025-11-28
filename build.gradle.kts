@@ -532,3 +532,7 @@ tasks {
     // Convenience alias to format Kotlin sources
     register<DefaultTask>("formatKotlin") { dependsOn("ktlintFormat") }
 }
+
+fun ext(name: String): String =
+    rootProject.extensions[name] as? String
+        ?: error("Property `$name` is not defined")

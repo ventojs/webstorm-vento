@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,52)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ for odd_number of [1, 2, 3].filter((n) => n%2) }}')(0,52)

@@ -144,15 +144,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 else -> null
             }
 
-        return when {
-            highlight === null -> {
-                EMPTY_KEYS
-            }
-
-            else -> {
-                arrayOf(highlight)
-            }
-        }
+        return pack(highlight)
     }
 
     companion object {
@@ -184,7 +176,5 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val VALUES = createTextAttributesKey("VENTO_EXPRESSION", LOCAL_VARIABLE)
         val SYMBOLS = createTextAttributesKey("VENTO_VARIABLE_ELEMENT", LOCAL_VARIABLE)
         val UNKNOWN_CONTENT = createTextAttributesKey("VENTO_UNKNOWN_CONTENT", BAD_CHARACTER)
-
-        val EMPTY_KEYS: Array<TextAttributesKey?> = arrayOfNulls<TextAttributesKey>(0)
     }
 }

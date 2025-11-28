@@ -17,5 +17,5 @@ import org.js.vento.plugin.VentoLanguage
 class VentoFile(viewProvider: FileViewProvider) : PsiFileBase(viewProvider, VentoLanguage) {
     override fun getFileType() = VentoFileType
 
-    override fun toString(): String = "Vento File"
+    override fun toString(): String = "VentoFile:$name"
 }
