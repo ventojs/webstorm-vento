@@ -50,7 +50,11 @@ import org.js.vento.plugin.parser.Parser
  * - `PsiFile`, `PsiElement`, `TokenSet` for IntelliJ PSI structure.
  */
 class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
-    override fun getFileNodeType(): IFileElementType = IStubFileElementType<PsiFileStub<*>?>("Vento", VentoLanguage)
+    companion object {
+        val FILE = IStubFileElementType<PsiFileStub<*>?>("Vento", VentoLanguage)
+    }
+
+    override fun getFileNodeType(): IFileElementType = FILE
 
     override fun createLexer(project: Project?): Lexer = VentoMergingLexer()
 
