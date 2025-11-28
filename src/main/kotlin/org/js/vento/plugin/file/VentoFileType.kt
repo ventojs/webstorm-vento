@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.filetype
+package org.js.vento.plugin.file
 
 import com.intellij.ide.highlighter.XmlLikeFileType
 import com.intellij.openapi.fileTypes.CharsetUtil

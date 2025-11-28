@@ -20,7 +20,7 @@ internal class VentoTreeElement private constructor(psiElement: VentoPsiFile) :
 
         companion object {
             fun getStructureViewTreeElements(psiElement: VentoPsiFile): MutableList<StructureViewTreeElement?> {
-                val children: MutableList<StructureViewTreeElement?> = ArrayList<StructureViewTreeElement?>()
+                val children: MutableList<StructureViewTreeElement?> = ArrayList()
                 for (childElement in psiElement.children) {
                     if (childElement !is BaseElementImpl) {
                         continue
@@ -32,7 +32,7 @@ internal class VentoTreeElement private constructor(psiElement: VentoPsiFile) :
                         children.addAll(VentoTreeElement(childElement as VentoPsiFile).childrenBase)
                     }
 
-                    for (suitableClass in VentoStructureViewModel.ourSuitableClasses) {
+                    for (suitableClass in StructureViewModel.ourSuitableClasses) {
                         if (ReflectionUtil.isAssignable(suitableClass, childElement.javaClass)) {
                             children.add(VentoTreeElement(childElement as VentoPsiFile))
                             break

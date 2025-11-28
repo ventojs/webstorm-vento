@@ -18,7 +18,7 @@ import com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTokens
 
-class VentoTemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: EditorColorsScheme) :
+class TemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: EditorColorsScheme) :
     LayeredLexerEditorHighlighter(SyntaxHighlighter(), colors) {
     init {
         var type: FileType =

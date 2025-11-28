@@ -6,7 +6,7 @@ import com.intellij.lang.Language
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.psi.FileViewProvider
 import org.js.vento.plugin.VentoLanguage
-import org.js.vento.plugin.filetype.VentoFileType
+import org.js.vento.plugin.file.VentoFileType
 
 class VentoPsiFile
     @JvmOverloads
@@ -14,5 +14,5 @@ class VentoPsiFile
     PsiFileBase(viewProvider, lang) {
         override fun getFileType(): FileType = VentoFileType
 
-        override fun toString(): String = "VentoFile:" + getName()
+        override fun toString(): String = "VentoFile:$name"
     }

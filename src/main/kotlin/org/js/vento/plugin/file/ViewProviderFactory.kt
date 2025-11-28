@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.filetype
+package org.js.vento.plugin.file
 
 import com.intellij.lang.Language
 import com.intellij.openapi.vfs.VirtualFile
@@ -12,7 +12,7 @@ import com.intellij.psi.FileViewProviderFactory
 import com.intellij.psi.PsiManager
 import org.js.vento.plugin.VentoLanguage
 
-class VentoFileViewProviderFactory : FileViewProviderFactory {
+class ViewProviderFactory : FileViewProviderFactory {
     override fun createFileViewProvider(
         virtualFile: VirtualFile,
         language: Language,
@@ -20,6 +20,6 @@ class VentoFileViewProviderFactory : FileViewProviderFactory {
         eventSystemEnabled: Boolean,
     ): FileViewProvider {
         assert(language.isKindOf(VentoLanguage))
-        return VentoFileViewProvider(psiManager, virtualFile, eventSystemEnabled, language)
+        return FileViewProvider(psiManager, virtualFile, eventSystemEnabled, language)
     }
 }

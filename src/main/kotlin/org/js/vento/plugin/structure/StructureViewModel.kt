@@ -7,7 +7,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.psi.PsiFile
 import org.js.vento.plugin.BaseElementImpl
 
-internal class VentoStructureViewModel(psiFile: PsiFile, editor: Editor?) :
+internal class StructureViewModel(psiFile: PsiFile, editor: Editor?) :
     TextEditorBasedStructureViewModel(editor, psiFile) {
     companion object {
         val ourSuitableClasses = arrayOf(BaseElementImpl::class.java)

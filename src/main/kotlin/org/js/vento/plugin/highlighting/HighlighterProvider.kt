@@ -12,11 +12,11 @@ import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
 
-class VentoHighlighterProvider : EditorHighlighterProvider {
+class HighlighterProvider : EditorHighlighterProvider {
     override fun getEditorHighlighter(
         project: Project?,
         fileType: FileType,
         virtualFile: VirtualFile?,
         editorColorsScheme: EditorColorsScheme,
-    ): EditorHighlighter = VentoTemplateHighlighter(project, virtualFile, editorColorsScheme)
+    ): EditorHighlighter = TemplateHighlighter(project, virtualFile, editorColorsScheme)
 }

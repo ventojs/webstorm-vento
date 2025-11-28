@@ -1,0 +1,11 @@
+HtmlFile:a.vto(0,34)
+  PsiElement(HTML_DOCUMENT)(0,23)
+    PsiElement(VENTO_OUTER_TOKEN)('{{ echo }}')(0,10)
+    PsiWhiteSpace(' ')(10,11)
+    PsiElement(XML_PROLOG)(11,11)
+      <empty list>
+    XmlToken:XML_DATA_CHARACTERS('Hello')(11,16)
+    PsiWhiteSpace(' ')(16,17)
+    XmlToken:XML_DATA_CHARACTERS('World')(17,22)
+    PsiWhiteSpace(' ')(22,23)
+  PsiElement(VENTO_OUTER_TOKEN)('{{ /echo }}')(23,34)

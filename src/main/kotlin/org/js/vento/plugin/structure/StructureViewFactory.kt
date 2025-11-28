@@ -11,13 +11,13 @@ import com.intellij.lang.PsiStructureViewFactory
 import com.intellij.psi.PsiFile
 import com.intellij.util.PairFunction
 
-class VentoStructureViewFactory : PsiStructureViewFactory {
+class StructureViewFactory : PsiStructureViewFactory {
     override fun getStructureViewBuilder(psiFile: PsiFile): StructureViewBuilder =
         TemplateLanguageStructureViewBuilder
             .create(
                 psiFile,
                 PairFunction { file, editor ->
-                    VentoStructureViewModel(file, editor)
+                    StructureViewModel(file, editor)
                 },
             )
 }

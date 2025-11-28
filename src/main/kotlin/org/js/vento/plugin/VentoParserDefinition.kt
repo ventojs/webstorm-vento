@@ -18,7 +18,7 @@ import com.intellij.psi.stubs.PsiFileStub
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.IStubFileElementType
 import com.intellij.psi.tree.TokenSet
-import org.js.vento.plugin.filetype.VentoFile
+import org.js.vento.plugin.file.VentoFile
 import org.js.vento.plugin.lexer.LexerTokens
 import org.js.vento.plugin.lexer.VentoMergingLexer
 import org.js.vento.plugin.parser.Parser

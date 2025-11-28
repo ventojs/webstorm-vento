@@ -3,7 +3,7 @@
  * All rights reserved.
  */
 
-package org.js.vento.plugin.filetype
+package org.js.vento.plugin.file
 
 import com.intellij.lang.Language
 import com.intellij.lang.LanguageParserDefinitions
@@ -26,7 +26,7 @@ import java.util.Set
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
-class VentoFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, ConfigurableTemplateLanguageFileViewProvider {
+class FileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, ConfigurableTemplateLanguageFileViewProvider {
     private val myBaseLanguage: Language
     private val myTemplateLanguage: Language
 
@@ -51,7 +51,7 @@ class VentoFileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Confi
     override fun getLanguages(): MutableSet<Language?> = Set.of<Language?>(myBaseLanguage, getTemplateDataLanguage())
 
     override fun cloneInner(virtualFile: VirtualFile): MultiplePsiFilesPerDocumentFileViewProvider =
-        VentoFileViewProvider(
+        FileViewProvider(
             getManager(),
             virtualFile,
             false,

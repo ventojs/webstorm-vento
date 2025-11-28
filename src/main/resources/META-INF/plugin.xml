@@ -20,18 +20,16 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <fileType name="Vento File" implementationClass="org.js.vento.plugin.filetype.VentoFileType" fieldName="INSTANCE" language="Vento" extensions="vto"/>
-        <html.scriptContentProvider language="Vento" implementationClass="org.js.vento.plugin.highlighting.VentoScriptContentProvider"/>
-        <lang.fileViewProviderFactory language="Vento" implementationClass="org.js.vento.plugin.filetype.VentoFileViewProviderFactory"/>
+        <fileType name="Vento File" implementationClass="org.js.vento.plugin.file.VentoFileType" fieldName="INSTANCE" language="Vento" extensions="vto"/>
+        <html.scriptContentProvider language="Vento" implementationClass="org.js.vento.plugin.highlighting.ScriptContentProvider"/>
+        <lang.fileViewProviderFactory language="Vento" implementationClass="org.js.vento.plugin.file.ViewProviderFactory"/>
         <lang.parserDefinition language="Vento" implementationClass="org.js.vento.plugin.VentoParserDefinition"/>
         <lang.syntaxHighlighter language="Vento" implementationClass="org.js.vento.plugin.highlighting.SyntaxHighlighter"/>
-        <editorHighlighterProvider filetype="Vento File" implementationClass="org.js.vento.plugin.highlighting.VentoHighlighterProvider"/>
+        <editorHighlighterProvider filetype="Vento File" implementationClass="org.js.vento.plugin.highlighting.HighlighterProvider"/>
         <colorSettingsPage implementation="org.js.vento.plugin.highlighting.ColorSettingsPage"/>
         <annotator language="Vento" implementationClass="org.js.vento.plugin.highlighting.Annotator"/>
-        <lang.psiStructureViewFactory language="Vento" implementationClass="org.js.vento.plugin.structure.VentoStructureViewFactory"/>
+        <lang.psiStructureViewFactory language="Vento" implementationClass="org.js.vento.plugin.structure.StructureViewFactory"/>
         <lang.ast.factory language="Vento" implementationClass="org.js.vento.plugin.lexer.AstFactory"/>
-
-
         <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.ContextualJavaScriptInjector"/>
     </extensions>
 
