@@ -1,6 +1,5 @@
 VentoFile:a.vto(0,35)
-  Element: COMMENT_BLOCK(0,31)
+  Element: COMMENT_BLOCK(0,35)
     PsiElement(COMMENT_START_TOKEN)('{{#-')(0,4)
     PsiElement(COMMENT_CONTENT_TOKEN)(' This is a trimmed comment ')(4,31)
-  HtmlElement: CONTENT(31,35)
-    PsiElement(UNKNOWN_TOKEN)('-#}}')(31,35)
+    PsiElement(COMMENT_END_TOKEN)('-#}}')(31,35)
