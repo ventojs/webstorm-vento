@@ -19,6 +19,9 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
     <li>Syntax checking</li>
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
+
+<p>It's still early days with this plugin. auto-complete and formatting support and a few other features are still to come. Check the <a href="https://github.com/ventojs/webstorm-vento/issues">issues</a> for details</p>
+
 <!-- Plugin description end -->
 
 ## Table of Contents
@@ -36,93 +39,56 @@ For more information visit <a href="https://vento.js.org/">Vento</a>.
 `webstorm-vento` is the plugin which integrates the [Vento Template Engine](https://vento.js.org/) with JetBrain's
 IntelliJ Ultimate and WebStorm IDEs.
 
-### Implemented Features
+### Features
 
-Take a look at the following screenshots to get a better idea of what the plugin can already do.
-The rest of the features are still under development. (
-see: [backlog](https://github.com/ventojs/webstorm-vento/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature))
+#### Implemented
+* Syntax highlighting
+* Syntax checking
 
-#### Vento variables and scripts
-
-![vento-syntax-highlighting](assets/variables_and_scripts.png)
-
-#### Vento comments
-
-![vento-syntax-highlighting](assets/comment.png)
-
-#### HTML support
-
-![vento-syntax-highlighting](assets/layout.png)
-
-#### Vento `for` loops
-
-![vento-syntax-highlighting](assets/for.png)
-
-#### Vento `export` & `import`
-
-![vento-syntax-highlighting](assets/export.png)
-
-![vento-syntax-highlighting](assets/import.png)
-
-#### Vento `set`
-
-![vento-syntax-highlighting](assets/set.png)
-
-#### Vento `layout` & `slot`
-
-![vento-syntax-highlighting](assets/layout2.png)
-
-#### Vento `include`
-
-![vento-syntax-highlighting](assets/include.png)
-
-#### Vento `function`
-
-![vento-syntax-highlighting](assets/function.png)
-
-#### Vento `echo`
-
-![vento-syntax-highlighting](assets/echo.png)
-
-#### Vento `if`
-
-![vento-syntax-highlighting](assets/if.png)
-
-> [!IMPORTANT]
-> ### Note to plugin users
->
-> * This plugin is in the early stages of development.
-> * The plugin is not yet available on the JetBrains Marketplace, but you can use the provided GitHub releases or build
-    it yourself. (see: [Installation](#installation) below)
-> * Using the plugin depends on the presence of the Jetbrains JavaScript & TypeScript plug-in in your IDE. It is
-    available by default in Webstorm (including with the free none-commercial license) but **not** in the community
-    edition of IntelliJ IDEA.
+#### Planned
+* Formatting
+* Auto-complete
+* frontmatter support
+* fragments support
 
 > [!IMPORTANT]
 > ### Note to plugin developers:
 >
 > * You can use IntelliJ Community or Ultimate edition for development.
-> * Installing the built plugin in Webstorm works.
-> * The plugin is tested with Webstorm 2025.x.x and IntelliJ IDEA Ultimate 2025.x.x.
+> * Installing the built plugin in IntelliJ Ultimate edition or Webstorm.
+> * The plugin is tested with Webstorm 2024 and 2025 and IntelliJ IDEA Ultimate 2024 and 2025.
 
 ## Installation
 
-* Using JetBrains Marketplace (Not yet available):
+* Using JetBrains Marketplace:
     * In the IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>
       Marketplace</kbd> > <kbd>Search for "WebStorm-Vento"</kbd> > <kbd>Install</kbd>
-    * On the Go to [JetBrains Marketplace](https://plugins.jetbrains.com/) search for "WebStorm-Vento", then download
-      and
-      install it.
 
-> [!WARNING]
-> **NOT YET RELEASED TO MARKETPLACE**
-
-* Installing from a download:
-    * Download from GitHub Releases, or from the Marketplace, or build it yourself.
+* Manually:
+    * Download from GitHub Releases, or from the [JetBrains Marketplace](https://plugins.jetbrains.com/), or build it yourself.
     * In your IDE go to <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from
       disk...</kbd>
 
 ## Usage
+
+### Design
+
+The plugin is based on the [JetBrains Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template). The [Jetbrains Plugin SDK](https://plugins.jetbrains.com/docs/intellij/developing-plugins.html) is a valuable place to understand how to build a plugin for IntelliJ IDEA.
+
+Thanks to the opensource [Handlebars](https://github.com/JetBrains/intellij-plugins/tree/master/handlebars) plugin, I was able to learn and resolve some issues with the syntax highlighting. To be honest, I shamelessly coppied some code from the plugin before I understood how it worked!
+
+The best entry point into the implementation is the [plugin.xml](src/main/resources/META-INF/plugin.xml).
+
+### Lexer
+
+The JFlex implementation of the lexer is located in the `src/main/jflex` directory. The Lexer gets generated at build time in `src/main/gen`. It is based on [JFlex](https://jflex.de/). Be careful to understand how Jetbrains uses the lexer that is generated. There are some significant differences. See [Lexer Implementation](https://plugins.jetbrains.com/docs/intellij/implementing-lexer.html#lexer-implementation) in SDK docs.
+
+Vento lexing [design diagrams](statemachine-v2.md)
+
+### Parsing
+
+Conceptually, parsing is split into two parts. The base of a vento file is assumed to be an HTML document. All processing is handed over to the built-in Jetbrains HTML support. The Vento plugin takes over when the vento specific syntax is encountered.
+
 
 #### Dependencies
 
@@ -132,7 +98,7 @@ Most of the following dependencies are provided automatically when Gradle is use
 * Deno <code> >= v2.3</code>
 * IntelliJ IDEA Community or Ultimate (for now only tested with <code>2025.2.*</code>)
 * JDK <code>v21</code>
-* Gradle <code>v8.12</code>
+* Gradle <code>v9</code>
 * Jetbrains JavaScript & TypeScript plug-in <code>v251.27812.49</code>
 
 #### Recommended
@@ -171,24 +137,52 @@ Most of the following dependencies are provided automatically when Gradle is use
 > The Jetbrains SDK depends on a lot of magical dependencies to be able to run its own IDE's in development mode. So
 > sometimes there is no choice but to use the nuclear option to get a clean slate. This is likely to happen if you start
 > switching the platform being targeted by the plugin in `gradle.properties` or if you change the version of the
-> Jetbrains
-> SDK in `build.gradle.kts`.
+> JetBrains SDK in `build.gradle.kts`.
 
 ```bash
 ./gradlew --stop          ## stop the gradle daemon
 rm -rf ~/.gradle/caches/  ## delete all caches
 ```
+## AI Disclosure
+
+Development of this project incorporated assistance from AI tools including OpenAI, and JetBrains AI tooling. 
+
+These tools are used for:
+* Prototyping and generating initial drafts of code
+* Refactoring and optimization suggestions
+* Writing or improving documentation
+* Exploring design patterns and solving technical issues
+
+Humans perform all final decisions, implementations, and code validations.
 
 ## Built With
 
 <div align="center">
 
-[![Built With][built_with_shield_url]][built_with_url]
+[![Built With][built_with_kotlin]][kotlin]
+[![Built With][built_with_gradle]][gradle]
+[![Built With][built_with_github]][github]
+[![Built With][built_with_idea]][idea]
+[![Built With][built_with_webstorm]][webstorm]
 </div>
 
 <p align="right"><a href="#readme-top">▲</a></p>
 
-[built_with_shield_url]: https://skillicons.dev/icons?i=kotlin,gradle,github,githubactions
+[built_with_kotlin]: https://skillicons.dev/icons?i=kotlin
+[kotlin]: https://kotlinlang.org/
+
+[built_with_gradle]: https://skillicons.dev/icons?i=gradle
+[gradle]: https://gradle.org/
+
+[built_with_github]: https://skillicons.dev/icons?i=github
+[github]: https://github.com/
+
+[built_with_idea]: https://skillicons.dev/icons?i=idea
+[idea]: https://www.jetbrains.com/idea/
+
+[built_with_webstorm]: https://skillicons.dev/icons?i=webstorm
+[webstorm]: https://www.jetbrains.com/webstorm/
+
 
 [built_with_url]: https://skillicons.dev
 
