@@ -6,70 +6,93 @@
 package org.js.vento.plugin.editor.completions
 
 import com.intellij.codeInsight.completion.CompletionResultSet
+import com.intellij.codeInsight.completion.PrioritizedLookupElement
 import com.intellij.codeInsight.lookup.LookupElementBuilder
 import org.js.vento.plugin.Vento
 
 fun closingKeywords(result: CompletionResultSet) {
+    val priority = 50.0
     result.addElement(
-        LookupElementBuilder
-            .create("/if ")
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .withIcon(Vento.ICON)
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/if")
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .withIcon(Vento.ICON)
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/for ")
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .withIcon(Vento.ICON)
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/for")
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .withIcon(Vento.ICON)
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/set ")
-            .withIcon(Vento.ICON)
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/set")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/function ")
-            .withIcon(Vento.ICON)
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/function")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/export ")
-            .withIcon(Vento.ICON)
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/export")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/layout ")
-            .withIcon(Vento.ICON)
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/layout")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
     )
 
     result.addElement(
-        LookupElementBuilder
-            .create("/echo")
-            .withIcon(Vento.ICON)
-            .withTailText("}}")
-            .withTypeText("Vento")
-            .bold(),
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/echo")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
     )
 }

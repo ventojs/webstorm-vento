@@ -1,4 +1,3 @@
 VentoFile:a.vto(0,8)
-  Element: COMMENT_BLOCK(0,8)
-    PsiElement(COMMENT_START_TOKEN)('{{#-')(0,4)
-    PsiElement(COMMENT_END_TOKEN)('-#}}')(4,8)
+  PsiComment(COMMENT_START_TOKEN)('{{#-')(0,4)
+  PsiComment(COMMENT_END_TOKEN)('-#}}')(4,8)

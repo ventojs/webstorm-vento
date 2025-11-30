@@ -16,16 +16,17 @@ import org.js.vento.plugin.VentoLanguage
  */
 class CompletionContributor : CompletionContributor() {
     init {
-        extend(
-            CompletionType.BASIC,
-            PlatformPatterns.psiElement().withLanguage(VentoLanguage),
-            BlockCompletionProvider(),
-        )
 
         extend(
             CompletionType.BASIC,
             PlatformPatterns.psiElement().withLanguage(JavascriptLanguage),
             InjectedJsCompletionProvider(),
+        )
+
+        extend(
+            CompletionType.BASIC,
+            PlatformPatterns.psiElement().withLanguage(VentoLanguage),
+            BlockCompletionProvider(),
         )
     }
 }

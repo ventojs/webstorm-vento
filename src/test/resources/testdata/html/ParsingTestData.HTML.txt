@@ -1,11 +1,12 @@
 HtmlFile:a.vto(0,24)
-  PsiElement(HTML_DOCUMENT)(0,5)
+  PsiElement(HTML_DOCUMENT)(0,24)
     PsiElement(XML_PROLOG)(0,0)
       <empty list>
-    HtmlTag:div(0,5)
+    HtmlTag:div(0,24)
       XmlToken:XML_START_TAG_START('<')(0,1)
       XmlToken:XML_NAME('div')(1,4)
       XmlToken:XML_TAG_END('>')(4,5)
-      PsiErrorElement:Element div is not closed(5,5)
-        <empty list>
-  PsiElement(VENTO_OUTER_TOKEN)('{{ content }}</div>')(5,24)
+      PsiElement(VENTO_OUTER_TOKEN)('{{ content }}')(5,18)
+      XmlToken:XML_END_TAG_START('</')(18,20)
+      XmlToken:XML_NAME('div')(20,23)
+      XmlToken:XML_TAG_END('>')(23,24)

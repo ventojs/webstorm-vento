@@ -18,5 +18,5 @@ import com.intellij.openapi.util.IconLoader
  */
 object Vento {
     @JvmField
-    val ICON = IconLoader.getIcon("/ventoicon.svg", javaClass)
+    val ICON = IconLoader.getIcon("/icons/ventoicon.svg", javaClass)
 }

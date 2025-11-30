@@ -29,6 +29,6 @@ VentoFile:a.vto(0,72)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(52,54)
     Element: JAVASCRIPT_EXPRESSION_ELEMENT(54,72)
       PsiElement(REGEX_TOKEN)('  /')(54,57)
-      PsiElement(UNKNOWN_TOKEN)(' }}\n{{ "hi!" }}')(57,72)
+      PsiElement(REGEX_TOKEN)(' }}\n{{ "hi!" }}')(57,72)
     PsiErrorElement:Expected '}}' (72,72)
       <empty list>

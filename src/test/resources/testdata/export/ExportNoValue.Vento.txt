@@ -1,15 +1,13 @@
 VentoFile:a.vto(0,21)
   Element: VENTO_ELEMENT(0,21)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: EXPORT_ELEMENT(2,21)
+    Element: EXPORT_ELEMENT(2,18)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiErrorElement:Expected symbol(9,9)
         <empty list>
       PsiElement(EQUAL_TOKEN)('  =')(9,12)
-      Element: JAVASCRIPT_EXPRESSION_ELEMENT(12,21)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(12,18)
         PsiElement(STRING_TOKEN)(' "')(12,14)
         PsiElement(STRING_TOKEN)('foo')(14,17)
         PsiElement(STRING_TOKEN)('"')(17,18)
-        PsiElement(UNKNOWN_TOKEN)(' }}')(18,21)
-    PsiErrorElement:Expected '}}' (21,21)
-      <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(18,21)

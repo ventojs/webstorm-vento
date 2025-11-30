@@ -1,8 +1,6 @@
 VentoFile:a.vto(0,15)
   Element: VENTO_ELEMENT(0,15)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{-')(0,3)
-    Element: JAVASCRIPT_EXPRESSION_ELEMENT(3,15)
+    Element: JAVASCRIPT_EXPRESSION_ELEMENT(3,11)
       PsiElement(SYMBOL_TOKEN)(' content')(3,11)
-      PsiElement(UNKNOWN_TOKEN)(' -}}')(11,15)
-    PsiErrorElement:Expected '}}' (15,15)
-      <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' -}}')(11,15)

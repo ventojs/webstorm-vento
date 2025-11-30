@@ -21,6 +21,4 @@ VentoFile:a.vto(0,44)
             PsiElement(BRACE_TOKEN)(' {')(37,39)
             PsiElement(BRACE_TOKEN)('}')(39,40)
         PsiElement(PARENTHESIS_TOKEN)(')')(40,41)
-    PsiElement(UNKNOWN_TOKEN)(' }}')(41,44)
-    PsiErrorElement:Expected '}}' (44,44)
-      <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(41,44)

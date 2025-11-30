@@ -6,6 +6,8 @@
 package org.js.vento.plugin.file
 
 import com.intellij.ide.highlighter.XmlLikeFileType
+import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.fileTypes.CharsetUtil
 import com.intellij.openapi.fileTypes.LanguageFileType
 import com.intellij.openapi.fileTypes.TemplateLanguageFileType
@@ -44,17 +46,23 @@ object VentoFileType : XmlLikeFileType(VentoLanguage), TemplateLanguageFileType 
     }
 
     private fun getAssociatedFileType(file: VirtualFile?, project: Project?): LanguageFileType? {
-        if (project == null) {
+        if (project == null || project.isDisposed) {
             return null
         }
 
-        val language = TemplateDataLanguageMappings.getInstance(project).getMapping(file)
+        val app = ApplicationManager.getApplication()
 
-        var associatedFileType: LanguageFileType? = null
+        // Access TemplateDataLanguageMappings under read action, since it hits workspace model / file index.
+        val language =
+            if (app.isReadAccessAllowed) {
+                TemplateDataLanguageMappings.getInstance(project).getMapping(file)
+            } else {
+                ReadAction.compute<com.intellij.lang.Language?, Throwable> {
+                    TemplateDataLanguageMappings.getInstance(project).getMapping(file)
+                }
+            }
 
-        if (language != null) {
-            associatedFileType = language.getAssociatedFileType()
-        }
+        var associatedFileType: LanguageFileType? = language?.associatedFileType
 
         if (language == null || associatedFileType == null) {
             associatedFileType = VentoLanguage.getDefaultTemplateLang()

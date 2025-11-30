@@ -1,12 +1,10 @@
 VentoFile:a.vto(0,22)
   Element: VENTO_ELEMENT(0,22)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: FOR_ELEMENT(2,22)
+    Element: FOR_ELEMENT(2,19)
       PsiElement(FOR_KEY_TOKEN)(' for')(2,6)
       PsiElement(SYMBOL_TOKEN)(' value')(6,12)
       PsiElement(SYMBOL_TOKEN)(' values')(12,19)
-      PsiErrorElement:Unexpected for content(19,19)
+      PsiErrorElement:Expected 'of' keyword(19,19)
         <empty list>
-      PsiElement(UNKNOWN_TOKEN)(' }}')(19,22)
-      PsiErrorElement:Expected 'of' keyword(22,22)
-        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(19,22)

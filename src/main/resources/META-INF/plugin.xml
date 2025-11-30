@@ -20,6 +20,7 @@
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
+
         <fileType name="Vento File" implementationClass="org.js.vento.plugin.file.VentoFileType" fieldName="INSTANCE" language="Vento" extensions="vto"/>
         <html.scriptContentProvider language="Vento" implementationClass="org.js.vento.plugin.highlighting.ScriptContentProvider"/>
         <lang.fileViewProviderFactory language="Vento" implementationClass="org.js.vento.plugin.file.ViewProviderFactory"/>
@@ -36,7 +37,9 @@
         <typedHandler implementation="org.js.vento.plugin.editor.VentoTypedHandler"/>
         <completion.contributor language="Vento" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
         <completion.contributor language="JavaScript" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
+        <completion.contributor language="HTML" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
         <lang.braceMatcher language="Vento" implementationClass="org.js.vento.plugin.editor.VentoBraceMatcher"/>
+        <lookup.charFilter implementation="org.js.vento.plugin.editor.VentoCharFilter"/>
     </extensions>
 
     <actions>
