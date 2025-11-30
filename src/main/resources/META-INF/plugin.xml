@@ -34,7 +34,8 @@
 
         <!-- Editor features -->
         <typedHandler implementation="org.js.vento.plugin.editor.VentoTypedHandler"/>
-        <completion.contributor language="Vento" implementationClass="org.js.vento.plugin.editor.VentoCompletionContributor"/>
+        <completion.contributor language="Vento" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
+        <completion.contributor language="JavaScript" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
         <lang.braceMatcher language="Vento" implementationClass="org.js.vento.plugin.editor.VentoBraceMatcher"/>
     </extensions>
 

@@ -64,7 +64,7 @@ class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
 
     override fun createFile(viewProvider: FileViewProvider): PsiFile = VentoFile(viewProvider)
 
-    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT)
+    override fun getCommentTokens(): TokenSet = TokenSet.create(LexerTokens.COMMENT_START, LexerTokens.COMMENT_END)
 
     override fun getStringLiteralElements(): TokenSet = TokenSet.create(LexerTokens.STRING)
 

@@ -419,11 +419,12 @@ dependencies {
     testImplementation(kotlin("test"))
 
     intellijPlatform {
-        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
+        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"), useInstaller = false)
         bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
         plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
         pluginVerifier()
         zipSigner()
+        instrumentationTools()
     }
 
     intellijPlatform {

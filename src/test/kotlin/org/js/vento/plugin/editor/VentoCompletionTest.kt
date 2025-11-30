@@ -11,7 +11,7 @@ import org.js.vento.plugin.file.VentoFileType
 import kotlin.test.assertContains
 
 /**
- * Tests for VentoCompletionContributor keyword suggestions.
+ * Tests for CompletionContributor keyword suggestions.
  */
 class VentoCompletionTest : BasePlatformTestCase() {
     fun testKeywordCompletionAfterOpeningBraces() {

@@ -18,8 +18,9 @@ import org.js.vento.plugin.lexer.LexerTokens
 class VentoBraceMatcher : PairedBraceMatcher {
     private val pairs =
         arrayOf(
-            BracePair(LexerTokens.VBLOCK_OPEN, LexerTokens.VBLOCK_CLOSE, true),
+            BracePair(LexerTokens.COMMENT_START, LexerTokens.COMMENT_END, true),
             BracePair(LexerTokens.JSBLOCK_OPEN, LexerTokens.JSBLOCK_CLOSE, true),
+            BracePair(LexerTokens.VBLOCK_OPEN, LexerTokens.VBLOCK_CLOSE, true),
         )
 
     override fun getPairs(): Array<BracePair> = pairs
