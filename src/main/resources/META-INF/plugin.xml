@@ -40,6 +40,8 @@
         <completion.contributor language="HTML" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
         <lang.braceMatcher language="Vento" implementationClass="org.js.vento.plugin.editor.VentoBraceMatcher"/>
         <lookup.charFilter implementation="org.js.vento.plugin.editor.VentoCharFilter"/>
+        <lang.formatter language="Vento" implementationClass="org.js.vento.plugin.formatting.VentoFormattingModelBuilder"/>
+
     </extensions>
 
     <actions>
