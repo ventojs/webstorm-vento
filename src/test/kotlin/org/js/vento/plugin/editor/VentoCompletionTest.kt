@@ -6,6 +6,7 @@
 package org.js.vento.plugin.editor
 
 import com.intellij.codeInsight.completion.CompletionType
+import com.intellij.openapi.application.impl.NonBlockingReadActionImpl
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
 import kotlin.test.assertContains
@@ -14,6 +15,15 @@ import kotlin.test.assertContains
  * Tests for CompletionContributor keyword suggestions.
  */
 class VentoCompletionTest : BasePlatformTestCase() {
+    override fun tearDown() {
+        try {
+            // Wait for all NonBlockingReadAction submissions to complete
+            // before the fixture disposes the editor/project
+            NonBlockingReadActionImpl.waitForAsyncTaskCompletion()
+        } finally {
+            super.tearDown()
+        }
+    }
     fun testKeywordCompletionAfterOpeningBraces() {
         // Test that keywords are suggested after {{
         myFixture.configureByText(VentoFileType, "{{ <caret>")
