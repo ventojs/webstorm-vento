@@ -24,6 +24,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
             super.tearDown()
         }
     }
+
     fun testKeywordCompletionAfterOpeningBraces() {
         // Test that keywords are suggested after {{
         myFixture.configureByText(VentoFileType, "{{ <caret>")
