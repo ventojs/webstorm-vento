@@ -23,7 +23,6 @@ jobs:
           command: manifest
           types: |
             chore
-            doc
             fix
             feat
             refactor

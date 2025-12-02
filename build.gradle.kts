@@ -386,6 +386,10 @@ tasks {
         useJUnitPlatform()
         // Ensure cleaned flex file is created before tests
         dependsOn("prepareFlexFiles")
+
+        // Forward system properties to test JVM
+        systemProperty("idea.tests.overwrite.data", System.getProperty("idea.tests.overwrite.data", "false"))
+        systemProperty("dumpAstTypeNames", System.getProperty("dumpAstTypeNames", "false"))
     }
 
     // Make KtLint tasks depend on lexer generation
@@ -419,11 +423,28 @@ dependencies {
     testImplementation(kotlin("test"))
 
     intellijPlatform {
-        create(providers.gradleProperty("platformType"), providers.gradleProperty("platformVersion"))
-        bundledPlugins(providers.gradleProperty("platformBundledPlugins").map { it.split(',') })
-        plugins(providers.gradleProperty("platformPlugins").map { it.split(',') })
-        pluginVerifier()
-        zipSigner()
+        intellijPlatform {
+            // Use latest IU EAP as the IDE to run against
+//            intellijIdeaUltimate("2025.2")
+            webstorm("2025.2.5")
+            // Platform plugins from gradle.properties
+            bundledPlugins(
+                providers
+                    .gradleProperty("platformBundledPlugins")
+                    .map { it.split(',') },
+            )
+            plugins(
+                providers
+                    .gradleProperty("platformPlugins")
+                    .map { it.split(',') },
+            )
+
+            // Tools
+            testFramework(TestFrameworkType.Platform)
+            pluginVerifier()
+            zipSigner()
+            instrumentationTools()
+        }
     }
 
     intellijPlatform {

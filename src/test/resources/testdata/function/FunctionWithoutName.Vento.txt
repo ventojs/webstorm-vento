@@ -10,6 +10,4 @@ VentoFile:a.vto(0,21)
         Element: FUNCTION_ARG_ELEMENT(13,17)
           PsiElement(FUNCTION_ARG_TOKEN)('name')(13,17)
         PsiElement(PARENTHESIS_TOKEN)(')')(17,18)
-    PsiElement(UNKNOWN_TOKEN)(' }}')(18,21)
-    PsiErrorElement:Expected '}}' (21,21)
-      <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(18,21)

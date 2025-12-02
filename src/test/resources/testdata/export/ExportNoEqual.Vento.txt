@@ -1,7 +1,7 @@
 VentoFile:a.vto(0,26)
   Element: VENTO_ELEMENT(0,26)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: EXPORT_OPEN_ELEMENT(2,26)
+    Element: EXPORT_OPEN_ELEMENT(2,23)
       PsiElement(EXPORT_KEY_TOKEN)(' export')(2,9)
       PsiElement(SYMBOL_TOKEN)(' message')(9,17)
       PsiErrorElement:syntax error: export symbol | export symbol = expression(17,17)
@@ -13,7 +13,4 @@ VentoFile:a.vto(0,26)
       PsiErrorElement:syntax error: export symbol | export symbol = expression(22,22)
         <empty list>
       PsiElement(STRING_TOKEN)('"')(22,23)
-      Element: UNKNOWN_ELEMENT(23,26)
-        PsiElement(UNKNOWN_TOKEN)(' }}')(23,26)
-        PsiErrorElement:Unexpected token(26,26)
-          <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(23,26)

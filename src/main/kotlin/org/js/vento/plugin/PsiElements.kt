@@ -7,6 +7,9 @@ package org.js.vento.plugin
 
 import com.intellij.extapi.psi.ASTWrapperPsiElement
 import com.intellij.lang.ASTNode
+import com.intellij.lang.Language
+import com.intellij.lang.html.HTMLLanguage
+import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.ItemPresentationProviders
 import com.intellij.openapi.util.TextRange
@@ -27,6 +30,8 @@ sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun getPresentation(): ItemPresentation? = ItemPresentationProviders.getItemPresentation(this)
 
     override fun getReferences(): Array<PsiReference?> = ReferenceProvidersRegistry.getReferencesFromProviders(this)
+
+    override fun getLanguage(): Language = VentoLanguage
 }
 
 class DefaultElement(node: ASTNode) : BaseElementImpl(node)
@@ -71,6 +76,8 @@ abstract class BaseJsElement<T : PsiLanguageInjectionHost>(node: ASTNode) :
     override fun updateText(text: String): PsiLanguageInjectionHost = this
 
     abstract fun getContentRange(): TextRange
+
+    override fun getLanguage(): Language = JavascriptLanguage
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<T> {
         return object : LiteralTextEscaper<T>(this as (T)) {
@@ -118,6 +125,8 @@ class HtmlElement(node: ASTNode) : BaseElementImpl(node), PsiLanguageInjectionHo
     override fun isValidHost(): Boolean = true
 
     override fun updateText(text: String): PsiLanguageInjectionHost = this
+
+    override fun getLanguage(): Language = HTMLLanguage.INSTANCE
 
     override fun createLiteralTextEscaper(): LiteralTextEscaper<out PsiLanguageInjectionHost> {
         return object : LiteralTextEscaper<HtmlElement>(this) {

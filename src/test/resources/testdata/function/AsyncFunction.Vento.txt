@@ -5,6 +5,4 @@ VentoFile:a.vto(0,26)
       PsiElement(ASYNC_KEY_TOKEN)(' async')(2,8)
       PsiElement(FUNCTION_KEY_TOKEN)(' function')(8,17)
       PsiElement(FUNCTION_NAME_TOKEN)(' hello')(17,23)
-    PsiElement(UNKNOWN_TOKEN)(' }}')(23,26)
-    PsiErrorElement:Expected '}}' (26,26)
-      <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(23,26)

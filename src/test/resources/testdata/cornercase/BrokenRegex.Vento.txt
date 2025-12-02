@@ -15,6 +15,6 @@ VentoFile:a.vto(0,32)
         PsiElement(BRACE_TOKEN)('}')(26,27)
         PsiElement(BRACKET_TOKEN)(']')(27,28)
         PsiElement(REGEX_TOKEN)('/')(28,29)
-        PsiElement(UNKNOWN_TOKEN)(' }}')(29,32)
+        PsiElement(REGEX_TOKEN)(' }}')(29,32)
     PsiErrorElement:Expected '}}' (32,32)
       <empty list>

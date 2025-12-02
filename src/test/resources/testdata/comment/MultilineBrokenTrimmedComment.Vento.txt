@@ -1,5 +1,4 @@
 VentoFile:a.vto(0,26)
-  Element: COMMENT_BLOCK(0,4)
-    PsiElement(COMMENT_START_TOKEN)('{{#-')(0,4)
-  HtmlElement: CONTENT(4,26)
-    PsiElement(UNKNOWN_TOKEN)(' comment\n{{ content }}')(4,26)
+  PsiComment(COMMENT_START_TOKEN)('{{#-')(0,4)
+  HtmlElement: HTML_CONTENT(4,26)
+    PsiElement(COMMENT_CONTENT_TOKEN)(' comment\n{{ content }}')(4,26)

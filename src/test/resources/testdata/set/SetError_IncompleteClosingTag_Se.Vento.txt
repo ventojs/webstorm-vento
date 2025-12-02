@@ -3,6 +3,6 @@ VentoFile:a.vto(0,9)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
     Element: JAVASCRIPT_EXPRESSION_ELEMENT(2,9)
       PsiElement(REGEX_TOKEN)(' /')(2,4)
-      PsiElement(UNKNOWN_TOKEN)('se }}')(4,9)
+      PsiElement(REGEX_TOKEN)('se }}')(4,9)
     PsiErrorElement:Expected '}}' (9,9)
       <empty list>

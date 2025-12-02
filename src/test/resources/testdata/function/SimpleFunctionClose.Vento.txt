@@ -1,9 +1,6 @@
 VentoFile:a.vto(0,10)
   Element: VENTO_ELEMENT(0,10)
     PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
-    Element: FOR_CLOSE_ELEMENT(2,10)
+    Element: FOR_CLOSE_ELEMENT(2,7)
       PsiElement(FOR_CLOSE_KEY_TOKEN)(' /for')(2,7)
-      Element: UNKNOWN_ELEMENT(7,10)
-        PsiElement(UNKNOWN_TOKEN)(' }}')(7,10)
-        PsiErrorElement:Unexpected token(10,10)
-          <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(7,10)
