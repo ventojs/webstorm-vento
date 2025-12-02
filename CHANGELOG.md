@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.0](https://github.com/ventojs/webstorm-vento/compare/v0.3.0...v0.4.0) (2025-12-02)
+
+
+### Features
+
+* **editing:** add block auto-closing and introduced basic autocompletion ([#154](https://github.com/ventojs/webstorm-vento/issues/154)) ([#156](https://github.com/ventojs/webstorm-vento/issues/156)) ([7511e10](https://github.com/ventojs/webstorm-vento/commit/7511e104bc105a7018c1f88725eb79ab8205a7ab))
+
 ## [0.3.0](https://github.com/ventojs/webstorm-vento/compare/v0.2.1...v0.3.0) (2025-11-28)
 
 
