@@ -1,0 +1,9 @@
+HtmlFile:a.vto(0,40)
+  PsiElement(HTML_DOCUMENT)(0,40)
+    PsiElement(VENTO_OUTER_TOKEN)('---\ntitle: My Blog\nflag:\n-')(0,26)
+    PsiWhiteSpace(' ')(26,27)
+    PsiElement(XML_PROLOG)(27,27)
+      <empty list>
+    XmlToken:XML_DATA_CHARACTERS('published')(27,36)
+    PsiWhiteSpace('\n')(36,37)
+    XmlToken:XML_DATA_CHARACTERS('---')(37,40)

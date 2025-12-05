@@ -33,6 +33,7 @@ class ColorSettingsPage : ColorSettingsPage {
                 AttributesDescriptor("Commas", SyntaxHighlighter.COMMAS),
                 AttributesDescriptor("Comment content", SyntaxHighlighter.COMMENTED_CONTENT),
                 AttributesDescriptor("Dots", SyntaxHighlighter.DOTS),
+                AttributesDescriptor("Frontmatter", SyntaxHighlighter.FRONTMATTER_DELIM),
                 AttributesDescriptor("Keyword", SyntaxHighlighter.KEYWORDS),
                 AttributesDescriptor("Numbers", SyntaxHighlighter.NUMBERS),
                 AttributesDescriptor("Operations", SyntaxHighlighter.OPERATIONS),
@@ -50,8 +51,14 @@ class ColorSettingsPage : ColorSettingsPage {
 
     override fun getDemoText(): String =
         """
-            
-        NOTE: A lot of the formatting will be overriden by your Javascript highlighting setting.
+        ---
+        title: Vento Template Language Reference
+        description:  NOTE: A lot of the formatting will be overriden by your Javascript highlighting setting.
+        flags:
+          - Frontmatter
+          - Vento
+          - Javascript
+        ---   
         
         {{# This is a sample web page #}}
         {{#- trimmed comment -#}}

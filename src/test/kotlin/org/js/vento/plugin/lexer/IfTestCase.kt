@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class IfTestCase(name: String) : BaseLexerTestCase(name, true) {
+class IfTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test if`() = lexAndTest("{{ if true }}", arrayOf("{{", "if", "true", "}}"))
 
     fun `test if with pipe`() =

@@ -84,6 +84,9 @@ class VentoCompletionTest : BasePlatformTestCase() {
         myFixture.configureByText(VentoFileType, "hello <caret>")
         myFixture.complete(CompletionType.BASIC)
 
+        // Wait for async completion to finish
+        NonBlockingReadActionImpl.waitForAsyncTaskCompletion()
+
         val lookupStrings = myFixture.lookupElementStrings ?: emptyList()
         // Vento keywords should not appear outside blocks
         assertDoesntContain(

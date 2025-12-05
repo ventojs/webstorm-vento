@@ -19,6 +19,7 @@ import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_OPEN
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IF_CLOSE_KEY
@@ -81,6 +82,7 @@ class Parser : PsiParser {
         builder.setDebugMode(true)
 
         when (tokenType) {
+            FRONTMATTER_OPEN -> parseFrontmatter(builder)
             COMMENT_START -> parseCommentBlock(builder)
             JSBLOCK_OPEN -> parseJavaScript(builder)
             VBLOCK_OPEN -> {

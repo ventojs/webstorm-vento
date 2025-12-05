@@ -23,6 +23,21 @@ object LexerTokens {
     val JSBLOCK_CLOSE = LexerToken("JSBLOCK_CLOSE")
 
     @JvmField
+    val FRONTMATTER_OPEN = LexerToken("FRONTMATTER_OPEN")
+
+    @JvmField
+    val FRONTMATTER_KEY = LexerToken("FRONTMATTER_KEY")
+
+    @JvmField
+    val FRONTMATTER_VALUE = LexerToken("FRONTMATTER_VALUE")
+
+    @JvmField
+    val FRONTMATTER_FLAG = LexerToken("FRONTMATTER_FLAG")
+
+    @JvmField
+    val FRONTMATTER_CLOSE = LexerToken("FRONTMATTER_CLOSE")
+
+    @JvmField
     val VBLOCK_OPEN = LexerToken("VBLOCK_OPEN")
 
     @JvmField
