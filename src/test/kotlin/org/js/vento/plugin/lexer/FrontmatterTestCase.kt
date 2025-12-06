@@ -8,14 +8,16 @@ package org.js.vento.plugin.lexer
 class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple frontmatter `() {
         lexAndTest(
-            """---
-title: Hello World!
----""",
+            """
+            ---
+            title: Hello World!
+            ---
+            """.trimIndent(),
             arrayOf(
                 "---",
                 "title",
                 ":",
-                " Hello World!",
+                "Hello World!",
                 "---",
             ),
         )
@@ -54,10 +56,10 @@ title: Hello World!
                 "---",
                 "title",
                 ":",
-                " Hello World!",
+                "Hello World!",
                 "author",
                 ":",
-                " John Doe",
+                "John Doe",
                 "flags",
                 ":",
                 "  - published",
@@ -87,10 +89,10 @@ title: Hello World!
                 "---",
                 "title",
                 ":",
-                " Hello World!",
+                "Hello World!",
                 "author",
                 ":",
-                " John Doe",
+                "John Doe",
                 "flags",
                 ":",
                 "  - published",
@@ -101,6 +103,39 @@ title: Hello World!
                 "name",
                 "}}",
                 "!</p>\n</body>\n</html>",
+            ),
+        )
+    }
+
+    fun `test complex frontmatter `() {
+        lexAndTest(
+            """
+            ---
+            draft: true
+            visibility: 'unlisted'
+            
+            # equal
+            flags:
+              - draft
+              - unlisted
+            ---
+            """.trimIndent(),
+            arrayOf(
+                "---",
+                "draft",
+                ":",
+                "true",
+                "visibility",
+                ":",
+                "'",
+                "unlisted",
+                "'",
+                "# equal",
+                "flags",
+                ":",
+                "  - draft",
+                "  - unlisted",
+                "---",
             ),
         )
     }

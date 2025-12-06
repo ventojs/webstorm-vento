@@ -18,6 +18,8 @@ fun parseFrontmatter(builder: PsiBuilder) {
             builder.tokenType == LexerTokens.FRONTMATTER_KEY ||
                 builder.tokenType == LexerTokens.FRONTMATTER_FLAG ||
                 builder.tokenType == LexerTokens.FRONTMATTER_VALUE ||
+                builder.tokenType == LexerTokens.COMMENT_CONTENT ||
+                builder.tokenType == LexerTokens.STRING ||
                 builder.tokenType == LexerTokens.COLON
         )
     ) {

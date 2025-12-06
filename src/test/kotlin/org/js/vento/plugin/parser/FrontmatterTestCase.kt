@@ -28,6 +28,21 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter", "vto", VentoParserDef
             """.trimIndent(),
         )
 
+    fun testFrontmatterComplexExample() =
+        doCodeTest(
+            """
+            ---
+            draft: true
+            visibility: 'unlisted'
+            
+            # equal
+            flags:
+              - draft
+              - unlisted
+            ---
+            """.trimIndent(),
+        )
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 
     override fun includeRanges(): Boolean = true

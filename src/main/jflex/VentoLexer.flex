@@ -110,6 +110,7 @@ FMBLOCK = "---"
 
     {SYMBOL}{OWS}[:] { pushbackall(); enter(FMLINE);}
     "  -"{OWS} { pushbackall(); enter(FMLINE); }
+    "#"[^\r\n]*/[\r\n] { pushbackall(); enter(FMLINE); }
 
     {FMBLOCK} {
        fmcount++;
@@ -127,18 +128,20 @@ FMBLOCK = "---"
 }
 
 <FMLINE> {
-
-    {SYMBOL} { return LexerTokens.FRONTMATTER_KEY; }
+    [ \t] {  }
+    {SYMBOL}/{OWS}[:] { return LexerTokens.FRONTMATTER_KEY; }
     [:] { enter( FMVALUE); return LexerTokens.COLON; }
     "  -"{OWS}{SYMBOL} { return LexerTokens.FRONTMATTER_FLAG; }
-    [\r\n]+ { leave(); }
+    "#"[^\r\n]*/[\r\n] { return LexerTokens.COMMENT_CONTENT; }
+    [\r\n] { leave(); }
 
 }
 
 <FMVALUE> {
-    \"|\'|\` {  pushbackall(); enter(STRING); }
-    [^\r\n]+  { leave(); return LexerTokens.FRONTMATTER_VALUE;}
-    [\r\n]+ { leave(); }
+    [ \t] { }
+    [\"'`]~[\"'`] { pushbackall(); enter(STRING); }
+    [^ \t\"'`\r\n][^\"'`\r\n]+  { return LexerTokens.FRONTMATTER_VALUE;}
+    [\r\n] { pushbackall(); leave(); }
 }
 
 <HTML> {
@@ -238,7 +241,7 @@ FMBLOCK = "---"
 %include includes/no-keywords.flex
 %include includes/variables.flex
 
-< EXPORT, FILE, FOR, FUNCTION, FUNCTION_ARGS,FUNCTION_LAMBDA, IF, IMPORT, KEYWORDS, KEYWORDS_CLOSE, FMLINE, FMVALUE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
+< EXPORT, FILE, FOR, FUNCTION, FUNCTION_ARGS,FUNCTION_LAMBDA, IF, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
 
     "}}"|"{{" {
           pushbackall();
@@ -249,6 +252,16 @@ FMBLOCK = "---"
           pushbackall();
           leave();
       }
+
+    <<EOF>> { leave(); }
+
+    [^] {
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
+}
+
+< FMLINE, FMVALUE > {
 
     <<EOF>> { leave(); }
 
