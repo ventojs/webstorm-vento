@@ -105,7 +105,6 @@ class FileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Configurab
 
             if (result != null) return result
             val created: TemplateDataElementType =
-                // todo: replace HTML with corrct values
                 object : TemplateDataElementType("VENTO_TEMPLATE_DATA", lang, HTML, VENTO_OUTER) {
                     override fun appendCurrentTemplateToken(
                         tokenEndOffset: Int,

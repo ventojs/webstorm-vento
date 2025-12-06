@@ -26,6 +26,10 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
 %state SCRIPT_CONTENT
 %state BLOCK
 %state UNKNOWN
+%state HTML
+%state FRONTMATTER
+%state FMLINE
+%state FMVALUE
 
 
 %{
@@ -59,6 +63,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
     public void debugModeRestore() { this.strategy.debugModeRestore();}
     public void debugMsg(String msg) { this.strategy.debugMsg(msg);}
     public boolean parentStateIs(int state) { return this.strategy.parentStateIs(state);}
+
+    public int fmcount =0;
 %}
 
 
@@ -87,11 +93,58 @@ OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
 
-
+FMBLOCK = "---"
 
 %%
 
 <YYINITIAL> {
+
+    {FMBLOCK} { pushbackall(); enter(FRONTMATTER); }
+
+    [^-] { pushbackall(); enter(HTML); }
+
+}
+
+<FRONTMATTER> {
+    {WHITESPACE} {  }
+
+    {SYMBOL}{OWS}[:] { pushbackall(); enter(FMLINE);}
+    "  -"{OWS} { pushbackall(); enter(FMLINE); }
+    "#"[^\r\n]*/[\r\n] { pushbackall(); enter(FMLINE); }
+
+    {FMBLOCK} {
+       fmcount++;
+       if (fmcount == 2){
+            fmcount=0;
+            leave();
+            return LexerTokens.FRONTMATTER_CLOSE;
+       }
+       return LexerTokens.FRONTMATTER_OPEN;
+
+    }
+
+    [^]   { pushbackall(); enter(HTML); }
+
+}
+
+<FMLINE> {
+    [ \t] {  }
+    {SYMBOL}/{OWS}[:] { return LexerTokens.FRONTMATTER_KEY; }
+    [:] { enter( FMVALUE); return LexerTokens.COLON; }
+    "  -"{OWS}{SYMBOL} { return LexerTokens.FRONTMATTER_FLAG; }
+    "#"[^\r\n]*/[\r\n] { return LexerTokens.COMMENT_CONTENT; }
+    [\r\n] { leave(); }
+
+}
+
+<FMVALUE> {
+    [ \t] { }
+    [\"'`]~[\"'`] { pushbackall(); enter(STRING); }
+    [^ \t\"'`\r\n][^\"'`\r\n]+  { return LexerTokens.FRONTMATTER_VALUE;}
+    [\r\n] { pushbackall(); leave(); }
+}
+
+<HTML> {
 
     {WHITESPACE} { return WHITE_SPACE; }
 
@@ -120,10 +173,6 @@ CVAR = -?{CBLOCK}
     [^]   { return LexerTokens.HTML; }
 
 }
-
-//<FRONTMATTER> {
-//
-//}
 
 <BLOCK> {
     {WHITESPACE} { }
@@ -203,6 +252,16 @@ CVAR = -?{CBLOCK}
           pushbackall();
           leave();
       }
+
+    <<EOF>> { leave(); }
+
+    [^] {
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
+}
+
+< FMLINE, FMVALUE > {
 
     <<EOF>> { leave(); }
 

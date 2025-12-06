@@ -27,7 +27,7 @@ internal class VentoTreeElement private constructor(psiElement: VentoPsiFile) :
                     }
 
                     if (childElement is BaseElementImpl) {
-                        // HbStatments elements transparently wrap other elements, so we don't add
+                        // Vento Statments elements transparently wrap other elements, so we don't add
                         // this element to the tree, but we add its children
                         children.addAll(VentoTreeElement(childElement as VentoPsiFile).childrenBase)
                     }
