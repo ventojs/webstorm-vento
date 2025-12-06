@@ -23,7 +23,7 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter", "vto", VentoParserDef
             ---
             title: My Blog
             flag:
-            - published
+              - published
             ---
             """.trimIndent(),
         )

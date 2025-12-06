@@ -16,6 +16,9 @@ object ParserElements {
     @JvmField
     val FRONTMATTER_BLOCK = ParserElement("FRONTMATTER_BLOCK")
 
+    @JvmField
+    val FRONTMATTER_LINE = ParserElement("FRONTMATTER_LINE")
+
     // Basic Vento elements
     @JvmField
     val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")

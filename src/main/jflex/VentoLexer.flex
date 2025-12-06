@@ -27,10 +27,6 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
 %state BLOCK
 %state UNKNOWN
 %state HTML
-%state FRONTMATTER
-%state FMLINE
-%state FMVALUE
-
 
 %{
     public LexerStrategy strategy = null;
@@ -99,49 +95,8 @@ FMBLOCK = "---"
 
 <YYINITIAL> {
 
-    {FMBLOCK} { pushbackall(); enter(FRONTMATTER); }
-
     [^-] { pushbackall(); enter(HTML); }
 
-}
-
-<FRONTMATTER> {
-    {WHITESPACE} {  }
-
-    {SYMBOL}{OWS}[:] { pushbackall(); enter(FMLINE);}
-    "  -"{OWS} { pushbackall(); enter(FMLINE); }
-    "#"[^\r\n]*/[\r\n] { pushbackall(); enter(FMLINE); }
-
-    {FMBLOCK} {
-       fmcount++;
-       if (fmcount == 2){
-            fmcount=0;
-            leave();
-            return LexerTokens.FRONTMATTER_CLOSE;
-       }
-       return LexerTokens.FRONTMATTER_OPEN;
-
-    }
-
-    [^]   { pushbackall(); enter(HTML); }
-
-}
-
-<FMLINE> {
-    [ \t] {  }
-    {SYMBOL}/{OWS}[:] { return LexerTokens.FRONTMATTER_KEY; }
-    [:] { enter( FMVALUE); return LexerTokens.COLON; }
-    "  -"{OWS}{SYMBOL} { return LexerTokens.FRONTMATTER_FLAG; }
-    "#"[^\r\n]*/[\r\n] { return LexerTokens.COMMENT_CONTENT; }
-    [\r\n] { leave(); }
-
-}
-
-<FMVALUE> {
-    [ \t] { }
-    [\"'`]~[\"'`] { pushbackall(); enter(STRING); }
-    [^ \t\"'`\r\n][^\"'`\r\n]+  { return LexerTokens.FRONTMATTER_VALUE;}
-    [\r\n] { pushbackall(); leave(); }
 }
 
 <HTML> {
@@ -224,6 +179,7 @@ FMBLOCK = "---"
 
 }
 
+%include includes/frontmatter.flex
 %include includes/general-expression.flex
 %include includes/general-file.flex
 %include includes/general-function.flex
@@ -252,16 +208,6 @@ FMBLOCK = "---"
           pushbackall();
           leave();
       }
-
-    <<EOF>> { leave(); }
-
-    [^] {
-          leave();
-          return LexerTokens.UNKNOWN;
-      }
-}
-
-< FMLINE, FMVALUE > {
 
     <<EOF>> { leave(); }
 
