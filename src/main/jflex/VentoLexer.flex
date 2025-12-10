@@ -89,13 +89,13 @@ OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
 
-FMBLOCK = "---"
-
 %%
 
 <YYINITIAL> {
 
     [^-] { pushbackall(); enter(HTML); }
+
+    [^] { return LexerTokens.UNKNOWN; }
 
 }
 

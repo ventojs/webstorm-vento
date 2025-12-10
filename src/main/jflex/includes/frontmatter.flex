@@ -7,34 +7,25 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state FMLINE
 %state FMVALUE
 
+FMBLOCK = "---"[ \t\f]*([\r\n]|[\n])
+
 // BLOCK 2 - END
 %%
 
 <YYINITIAL> {
 
-    {FMBLOCK} { pushbackall(); enter(FRONTMATTER); }
+    "---" { yybegin(FRONTMATTER); return LexerTokens.FRONTMATTER_OPEN;}
 
 }
 
 <FRONTMATTER> {
     {WHITESPACE} {  }
 
-    {SYMBOL}{OWS}[:] { pushbackall(); enter(FMLINE);}
-    "  -"{OWS} { pushbackall(); enter(FMLINE); }
-    "#"[^\r\n]*/[\r\n] { pushbackall(); enter(FMLINE); }
+    ^{FMBLOCK} { yybegin(YYINITIAL); return LexerTokens.FRONTMATTER_CLOSE; }
 
-    {FMBLOCK} {
-       fmcount++;
-       if (fmcount == 2){
-            fmcount=0;
-            leave();
-            return LexerTokens.FRONTMATTER_CLOSE;
-       }
-       return LexerTokens.FRONTMATTER_OPEN;
-
-    }
-
-    [^]   { pushbackall(); enter(HTML); }
+    ^{SYMBOL}{OWS}[:] { pushbackall(); yybegin(FMLINE);}
+    ^"  -"{OWS} { pushbackall(); yybegin(FMLINE); }
+    ^"#"[^\r\n]*/[\r\n] { pushbackall(); yybegin(FMLINE); }
 
 }
 
@@ -44,7 +35,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
     [:] { enter( FMVALUE); return LexerTokens.COLON; }
     "  -"{OWS}{SYMBOL} { return LexerTokens.FRONTMATTER_FLAG; }
     "#"[^\r\n]*/[\r\n] { return LexerTokens.COMMENT_CONTENT; }
-    [\r\n] { leave(); }
+    [\r\n] { yybegin(FRONTMATTER); }
 
 }
 
@@ -52,16 +43,16 @@ import org.js.vento.plugin.lexer.LexerTokens;
     [ \t] { }
     [\"'`]~[\"'`] { pushbackall(); enter(STRING); }
     [^ \t\"'`\r\n][^\"'`\r\n]+  { return LexerTokens.FRONTMATTER_VALUE;}
-    [\r\n] { pushbackall(); leave(); }
+    [\r\n] { pushbackall(); yybegin(FMLINE); }
 }
 
 
-< FMLINE, FMVALUE > {
+< FRONTMATTER, FMLINE, FMVALUE > {
 
-    <<EOF>> { leave(); }
+    <<EOF>> { yybegin(YYINITIAL); }
 
     [^] {
-          leave();
+          yybegin(YYINITIAL);
           return LexerTokens.UNKNOWN;
       }
 }
