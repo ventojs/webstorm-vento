@@ -43,6 +43,11 @@ import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_CLOSE
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_FLAG
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_OPEN
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_VALUE
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_ARG
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
@@ -91,6 +96,11 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
         val highlight =
             when (type) {
+                FRONTMATTER_OPEN -> FRONTMATTER_DELIM
+                FRONTMATTER_CLOSE -> FRONTMATTER_DELIM
+                FRONTMATTER_KEY -> KEYWORDS
+                FRONTMATTER_FLAG -> KEYWORDS
+                FRONTMATTER_VALUE -> VALUES
                 ASYNC_KEY -> KEYWORDS
                 AWAIT_KEY -> KEYWORDS
                 BOOLEAN -> KEYWORDS
@@ -154,6 +164,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val ventoGray = JBColor("gray", Color(28, 32, 40))
         val ventoLightRed = JBColor("light-red", Color(244, 100, 99))
         val ventoLightGray = JBColor("light-gray", Color(157, 166, 187))
+
+        val FRONTMATTER_DELIM = createTextAttributesKey("FRONTMATTER_DELIM", TextAttributes(ventoSky, ventoGray, null, null, 0))
 
         val JSBLOCK = createTextAttributesKey("JS_BLOCK", TextAttributes(ventoPink, ventoGray, null, null, 0))
         val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))

@@ -30,6 +30,7 @@ jobs:
           scopes: |
             build
             cicd
+            deps
             docs
             editing
             lexer

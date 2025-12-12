@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,82)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('---\ndraft: true\nvisibility: 'unlisted'\n\n# equal\nflags:\n  - draft\n  - unlisted\n---\n')(0,82)

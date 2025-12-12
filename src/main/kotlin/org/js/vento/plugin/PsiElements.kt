@@ -34,6 +34,8 @@ sealed class BaseElementImpl(node: ASTNode) : ASTWrapperPsiElement(node) {
     override fun getLanguage(): Language = VentoLanguage
 }
 
+class FrontmatterElement(node: ASTNode) : BaseElementImpl(node)
+
 class DefaultElement(node: ASTNode) : BaseElementImpl(node)
 
 class ExportCloseElement(node: ASTNode) : BaseElementImpl(node)

@@ -426,7 +426,7 @@ dependencies {
         intellijPlatform {
             // Use latest IU EAP as the IDE to run against
 //            intellijIdeaUltimate("2025.2")
-            webstorm("2025.2.5")
+            webstorm("2025.3")
             // Platform plugins from gradle.properties
             bundledPlugins(
                 providers

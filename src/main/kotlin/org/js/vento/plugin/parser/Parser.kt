@@ -19,6 +19,7 @@ import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_OPEN
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
 import org.js.vento.plugin.lexer.LexerTokens.IF_CLOSE_KEY
@@ -81,8 +82,18 @@ class Parser : PsiParser {
         builder.setDebugMode(true)
 
         when (tokenType) {
-            COMMENT_START -> parseCommentBlock(builder)
-            JSBLOCK_OPEN -> parseJavaScript(builder)
+            FRONTMATTER_OPEN -> {
+                parseFrontmatter(builder)
+            }
+
+            COMMENT_START -> {
+                parseCommentBlock(builder)
+            }
+
+            JSBLOCK_OPEN -> {
+                parseJavaScript(builder)
+            }
+
             VBLOCK_OPEN -> {
                 val m = builder.mark()
                 expect(builder, VBLOCK_OPEN, "Expected '{{' ")
@@ -101,28 +112,94 @@ class Parser : PsiParser {
 
     fun parseVentoElemenet(builder: PsiBuilder) {
         when (builder.tokenType) {
-            ASYNC_KEY -> parseFunctionSignature(builder)
-            ECHO_CLOSE_KEY -> parseEchoClose(builder)
-            ECHO_KEY -> parseEcho(builder)
-            ELSEIF_KEY -> parseElseIf(builder)
-            ELSE_KEY -> parseElse(builder)
-            EXPORT_CLOSE_KEY -> parseExportClose(builder)
-            EXPORT_KEY -> parseExport(builder)
-            FOR_CLOSE_KEY -> parseForClose(builder)
-            FOR_KEY -> parseFor(builder)
-            FUNCTION_CLOSE_KEY -> parseFunctionClose(builder)
-            FUNCTION_KEY -> parseFunctionSignature(builder, true)
-            IF_CLOSE_KEY -> parseIfClose(builder)
-            IF_KEY -> parseIf(builder)
-            IMPORT_KEY -> parseImport(builder)
-            INCLUDE_KEY -> parseInclude(builder)
-            LAYOUT_CLOSE_KEY -> parseLayoutClose(builder)
-            LAYOUT_KEY -> parseLayout(builder)
-            LAYOUT_SLOT_CLOSE_KEY -> parseSlotClose(builder)
-            LAYOUT_SLOT_KEY -> parseSlot(builder)
-            SET_CLOSE_KEY -> parsSetClose(builder)
-            SET_KEY -> parsSet(builder)
-            UNKNOWN -> parseUnknown(builder)
+            ASYNC_KEY -> {
+                parseFunctionSignature(builder)
+            }
+
+            ECHO_CLOSE_KEY -> {
+                parseEchoClose(builder)
+            }
+
+            ECHO_KEY -> {
+                parseEcho(builder)
+            }
+
+            ELSEIF_KEY -> {
+                parseElseIf(builder)
+            }
+
+            ELSE_KEY -> {
+                parseElse(builder)
+            }
+
+            EXPORT_CLOSE_KEY -> {
+                parseExportClose(builder)
+            }
+
+            EXPORT_KEY -> {
+                parseExport(builder)
+            }
+
+            FOR_CLOSE_KEY -> {
+                parseForClose(builder)
+            }
+
+            FOR_KEY -> {
+                parseFor(builder)
+            }
+
+            FUNCTION_CLOSE_KEY -> {
+                parseFunctionClose(builder)
+            }
+
+            FUNCTION_KEY -> {
+                parseFunctionSignature(builder, true)
+            }
+
+            IF_CLOSE_KEY -> {
+                parseIfClose(builder)
+            }
+
+            IF_KEY -> {
+                parseIf(builder)
+            }
+
+            IMPORT_KEY -> {
+                parseImport(builder)
+            }
+
+            INCLUDE_KEY -> {
+                parseInclude(builder)
+            }
+
+            LAYOUT_CLOSE_KEY -> {
+                parseLayoutClose(builder)
+            }
+
+            LAYOUT_KEY -> {
+                parseLayout(builder)
+            }
+
+            LAYOUT_SLOT_CLOSE_KEY -> {
+                parseSlotClose(builder)
+            }
+
+            LAYOUT_SLOT_KEY -> {
+                parseSlot(builder)
+            }
+
+            SET_CLOSE_KEY -> {
+                parsSetClose(builder)
+            }
+
+            SET_KEY -> {
+                parsSet(builder)
+            }
+
+            UNKNOWN -> {
+                parseUnknown(builder)
+            }
+
             else -> {
                 parseJavaScriptExpression(builder)
                 while (!builder.eof() && builder.tokenType == PIPE) {

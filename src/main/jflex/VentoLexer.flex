@@ -26,7 +26,7 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
 %state SCRIPT_CONTENT
 %state BLOCK
 %state UNKNOWN
-
+%state HTML
 
 %{
     public LexerStrategy strategy = null;
@@ -59,6 +59,8 @@ import static com.intellij.psi.TokenType.WHITE_SPACE;import java.util.HashMap;
     public void debugModeRestore() { this.strategy.debugModeRestore();}
     public void debugMsg(String msg) { this.strategy.debugMsg(msg);}
     public boolean parentStateIs(int state) { return this.strategy.parentStateIs(state);}
+
+    public int fmcount =0;
 %}
 
 
@@ -87,11 +89,17 @@ OJS = {OBLOCK}>
 OVAR = {OBLOCK}-?
 CVAR = -?{CBLOCK}
 
-
-
 %%
 
 <YYINITIAL> {
+
+    [^-] { pushbackall(); enter(HTML); }
+
+    [^] { return LexerTokens.UNKNOWN; }
+
+}
+
+<HTML> {
 
     {WHITESPACE} { return WHITE_SPACE; }
 
@@ -120,10 +128,6 @@ CVAR = -?{CBLOCK}
     [^]   { return LexerTokens.HTML; }
 
 }
-
-//<FRONTMATTER> {
-//
-//}
 
 <BLOCK> {
     {WHITESPACE} { }
@@ -175,6 +179,7 @@ CVAR = -?{CBLOCK}
 
 }
 
+%include includes/frontmatter.flex
 %include includes/general-expression.flex
 %include includes/general-file.flex
 %include includes/general-function.flex
