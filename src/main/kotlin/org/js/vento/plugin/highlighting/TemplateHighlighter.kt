@@ -17,9 +17,19 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
 import org.js.vento.plugin.VentoLanguage
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.settings.VentoSettings
 
 class TemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: EditorColorsScheme) :
-    LayeredLexerEditorHighlighter(SyntaxHighlighter(), colors) {
+    LayeredLexerEditorHighlighter(
+        if (project != null && VentoSettings.getInstance(project).isFrontmatterHighlightingEnabled) {
+            org.js.vento.plugin.highlighting
+                .SyntaxHighlighter()
+        } else {
+            org.js.vento.plugin.highlighting
+                .SyntaxHighlighterWithoutFrontmatter()
+        },
+        colors,
+    ) {
     init {
         var type: FileType =
             if (project == null || virtualFile == null) {

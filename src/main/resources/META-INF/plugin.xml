@@ -21,6 +21,13 @@
 
     <extensions defaultExtensionNs="com.intellij">
 
+        <projectConfigurable
+                parentId="language"
+                instance="org.js.vento.plugin.settings.SettingsConfigurable"
+                id="org.js.vento.plugin.settings.SettingsConfigurable"
+                displayName="Vento"/>
+        <projectService serviceImplementation="org.js.vento.plugin.settings.VentoSettings"/>
+
         <fileType name="Vento File" implementationClass="org.js.vento.plugin.file.VentoFileType" fieldName="INSTANCE" language="Vento" extensions="vto"/>
         <html.scriptContentProvider language="Vento" implementationClass="org.js.vento.plugin.highlighting.ScriptContentProvider"/>
         <lang.fileViewProviderFactory language="Vento" implementationClass="org.js.vento.plugin.file.ViewProviderFactory"/>
