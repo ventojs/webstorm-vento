@@ -165,7 +165,7 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
         val ventoLightRed = JBColor("light-red", Color(244, 100, 99))
         val ventoLightGray = JBColor("light-gray", Color(157, 166, 187))
 
-        val FRONTMATTER_DELIM = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))
+        val FRONTMATTER_DELIM = createTextAttributesKey("FRONTMATTER_DELIM", TextAttributes(ventoSky, ventoGray, null, null, 0))
 
         val JSBLOCK = createTextAttributesKey("JS_BLOCK", TextAttributes(ventoPink, ventoGray, null, null, 0))
         val VBLOCK = createTextAttributesKey("VENTO_BLOCK", TextAttributes(ventoSky, ventoGray, null, null, 0))

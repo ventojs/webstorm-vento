@@ -7,21 +7,22 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state FMLINE
 %state FMVALUE
 
-FMBLOCK = "---"[ \t\f]*([\r\n]|[\n])
+FMBLOCKOPEN = "---"
+FMBLOCKCLOSE = "---"[ \t\f]*([\r\n]|[\n])
 
 // BLOCK 2 - END
 %%
 
 <YYINITIAL> {
 
-    "---" { yybegin(FRONTMATTER); return LexerTokens.FRONTMATTER_OPEN;}
+    {FMBLOCKOPEN} { yybegin(FRONTMATTER); return LexerTokens.FRONTMATTER_OPEN;}
 
 }
 
 <FRONTMATTER> {
     {WHITESPACE} {  }
 
-    ^{FMBLOCK} { yybegin(YYINITIAL); return LexerTokens.FRONTMATTER_CLOSE; }
+    ^{FMBLOCKCLOSE} { yybegin(YYINITIAL); return LexerTokens.FRONTMATTER_CLOSE; }
 
     ^{SYMBOL}{OWS}[:] { pushbackall(); yybegin(FMLINE);}
     ^"  -"{OWS} { pushbackall(); yybegin(FMLINE); }
