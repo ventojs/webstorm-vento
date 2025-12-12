@@ -5,7 +5,6 @@
 
 package org.js.vento.plugin
 
-import com.intellij.openapi.application.WriteIntentReadAction
 import com.intellij.testFramework.EdtTestUtil
 import com.intellij.testFramework.ParsingTestCase
 import com.intellij.util.ThrowableRunnable
@@ -32,10 +31,8 @@ abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCa
     fun setUpTest() {
         EdtTestUtil.runInEdtAndWait(
             ThrowableRunnable {
-                WriteIntentReadAction.run {
-                    setUp()
-                    this.name = testName
-                }
+                setUp()
+                this.name = testName
             },
         )
     }
@@ -44,9 +41,7 @@ abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCa
     fun tearDownTest() {
         EdtTestUtil.runInEdtAndWait(
             ThrowableRunnable {
-                WriteIntentReadAction.run {
-                    tearDown()
-                }
+                tearDown()
             },
         )
     }
