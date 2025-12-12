@@ -15,9 +15,9 @@ import javax.swing.JPanel
 /**
  * Provides the UI for Vento plugin settings in the IDE Settings dialog.
  */
-class SettingsConfigurable(private val project: Project) : Configurable {
+class SettingsConfigurable(project: Project) : Configurable {
     private var enableFrontmatterCheckBox: JBCheckBox? = null
-    private val settings = VentoSettings.getInstance(project)
+    private val settings = Settings.getInstance(project)
 
     override fun getDisplayName(): String = "Vento"
 

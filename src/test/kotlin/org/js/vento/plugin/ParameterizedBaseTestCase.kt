@@ -5,7 +5,10 @@
 
 package org.js.vento.plugin
 
+import com.intellij.openapi.application.WriteIntentReadAction
+import com.intellij.testFramework.EdtTestUtil
 import com.intellij.testFramework.ParsingTestCase
+import com.intellij.util.ThrowableRunnable
 import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -27,13 +30,25 @@ abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCa
 
     @BeforeEach
     fun setUpTest() {
-        setUp()
-        this.name = testName
+        EdtTestUtil.runInEdtAndWait(
+            ThrowableRunnable {
+                WriteIntentReadAction.run {
+                    setUp()
+                    this.name = testName
+                }
+            },
+        )
     }
 
     @AfterEach
     fun tearDownTest() {
-        tearDown()
+        EdtTestUtil.runInEdtAndWait(
+            ThrowableRunnable {
+                WriteIntentReadAction.run {
+                    tearDown()
+                }
+            },
+        )
     }
 
     @Suppress("unused")

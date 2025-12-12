@@ -10,17 +10,18 @@ import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.State
 import com.intellij.openapi.components.Storage
 import com.intellij.openapi.project.Project
+import com.intellij.util.messages.Topic
 import com.intellij.util.xmlb.XmlSerializerUtil
 
 /**
- * Service that holds persistent state for Vento plugin settings.
+ * Service that holds a persistent state for Vento plugin settings.
  */
 @State(
-    name = "VentoSettings",
+    name = "Settings",
     storages = [Storage("vento.xml")],
 )
 @Service(Service.Level.PROJECT)
-class VentoSettings : PersistentStateComponent<VentoSettings.State> {
+class Settings(private val project: Project) : PersistentStateComponent<Settings.State> {
     private var state = State()
 
     override fun getState(): State = state
@@ -35,7 +36,11 @@ class VentoSettings : PersistentStateComponent<VentoSettings.State> {
     var isFrontmatterHighlightingEnabled: Boolean
         get() = state.enableFrontmatterHighlighting
         set(value) {
+            val changed = state.enableFrontmatterHighlighting != value
             state.enableFrontmatterHighlighting = value
+            if (changed) {
+                project.messageBus.syncPublisher(SETTINGS_TOPIC).settingsChanged()
+            }
         }
 
     /**
@@ -45,11 +50,23 @@ class VentoSettings : PersistentStateComponent<VentoSettings.State> {
         var enableFrontmatterHighlighting: Boolean = true
     }
 
+    /**
+     * Listener interface for settings changes.
+     */
+    interface SettingsListener {
+        fun settingsChanged()
+    }
+
     companion object {
         /**
-         * Get the VentoSettings service instance for a project.
+         * Topic for settings change notifications.
          */
-        fun getInstance(project: Project): VentoSettings =
-            project.getService(VentoSettings::class.java)
+        val SETTINGS_TOPIC = Topic.create("Vento Settings Changed", SettingsListener::class.java)
+
+        /**
+         * Get the Settings service instance for a project.
+         */
+        fun getInstance(project: Project): Settings =
+            project.getService(Settings::class.java)
     }
 }
