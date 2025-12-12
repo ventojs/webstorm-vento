@@ -12,13 +12,14 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
             ---
             title: Hello World!
             ---
+            
             """.trimIndent(),
             arrayOf(
                 "---",
                 "title",
                 ":",
                 "Hello World!",
-                "---",
+                "---\n",
             ),
         )
     }
@@ -30,13 +31,14 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
             flags:
               - published
             ---
+            
             """.trimIndent(),
             arrayOf(
                 "---",
                 "flags",
                 ":",
                 "  - published",
-                "---",
+                "---\n",
             ),
         )
     }
@@ -51,6 +53,7 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
               - published
               - final
             ---
+            
             """.trimIndent(),
             arrayOf(
                 "---",
@@ -64,7 +67,7 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
                 ":",
                 "  - published",
                 "  - final",
-                "---",
+                "---\n",
             ),
         )
     }
@@ -97,8 +100,8 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
                 ":",
                 "  - published",
                 "  - final",
-                "---",
-                "\n<html>\n<body>\n<p>Hello ",
+                "---\n",
+                "<html>\n<body>\n<p>Hello ",
                 "{{",
                 "name",
                 "}}",
@@ -119,6 +122,7 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
               - draft
               - unlisted
             ---
+            
             """.trimIndent(),
             arrayOf(
                 "---",
@@ -135,8 +139,29 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
                 ":",
                 "  - draft",
                 "  - unlisted",
-                "---",
+                "---\n",
             ),
+        )
+    }
+
+    fun `test error frontmatter `() {
+        lexAndTest(
+            """
+            -------
+            foo:bar
+            ---
+            
+            """.trimIndent(),
+            arrayOf(
+                "---",
+                "-",
+                "---",
+                "foo",
+                ":",
+                "bar",
+                "---\n",
+            ),
+            false,
         )
     }
 }

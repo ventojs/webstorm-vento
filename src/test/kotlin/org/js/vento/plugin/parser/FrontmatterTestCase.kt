@@ -14,6 +14,7 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter", "vto", VentoParserDef
             """
             ---
             ---
+            
             """.trimIndent(),
         )
 
@@ -25,6 +26,7 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter", "vto", VentoParserDef
             flag:
               - published
             ---
+            
             """.trimIndent(),
         )
 
@@ -40,6 +42,7 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter", "vto", VentoParserDef
               - draft
               - unlisted
             ---
+            
             """.trimIndent(),
         )
 

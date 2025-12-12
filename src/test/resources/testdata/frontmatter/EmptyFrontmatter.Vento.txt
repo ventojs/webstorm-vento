@@ -1,4 +1,4 @@
-VentoFile:a.vto(0,7)
-  Element: FRONTMATTER_BLOCK(0,7)
+VentoFile:a.vto(0,8)
+  Element: FRONTMATTER_BLOCK(0,8)
     PsiElement(FRONTMATTER_OPEN_TOKEN)('---')(0,3)
-    PsiElement(FRONTMATTER_CLOSE_TOKEN)('\n---')(3,7)
+    PsiElement(FRONTMATTER_CLOSE_TOKEN)('\n---\n')(3,8)

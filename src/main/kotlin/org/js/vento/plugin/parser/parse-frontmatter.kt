@@ -17,6 +17,8 @@ import org.js.vento.plugin.lexer.LexerTokens.STRING
 
 fun parseFrontmatter(builder: PsiBuilder) {
     val m = builder.mark()
+    if (builder.rawTokenIndex() != 0) builder.error("Frontmatter must be the first line of the file")
+
     expect(builder, FRONTMATTER_OPEN, "Expected frontmatter open")
     while (!builder.eof() &&
         (
@@ -34,10 +36,11 @@ fun parseLine(builder: PsiBuilder) {
     val m = builder.mark()
     if (optional(builder, FRONTMATTER_KEY, "Expected frontmatter key")) {
         expect(builder, COLON, "Expect :")
-        if (!optional(builder, STRING, "Optional String", true) &&
-            !optional(builder, FRONTMATTER_VALUE, "Optional value")
-        ) {
-            expect(builder, FRONTMATTER_FLAG, "Expect flag", true)
+        when (builder.tokenType) {
+            STRING -> parseString(builder)
+            FRONTMATTER_VALUE -> builder.advanceLexer()
+            FRONTMATTER_FLAG -> expect(builder, FRONTMATTER_FLAG, "Expect flag", true)
+            else -> builder.error("Unexpected token")
         }
     } else {
         expect(builder, COMMENT_CONTENT, "Expect comment")
