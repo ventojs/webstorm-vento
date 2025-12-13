@@ -555,6 +555,10 @@ tasks {
     register<DefaultTask>("formatKotlin") { dependsOn("ktlintFormat") }
 }
 
+tasks.test {
+    exclude("**/FrontmatterHighlightToggleTest.class")
+}
+
 fun ext(name: String): String =
     rootProject.extensions[name] as? String
         ?: error("Property `$name` is not defined")

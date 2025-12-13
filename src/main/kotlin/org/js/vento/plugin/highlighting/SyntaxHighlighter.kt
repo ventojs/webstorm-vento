@@ -92,7 +92,7 @@ import org.js.vento.plugin.lexer.LexerTokens.STRING as STRING_TOKEN
  * - Provides a lexer for tokenizing Vento code.
  * - Maps token types to their respective highlighting attributes.
  */
-class SyntaxHighlighter : SyntaxHighlighterBase() {
+open class SyntaxHighlighter : SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer = LexerAdapter()
 
     override fun getTokenHighlights(type: IElementType?): Array<out TextAttributesKey?> {
@@ -141,8 +141,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 JSBLOCK_OPEN -> JSBLOCK
                 LAYOUT_CLOSE_KEY -> VENTO_KEYWORDS
                 LAYOUT_KEY -> VENTO_KEYWORDS
-                LAYOUT_SLOT_CLOSE_KEY -> KEYWORDS
-                LAYOUT_SLOT_KEY -> KEYWORDS
+                LAYOUT_SLOT_CLOSE_KEY -> VENTO_KEYWORDS
+                LAYOUT_SLOT_KEY -> VENTO_KEYWORDS
                 NEW -> KEYWORDS
                 NUMBER -> NUMBERS
                 PARENTHESIS -> KEYWORDS
