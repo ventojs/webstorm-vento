@@ -17,7 +17,9 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
     <li>`*.vto` file type</li>
     <li>Syntax highlighting</li>
     <li>Syntax checking</li>
-    <li>auto-completion (unstable)</li>
+    <li>auto-completion</li>
+    <li>support for front-matter</li>
+    <li>support for the fragment plugin</li>
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
 
@@ -43,14 +45,14 @@ IntelliJ Ultimate and WebStorm IDEs.
 ### Features
 
 #### Implemented
-* Syntax highlighting
-* Syntax checking
-* Auto-completion
+* syntax highlighting
+* syntax checking
+* auto-completion (experimental and needs improvement)
+* front-matter support (disableable in settings if not wanted)
+* fragments support
 
 #### Planned
 * Formatting
-* frontmatter support
-* fragments support
 
 > [!IMPORTANT]
 > ### Note to plugin developers:
