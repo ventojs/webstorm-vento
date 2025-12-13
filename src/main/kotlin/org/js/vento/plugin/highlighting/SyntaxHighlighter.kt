@@ -141,8 +141,8 @@ open class SyntaxHighlighter : SyntaxHighlighterBase() {
                 JSBLOCK_OPEN -> JSBLOCK
                 LAYOUT_CLOSE_KEY -> VENTO_KEYWORDS
                 LAYOUT_KEY -> VENTO_KEYWORDS
-                LAYOUT_SLOT_CLOSE_KEY -> KEYWORDS
-                LAYOUT_SLOT_KEY -> KEYWORDS
+                LAYOUT_SLOT_CLOSE_KEY -> VENTO_KEYWORDS
+                LAYOUT_SLOT_KEY -> VENTO_KEYWORDS
                 NEW -> KEYWORDS
                 NUMBER -> NUMBERS
                 PARENTHESIS -> KEYWORDS
