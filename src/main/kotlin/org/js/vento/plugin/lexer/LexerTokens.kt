@@ -45,9 +45,6 @@ object LexerTokens {
 
     // Comment tokens
     @JvmField
-    val COMMENT = LexerToken("COMMENT")
-
-    @JvmField
     var COMMENT_CONTENT: IElementType = LexerToken("COMMENT_CONTENT")
 
     @JvmField
@@ -107,6 +104,12 @@ object LexerTokens {
 
     @JvmField
     val EXPORT_KEY = LexerToken("EXPORT_KEY")
+
+    @JvmField
+    val FRAGMENT_KEY = LexerToken("FRAGMENT_KEY")
+
+    @JvmField
+    val FRAGMENT_CLOSE_KEY = LexerToken("FRAGMENT_CLOSE_KEY")
 
     // Set tokens
     @JvmField

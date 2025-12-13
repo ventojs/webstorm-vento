@@ -43,6 +43,8 @@ import org.js.vento.plugin.lexer.LexerTokens.FILE
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_OF
+import org.js.vento.plugin.lexer.LexerTokens.FRAGMENT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRAGMENT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_CLOSE
 import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_FLAG
 import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_KEY
@@ -123,6 +125,8 @@ class SyntaxHighlighter : SyntaxHighlighterBase() {
                 FOR_CLOSE_KEY -> VENTO_KEYWORDS
                 FOR_KEY -> VENTO_KEYWORDS
                 FOR_OF -> VENTO_KEYWORDS
+                FRAGMENT_KEY -> VENTO_KEYWORDS
+                FRAGMENT_CLOSE_KEY -> VENTO_KEYWORDS
                 FUNCTION_ARG -> ARGS
                 FUNCTION_CLOSE_KEY -> VENTO_KEYWORDS
                 FUNCTION_KEY -> VENTO_KEYWORDS

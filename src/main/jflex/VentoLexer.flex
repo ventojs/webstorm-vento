@@ -189,6 +189,7 @@ CVAR = -?{CBLOCK}
 %include includes/keywords-export.flex
 %include includes/keywords-for.flex
 %include includes/keywords-if.flex
+%include includes/keywords-fragment.flex
 %include includes/keywords-import.flex
 %include includes/keywords-include.flex
 %include includes/keywords-layout.flex
@@ -197,7 +198,7 @@ CVAR = -?{CBLOCK}
 %include includes/no-keywords.flex
 %include includes/variables.flex
 
-< EXPORT, FILE, FOR, FUNCTION, FUNCTION_ARGS,FUNCTION_LAMBDA, IF, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
+< EXPORT, FILE, FOR, FRAGMENT, FUNCTION, FUNCTION_ARGS, FUNCTION_LAMBDA, IF, IMPORT, KEYWORDS, KEYWORDS_CLOSE, NOKEYWORDS, SET, SET_BLOCK_MODE, SET_VALUE, EXPRESSION,  INCLUDE, LAYOUT, SLOT, ECHO> {
 
     "}}"|"{{" {
           pushbackall();

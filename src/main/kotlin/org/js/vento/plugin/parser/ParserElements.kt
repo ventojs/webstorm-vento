@@ -85,6 +85,12 @@ object ParserElements {
     val LAYOUT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_CLOSE_ELEMENT")
 
     @JvmField
+    val FRAGMENT_ELEMENT: IElementType = ParserElement("FRAGMENT_ELEMENT")
+
+    @JvmField
+    val FRAGMENT_CLOSE_ELEMENT: IElementType = ParserElement("FRAGMENT_CLOSE_ELEMENT")
+
+    @JvmField
     val LAYOUT_SLOT_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_ELEMENT")
 
     @JvmField
