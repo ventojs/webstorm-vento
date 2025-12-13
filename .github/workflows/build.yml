@@ -14,10 +14,21 @@
 
 name: Build
 on:
-  # Trigger the workflow on any pull request
   pull_request:
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
+      - "assets/**"
+      - ".run/**"
+      - ".aiassistant/**"
+      - ".github/**/*.md"
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - "**/*.md"
+      - "assets/**"
+      - ".run/**"
+      - ".aiassistant/**"
+      - ".github/**/*.md"
 
 permissions:
   contents: write
