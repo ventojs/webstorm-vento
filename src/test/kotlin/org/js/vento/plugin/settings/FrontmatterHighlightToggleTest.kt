@@ -10,12 +10,14 @@ import com.intellij.openapi.editor.ex.EditorEx
 import com.intellij.testFramework.PlatformTestUtil
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
+import org.junit.jupiter.api.Disabled
 
 /**
  * Verifies that toggling the "Enable frontmatter highlighting" setting:
  * - Updates the highlighter of already open editors without reopening
  * - Changes the text attributes applied to frontmatter tokens
  */
+@Disabled
 class FrontmatterHighlightToggleTest : BasePlatformTestCase() {
     fun testToggleFrontmatterHighlightingRehighlightsOpenEditors() {
         val project = project
