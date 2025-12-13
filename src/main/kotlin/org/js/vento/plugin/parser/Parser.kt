@@ -19,6 +19,8 @@ import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FOR_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRAGMENT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.FRAGMENT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FRONTMATTER_OPEN
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FUNCTION_KEY
@@ -146,6 +148,14 @@ class Parser : PsiParser {
 
             FOR_KEY -> {
                 parseFor(builder)
+            }
+
+            FRAGMENT_KEY -> {
+                parseFragment(builder)
+            }
+
+            FRAGMENT_CLOSE_KEY -> {
+                parseFragmentClose(builder)
             }
 
             FUNCTION_CLOSE_KEY -> {

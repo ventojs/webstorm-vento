@@ -5,12 +5,6 @@
 
 package org.js.vento.plugin.lexer
 
-/**
- * Tests for variable expression lexing.
- *
- * The tests are grouped and ordered from simple to complex to make intent clear and maintenance easier.
- * Each test includes a short description of the scenario and the expected tokenization.
- */
 @Suppress("ktlint:standard:blank-line-before-declaration")
 class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test simple include`() {
