@@ -5,9 +5,7 @@
 
 package org.js.vento.plugin
 
-import com.intellij.testFramework.EdtTestUtil
 import com.intellij.testFramework.ParsingTestCase
-import com.intellij.util.ThrowableRunnable
 import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -16,7 +14,8 @@ import org.junit.jupiter.api.TestInstance
 
 @Ignore("Run with JUnit 5")
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
-abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCase("", "vto", VentoParserDefinition(debug)) {
+abstract class ParameterizedBaseTestCase(debug: Boolean = false) :
+    ParsingTestCase("", "vto", VentoParserDefinition(debug)) {
     companion object {
         var output = ""
 
@@ -29,21 +28,13 @@ abstract class ParameterizedBaseTestCase(debug: Boolean = false) : ParsingTestCa
 
     @BeforeEach
     fun setUpTest() {
-        EdtTestUtil.runInEdtAndWait(
-            ThrowableRunnable {
-                setUp()
-                this.name = testName
-            },
-        )
+        setUp()
+        this.name = testName
     }
 
     @AfterEach
     fun tearDownTest() {
-        EdtTestUtil.runInEdtAndWait(
-            ThrowableRunnable {
-                tearDown()
-            },
-        )
+        tearDown()
     }
 
     @Suppress("unused")
