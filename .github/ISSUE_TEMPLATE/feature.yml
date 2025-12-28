@@ -33,12 +33,6 @@ body:
       placeholder: The way I would implement this is ...
     validations:
       required: true
-  - type: textarea
-    id: alternative
-    attributes:
-      label: Alternatives
-      description: What alternatives have you considered?
-      placeholder: list any...
   - type: markdown
     attributes:
       value: "Thank you for filling out the form! We will read it soon.."
