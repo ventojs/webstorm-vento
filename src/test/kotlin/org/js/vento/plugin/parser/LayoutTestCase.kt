@@ -50,6 +50,17 @@ class LayoutTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     }
 
     /**
+     * Tests parsing of a valid set block that captures content between opening and closing tags.
+     */
+    fun testLayoutWithoutSpace() {
+        val code =
+            """
+            {{ layout "myfile.vto"}}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    /**
      * @return path to test data file directory relative to root of this module.
      */
     override fun getTestDataPath(): String = "src/test/resources/testdata/layout"
