@@ -53,6 +53,14 @@
         <lang.formatter language="Vento" implementationClass="org.js.vento.plugin.formatting.FormattingModelBuilder"/>
         <lang.refactoringSupport language="Vento" implementationClass="org.js.vento.plugin.editor.RefactoringSupportProvider"/>
 
+        <!-- Inspections -->
+        <localInspection language="Vento"
+                         displayName="Unresolved file reference"
+                         groupName="Vento"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="org.js.vento.plugin.inspections.UnresolvedFileReferenceInspection"/>
+
     </extensions>
 
     <actions>

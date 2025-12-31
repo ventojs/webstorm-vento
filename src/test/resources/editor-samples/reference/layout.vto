@@ -3,7 +3,7 @@
 <h1>Hello World</h1>
 {{ /layout }}
 
-{{ layout "section.vto" {department: "Marketing", foo:true} }}
+{{ layout "page.vto" {department: "Marketing", foo:true} }}
     {{- slot header |> toUpperCase }}
         <h1>Section 1</h1>
     {{ /slot -}}

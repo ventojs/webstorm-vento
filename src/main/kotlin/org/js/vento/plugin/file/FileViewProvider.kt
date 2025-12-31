@@ -101,7 +101,7 @@ class FileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Configurab
             ConcurrentHashMap<String, TemplateDataElementType>()
 
         private fun getTemplateDataElementType(lang: Language): TemplateDataElementType {
-            val result = TEMPLATE_DATA_TO_LANG.get(lang.getID())
+            val result = TEMPLATE_DATA_TO_LANG[lang.id]
 
             if (result != null) return result
             val created: TemplateDataElementType =
