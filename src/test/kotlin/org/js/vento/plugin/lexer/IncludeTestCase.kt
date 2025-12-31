@@ -13,9 +13,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "include",
-                "\"",
-                "myfile.vto",
-                "\"",
+                "\"myfile.vto\"",
                 "}}",
             ),
         )
@@ -27,9 +25,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "include",
-                "\"",
-                "myfile.vto",
-                "\"",
+                "\"myfile.vto\"",
                 "|>",
                 "toUpperCase",
                 "}}",
@@ -43,9 +39,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "include",
-                "\"",
-                "myfile.vto",
-                "\"",
+                "\"myfile.vto\"",
                 "{",
                 "salutation",
                 ":",
@@ -68,9 +62,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "include",
-                "\"",
-                "myfile.vto",
-                "\"",
+                "\"myfile.vto\"",
                 "{",
                 "salutation",
                 ":",
@@ -91,9 +83,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf(
                 "{{",
                 "include",
-                "\"",
-                "myfile.vto",
-                "\"",
+                "\"myfile.vto\"",
                 "|>",
                 "toUpperCase",
                 "{",
