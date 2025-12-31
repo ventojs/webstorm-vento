@@ -14,7 +14,7 @@ fun parseInclude(builder: PsiBuilder) {
     when (builder.tokenType) {
         LexerTokens.STRING -> parseString(builder)
         LexerTokens.FILE -> expect(builder, LexerTokens.FILE, "Expected filepath")
-        else ->parseStrictJavaScriptExpression(builder)
+        else -> parseStrictJavaScriptExpression(builder)
     }
     if (nextTokenIs(builder, LexerTokens.BRACE, "{")) parseJsDataObject(builder)
     parsePipe(builder)
