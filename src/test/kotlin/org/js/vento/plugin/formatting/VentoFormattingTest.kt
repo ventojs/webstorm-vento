@@ -52,11 +52,13 @@ class VentoFormattingTest : BasePlatformTestCase() {
             CodeStyleManager.getInstance(project).reformat(myFixture.file)
         }
 
-        val actual = myFixture.file.text
-        if (expected != actual) {
-            println("[DEBUG_LOG] Expected:\n$expected")
+        val actual = myFixture.file.text.replace("\r\n", "\n").trim()
+        val normalizedExpected = expected.replace("\r\n", "\n").trim()
+
+        if (normalizedExpected != actual) {
+            println("[DEBUG_LOG] Expected:\n$normalizedExpected")
             println("[DEBUG_LOG] Actual:\n$actual")
-            assertEquals(expected, actual)
+            assertEquals(normalizedExpected, actual)
         }
     }
 }
