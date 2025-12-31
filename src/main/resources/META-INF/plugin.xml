@@ -62,5 +62,10 @@
             <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta SLASH"/>
             <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta SLASH"/>
         </action>
+
+        <action id="Vento.CreateFile"
+                class="org.js.vento.plugin.actions.CreateVentoFileAction">
+            <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewGroup"/>
+        </action>
     </actions>
 </idea-plugin>

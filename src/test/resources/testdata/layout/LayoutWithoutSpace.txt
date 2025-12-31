@@ -1,0 +1,7 @@
+VentoFile:a.vto(0,24)
+  Element: VENTO_ELEMENT(0,24)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: LAYOUT_ELEMENT(2,22)
+      PsiElement(LAYOUT_KEY_TOKEN)(' layout')(2,9)
+      PsiElement(FILE_TOKEN)(' "myfile.vto"')(9,22)
+    PsiElement(VBLOCK_CLOSE_TOKEN)('}}')(22,24)
