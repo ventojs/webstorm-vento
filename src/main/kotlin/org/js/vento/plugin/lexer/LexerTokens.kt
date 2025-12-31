@@ -6,6 +6,7 @@
 package org.js.vento.plugin.lexer
 
 import com.intellij.psi.tree.IElementType
+import com.intellij.psi.tree.TokenSet
 
 /**
  * Defines token and element types for the Vento language.
@@ -220,4 +221,8 @@ object LexerTokens {
 
     @JvmField
     val INSTANCEOF = LexerToken("INSTANCEOF")
+
+    @JvmField
+    val TAGS: TokenSet =
+        TokenSet.create(VBLOCK_OPEN, VBLOCK_CLOSE, JSBLOCK_OPEN, JSBLOCK_CLOSE, COMMENT_START, COMMENT_END)
 }

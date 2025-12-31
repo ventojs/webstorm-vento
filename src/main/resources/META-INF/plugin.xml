@@ -17,6 +17,7 @@
     <depends>com.intellij.modules.json</depends>
     <depends>com.intellij.modules.lang</depends>
     <depends>com.intellij.modules.xml</depends>
+    <depends>com.intellij.modules.ultimate</depends>
     <depends>JavaScript</depends>
 
     <extensions defaultExtensionNs="com.intellij">
@@ -49,7 +50,7 @@
         <completion.contributor language="HTML" implementationClass="org.js.vento.plugin.editor.CompletionContributor"/>
         <lang.braceMatcher language="Vento" implementationClass="org.js.vento.plugin.editor.VentoBraceMatcher"/>
         <lookup.charFilter implementation="org.js.vento.plugin.editor.VentoCharFilter"/>
-        <lang.formatter language="Vento" implementationClass="org.js.vento.plugin.formatting.VentoFormattingModelBuilder"/>
+        <lang.formatter language="Vento" implementationClass="org.js.vento.plugin.formatting.FormattingModelBuilder"/>
 
     </extensions>
 

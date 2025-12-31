@@ -7,30 +7,30 @@ flags:
   - draft
   - unlisted
 ---
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
-   {{# This is a blog layout #}}
-<style>
+  {{##}}
+  <style>
     .foo {
-        background: blue;
+      background: blue;
     }
-</style>
+  </style>
 </head>
 <body>
-    <header>
-        <h1>My Blog</h1>
-        <p>There are many cool things to read here</p>
-    </header>
-    <main>
-        <h2 style="accent-color: {{ color }}" >{{ title }}</h2>
-        <section>
-            {{ content }}
-        </section>
-    </main>
-    <footer id="{{ footerId }}">
-        Copyright (c) {{ new Date().getFullYear() }} -- All rights reserved.
-    </footer>
+  <header>
+    <h1>My Blog</h1>
+    <p>There are many cool things to read here</p>
+  </header>
+  <main>
+    <h2 style="accent-color: {{ color }}">{{ title }}</h2>
+    <section>
+      {{ content }}
+    </section>
+  </main>
+  <footer id="{{ footerId }}">
+    Copyright (c) {{ new Date().getFullYear() }} -- All rights reserved.
+  </footer>
 </body>
 </html>
 
