@@ -52,7 +52,10 @@ class VentoFormattingTest : BasePlatformTestCase() {
             CodeStyleManager.getInstance(project).reformat(myFixture.file)
         }
 
-        val actual = myFixture.file.text.replace("\r\n", "\n").trim()
+        val actual =
+            myFixture.file.text
+                .replace("\r\n", "\n")
+                .trim()
         val normalizedExpected = expected.replace("\r\n", "\n").trim()
 
         if (normalizedExpected != actual) {
