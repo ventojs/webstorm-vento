@@ -17,7 +17,9 @@ INCLUDE = "include"
 
     {WHITESPACE} {  }
 
-    \"|\'|` {pushbackall(); enter(STRING); }
+    \"|\' {pushbackall(); enter(FILE); }
+
+    \` {pushbackall(); enter(STRING); }
 
     \{ { pushbackall(); enter(EXPRESSION); }
 

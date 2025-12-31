@@ -40,6 +40,7 @@
         <lang.psiStructureViewFactory language="Vento" implementationClass="org.js.vento.plugin.structure.StructureViewFactory"/>
         <lang.ast.factory language="Vento" implementationClass="org.js.vento.plugin.lexer.AstFactory"/>
         <multiHostInjector implementation="org.js.vento.plugin.parser.injectors.ContextualJavaScriptInjector"/>
+        <psi.referenceContributor language="Vento" implementation="org.js.vento.plugin.references.VentoFileReferenceContributor"/>
 
         <!-- Editor features -->
         <typedHandler implementation="org.js.vento.plugin.editor.VentoTypedHandler"/>
