@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.5.0](https://github.com/ventojs/webstorm-vento/compare/v0.4.0...v0.5.0) (2025-12-13)
+
+
+### Features
+
+* **parser:** add support for `fragment` keyword ([#52](https://github.com/ventojs/webstorm-vento/issues/52)) ([#165](https://github.com/ventojs/webstorm-vento/issues/165)) ([e6d6bb5](https://github.com/ventojs/webstorm-vento/commit/e6d6bb5194afd907071d60da046e4997f289ed31))
+* **parser:** add support for frontmatter parsing and highlighting ([#100](https://github.com/ventojs/webstorm-vento/issues/100)) ([#158](https://github.com/ventojs/webstorm-vento/issues/158)) ([9d50a6f](https://github.com/ventojs/webstorm-vento/commit/9d50a6f336c3d55a58904544c7f581f4521d24c3))
+* **settings:** add frontmatter highlighting setting ([#162](https://github.com/ventojs/webstorm-vento/issues/162)) ([e0590b2](https://github.com/ventojs/webstorm-vento/commit/e0590b26ea129c6cc737836a2c2f1e63f97973c7))
+
+
+### Bug Fixes
+
+* **docs:** update README with front-matter and fragment support details ([#168](https://github.com/ventojs/webstorm-vento/issues/168)) ([fc62390](https://github.com/ventojs/webstorm-vento/commit/fc623907cf8394cec1cee139b14f69118d30c2e8))
+
 ## [0.4.0](https://github.com/ventojs/webstorm-vento/compare/v0.3.0...v0.4.0) (2025-12-02)
 
 

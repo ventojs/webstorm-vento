@@ -12,7 +12,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     {WHITESPACE} {  }
 
-    [\"][.]?[/]?.*[\"] / {WHITESPACE} {
+    [\"][.]?[/]?[^{}]*[\"] / {WHITESPACE} | {OWS}"}}" | " {" {
           leave();
           return LexerTokens.FILE;
       }

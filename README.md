@@ -20,6 +20,7 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
     <li>auto-completion</li>
     <li>support for front-matter</li>
     <li>support for the fragment plugin</li>
+    <li>formatting</li>
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
 
@@ -50,9 +51,10 @@ IntelliJ Ultimate and WebStorm IDEs.
 * auto-completion (experimental and needs improvement)
 * front-matter support (disableable in settings if not wanted)
 * fragments support
+* formatting (basic indenting support)
 
-#### Planned
-* Formatting
+[//]: # (#### Planned)
+
 
 > [!IMPORTANT]
 > ### Note to plugin developers:

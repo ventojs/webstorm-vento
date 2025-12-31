@@ -141,4 +141,18 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
     }
+
+    fun `test layout with missing space`() {
+        lexAndTest(
+            """
+            {{ layout "myfile.vto"}}
+            """.trimIndent(),
+            arrayOf(
+                "{{",
+                "layout",
+                "\"myfile.vto\"",
+                "}}",
+            ),
+        )
+    }
 }
