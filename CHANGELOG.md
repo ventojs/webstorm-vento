@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/ventojs/webstorm-vento/compare/v0.5.0...v0.6.0) (2025-12-31)
+
+
+### Features
+
+* **editing:** introduce navigation to file for `layout` and `include` elements ([#180](https://github.com/ventojs/webstorm-vento/issues/180)) ([#173](https://github.com/ventojs/webstorm-vento/issues/173)) ([d75b805](https://github.com/ventojs/webstorm-vento/commit/d75b8057e2d6d978b0ff51dd66f3609398083096))
+
+
+### Bug Fixes
+
+* **editing:** add action to create new Vento file from "New" menu ([#179](https://github.com/ventojs/webstorm-vento/issues/179)) ([#178](https://github.com/ventojs/webstorm-vento/issues/178)) ([6ce5d6d](https://github.com/ventojs/webstorm-vento/commit/6ce5d6daed9874fdc602f003931d91ff95e424e4))
+* **editing:** add refactoring support for Vento files ([#182](https://github.com/ventojs/webstorm-vento/issues/182)) ([721a311](https://github.com/ventojs/webstorm-vento/commit/721a311def76ff08b56c3af8857ad75ab7d877d3))
+* **editing:** fix formatting ([#177](https://github.com/ventojs/webstorm-vento/issues/177)) ([#148](https://github.com/ventojs/webstorm-vento/issues/148)) ([a0a3ae1](https://github.com/ventojs/webstorm-vento/commit/a0a3ae12e25655e8504d60078d12e3b87293f0dc))
+* **lexer:** support layout without space formatting ([#175](https://github.com/ventojs/webstorm-vento/issues/175)) ([#171](https://github.com/ventojs/webstorm-vento/issues/171)) ([02028a9](https://github.com/ventojs/webstorm-vento/commit/02028a99229c768a88e639cf3307f7f6f95ad932))
+
 ## [0.5.0](https://github.com/ventojs/webstorm-vento/compare/v0.4.0...v0.5.0) (2025-12-13)
 
 
