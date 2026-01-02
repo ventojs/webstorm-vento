@@ -110,12 +110,13 @@ open class InjectedJsCompletionProvider : CompletionProvider<CompletionParameter
         val element = file.findElementAt(offset) ?: return false
 
         // Check if we're inside a layout, include, or import element
-        val fileElement = PsiTreeUtil.getParentOfType(
-            element,
-            LayoutElement::class.java,
-            IncludeElement::class.java,
-            ImportElement::class.java
-        ) ?: return false
+        val fileElement =
+            PsiTreeUtil.getParentOfType(
+                element,
+                LayoutElement::class.java,
+                IncludeElement::class.java,
+                ImportElement::class.java,
+            ) ?: return false
 
         // Check if there's a FILE token in the element
         val fileToken = fileElement.node.findChildByType(LexerTokens.FILE) ?: return false

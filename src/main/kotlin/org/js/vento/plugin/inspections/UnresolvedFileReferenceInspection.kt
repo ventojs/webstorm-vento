@@ -22,12 +22,10 @@ import org.js.vento.plugin.lexer.LexerTokens
 class UnresolvedFileReferenceInspection : LocalInspectionTool() {
     override fun getShortName(): String = "UnresolvedFileReferenceInspection"
 
-    override fun getStaticDescription(): String {
-        return "Reports unresolved file references in Vento layout, include, and import elements"
-    }
+    override fun getStaticDescription(): String = "Reports unresolved file references in Vento layout, include, and import elements"
 
-    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor {
-        return object : PsiElementVisitor() {
+    override fun buildVisitor(holder: ProblemsHolder, isOnTheFly: Boolean): PsiElementVisitor =
+        object : PsiElementVisitor() {
             override fun visitElement(element: com.intellij.psi.PsiElement) {
                 super.visitElement(element)
 
@@ -38,7 +36,6 @@ class UnresolvedFileReferenceInspection : LocalInspectionTool() {
                 }
             }
         }
-    }
 
     private fun checkFileReference(element: com.intellij.psi.PsiElement, holder: ProblemsHolder) {
         // Find the FILE token which contains the file path
@@ -69,12 +66,13 @@ class UnresolvedFileReferenceInspection : LocalInspectionTool() {
         }
 
         if (!canResolve) {
-            val elementType = when (element) {
-                is LayoutElement -> "layout"
-                is IncludeElement -> "include"
-                is ImportElement -> "import"
-                else -> "file"
-            }
+            val elementType =
+                when (element) {
+                    is LayoutElement -> "layout"
+                    is IncludeElement -> "include"
+                    is ImportElement -> "import"
+                    else -> "file"
+                }
 
             // Calculate the offset of the FILE token relative to the element
             val fileTokenOffset = fileToken.startOffset - element.node.startOffset
@@ -84,16 +82,17 @@ class UnresolvedFileReferenceInspection : LocalInspectionTool() {
             if (quoteStartOffset == -1) return
 
             // Create text range for the path (excluding quotes) relative to the element
-            val textRange = TextRange(
-                fileTokenOffset + quoteStartOffset + 1,
-                fileTokenOffset + quoteStartOffset + 1 + path.length
-            )
+            val textRange =
+                TextRange(
+                    fileTokenOffset + quoteStartOffset + 1,
+                    fileTokenOffset + quoteStartOffset + 1 + path.length,
+                )
 
             holder.registerProblem(
                 element,
                 "Cannot resolve $elementType file '$path'",
                 ProblemHighlightType.WARNING,
-                textRange
+                textRange,
             )
         }
     }
