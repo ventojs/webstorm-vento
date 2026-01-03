@@ -81,20 +81,18 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
 
+        // Ensure consistent indent options regardless of environment
+        val settings = CodeStyleSettingsManager.getSettings(project)
+        val indentOptions = settings.getIndentOptions(VentoFileType)
+        indentOptions.INDENT_SIZE = 4
+        indentOptions.CONTINUATION_INDENT_SIZE = 4
+        indentOptions.TAB_SIZE = 4
+        indentOptions.USE_TAB_CHARACTER = false
+
         WriteCommandAction.runWriteCommandAction(project) {
             CodeStyleManager.getInstance(project).reformat(myFixture.file)
         }
 
-        val actual =
-            myFixture.file.text
-                .replace("\r\n", "\n")
-                .trim()
-        val normalizedExpected = expected.replace("\r\n", "\n").trim()
-
-        if (normalizedExpected != actual) {
-            println("[DEBUG_LOG] Expected:\n$normalizedExpected")
-            println("[DEBUG_LOG] Actual:\n$actual")
-            assertEquals(normalizedExpected, actual)
-        }
+        myFixture.checkResult(expected)
     }
 }
