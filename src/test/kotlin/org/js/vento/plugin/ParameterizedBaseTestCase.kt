@@ -6,6 +6,7 @@
 package org.js.vento.plugin
 
 import com.intellij.testFramework.ParsingTestCase
+import org.js.vento.plugin.settings.Settings
 import org.junit.Ignore
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
@@ -29,6 +30,7 @@ abstract class ParameterizedBaseTestCase(debug: Boolean = false) :
     @BeforeEach
     fun setUpTest() {
         setUp()
+        project.registerService(Settings::class.java, Settings(project))
         this.name = testName
     }
 

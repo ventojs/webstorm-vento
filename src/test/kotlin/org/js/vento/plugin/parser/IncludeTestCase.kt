@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class IncludeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class IncludeTestCase : ParsingTestCase() {
     fun testIncludeFilenameString() = doCodeTest("""{{ include "filename.vto" }}""".trimIndent())
 
     fun testIncludeFilenameVariable() = doCodeTest("""{{ include filename }}""".trimIndent())
