@@ -1,14 +1,14 @@
 
-{{ import { foo } from "./file.vto" }}
-{{ import foo  from "baz" }}
-{{ import { foo as f, bar,    _,	$ } from "./afile.vto" }}
-{{ import foo from "./file.vento" }}
+{{ import { foo } from "./util.vto" }}
+{{ import foo  from "util.vto" }}
+{{ import { foo as f, bar,    _,	$ } from "./util.vto" }}
+{{ import foo from "./util.vto" }}
 
 <!-- ERRORS -->
 {{ import {foo  from "./file.vto" }}
-{{ import from "./file.vto" }}
-{{ import foo  "./file.vto" }}
-{{ import foo fro "./file.vto" }}
+{{ import from "./util.vto" }}
+{{ import foo  "./util.vto" }}
+{{ import foo fro "./util.vto" }}
 {{ import foo from }}
 {{ import foo from "./file.vto }}
 
