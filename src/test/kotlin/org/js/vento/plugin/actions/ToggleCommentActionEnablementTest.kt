@@ -10,7 +10,9 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.testFramework.TestActionEvent
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
+import org.junit.Ignore
 
+@Ignore("This test only runs locally, not in CI/GitHub workflows")
 class ToggleCommentActionEnablementTest : BasePlatformTestCase() {
     fun testActionIsDisabledInHtmlBlock() {
         myFixture.configureByText(VentoFileType, "<div><caret></div>")
