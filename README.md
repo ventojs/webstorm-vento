@@ -22,6 +22,7 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
     <li>support for the fragment plugin</li>
     <li>formatting</li>
     <li>filepath auto-completion and validity checking</li>
+    <li>comment toggling</li>
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
 
@@ -54,6 +55,7 @@ IntelliJ Ultimate and WebStorm IDEs.
 * fragments support
 * formatting (basic indenting support)
 * filepath auto-completion and validity verification for layout, include, and import blocks
+* comment toggling vento blocks. Use ` ⌥`+`⇧`+`⌘`+`/` on OSX, or `⌥`+`⇧`+`ctrl`+`/` on Windows.
 
 [//]: # (#### Planned)
 
