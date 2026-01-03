@@ -41,6 +41,8 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
                 ParserElements.VENTO_CLOSE_ELEMENTS.contains(type) ||
                 type == ParserElements.ELSE_ELEMENT ||
                 type == ParserElements.ELSEIF_ELEMENT ||
+                type == LexerTokens.ELSE_KEY ||
+                type == LexerTokens.ELSEIF_KEY ||
                 type == LexerTokens.SET_CLOSE_KEY ||
                 type == LexerTokens.IF_CLOSE_KEY ||
                 type == LexerTokens.FOR_CLOSE_KEY ||
@@ -66,6 +68,9 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
                 if (text.contains("/slot")) return ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT
                 if (text.contains("/echo")) return ParserElements.ECHO_CLOSE_ELEMENT
                 if (text.contains("/function")) return ParserElements.FUNCTION_CLOSE_ELEMENT
+
+                if (text.contains("else if") || text.contains("elseif")) return ParserElements.ELSEIF_ELEMENT
+                if (text.contains("else")) return ParserElements.ELSE_ELEMENT
 
                 if (text.contains("set ")) return ParserElements.SET_ELEMENT
                 if (text.contains("if ")) return ParserElements.IF_ELEMENT
@@ -114,7 +119,10 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
                 )
 
         fun isIntermediate(type: IElementType?): Boolean =
-            type == ParserElements.ELSE_ELEMENT || type == ParserElements.ELSEIF_ELEMENT
+            type == ParserElements.ELSE_ELEMENT ||
+                type == ParserElements.ELSEIF_ELEMENT ||
+                type == LexerTokens.ELSE_KEY ||
+                type == LexerTokens.ELSEIF_KEY
 
         fun applyVentoIndent(blocks: List<Block>): List<Block> {
             val result = mutableListOf<Block>()

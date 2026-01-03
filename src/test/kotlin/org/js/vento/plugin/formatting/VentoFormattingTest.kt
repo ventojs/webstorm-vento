@@ -112,6 +112,78 @@ class VentoFormattingTest : BasePlatformTestCase() {
         myFixture.checkResult(expected)
     }
 
+    fun testSimpleIf() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testSimpleIfElse() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ else }}
+            The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ else }}
+                The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testFullIfElse() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ else if !it.user.name }}
+            The user doesn't have name.s
+            {{ else }}
+            The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ else if !it.user.name }}
+                The user doesn't have name.s
+            {{ else }}
+                The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
     private fun configure() {
         // Ensure consistent indent options regardless of environment
         val settings = CodeStyleSettingsManager.getSettings(project)
