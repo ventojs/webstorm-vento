@@ -9,8 +9,7 @@ import com.intellij.testFramework.ParsingTestCase
 import org.js.vento.plugin.VentoParserDefinition
 import org.js.vento.plugin.settings.Settings
 
-open class ParsingTestCase(val path: String = "") :ParsingTestCase(path, "vto", VentoParserDefinition()) {
-
+open class ParsingTestCase(val path: String = "") : ParsingTestCase(path, "vto", VentoParserDefinition()) {
     override fun setUp() {
         super.setUp()
         project.registerService(Settings::class.java, Settings(project))

@@ -33,14 +33,14 @@ class HtmlHighlightToggleTest : BasePlatformTestCase() {
         // Open a Vento file
         myFixture.configureByText(
             VentoFileType,
-            "<div>{{ title }}</div>"
+            "<div>{{ title }}</div>",
         )
 
         val psiFile = myFixture.file
         val viewProvider = psiFile.viewProvider
         assertTrue("ViewProvider should be Vento FileViewProvider", viewProvider is FileViewProvider)
         val fileViewProvider = viewProvider as FileViewProvider
-        
+
         assertEquals("Default template data language should be HTML", HTMLLanguage.INSTANCE, fileViewProvider.templateDataLanguage)
 
         // Now toggle setting to disable HTML highlighting
@@ -52,8 +52,12 @@ class HtmlHighlightToggleTest : BasePlatformTestCase() {
         val newViewProvider = newPsiFile.viewProvider
         assertTrue("New ViewProvider should be Vento FileViewProvider", newViewProvider is FileViewProvider)
         val newFileViewProvider = newViewProvider as FileViewProvider
-        
-        assertEquals("Template data language should be Plain Text after disabling HTML highlighting", PlainTextLanguage.INSTANCE, newFileViewProvider.templateDataLanguage)
+
+        assertEquals(
+            "Template data language should be Plain Text after disabling HTML highlighting",
+            PlainTextLanguage.INSTANCE,
+            newFileViewProvider.templateDataLanguage,
+        )
 
         // Toggle back to enabled
         settings.isHtmlHighlightingEnabled = true
@@ -62,8 +66,12 @@ class HtmlHighlightToggleTest : BasePlatformTestCase() {
         val reEnabledPsiFile = myFixture.file
         val reEnabledViewProvider = reEnabledPsiFile.viewProvider
         val reEnabledFileViewProvider = reEnabledViewProvider as FileViewProvider
-        
-        assertEquals("Template data language should be HTML again after re-enabling", HTMLLanguage.INSTANCE, reEnabledFileViewProvider.templateDataLanguage)
+
+        assertEquals(
+            "Template data language should be HTML again after re-enabling",
+            HTMLLanguage.INSTANCE,
+            reEnabledFileViewProvider.templateDataLanguage,
+        )
     }
 
     fun testAssociatedFileTypeRespectsSettings() {
@@ -88,10 +96,14 @@ class HtmlHighlightToggleTest : BasePlatformTestCase() {
         val virtualFile = myFixture.configureByText("test.vto", "console.log('hello')").virtualFile
 
         // Set explicit mapping to JavaScript
-        val jsLanguage = com.intellij.lang.Language.findLanguageByID("JavaScript")
+        val jsLanguage =
+            com.intellij.lang.Language
+                .findLanguageByID("JavaScript")
         if (jsLanguage != null) {
-            com.intellij.psi.templateLanguages.TemplateDataLanguageMappings.getInstance(project).setMapping(virtualFile, jsLanguage)
-            
+            com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
+                .getInstance(project)
+                .setMapping(virtualFile, jsLanguage)
+
             settings.isHtmlHighlightingEnabled = false
             pumpEvents()
 
