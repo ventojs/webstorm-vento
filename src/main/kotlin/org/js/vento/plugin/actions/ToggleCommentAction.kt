@@ -141,7 +141,7 @@ class ToggleCommentAction : AnAction() {
         while (current != null && current !is PsiFile) {
             if (current is JavaScriptExpressionElement) return true
             if (current is HtmlElement || current is JavaScriptElement) return false
-            if (current.language is VentoLanguage) return true
+            if (current.language is VentoLanguage && current !is HtmlElement && current !is JavaScriptElement) return true
             current = current.parent
         }
         return false
