@@ -14,7 +14,7 @@ internal class VentoTreeElement private constructor(psiElement: VentoPsiFile) :
         override fun getChildrenBase(): MutableCollection<StructureViewTreeElement?> =
             getStructureViewTreeElements(myElement)
 
-        override fun getPresentableText(): String = myElement.getName()
+        override fun getPresentableText(): String = myElement.name
 
         override fun getIcon(open: Boolean): Icon? = myElement.getIcon(0)
 

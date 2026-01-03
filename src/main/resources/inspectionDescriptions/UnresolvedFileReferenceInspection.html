@@ -1,0 +1,17 @@
+<html>
+<body>
+<p>
+    Reports unresolved file references in Vento template files.
+</p>
+<p>
+    This inspection checks <code>layout</code>, <code>include</code>, and <code>import</code> elements
+    to ensure that the referenced files exist in the project.
+</p>
+<p><b>Examples:</b></p>
+<pre><code>
+  {{ layout "templates/base.vto" }}  // Warning if file doesn't exist
+  {{ include "partials/header.vto" }}  // Warning if file doesn't exist
+  {{ import { foo } from "utils.js" }}  // Warning if file doesn't exist
+</code></pre>
+</body>
+</html>
