@@ -143,4 +143,32 @@ object ParserElements {
 
     @JvmField
     val IF_CLOSE_ELEMENT: IElementType = ParserElement("IF_CLOSE_ELEMENT")
+
+    @JvmField
+    val VENTO_ELEMENTS =
+        com.intellij.psi.tree.TokenSet.create(
+            IF_ELEMENT,
+            FOR_ELEMENT,
+            SET_ELEMENT,
+            EXPORT_ELEMENT,
+            LAYOUT_ELEMENT,
+            FRAGMENT_ELEMENT,
+            LAYOUT_SLOT_ELEMENT,
+            ECHO_ELEMENT,
+            FUNCTION_ELEMENT,
+        )
+
+    @JvmField
+    val VENTO_CLOSE_ELEMENTS =
+        com.intellij.psi.tree.TokenSet.create(
+            IF_CLOSE_ELEMENT,
+            FOR_CLOSE_ELEMENT,
+            SET_CLOSE_ELEMENT,
+            EXPORT_CLOSE_ELEMENT,
+            LAYOUT_CLOSE_ELEMENT,
+            FRAGMENT_CLOSE_ELEMENT,
+            LAYOUT_SLOT_CLOSE_ELEMENT,
+            ECHO_CLOSE_ELEMENT,
+            FUNCTION_CLOSE_ELEMENT,
+        )
 }

@@ -9,9 +9,8 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
-import org.junit.Ignore
 
-@Ignore("This test only runs locally, not in CI/GitHub workflows")
+// @Ignore("This test only runs locally, not in CI/GitHub workflows")
 class VentoFormattingTest : BasePlatformTestCase() {
     fun testIndentBlock() {
         val input =
@@ -36,16 +35,50 @@ class VentoFormattingTest : BasePlatformTestCase() {
             <div>
                 <div>
                     {{set foo }}
-                    <div>
-                        <div>Hello</div>
-                        {{ if foo }}
-                        <div>{{ content }}</div>
-                        {{ /if }}
-                        <div>Hello</div>
-                    </div>
+                        <div>
+                            <div>Hello</div>
+                            {{ if foo }}
+                                <div>{{ content }}</div>
+                            {{ /if }}
+                            <div>Hello</div>
+                        </div>
                     {{ /set }}
                 </div>
             </div>
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+
+        WriteCommandAction.runWriteCommandAction(project) {
+            CodeStyleManager.getInstance(project).reformat(myFixture.file)
+        }
+
+        val actual =
+            myFixture.file.text
+                .replace("\r\n", "\n")
+                .trim()
+        val normalizedExpected = expected.replace("\r\n", "\n").trim()
+
+        if (normalizedExpected != actual) {
+            println("[DEBUG_LOG] Expected:\n$normalizedExpected")
+            println("[DEBUG_LOG] Actual:\n$actual")
+            assertEquals(normalizedExpected, actual)
+        }
+    }
+
+    fun testIndentHtmlInsideIf() {
+        val input =
+            """
+            {{ if foo }}
+            <p>hello</p>
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if foo }}
+                <p>hello</p>
+            {{ /if }}
             """.trimIndent()
 
         myFixture.configureByText(VentoFileType, input)
