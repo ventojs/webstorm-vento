@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class CommentParsingTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class CommentParsingTestCase : ParsingTestCase() {
     fun testSimpleComment() {
         val code = "{{# This is a comment #}}"
         doCodeTest(code)
