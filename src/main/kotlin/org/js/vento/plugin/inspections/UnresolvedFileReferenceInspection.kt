@@ -20,6 +20,12 @@ import org.js.vento.plugin.lexer.LexerTokens
  * Shows a warning when a referenced file cannot be found.
  */
 class UnresolvedFileReferenceInspection : LocalInspectionTool() {
+    companion object {
+        private val LOG =
+            com.intellij.openapi.diagnostic.Logger
+                .getInstance(UnresolvedFileReferenceInspection::class.java)
+    }
+
     override fun getShortName(): String = "UnresolvedFileReferenceInspection"
 
     override fun getStaticDescription(): String = "Reports unresolved file references in Vento layout, include, and import elements"
@@ -62,7 +68,7 @@ class UnresolvedFileReferenceInspection : LocalInspectionTool() {
                 canResolve = true
             }
         } catch (e: Exception) {
-            // Ignore resolution errors
+            LOG.debug("Error resolving file reference: $path", e)
         }
 
         if (!canResolve) {
