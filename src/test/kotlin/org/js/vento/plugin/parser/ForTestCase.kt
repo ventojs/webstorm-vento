@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class ForTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class ForTestCase : ParsingTestCase() {
     fun testSimpleFor() {
         val code = "{{ for item of items }}"
         doCodeTest(code)
