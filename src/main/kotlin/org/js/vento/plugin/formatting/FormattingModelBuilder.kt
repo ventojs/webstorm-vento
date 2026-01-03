@@ -20,7 +20,6 @@ import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.formatter.DocumentBasedFormattingModel
 import com.intellij.psi.formatter.FormattingDocumentModelImpl
 import com.intellij.psi.formatter.common.AbstractBlock
-import com.intellij.psi.formatter.xml.HtmlPolicy
 import com.intellij.psi.formatter.xml.SyntheticBlock
 import com.intellij.psi.templateLanguages.SimpleTemplateLanguageFormattingModelBuilder
 import com.intellij.psi.tree.IElementType
@@ -41,7 +40,7 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
     ): TemplateLanguageBlock {
         val documentModel: FormattingDocumentModelImpl =
             FormattingDocumentModelImpl.createOn(node.psi.containingFile)
-        val policy = HtmlPolicy(codeStyleSettings, documentModel)
+        val policy = VentoHtmlFormatter(codeStyleSettings, documentModel)
         return if (LexerTokens.TAGS.contains(node.elementType)) {
             VentoTagBlock(
                 node,
@@ -53,7 +52,7 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
                 policy,
             )
         } else {
-            HandlebarsBlock(node, wrap, alignment, this, codeStyleSettings, foreignChildren, policy)
+            VentoBlock(node, wrap, alignment, this, codeStyleSettings, foreignChildren, policy)
         }
     }
 
@@ -69,7 +68,7 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
             rootBlock = getRootBlock(file, file.viewProvider, formattingContext.codeStyleSettings)
         }
         return DocumentBasedFormattingModel(
-            rootBlock,
+            VentoSubBlockWrapper(rootBlock),
             formattingContext.project,
             formattingContext.codeStyleSettings,
             file.fileType,
@@ -86,8 +85,8 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
         blockFactory: TemplateLanguageBlockFactory,
         settings: CodeStyleSettings,
         foreignChildren: MutableList<DataLanguageBlockWrapper?>?,
-        htmlPolicy: HtmlPolicy,
-    ) : HandlebarsBlock(node, wrap, alignment, blockFactory, settings, foreignChildren, htmlPolicy) {
+        htmlPolicy: VentoHtmlFormatter,
+    ) : VentoBlock(node, wrap, alignment, blockFactory, settings, foreignChildren, htmlPolicy) {
         override fun getChildAttributes(newChildIndex: Int): ChildAttributes {
             if (newChildIndex > 0) {
                 val blocks = getSubBlocks()
@@ -107,16 +106,16 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
         override fun createChildWrap(child: ASTNode): Wrap? = null
     }
 
-    private open class HandlebarsBlock(
+    private open class VentoBlock(
         node: ASTNode,
         wrap: Wrap?,
         alignment: Alignment?,
         blockFactory: TemplateLanguageBlockFactory,
         settings: CodeStyleSettings,
         foreignChildren: MutableList<DataLanguageBlockWrapper?>?,
-        htmlPolicy: HtmlPolicy,
+        htmlPolicy: VentoHtmlFormatter,
     ) : TemplateLanguageBlock(node, wrap, alignment, blockFactory, settings, foreignChildren) {
-        protected val myHtmlPolicy: HtmlPolicy = htmlPolicy
+        protected val myHtmlPolicy: VentoHtmlFormatter = htmlPolicy
 
         override fun getIndent(): Indent? {
             // ignore whitespace
@@ -137,11 +136,15 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
             return Indent.getNoneIndent()
         }
 
+        override fun getSubBlocks(): List<Block> = VentoHtmlFormatter.applyVentoIndent(super.getSubBlocks())
+
         override fun getTemplateTextElementType(): IElementType = ParserElements.HTML_CONTENT
 
         override fun isRequiredRange(range: TextRange?): Boolean = false
 
-        override fun getChildAttributes(newChildIndex: Int): ChildAttributes = ChildAttributes(Indent.getNoneIndent(), null)
+        override fun getChildAttributes(newChildIndex: Int): ChildAttributes =
+//            VentoHtmlFormatter.getChildAttributes(this, newChildIndex)
+            super.getChildAttributes(newChildIndex)
 
         fun getForeignBlockParent(immediate: Boolean): DataLanguageBlockWrapper? {
             var foreignBlockParent: DataLanguageBlockWrapper? = null
@@ -151,7 +154,7 @@ class FormattingModelBuilder : TemplateLanguageFormattingModelBuilder() {
                 if (parent is DataLanguageBlockWrapper && parent.original !is SyntheticBlock) {
                     foreignBlockParent = parent
                     break
-                } else if (immediate && parent is HandlebarsBlock) {
+                } else if (immediate && parent is VentoBlock) {
                     break
                 }
                 parent = parent.parent
