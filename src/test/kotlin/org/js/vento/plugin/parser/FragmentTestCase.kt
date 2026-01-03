@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class FragmentTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class FragmentTestCase : ParsingTestCase() {
     fun testFragmentWithContent() {
         val code =
             """

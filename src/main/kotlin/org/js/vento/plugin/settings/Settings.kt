@@ -44,10 +44,24 @@ class Settings(private val project: Project) : PersistentStateComponent<Settings
         }
 
     /**
+     * Get whether HTML highlighting is enabled.
+     */
+    var isHtmlHighlightingEnabled: Boolean
+        get() = state.enableHtmlHighlighting
+        set(value) {
+            val changed = state.enableHtmlHighlighting != value
+            state.enableHtmlHighlighting = value
+            if (changed) {
+                project.messageBus.syncPublisher(SETTINGS_TOPIC).settingsChanged()
+            }
+        }
+
+    /**
      * State class to hold settings values.
      */
     class State {
         var enableFrontmatterHighlighting: Boolean = true
+        var enableHtmlHighlighting: Boolean = true
     }
 
     /**

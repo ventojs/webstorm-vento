@@ -6,11 +6,14 @@ import com.intellij.lang.Language
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.openapi.fileTypes.LanguageFileType
+import com.intellij.openapi.fileTypes.PlainTextLanguage
 import com.intellij.openapi.fileTypes.UnknownFileType
+import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.templateLanguages.TemplateLanguage
 import org.js.vento.plugin.VentoLanguage
+import org.js.vento.plugin.settings.Settings
 
 internal fun guessTemplateFileType(virtualFile: VirtualFile?): FileType? {
     val fileTypeManager = FileTypeManager.getInstance()
@@ -22,13 +25,28 @@ internal fun guessTemplateFileType(virtualFile: VirtualFile?): FileType? {
     return if (fileType === UnknownFileType.INSTANCE) null else fileType
 }
 
-internal fun guessTemplateLanguage(virtualFile: VirtualFile): Language {
+internal fun guessTemplateLanguage(
+    project: Project,
+    virtualFile: VirtualFile,
+): Language {
     val fileType =
         guessTemplateFileType(virtualFile) as? LanguageFileType
-            ?: return VentoLanguage.getDefaultTemplateLang().language
+    if (fileType == null) {
+        val settings = Settings.getInstance(project)
+        return if (settings.isHtmlHighlightingEnabled) {
+            VentoLanguage.getDefaultTemplateLang().language
+        } else {
+            PlainTextLanguage.INSTANCE
+        }
+    }
     val language = fileType.language
     return if (language is TemplateLanguage || language.isKindOf(VentoLanguage)) {
-        VentoLanguage.getDefaultTemplateLang().language
+        val settings = Settings.getInstance(project)
+        if (settings.isHtmlHighlightingEnabled) {
+            VentoLanguage.getDefaultTemplateLang().language
+        } else {
+            PlainTextLanguage.INSTANCE
+        }
     } else {
         language
     }
