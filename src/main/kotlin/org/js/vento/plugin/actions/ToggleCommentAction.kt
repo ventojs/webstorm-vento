@@ -12,7 +12,14 @@ import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import org.js.vento.plugin.file.VentoFileType
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
+import org.js.vento.plugin.BaseElementImpl
+import org.js.vento.plugin.HtmlElement
+import org.js.vento.plugin.JavaScriptElement
+import org.js.vento.plugin.JavaScriptExpressionElement
+import org.js.vento.plugin.VentoLanguage
 
 class ToggleCommentAction : AnAction() {
     override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
@@ -56,7 +63,22 @@ class ToggleCommentAction : AnAction() {
         val (textToComment, rangeStart, rangeEnd) = getTextToComment(editor) ?: return
 
         WriteCommandAction.runWriteCommandAction(project) {
-            val commentedText = "{{# $textToComment #}}"
+            val commentedText =
+                if (textToComment.startsWith("{{") && textToComment.endsWith("}}") && !textToComment.startsWith("{{#")) {
+                    val isTrimmingStart = textToComment.startsWith("{{-")
+                    val isTrimmingEnd = textToComment.endsWith("-}}")
+
+                    val startMarker = if (isTrimmingStart) "{{#-" else "{{#"
+                    val endMarker = if (isTrimmingEnd) "-#}}" else "#}}"
+
+                    val contentStart = if (isTrimmingStart) 3 else 2
+                    val contentEnd = if (isTrimmingEnd) textToComment.length - 3 else textToComment.length - 2
+                    val content = textToComment.substring(contentStart, contentEnd)
+
+                    "$startMarker$content$endMarker"
+                } else {
+                    "{{# $textToComment #}}"
+                }
             document.replaceString(rangeStart, rangeEnd, commentedText)
             selectionModel.setSelection(rangeStart, rangeStart + commentedText.length)
         }
@@ -78,37 +100,62 @@ class ToggleCommentAction : AnAction() {
     }
 
     private fun createLogicalSelection(editor: Editor): Triple<String, Int, Int>? {
+        val project = editor.project ?: return null
         val document = editor.document
         val cursorPos = editor.caretModel.offset
-        val text = document.text
+        val psiFile = PsiDocumentManager.getInstance(project).getPsiFile(document) ?: return null
 
-        // Strategy 1: Select the current line if it's not empty
-        val lineNumber = document.getLineNumber(cursorPos)
-        val lineStart = document.getLineStartOffset(lineNumber)
-        val lineEnd = document.getLineEndOffset(lineNumber)
-        val lineText = text.substring(lineStart, lineEnd).trim()
+        val elementAtCaret = psiFile.findElementAt(cursorPos)
+        val elementAtCaretBack = if (cursorPos > 0) psiFile.findElementAt(cursorPos - 1) else null
 
-        if (lineText.isNotEmpty()) {
-            // Find the actual content bounds (excluding leading/trailing whitespace)
-            val trimmedStart = lineStart + text.substring(lineStart, lineEnd).indexOfFirst { !it.isWhitespace() }
-            val trimmedEnd = lineStart + text.substring(lineStart, lineEnd).indexOfLast { !it.isWhitespace() } + 1
-            return Triple(text.substring(trimmedStart, trimmedEnd), trimmedStart, trimmedEnd)
+        val ventoBlock = findVentoBlock(elementAtCaret) ?: findVentoBlock(elementAtCaretBack)
+        if (ventoBlock != null) {
+            val range = ventoBlock.textRange
+            return Triple(ventoBlock.text, range.startOffset, range.endOffset)
         }
 
-        // Strategy 2: Select word around cursor if on a word
-        val wordBounds = findWordBounds(text, cursorPos)
-        if (wordBounds != null) {
-            val (wordStart, wordEnd) = wordBounds
-            return Triple(text.substring(wordStart, wordEnd), wordStart, wordEnd)
+        // Fallback to word or line selection only if we are in a Vento context
+        if (isVentoContext(elementAtCaret) || isVentoContext(elementAtCaretBack)) {
+            val text = document.text
+            // Strategy 1: Select word around cursor
+            val wordBounds = findWordBounds(text, cursorPos)
+            if (wordBounds != null) {
+                val (wordStart, wordEnd) = wordBounds
+                return Triple(text.substring(wordStart, wordEnd), wordStart, wordEnd)
+            }
+
+            // Strategy 2: Select logical block around cursor (between newlines with content)
+            val blockBounds = findLogicalBlock(text, cursorPos)
+            if (blockBounds != null) {
+                val (blockStart, blockEnd) = blockBounds
+                return Triple(text.substring(blockStart, blockEnd), blockStart, blockEnd)
+            }
         }
 
-        // Strategy 3: Select logical block around cursor (between newlines with content)
-        val blockBounds = findLogicalBlock(text, cursorPos)
-        if (blockBounds != null) {
-            val (blockStart, blockEnd) = blockBounds
-            return Triple(text.substring(blockStart, blockEnd), blockStart, blockEnd)
-        }
+        return null
+    }
 
+    private fun isVentoContext(element: PsiElement?): Boolean {
+        if (element == null) return false
+        var current: PsiElement? = element
+        while (current != null && current !is PsiFile) {
+            if (current is JavaScriptExpressionElement) return true
+            if (current is HtmlElement || current is JavaScriptElement) return false
+            if (current.language is VentoLanguage && current !is HtmlElement && current !is JavaScriptElement) return true
+            current = current.parent
+        }
+        return false
+    }
+
+    private fun findVentoBlock(element: PsiElement?): PsiElement? {
+        if (element == null) return null
+        var current: PsiElement? = element
+        while (current != null && current !is PsiFile) {
+            if (current is JavaScriptExpressionElement) return current.parent
+            if (current is HtmlElement || current is JavaScriptElement) return null
+            if (current is BaseElementImpl) return current
+            current = current.parent
+        }
         return null
     }
 
@@ -202,11 +249,24 @@ class ToggleCommentAction : AnAction() {
         // Extract uncommented text
         val uncommentedText =
             when {
-                commentText.startsWith("{{#-") && commentText.endsWith("-#}}") -> {
-                    commentText.substring(4, commentText.length - 4).trim()
-                }
                 commentText.startsWith("{{#") && commentText.endsWith("#}}") -> {
-                    commentText.substring(3, commentText.length - 3).trim()
+                    val isStartTrimming = commentText.startsWith("{{#-")
+                    val isEndTrimming = commentText.endsWith("-#}}")
+                    val contentStart = if (isStartTrimming) 4 else 3
+                    val contentEnd = if (isEndTrimming) commentText.length - 4 else commentText.length - 3
+                    val content = commentText.substring(contentStart, contentEnd)
+
+                    if (content.startsWith(" ") &&
+                        content.endsWith(" ") &&
+                        content.trim().startsWith("{{") &&
+                        content.trim().endsWith("}}")
+                    ) {
+                        content.trim()
+                    } else {
+                        val start = if (isStartTrimming) "{{-" else "{{"
+                        val end = if (isEndTrimming) "-}}" else "}}"
+                        "$start$content$end"
+                    }
                 }
                 else -> return
             }
@@ -219,91 +279,48 @@ class ToggleCommentAction : AnAction() {
 
     private fun findCommentAroundCursor(text: String, cursorPos: Int): Pair<Int, Int>? {
         // Look backwards for comment start
-        var start = cursorPos
-        while (start > 3) {
-            if (text.substring(maxOf(0, start - 3), minOf(text.length, start + 1)) == "{{#" ||
-                (start > 4 && text.substring(maxOf(0, start - 4), start) == "{{#-")
-            ) {
-                start = if (start > 4 && text.substring(start - 4, start) == "{{#-") start - 4 else start - 3
+        var start = -1
+        for (i in cursorPos downTo 0) {
+            if (i + 4 <= text.length && text.substring(i, i + 4) == "{{#-") {
+                start = i
                 break
             }
-            start--
+            if (i + 3 <= text.length && text.substring(i, i + 3) == "{{#") {
+                start = i
+                break
+            }
         }
+        if (start == -1) return null
 
         // Look forwards for the comment end
-        var end = cursorPos
-        while (end < text.length - 3) {
-            if (end + 3 <= text.length &&
-                text.substring(end, end + 3) == "#}}" ||
-                (end + 4 <= text.length && text.substring(end, end + 4) == "-#}}")
-            ) {
-                end += if (end + 3 <= text.length && text.substring(end, end + 3) == "#}}") 3 else 4
+        var end = -1
+        for (i in start until text.length) {
+            if (i + 4 <= text.length && text.substring(i, i + 4) == "-#}}") {
+                end = i + 4
                 break
             }
-            end++
-        }
-
-        // Verify we found a valid comment
-        if (start in 0..<end && end <= text.length) {
-            val commentText = text.substring(start, end)
-            return if ((commentText.startsWith("{{#-") && commentText.endsWith("-#}}")) ||
-                (commentText.startsWith("{{#") && commentText.endsWith("#}}"))
-            ) {
-                start to end
-            } else {
-                null
+            if (i + 3 <= text.length && text.substring(i, i + 3) == "#}}") {
+                end = i + 3
+                break
             }
         }
-        return null
+        if (end == -1 || end < cursorPos) return null
+
+        return start to end
     }
 
     private fun findCommentBounds(text: String, selStart: Int, selEnd: Int): Pair<Int, Int>? {
-        // Check if selection already includes the comment markers
+        val commentAtStart = findCommentAroundCursor(text, selStart)
+        if (commentAtStart != null && commentAtStart.second >= selEnd) {
+            return commentAtStart
+        }
+
+        // Check if selection already includes the comment markers exactly
         val selectedText = text.substring(selStart, selEnd)
-        if ((selectedText.startsWith("{{#-") && selectedText.endsWith("-#}}")) ||
-            (selectedText.startsWith("{{#") && selectedText.endsWith("#}}"))
+        if ((selectedText.startsWith("{{#") || selectedText.startsWith("{{#-")) &&
+            (selectedText.endsWith("#}}") || selectedText.endsWith("-#}}"))
         ) {
             return selStart to selEnd
-        }
-
-        // Try to expand the selection to include comment markers
-        val expandedStart = maxOf(0, selStart - 4)
-        val expandedEnd = minOf(text.length, selEnd + 4)
-
-        // Look for comment start before selection
-        var commentStart = selStart
-        for (i in expandedStart..selStart) {
-            if (i + 3 <= text.length && text.substring(i, i + 3) == "{{#") {
-                commentStart = i
-                break
-            }
-            if (i + 4 <= text.length && text.substring(i, i + 4) == "{{#-") {
-                commentStart = i
-                break
-            }
-        }
-
-        // Look for comment end after selection
-        var commentEnd = selEnd
-        for (i in selEnd..expandedEnd - 3) {
-            if (i + 3 <= text.length && text.substring(i, i + 3) == "#}}") {
-                commentEnd = i + 3
-                break
-            }
-            if (i + 4 <= text.length && text.substring(i, i + 4) == "-#}}") {
-                commentEnd = i + 4
-                break
-            }
-        }
-
-        // Verify we found a valid comment
-        if (commentStart < selStart && commentEnd > selEnd) {
-            val commentText = text.substring(commentStart, commentEnd)
-            if ((commentText.startsWith("{{#-") && commentText.endsWith("-#}}")) ||
-                (commentText.startsWith("{{#") && commentText.endsWith("#}}"))
-            ) {
-                return commentStart to commentEnd
-            }
         }
 
         return null
@@ -313,27 +330,58 @@ class ToggleCommentAction : AnAction() {
         val editor = e.getData(CommonDataKeys.EDITOR)
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
 
-        // Check if we're in a Vento file
-        val isVentoFile = psiFile?.fileType == VentoFileType
-
-        if (!isVentoFile || editor == null) {
+        if (editor == null || psiFile == null) {
             e.presentation.isEnabled = false
             return
         }
 
-        // Enable if we have a selection, can find a comment around the cursor, or can create logical selection
-        val hasSelection = editor.selectionModel.hasSelection()
-        val canUncomment = findCommentAroundCursor(editor.document.text, editor.caretModel.offset) != null
-        val canComment = hasSelection || getTextToComment(editor) != null
+        // Check if we're in a Vento file
+        val isVentoFile = psiFile.language is VentoLanguage || psiFile.viewProvider.baseLanguage is VentoLanguage
+        if (!isVentoFile) {
+            e.presentation.isEnabled = false
+            return
+        }
 
-        e.presentation.isEnabled = canUncomment || canComment
+        val offset = editor.caretModel.offset
+        val selectionModel = editor.selectionModel
 
-        // Update text based on the current state
-        e.presentation.text =
-            if (shouldUncomment(editor)) {
-                "Uncomment Vento Block"
-            } else {
-                "Comment Vento Block"
+        if (selectionModel.hasSelection()) {
+            val selectedText = selectionModel.selectedText ?: ""
+            // Enable if the selection is a Vento comment (for uncommenting)
+            if (findCommentBounds(editor.document.text, selectionModel.selectionStart, selectionModel.selectionEnd) != null) {
+                e.presentation.isEnabled = true
+                e.presentation.text = "Uncomment Vento Block"
+                return
             }
+
+            // Enable if the selection is a Vento block or if we are in a Vento context
+            val elementAtStart = psiFile.findElementAt(selectionModel.selectionStart)
+            val elementAtEnd = if (selectionModel.selectionEnd > 0) psiFile.findElementAt(selectionModel.selectionEnd - 1) else null
+
+            val isVentoSelection = isVentoContext(elementAtStart) || isVentoContext(elementAtEnd)
+            if (!isVentoSelection) {
+                e.presentation.isEnabled = false
+                return
+            }
+        } else {
+            val elementAtCaret = psiFile.findElementAt(offset)
+            val elementAtCaretBack = if (offset > 0) psiFile.findElementAt(offset - 1) else null
+
+            val isUncomment = findCommentAroundCursor(editor.document.text, offset) != null
+            if (isUncomment) {
+                e.presentation.isEnabled = true
+                e.presentation.text = "Uncomment Vento Block"
+                return
+            }
+
+            val isVentoContext = isVentoContext(elementAtCaret) || isVentoContext(elementAtCaretBack)
+            if (!isVentoContext) {
+                e.presentation.isEnabled = false
+                return
+            }
+        }
+
+        e.presentation.isEnabled = true
+        e.presentation.text = "Comment Vento Block"
     }
 }

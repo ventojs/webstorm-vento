@@ -559,6 +559,10 @@ tasks.test {
     exclude("**/FrontmatterHighlightToggleTest.class")
 }
 
+tasks.withType<Test> {
+    jvmArgs("-Xshare:off")
+}
+
 fun ext(name: String): String =
     rootProject.extensions[name] as? String
         ?: error("Property `$name` is not defined")
