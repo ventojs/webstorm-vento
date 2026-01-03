@@ -18,6 +18,8 @@ import com.intellij.openapi.util.NlsSafe
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.codeStyle.CodeStyleSettings
 import com.intellij.psi.formatter.xml.HtmlPolicy
+import com.intellij.psi.tree.IElementType
+import org.js.vento.plugin.lexer.LexerTokens
 import org.js.vento.plugin.parser.ParserElements
 
 /**
@@ -27,47 +29,100 @@ import org.js.vento.plugin.parser.ParserElements
 class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingDocumentModel) :
     HtmlPolicy(settings, documentModel) {
     companion object {
-        fun getVentoType(block: Block): com.intellij.psi.tree.IElementType? {
+        fun getVentoType(block: Block): IElementType? {
             val node = (block as? ASTBlock)?.node ?: return null
             return getVentoType(node)
         }
 
-        fun getVentoType(node: ASTNode?): com.intellij.psi.tree.IElementType? {
+        fun getVentoType(node: ASTNode?): IElementType? {
             if (node == null) return null
             val type = node.elementType
             if (ParserElements.VENTO_ELEMENTS.contains(type) ||
                 ParserElements.VENTO_CLOSE_ELEMENTS.contains(type) ||
                 type == ParserElements.ELSE_ELEMENT ||
-                type == ParserElements.ELSEIF_ELEMENT
+                type == ParserElements.ELSEIF_ELEMENT ||
+                type == LexerTokens.ELSE_KEY ||
+                type == LexerTokens.ELSEIF_KEY ||
+                type == LexerTokens.SET_CLOSE_KEY ||
+                type == LexerTokens.IF_CLOSE_KEY ||
+                type == LexerTokens.FOR_CLOSE_KEY ||
+                type == LexerTokens.EXPORT_CLOSE_KEY ||
+                type == LexerTokens.LAYOUT_CLOSE_KEY ||
+                type == LexerTokens.FRAGMENT_CLOSE_KEY ||
+                type == LexerTokens.LAYOUT_SLOT_CLOSE_KEY ||
+                type == LexerTokens.ECHO_CLOSE_KEY ||
+                type == LexerTokens.FUNCTION_CLOSE_KEY
             ) {
                 return type
             }
 
+            // Fallback for malformed blocks
+            if (type == ParserElements.VENTO_BLOCK) {
+                val text = node.text
+                if (text.contains("/set")) return ParserElements.SET_CLOSE_ELEMENT
+                if (text.contains("/if")) return ParserElements.IF_CLOSE_ELEMENT
+                if (text.contains("/for")) return ParserElements.FOR_CLOSE_ELEMENT
+                if (text.contains("/export")) return ParserElements.EXPORT_CLOSE_ELEMENT
+                if (text.contains("/layout")) return ParserElements.LAYOUT_CLOSE_ELEMENT
+                if (text.contains("/fragment")) return ParserElements.FRAGMENT_CLOSE_ELEMENT
+                if (text.contains("/slot")) return ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT
+                if (text.contains("/echo")) return ParserElements.ECHO_CLOSE_ELEMENT
+                if (text.contains("/function")) return ParserElements.FUNCTION_CLOSE_ELEMENT
+
+                if (text.contains("else if") || text.contains("elseif")) return ParserElements.ELSEIF_ELEMENT
+                if (text.contains("else")) return ParserElements.ELSE_ELEMENT
+
+                if (text.contains("set ")) return ParserElements.SET_ELEMENT
+                if (text.contains("if ")) return ParserElements.IF_ELEMENT
+                if (text.contains("for ")) return ParserElements.FOR_ELEMENT
+            }
+
             var child = node.firstChildNode
             while (child != null) {
-                val childType = child.elementType
-                if (ParserElements.VENTO_ELEMENTS.contains(childType) ||
-                    ParserElements.VENTO_CLOSE_ELEMENTS.contains(childType) ||
-                    childType == ParserElements.ELSE_ELEMENT ||
-                    childType == ParserElements.ELSEIF_ELEMENT
-                ) {
-                    return childType
-                }
+                val found = getVentoType(child)
+                if (found != null) return found
                 child = child.treeNext
             }
             return null
         }
 
-        fun isOpening(type: com.intellij.psi.tree.IElementType?): Boolean = type != null && ParserElements.VENTO_ELEMENTS.contains(type)
+        fun isOpening(type: IElementType?, node: ASTNode?): Boolean {
+            if (type == null || !ParserElements.VENTO_ELEMENTS.contains(type)) return false
 
-        fun isClosing(type: com.intellij.psi.tree.IElementType?): Boolean =
+            // SET_ELEMENT is only considered opening if it doesn't have an EQUAL child
+            if (type == ParserElements.SET_ELEMENT) {
+                val targetNode =
+                    if (node?.elementType == ParserElements.SET_ELEMENT) {
+                        node
+                    } else {
+                        node?.findChildByType(ParserElements.SET_ELEMENT)
+                    }
+                return targetNode?.findChildByType(LexerTokens.EQUAL) == null
+            }
+
+            return true
+        }
+
+        fun isClosing(type: IElementType?): Boolean =
             type != null &&
-                ParserElements.VENTO_CLOSE_ELEMENTS.contains(
-                    type,
+                (
+                    ParserElements.VENTO_CLOSE_ELEMENTS.contains(type) ||
+                        type == LexerTokens.SET_CLOSE_KEY ||
+                        type == LexerTokens.IF_CLOSE_KEY ||
+                        type == LexerTokens.FOR_CLOSE_KEY ||
+                        type == LexerTokens.EXPORT_CLOSE_KEY ||
+                        type == LexerTokens.LAYOUT_CLOSE_KEY ||
+                        type == LexerTokens.FRAGMENT_CLOSE_KEY ||
+                        type == LexerTokens.LAYOUT_SLOT_CLOSE_KEY ||
+                        type == LexerTokens.ECHO_CLOSE_KEY ||
+                        type == LexerTokens.FUNCTION_CLOSE_KEY
                 )
 
-        fun isIntermediate(type: com.intellij.psi.tree.IElementType?): Boolean =
-            type == ParserElements.ELSE_ELEMENT || type == ParserElements.ELSEIF_ELEMENT
+        fun isIntermediate(type: IElementType?): Boolean =
+            type == ParserElements.ELSE_ELEMENT ||
+                type == ParserElements.ELSEIF_ELEMENT ||
+                type == LexerTokens.ELSE_KEY ||
+                type == LexerTokens.ELSEIF_KEY
 
         fun applyVentoIndent(blocks: List<Block>): List<Block> {
             val result = mutableListOf<Block>()
@@ -75,7 +130,7 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
             while (i < blocks.size) {
                 val block = blocks[i]
                 val type = getVentoType(block)
-                if (isOpening(type) || isIntermediate(type)) {
+                if (isOpening(type, (block as? ASTBlock)?.node) || isIntermediate(type)) {
                     result.add(VentoSubBlockWrapper(block))
                     i++
                     val group = mutableListOf<Block>()
@@ -83,7 +138,7 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
                     while (i < blocks.size) {
                         val subBlock = blocks[i]
                         val subType = getVentoType(subBlock)
-                        if (isOpening(subType)) balance++
+                        if (isOpening(subType, (subBlock as? ASTBlock)?.node)) balance++
                         if (isClosing(subType)) balance--
                         if (isIntermediate(subType) && balance == 1) break
                         if (balance == 0) break
@@ -91,7 +146,11 @@ class VentoHtmlFormatter(settings: CodeStyleSettings, documentModel: FormattingD
                         i++
                     }
                     if (group.isNotEmpty()) {
-                        result.add(VentoGroupBlock(group))
+                        if (type == ParserElements.SET_ELEMENT && balance > 0) {
+                            result.addAll(group)
+                        } else {
+                            result.add(VentoGroupBlock(group))
+                        }
                     }
                 } else {
                     result.add(VentoSubBlockWrapper(block))
