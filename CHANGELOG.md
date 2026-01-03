@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.6.1](https://github.com/ventojs/webstorm-vento/compare/v0.6.0...v0.6.1) (2026-01-03)
+
+
+### Bug Fixes
+
+* **editing:** enhance file reference handling ([#184](https://github.com/ventojs/webstorm-vento/issues/184)) ([#172](https://github.com/ventojs/webstorm-vento/issues/172)) ([9b6f8df](https://github.com/ventojs/webstorm-vento/commit/9b6f8dfe19cca841ada92c473416cb8f39866014))
+* **editing:** fix comment toggling for Vento blocks ([#187](https://github.com/ventojs/webstorm-vento/issues/187)) ([#155](https://github.com/ventojs/webstorm-vento/issues/155)) ([d72473c](https://github.com/ventojs/webstorm-vento/commit/d72473c7ce4929d8e0f7e2c28625ea83a65f33f8))
+* **editing:** fix indenting of nested content ([#186](https://github.com/ventojs/webstorm-vento/issues/186)) ([#183](https://github.com/ventojs/webstorm-vento/issues/183)) ([c320939](https://github.com/ventojs/webstorm-vento/commit/c32093960302807c822f1ea9ee0628d07161a6ff))
+
 ## [0.6.0](https://github.com/ventojs/webstorm-vento/compare/v0.5.0...v0.6.0) (2025-12-31)
 
 
