@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/ventojs/webstorm-vento/compare/v0.6.1...v0.6.2) (2026-01-04)
+
+
+### Bug Fixes
+
+* **editing:** fix formatting corner cases with `set` and `if` blocks ([#190](https://github.com/ventojs/webstorm-vento/issues/190)) ([71229af](https://github.com/ventojs/webstorm-vento/commit/71229aff5e1213367d22c04109db0d4790a2d977))
+
 ## [0.6.1](https://github.com/ventojs/webstorm-vento/compare/v0.6.0...v0.6.1) (2026-01-03)
 
 
