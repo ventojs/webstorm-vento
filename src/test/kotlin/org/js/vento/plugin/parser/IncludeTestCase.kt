@@ -19,6 +19,8 @@ class IncludeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
 
     fun testIncludeWithData() = doCodeTest("""{{ include "myfile.vto" {salutation: "Good bye"} }}""".trimIndent())
 
+    fun testIncludeWithDataRef() = doCodeTest("""{{ include "myfile.vto" data }}""".trimIndent())
+
     fun testIncludeWithDataAndPipe() =
         doCodeTest("""{{ include "myfile.vto" {salutation: "Good bye"} |> toUpperCase }}""".trimIndent())
 
