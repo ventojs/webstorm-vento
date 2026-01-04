@@ -50,19 +50,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
             """.trimIndent()
 
         myFixture.configureByText(VentoFileType, input)
-
-        // Ensure consistent indent options regardless of environment
-        val settings = CodeStyleSettingsManager.getSettings(project)
-        val indentOptions = settings.getIndentOptions(VentoFileType)
-        indentOptions.INDENT_SIZE = 4
-        indentOptions.CONTINUATION_INDENT_SIZE = 4
-        indentOptions.TAB_SIZE = 4
-        indentOptions.USE_TAB_CHARACTER = false
-
-        WriteCommandAction.runWriteCommandAction(project) {
-            CodeStyleManager.getInstance(project).reformat(myFixture.file)
-        }
-
+        configure()
         myFixture.checkResult(expected)
     }
 
@@ -82,7 +70,123 @@ class VentoFormattingTest : BasePlatformTestCase() {
             """.trimIndent()
 
         myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
 
+    fun testSetSingleLine() {
+        val input =
+            """
+            {{ set foo = "hello" }}
+                World
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ set foo = "hello" }}
+            World
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testSetUnpaired() {
+        val input =
+            """
+            {{ set foo }}
+            Hello
+            {{ /set }]
+            World
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ set foo }}
+                Hello
+            {{ /set }]
+            World
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testSimpleIf() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testSimpleIfElse() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ else }}
+            The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ else }}
+                The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    fun testFullIfElse() {
+        val input =
+            """
+            {{ if !it.user }}
+            No user found!
+            {{ else if !it.user.name }}
+            The user doesn't have name.s
+            {{ else }}
+            The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        val expected =
+            """
+            {{ if !it.user }}
+                No user found!
+            {{ else if !it.user.name }}
+                The user doesn't have name.s
+            {{ else }}
+                The user is {{ it.user.name }}.
+            {{ /if }}
+            """.trimIndent()
+
+        myFixture.configureByText(VentoFileType, input)
+        configure()
+        myFixture.checkResult(expected)
+    }
+
+    private fun configure() {
         // Ensure consistent indent options regardless of environment
         val settings = CodeStyleSettingsManager.getSettings(project)
         val indentOptions = settings.getIndentOptions(VentoFileType)
@@ -94,7 +198,5 @@ class VentoFormattingTest : BasePlatformTestCase() {
         WriteCommandAction.runWriteCommandAction(project) {
             CodeStyleManager.getInstance(project).reformat(myFixture.file)
         }
-
-        myFixture.checkResult(expected)
     }
 }
