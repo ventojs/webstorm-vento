@@ -112,7 +112,12 @@ object LexerTokens {
     @JvmField
     val FRAGMENT_CLOSE_KEY = LexerToken("FRAGMENT_CLOSE_KEY")
 
-    // Set tokens
+    @JvmField
+    val DEFAULT_KEY = LexerToken("DEFAULT_KEY")
+
+    @JvmField
+    val DEFAULT_CLOSE_KEY = LexerToken("DEFAULT_CLOSE_KEY")
+
     @JvmField
     val SET_CLOSE_KEY = LexerToken("SET_CLOSE_KEY")
 

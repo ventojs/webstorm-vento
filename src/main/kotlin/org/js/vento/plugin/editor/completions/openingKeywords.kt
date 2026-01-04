@@ -323,6 +323,50 @@ fun openingKeywords(result: CompletionResultSet) {
             priority,
         ),
     )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("default")
+                .withIcon(Vento.ICON)
+                .withTailText(" name }} content {{ /default }}")
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addVariable("name", ConstantNode("name"), true)
+                    template.addClosingBraceIfMissing(context)
+                    template.addTextSegment("\n")
+                    template.addEndVariable()
+                    template.addTextSegment("\n{{ /default }}")
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("default")
+                .withIcon(Vento.ICON)
+                .withTailText(" name = value }}", true)
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addVariable("name", ConstantNode("name"), true)
+                    template.addTextSegment(" = ")
+                    template.addVariable("value", ConstantNode("value"), true)
+                    template.addTextSegment(" ")
+                    template.addClosingBraceIfMissing(context)
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
 }
 
 private fun Template.addClosingBraceIfMissing(context: InsertionContext) {

@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,70)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ default myVar = {a: 1, b: true, c:{d:"hello"}} |> JSON.stringify }}')(0,70)
