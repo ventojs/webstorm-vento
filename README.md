@@ -64,6 +64,9 @@ IntelliJ Ultimate and WebStorm IDEs.
 * formatting (basic indenting support)
 * filepath auto-completion and validity verification for layout, include, and import blocks
 * comment toggling vento blocks. Use ` ⌥`+`⇧`+`⌘`+`/` on OSX, or `⌥`+`⇧`+`ctrl`+`/` on Windows.
+* support for destructured variables in `set` blocks in Vento 2.2
+* support for the `default` block in Vento 2.3
+* support for data references in `layout` and `include` blocks in Vento 2.3
 
 [//]: # (#### Planned)
 
