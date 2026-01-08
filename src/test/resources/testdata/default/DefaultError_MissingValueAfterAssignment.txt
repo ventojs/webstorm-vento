@@ -1,0 +1,10 @@
+VentoFile:a.vto(0,22)
+  Element: VENTO_ELEMENT(0,22)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: DEFAULT_ELEMENT(2,18)
+      PsiElement(DEFAULT_KEY_TOKEN)(' default')(2,10)
+      PsiElement(SYMBOL_TOKEN)(' myVar')(10,16)
+      PsiElement(EQUAL_TOKEN)(' =')(16,18)
+      PsiErrorElement:Expected expression after '='(18,18)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)('  }}')(18,22)

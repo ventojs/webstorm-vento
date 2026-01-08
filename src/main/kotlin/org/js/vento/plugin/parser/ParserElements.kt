@@ -71,6 +71,12 @@ object ParserElements {
     @JvmField
     val FUNCTION_BODY_ELEMENT: IElementType = ParserElement("FUNCTION_BODY_ELEMENT")
 
+    @JvmField
+    val DEFAULT_CLOSE_ELEMENT: IElementType = ParserElement("DEFAULT_CLOSE_ELEMENT")
+
+    @JvmField
+    val DEFAULT_ELEMENT: IElementType = ParserElement("DEFAULT_ELEMENT")
+
     // Set elements
     @JvmField
     val SET_CLOSE_ELEMENT: IElementType = ParserElement("SET_CLOSE_ELEMENT")

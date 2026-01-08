@@ -17,6 +17,7 @@ fun parseInclude(builder: PsiBuilder) {
         else -> parseStrictJavaScriptExpression(builder)
     }
     if (nextTokenIs(builder, LexerTokens.BRACE, "{")) parseJsDataObject(builder)
+    if (nextTokenIs(builder, LexerTokens.SYMBOL)) expect(builder, LexerTokens.SYMBOL, "Expected data reference")
     parsePipe(builder)
     closeOrError(builder, "syntax error: include 'path/to/file.js' | data | pipe")
     m.done(ParserElements.INCLUDE_ELEMENT)

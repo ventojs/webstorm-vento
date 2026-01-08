@@ -31,12 +31,15 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMA
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_CONTENT
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
+import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ELSEIF_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ELSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EQUAL
+import org.js.vento.plugin.lexer.LexerTokens.EXPAND
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.EXPORT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.FILE
@@ -113,6 +116,8 @@ open class SyntaxHighlighter : SyntaxHighlighterBase() {
                 COMMENT_CONTENT -> COMMENTED_CONTENT
                 COMMENT_END -> CBLOCK
                 COMMENT_START -> CBLOCK
+                DEFAULT_KEY -> KEYWORDS
+                DEFAULT_CLOSE_KEY -> KEYWORDS
                 DOT -> DOTS
                 ECHO_CLOSE_KEY -> VENTO_KEYWORDS
                 ECHO_KEY -> VENTO_KEYWORDS
@@ -121,6 +126,7 @@ open class SyntaxHighlighter : SyntaxHighlighterBase() {
                 EQUAL -> OPERATIONS
                 EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
                 EXPORT_KEY -> VENTO_KEYWORDS
+                EXPAND -> DOTS
                 FILE -> STRING
                 FOR_CLOSE_KEY -> VENTO_KEYWORDS
                 FOR_KEY -> VENTO_KEYWORDS

@@ -60,6 +60,14 @@ class LayoutTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testLayoutWithDataRef() {
+        val code =
+            """
+            {{ layout "myfile.vto" data }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     /**
      * @return path to test data file directory relative to root of this module.
      */

@@ -10,6 +10,6 @@
 
 {{ include "/my-file.vto" {salute: "Hello from include"} }}
 
-{{ include `${file}.vto` { name: name } }}
+{{ include `${file}.vto` data }}
 
 {{ include resolve({ path: "/my-file.vto" }) { name } }}

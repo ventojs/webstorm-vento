@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,62)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}')(0,62)

@@ -11,6 +11,8 @@ import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
+import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_CLOSE_KEY
+import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ELSEIF_KEY
@@ -116,6 +118,14 @@ class Parser : PsiParser {
         when (builder.tokenType) {
             ASYNC_KEY -> {
                 parseFunctionSignature(builder)
+            }
+
+            DEFAULT_KEY -> {
+                parseDefault(builder)
+            }
+
+            DEFAULT_CLOSE_KEY -> {
+                parseDefaultClose(builder)
             }
 
             ECHO_CLOSE_KEY -> {

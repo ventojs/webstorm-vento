@@ -101,4 +101,97 @@ class SetTestCase(name: String) : BaseLexerTestCase(name) {
                 "}}",
             ),
         )
+
+    fun `test set simple object destructuing`() =
+        lexAndTest(
+            "{{ set { a } = obj }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "a",
+                "}",
+                "=",
+                "obj",
+                "}}",
+            ),
+        )
+
+    fun `test set simple object destructuing #2`() =
+        lexAndTest(
+            "{{ set { a: a1, b: b1 } = obj }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "a",
+                ":",
+                "a1",
+                ",",
+                "b",
+                ":",
+                "b1",
+                "}",
+                "=",
+                "obj",
+                "}}",
+            ),
+        )
+
+    fun `test set object destructuing`() =
+        lexAndTest(
+            "{{ set { id, name: username } = { id: 23, name: \"Laura\" } }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "id",
+                ",",
+                "name",
+                ":",
+                "username",
+                "}",
+                "=",
+                "{",
+                "id",
+                ":",
+                "23",
+                ",",
+                "name",
+                ":",
+                "\"",
+                "Laura",
+                "\"",
+                "}",
+                "}}",
+            ),
+        )
+
+    fun `test set array destructuing`() =
+        lexAndTest(
+            "{{ set [one, two, ...other] = [1, 2, 3, 4] }}",
+            arrayOf(
+                "{{",
+                "set",
+                "[",
+                "one",
+                ",",
+                "two",
+                ",",
+                "...",
+                "other",
+                "]",
+                "=",
+                "[",
+                "1",
+                ",",
+                "2",
+                ",",
+                "3",
+                ",",
+                "4",
+                "]",
+                "}}",
+            ),
+        )
 }

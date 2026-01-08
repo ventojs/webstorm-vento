@@ -1,0 +1,5 @@
+HtmlFile:a.vto(0,43)
+  PsiElement(HTML_DOCUMENT)(0,0)
+    PsiElement(XML_PROLOG)(0,0)
+      <empty list>
+  PsiElement(VENTO_OUTER_TOKEN)('{{ default myVar = [{a:1,b:2},{c:3,d:4}] }}')(0,43)

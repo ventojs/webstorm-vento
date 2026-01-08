@@ -57,27 +57,26 @@ fun expect(
     message: String,
     expectMultipleTokens: Boolean = false,
     test: (text: String) -> Boolean = { true },
-): Boolean {
-    return if (builder.tokenType == expected) {
+): Boolean =
+    if (builder.tokenType == expected) {
         builder.tokenText?.let {
             if (!test(it)) builder.error("Unexpected token. found: '$it' ${builder.tokenType} ; expected: '$expected' ; $message")
         }
 
         builder.advanceLexer()
-        return if (expectMultipleTokens && builder.tokenType == expected) {
+        if (expectMultipleTokens && builder.tokenType == expected) {
             expect(builder, expected, message, true)
         } else {
             true
         }
     } else {
-        // TODO: not sure why I am only handling unknown tokens here. I should handl anything that is not expected
+        // TODO: not sure why I am only handling unknown tokens here. I should handle anything that is not expected
         if (builder.tokenType == LexerTokens.UNKNOWN) {
             builder.advanceLexer()
         }
         builder.error(message)
-        false
+        return false
     }
-}
 
 fun optional(
     builder: PsiBuilder,
@@ -85,8 +84,8 @@ fun optional(
     message: String,
     expectMultipleTokens: Boolean = false,
     test: (text: String) -> Boolean = { true },
-): Boolean {
-    return if (builder.tokenType == expected && test(builder.tokenText?.trim() ?: "")) {
+): Boolean =
+    if (builder.tokenType == expected && test(builder.tokenText?.trim() ?: "")) {
         builder.advanceLexer()
         return if (expectMultipleTokens && builder.tokenType == expected) {
             expect(builder, expected, message, true, test)
@@ -97,8 +96,6 @@ fun optional(
         if (builder.tokenType == LexerTokens.UNKNOWN) {
             builder.advanceLexer()
             builder.error(message)
-            return false
         }
         false
     }
-}
