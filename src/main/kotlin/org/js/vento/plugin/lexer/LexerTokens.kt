@@ -156,6 +156,9 @@ object LexerTokens {
     val DOT = LexerToken("DOT")
 
     @JvmField
+    val EXPAND = LexerToken("EXPAND")
+
+    @JvmField
     val COMMA = LexerToken("COMMA")
 
     @JvmField

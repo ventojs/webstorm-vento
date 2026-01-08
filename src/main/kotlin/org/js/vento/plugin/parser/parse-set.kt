@@ -7,14 +7,20 @@ package org.js.vento.plugin.parser
 
 import com.intellij.lang.PsiBuilder
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.lexer.LexerTokens.BRACE
+import org.js.vento.plugin.lexer.LexerTokens.COLON
+import org.js.vento.plugin.lexer.LexerTokens.COMMA
+import org.js.vento.plugin.lexer.LexerTokens.EQUAL
+import org.js.vento.plugin.lexer.LexerTokens.EXPAND
+import org.js.vento.plugin.lexer.LexerTokens.SYMBOL
 
 fun parsSet(builder: PsiBuilder) {
     val m = builder.mark()
 
     expect(builder, LexerTokens.SET_KEY, "Expected 'set' keyword")
-    expect(builder, LexerTokens.SYMBOL, "Expected identifier")
+    parseVariable(builder)
 
-    val hasEq = optional(builder, LexerTokens.EQUAL, "Expected '=' keyword")
+    val hasEq = optional(builder, EQUAL, "Expected '=' keyword")
     val hasExp =
         if (builder.tokenType == LexerTokens.ASYNC_KEY ||
             builder.tokenType == LexerTokens.FUNCTION_KEY ||
@@ -30,7 +36,7 @@ fun parsSet(builder: PsiBuilder) {
         } else if (builder.tokenType == LexerTokens.PARENTHESIS) {
             parseFunctionArguments(builder)
             expect(builder, LexerTokens.LAMBDA_ARROW, "Expected '=>'")
-            if (builder.tokenType == LexerTokens.BRACE) {
+            if (builder.tokenType == BRACE) {
                 parseFunctionBody(builder)
             } else {
                 parseJavaScriptExpression(builder)
@@ -48,6 +54,42 @@ fun parsSet(builder: PsiBuilder) {
     closeOrError(builder, "syntax error: set symbol | set symbol = expression")
 
     m.done(ParserElements.SET_ELEMENT)
+}
+
+private fun parseVariable(builder: PsiBuilder) {
+    if (nextTokenIs(builder, BRACE, "{")) {
+        expect(builder, BRACE, "Expected '{'") { it.trim() == "{" }
+        var error = false
+        while (!error && !builder.eof() && !nextTokenIs(builder, BRACE, "}")) {
+            if (nextTokenIs(builder, SYMBOL)) {
+                error = !expect(builder, SYMBOL, "Expected identifier")
+                if (nextTokenIs(builder, COLON)) {
+                    expect(builder, COLON, "Expected ':'")
+                    error = !expect(builder, SYMBOL, "Expected identifier")
+                }
+                if (nextTokenIs(builder, EQUAL)) {
+                    expect(builder, EQUAL, "Expected '='")
+                    error = !expect(builder, SYMBOL, "Expected identifier")
+                }
+                if (optional(builder, COMMA, "Expected ','")) {
+                    if (nextTokenIs(builder, SYMBOL)) {
+                        builder.error("expected ','")
+                    }
+                }
+            } else {
+                if (nextTokenIs(builder, EXPAND)) {
+                    expect(builder, EXPAND, "Expected '...'")
+                    error = !expect(builder, SYMBOL, "Expected identifier")
+                } else {
+                    error = true
+                }
+            }
+        }
+        if (error) builder.error("unable to parse set")
+        expect(builder, BRACE, "Expected '}'") { it.trim() == "}" }
+    } else {
+        expect(builder, SYMBOL, "Expected identifier")
+    }
 }
 
 fun parsSetClose(builder: PsiBuilder) {

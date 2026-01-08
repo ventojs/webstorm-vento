@@ -57,6 +57,7 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
                 Pair(SET, "SET"),
                 Pair(SET_BLOCK_MODE, "SET_BLOCK_MODE"),
                 Pair(SET_VALUE, "SET_VALUE"),
+                Pair(SET_DESTRUCTURE_VARS, "SET_DESTRUCTURE_VARS"),
                 Pair(SLOT, "SLOT"),
                 Pair(STRING, "STRING"),
                 Pair(STRING_BKTK, "STRING_BKTK"),

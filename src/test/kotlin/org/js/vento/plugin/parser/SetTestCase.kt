@@ -15,7 +15,7 @@ import org.js.vento.plugin.VentoParserDefinition
  * and various error conditions such as malformed tags, missing identifiers,
  * and invalid string escaping.
  */
-class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
     // Valid Cases
 
     /**
@@ -45,6 +45,13 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
             """.trimIndent()
         doCodeTest(code)
     }
+
+    fun testSetBlockWithSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a } = obj }}""")
+
+    fun testSetBlockWithDestructuredObjectVar() =
+        doCodeTest("""{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}""")
+
+    fun testSetBlockWithMissingComma() = doCodeTest("""{{ set { a, b, c d } = obj }}""")
 
     // Error Cases - Invalid Syntax
 
@@ -108,7 +115,7 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     /**
      * @return path to test data file directory relative to root of this module.
      */
-    override fun getTestDataPath(): String = "src/test/resources/testdata/set"
+    override fun getTestDataPath(): String = "src/test/resources/testdata/set/"
 
     override fun includeRanges(): Boolean = true
 }
