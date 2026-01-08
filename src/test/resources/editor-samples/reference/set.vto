@@ -14,7 +14,6 @@
 {{ set myVar = () => { return 'Hello World!' } }}
 
 {{ set { a } = obj }}
-{{ set { a, b, c d } = obj }}
 {{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}
 
 {{ set myVar = () => 'Hello World!' |> JSON.stringify }}
@@ -45,9 +44,15 @@
 <!-- ERRORS -->
 
 {{ set foo =  }}
-{{ set foo  "set" }}
 {{ set  =  "set" }}
 {{ se foo = "bar" }}
-{{ set myVar = /[Hh].*/.*[}]/ }}
+{{ set { a = obj }}
+{{ set { a, b, c d } = obj }}
+{{ set { a, b, . ..rest } = obj }}
+{{ set { a, b: b1 , c  cDefault, ...rest } = obj }}
+{{ set { a, b: b1 = , c = cDefault, ...rest } = obj }}
+{{ set { a, b: b 1  , c = cDefault, ...rest } = obj }}
 {{ set myVar = "Hello World of "vento\"!" }}
 {{ set myVar = JSON stringify(data) }}
+{{ set myVar = /[Hh].*/.*[}]/ }}
+{{ set foo  "set" }}

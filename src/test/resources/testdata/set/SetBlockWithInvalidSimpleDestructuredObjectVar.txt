@@ -1,0 +1,12 @@
+VentoFile:a.vto(0,20)
+  Element: VENTO_ELEMENT(0,20)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: SET_ELEMENT(2,17)
+      PsiElement(SET_KEY_TOKEN)(' set')(2,6)
+      PsiElement(BRACE_TOKEN)(' {')(6,8)
+      PsiElement(SYMBOL_TOKEN)(' a')(8,10)
+      PsiElement(EQUAL_TOKEN)('  =')(10,13)
+      PsiElement(SYMBOL_TOKEN)(' obj')(13,17)
+      PsiErrorElement:Expected ',' or '}'(17,17)
+        <empty list>
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(17,20)

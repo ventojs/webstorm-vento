@@ -48,8 +48,13 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
 
     fun testSetBlockWithSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a } = obj }}""")
 
+    fun testSetBlockWithInvalidSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a  = obj }}""")
+
     fun testSetBlockWithDestructuredObjectVar() =
         doCodeTest("""{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}""")
+
+    fun testSetBlockWithInvalidDestructuredObjectVar() =
+        doCodeTest("""{{ set { a, b: b1 bDefault, c = cDefault, ...rest } = obj }}""")
 
     fun testSetBlockWithMissingComma() = doCodeTest("""{{ set { a, b, c d } = obj }}""")
 

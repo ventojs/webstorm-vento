@@ -65,26 +65,32 @@ private fun parseVariable(builder: PsiBuilder) {
         expect(builder, BRACE, "Expected '{'") { it.trim() == "{" }
         var error = false
         while (!error && !builder.eof() && !nextTokenIs(builder, BRACE, "}")) {
-            if (nextTokenIs(builder, SYMBOL)) {
-                error = !expect(builder, SYMBOL, "Expected identifier")
-                if (nextTokenIs(builder, COLON)) {
-                    expect(builder, COLON, "Expected ':'")
+            when {
+                nextTokenIs(builder, SYMBOL) -> {
                     error = !expect(builder, SYMBOL, "Expected identifier")
-                }
-                if (nextTokenIs(builder, EQUAL)) {
-                    expect(builder, EQUAL, "Expected '='")
-                    error = !expect(builder, SYMBOL, "Expected identifier")
-                }
-                if (optional(builder, COMMA, "Expected ','")) {
-                    if (!nextTokenIs(builder, SYMBOL) && !nextTokenIs(builder, EXPAND)) {
-                        builder.error("',' should be followed by an identifier")
+                    if (nextTokenIs(builder, COLON)) {
+                        expect(builder, COLON, "Expected ':'")
+                        error = !expect(builder, SYMBOL, "Expected identifier")
+                    }
+                    if (nextTokenIs(builder, EQUAL)) {
+                        expect(builder, EQUAL, "Expected '='")
+                        error = !expect(builder, SYMBOL, "Expected identifier")
                     }
                 }
-            } else {
-                if (nextTokenIs(builder, EXPAND)) {
+
+                nextTokenIs(builder, EXPAND) -> {
                     expect(builder, EXPAND, "Expected '...'")
                     error = !expect(builder, SYMBOL, "Expected identifier")
-                } else {
+                }
+            }
+            if (optional(builder, COMMA, "Expected ','")) {
+                if (!nextTokenIs(builder, SYMBOL) && !nextTokenIs(builder, EXPAND)) {
+                    builder.error("no dangling ',' allowed")
+                    error = true
+                }
+            } else {
+                if (!nextTokenIs(builder, BRACE, "}")) {
+                    builder.error("Expected ',' or '}'")
                     error = true
                 }
             }

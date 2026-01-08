@@ -23,6 +23,14 @@ Provides support for the <a href="https://vento.js.org/">VentoJs</a> template en
     <li>formatting</li>
     <li>filepath auto-completion and validity checking</li>
     <li>comment toggling</li>
+    <li>
+        new features in Vento 2.2 & 2.3
+        <ol>
+            <li>destructured variables in `set` blocks</li>
+            <li>`default` block</li>
+            <li> data references in `layout` and `include` blocks</li>
+        </ol>
+    </li>
 </ol>
 For more information visit <a href="https://vento.js.org/">Vento</a>.
 
