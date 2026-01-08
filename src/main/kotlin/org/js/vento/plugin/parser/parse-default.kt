@@ -20,13 +20,7 @@ fun parseDefault(builder: PsiBuilder) {
             builder.tokenType == LexerTokens.FUNCTION_KEY ||
             (builder.tokenType == LexerTokens.PARENTHESIS && builder.rawLookup(1) == LexerTokens.FUNCTION_KEY)
         ) {
-            val iife = optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" }
-            val hasFunction = parseFunction(builder)
-            if (iife) {
-                expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
-                parseFunctionArguments(builder)
-            }
-            hasFunction
+            isFunctionOrIife(builder)
         } else if (builder.tokenType == LexerTokens.PARENTHESIS) {
             parseFunctionArguments(builder)
             expect(builder, LexerTokens.LAMBDA_ARROW, "Expected '=>'")

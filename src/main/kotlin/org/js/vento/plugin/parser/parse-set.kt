@@ -26,13 +26,7 @@ fun parsSet(builder: PsiBuilder) {
             builder.tokenType == LexerTokens.FUNCTION_KEY ||
             (builder.tokenType == LexerTokens.PARENTHESIS && builder.rawLookup(1) == LexerTokens.FUNCTION_KEY)
         ) {
-            val iife = optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" }
-            val hasFunction = parseFunction(builder)
-            if (iife) {
-                expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
-                parseFunctionArguments(builder)
-            }
-            hasFunction
+            isFunctionOrIife(builder)
         } else if (builder.tokenType == LexerTokens.PARENTHESIS) {
             parseFunctionArguments(builder)
             expect(builder, LexerTokens.LAMBDA_ARROW, "Expected '=>'")
@@ -56,6 +50,16 @@ fun parsSet(builder: PsiBuilder) {
     m.done(ParserElements.SET_ELEMENT)
 }
 
+fun isFunctionOrIife(builder: PsiBuilder): Boolean {
+    val iife = optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" }
+    val hasFunction = parseFunction(builder)
+    if (iife) {
+        expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+        parseFunctionArguments(builder)
+    }
+    return hasFunction
+}
+
 private fun parseVariable(builder: PsiBuilder) {
     if (nextTokenIs(builder, BRACE, "{")) {
         expect(builder, BRACE, "Expected '{'") { it.trim() == "{" }
@@ -72,8 +76,8 @@ private fun parseVariable(builder: PsiBuilder) {
                     error = !expect(builder, SYMBOL, "Expected identifier")
                 }
                 if (optional(builder, COMMA, "Expected ','")) {
-                    if (nextTokenIs(builder, SYMBOL)) {
-                        builder.error("expected ','")
+                    if (!nextTokenIs(builder, SYMBOL) && !nextTokenIs(builder, EXPAND)) {
+                        builder.error("',' should be followed by an identifier")
                     }
                 }
             } else {
@@ -85,7 +89,7 @@ private fun parseVariable(builder: PsiBuilder) {
                 }
             }
         }
-        if (error) builder.error("unable to parse set")
+        if (error) builder.error("Unable to parse set")
         expect(builder, BRACE, "Expected '}'") { it.trim() == "}" }
     } else {
         expect(builder, SYMBOL, "Expected identifier")
