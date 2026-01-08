@@ -10,6 +10,7 @@ import com.intellij.openapi.editor.ex.util.LayerDescriptor
 import com.intellij.openapi.editor.ex.util.LayeredLexerEditorHighlighter
 import com.intellij.openapi.fileTypes.FileType
 import com.intellij.openapi.fileTypes.FileTypes
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.fileTypes.SyntaxHighlighter
 import com.intellij.openapi.fileTypes.SyntaxHighlighterFactory
 import com.intellij.openapi.project.Project
@@ -36,7 +37,14 @@ class TemplateHighlighter(project: Project?, virtualFile: VirtualFile?, colors: 
                 var type: FileType? = null
                 val language = TemplateDataLanguageMappings.getInstance(project).getMapping(virtualFile)
                 if (language != null) type = language.associatedFileType
-                if (type == null) type = VentoLanguage.getDefaultTemplateLang()
+                if (type == null) {
+                    type =
+                        if (Settings.getInstance(project).isHtmlHighlightingEnabled) {
+                            VentoLanguage.getDefaultTemplateLang()
+                        } else {
+                            PlainTextFileType.INSTANCE
+                        }
+                }
                 type
             }
 

@@ -5,9 +5,6 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
 /**
  * Test case for parsing Vento `set` blocks.
  *
@@ -15,7 +12,7 @@ import org.js.vento.plugin.VentoParserDefinition
  * and various error conditions such as malformed tags, missing identifiers,
  * and invalid string escaping.
  */
-class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class SetTestCase : ParsingTestCase() {
     // Valid Cases
 
     /**

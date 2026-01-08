@@ -5,9 +5,6 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
 /**
  * Test suite for parsing export statements in Vento templates.
  *
@@ -20,7 +17,7 @@ import org.js.vento.plugin.VentoParserDefinition
  *
  * Each test verifies that the parser generates the correct AST structure for the given export syntax.
  */
-class ExportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class ExportTestCase : ParsingTestCase() {
     // ========================================
     // Simple Variable Exports
     // ========================================
