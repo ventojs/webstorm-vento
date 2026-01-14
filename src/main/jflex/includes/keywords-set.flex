@@ -22,16 +22,16 @@ DESTRUCTURE_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9
 
     [/]{SET} { leave(); return LexerTokens.SET_CLOSE_KEY; }
 
-    \{ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.BRACE; }
+    \{ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.DESTRUCTURE_BRACE; }
 
-    \[ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.BRACKET; }
+    \[ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.DESTRUCTURE_BRACKET; }
 
     [^{\[]+"=" {
           pushbackall();
           enter(SET_VALUE);
       }
 
-    {WHITESPACE}[^=]+{OWS}{CBLOCK} {
+    {SYMBOL}{OWS}{CBLOCK} | {SYMBOL}{WHITESPACE}{PIPE}{WHITESPACE}.+{OWS}{CBLOCK} {
           pushbackall();
           enter(SET_BLOCK_MODE);
       }
@@ -80,7 +80,7 @@ DESTRUCTURE_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9
       }
 
 
-    {SYMBOL} { return LexerTokens.SYMBOL; }
+    {SYMBOL} {return LexerTokens.SYMBOL; }
 
 
     "=" {
@@ -135,17 +135,23 @@ DESTRUCTURE_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9
 
     {DESTRUCTURE_ID} { return LexerTokens.SYMBOL; }
 
+    \[{SYMBOL}\] {return LexerTokens.DESTRUCTURE_KEY;}
+
     , { return LexerTokens.COMMA; }
 
     : { return LexerTokens.COLON; }
 
-    = { return LexerTokens.EQUAL; }
+    = { enter(EXPRESSION); return LexerTokens.EQUAL; }
 
     "..." { return  LexerTokens.EXPAND; }
 
-    \} { leave(); return LexerTokens.BRACE; }
+    \{ { enter(SET_DESTRUCTURE_VARS); return  LexerTokens.DESTRUCTURE_BRACE; }
 
-    \] { leave(); return LexerTokens.BRACKET; }
+    \[ { enter(SET_DESTRUCTURE_VARS); return  LexerTokens.DESTRUCTURE_BRACKET; }
+
+    \} { leave(); return LexerTokens.DESTRUCTURE_BRACE; }
+
+    \] { leave(); return LexerTokens.DESTRUCTURE_BRACKET; }
 }
 
 

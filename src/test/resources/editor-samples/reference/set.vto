@@ -13,8 +13,16 @@
 {{ set myVar = (function() { return 'Hello World!' })() }}
 {{ set myVar = () => { return 'Hello World!' } }}
 
-{{ set { a } = obj }}
-{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}
+{{ set { alice, bob } = obj }}
+{{ set { a: a1, b: b1 } = obj }}
+{{ set { a: a1 = "hi", b = bDefault } = obj }}
+{{ set { a: a1 = find(10).toText(), b = 100 } = obj }}
+{{ set { a: a1 = true, b = new Date() } = obj }}
+{{ set { a, b, ...rest } = obj }}
+{{ set { a: a1, b: b1, ...rest } = obj }}
+{{ set { a, b: b1 = "hi" , c = cDefault, ...rest } = obj }}
+{{ set [a, b] = array }}
+{{ set [a, b, ...{ pop, push }] = array }}
 
 {{ set myVar = () => 'Hello World!' |> JSON.stringify }}
 {{ set myVar = "Hello World of \"vento\"!" |> JSON.stringify }}

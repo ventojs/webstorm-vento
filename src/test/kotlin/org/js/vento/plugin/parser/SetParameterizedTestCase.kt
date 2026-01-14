@@ -17,6 +17,7 @@ class SetParameterizedTestCase : ParameterizedBaseTestCase() {
     companion object {
         @Suppress("unused")
         val expressions = expressionSet
+        val destructurings = destructuringSet
     }
 
     @ParameterizedTest
@@ -29,6 +30,12 @@ class SetParameterizedTestCase : ParameterizedBaseTestCase() {
     @FieldSource("expressions")
     fun testWithExpressionSetWithPipe(exp: Pair<String, String>) {
         assertSet(exp, "exp-set-with-pipe", "{{ set myVar = %s |> JSON.stringify }}")
+    }
+
+    @ParameterizedTest
+    @FieldSource("destructurings")
+    fun testWithDescructurings(exp: Pair<String, String>) {
+        assertSet(exp, "exp-set-dest", "{{ set %s }}")
     }
 
     override fun getTestDataPath(): String = "src/test/resources/testdata/set"

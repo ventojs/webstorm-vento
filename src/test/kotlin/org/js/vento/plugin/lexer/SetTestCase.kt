@@ -102,6 +102,21 @@ class SetTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
 
+    fun `test set simple array destructuing`() =
+        lexAndTest(
+            "{{ set [ a ] = arr }}",
+            arrayOf(
+                "{{",
+                "set",
+                "[",
+                "a",
+                "]",
+                "=",
+                "arr",
+                "}}",
+            ),
+        )
+
     fun `test set simple object destructuing`() =
         lexAndTest(
             "{{ set { a } = obj }}",
@@ -109,6 +124,23 @@ class SetTestCase(name: String) : BaseLexerTestCase(name) {
                 "{{",
                 "set",
                 "{",
+                "a",
+                "}",
+                "=",
+                "obj",
+                "}}",
+            ),
+        )
+
+    fun `test set object key destructuing `() =
+        lexAndTest(
+            "{{ set { [key]: a } = obj }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "[key]",
+                ":",
                 "a",
                 "}",
                 "=",
@@ -191,6 +223,110 @@ class SetTestCase(name: String) : BaseLexerTestCase(name) {
                 ",",
                 "4",
                 "]",
+                "}}",
+            ),
+        )
+
+    fun `test set complex object destructuing`() =
+        lexAndTest(
+            "{{ set { a: a1 = find(10, true).toText(), b = 100 } = obj }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "a",
+                ":",
+                "a1",
+                "=",
+                "find",
+                "(",
+                "10",
+                ",",
+                "true",
+                ")",
+                ".",
+                "toText",
+                "(",
+                ")",
+                ",",
+                "b",
+                "=",
+                "100",
+                "}",
+                "=",
+                "obj",
+                "}}",
+            ),
+        )
+
+    fun `test set complex object destructuing 2`() =
+        lexAndTest(
+            "{{ set { a: a1 = \"hi\", b = bDefault } = obj }}",
+            arrayOf(
+                "{{",
+                "set",
+                "{",
+                "a",
+                ":",
+                "a1",
+                "=",
+                "\"",
+                "hi",
+                "\"",
+                ",",
+                "b",
+                "=",
+                "bDefault",
+                "}",
+                "=",
+                "obj",
+                "}}",
+            ),
+        )
+
+    fun `test set complex embedding destructuing`() =
+        lexAndTest(
+            """{{ set [a, b, ...{ pop, push }] = array }}""",
+            arrayOf(
+                "{{",
+                "set",
+                "[",
+                "a",
+                ",",
+                "b",
+                ",",
+                "...",
+                "{",
+                "pop",
+                ",",
+                "push",
+                "}",
+                "]",
+                "=",
+                "array",
+                "}}",
+            ),
+        )
+    fun `test set complex embedding destructuing 2`() =
+        lexAndTest(
+            """{{ set [a, b, ...[c, d]] = array }}""",
+            arrayOf(
+                "{{",
+                "set",
+                "[",
+                "a",
+                ",",
+                "b",
+                ",",
+                "...",
+                "[",
+                "c",
+                ",",
+                "d",
+                "]",
+                "]",
+                "=",
+                "array",
                 "}}",
             ),
         )

@@ -150,6 +150,9 @@ object LexerTokens {
     val BRACKET = LexerToken("BRACKET")
 
     @JvmField
+    val DESTRUCTURE_BRACKET = LexerToken("DESTRUCTURE_BRACKET")
+
+    @JvmField
     val PARENTHESIS = LexerToken("PARENTHESIS")
 
     @JvmField
@@ -166,6 +169,9 @@ object LexerTokens {
 
     @JvmField
     val SYMBOL = LexerToken("SYMBOL")
+
+    @JvmField
+    val DESTRUCTURE_KEY = LexerToken("DESTRUCTURE_KEY")
 
     @JvmField
     val PIPE = LexerToken("PIPE")
@@ -211,6 +217,9 @@ object LexerTokens {
 
     @JvmField
     val BRACE = LexerToken("BRACE")
+
+    @JvmField
+    val DESTRUCTURE_BRACE = LexerToken("DESTRUCTURE_BRACE")
 
     @JvmField
     val LAMBDA_ARROW = LexerToken("LAMBDA_ARROW")

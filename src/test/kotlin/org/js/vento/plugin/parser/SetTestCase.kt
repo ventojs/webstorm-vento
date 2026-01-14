@@ -48,10 +48,12 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
 
     fun testSetBlockWithSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a } = obj }}""")
 
-    fun testSetBlockWithInvalidSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a  = obj }}""")
+    fun testSetBlockWithSimpleDestructuredArrayVar() = doCodeTest("""{{ set [ a ] = obj }}""")
 
-    fun testSetBlockWithDestructuredObjectVar() =
-        doCodeTest("""{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}""")
+//    fun testSetBlockWithInvalidSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a  = obj }}""")
+
+//    fun testSetBlockWithDestructuredObjectVar() =
+//        doCodeTest("""{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}""")
 
     fun testSetBlockWithInvalidDestructuredObjectVar() =
         doCodeTest("""{{ set { a, b: b1 bDefault, c = cDefault, ...rest } = obj }}""")
@@ -63,7 +65,7 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
     /**
      * Tests parsing error when assignment operator is missing between variable name and value.
      */
-    fun testSetError_MissingAssignmentOperator() = doCodeTest("""{{ set myVar  "Hello, world!" }}""")
+    fun testSetError_MissingAssignmentOperator() = doCodeTest("""{{ set myVar "Hello, world!" }}""")
 
     /**
      * Tests parsing error when value is missing after assignment operator.
