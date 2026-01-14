@@ -72,3 +72,67 @@ var expressionSet: Set<Pair<String, String>> =
             """() => 'Hello World!' """,
         ),
     )
+
+var destructuringSet: Set<Pair<String, String>> =
+    setOfNotNull(
+        Pair(
+            "array-simple",
+            "[a, b] = array",
+        ),
+        Pair(
+            "array-skip",
+            "[a, , b] = array",
+        ),
+        Pair(
+            "array-default",
+            "[a = aDefault, b] = array",
+        ),
+        Pair(
+            "array-expand",
+            "[a, b, ...rest] = array",
+        ),
+        Pair(
+            "array-skip-expand",
+            "[a, , b, ...rest] = array",
+        ),
+        Pair(
+            "array-expand-object",
+            "[a, b, ...{ pop, push }] = array",
+        ),
+        Pair(
+            "array-expand-array",
+            "[a, b, ...[c, d]] = array",
+        ),
+        Pair(
+            "object-simple",
+            "{ a, b } = obj",
+        ),
+        Pair(
+            "object-assignment",
+            "{ a: a1, b: b1 } = obj",
+        ),
+        Pair(
+            "object-assignment-default",
+            """{ a: a1 = "hi", b = bDefault } = obj""",
+        ),
+        Pair(
+            "object-assignment-default2",
+            "{ a: a1 = find(10).toText(), b = 100 } = obj",
+        ),
+        Pair(
+            "object-assignment-default3",
+            "{ a: a1 = true, b = new Date() } = obj",
+        ),
+        Pair(
+            "object-expand",
+            "{ a, b, ...rest } = obj",
+        ),
+        Pair(
+            "object-assignment-expand",
+            "{ a: a1, b: b1, ...rest } = obj",
+        ),
+        Pair(
+            "object-key",
+            "{ [key]: a } = obj",
+        ),
+    )

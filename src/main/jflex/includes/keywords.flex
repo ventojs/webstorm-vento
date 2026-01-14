@@ -19,6 +19,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state INCLUDE
 %state LAYOUT
 %state SET
+%state DEFAULT
 %state SLOT
 
 ECHO = "echo"
@@ -33,9 +34,10 @@ INCLUDE = "include"
 LAYOUT = "layout"
 SET = "set"
 SLOT = "slot"
+DEFAULT = "default"
 
-KEYWORDS =  {ECHO}|{ELSE}|{ELSEIF}|{EXPORT}|{FOR}|{FRAGMENT}|{ASYNC}{WHITESPACE}{FUNCTION}|{FUNCTION}|{IF}|{IMPORT}|{INCLUDE}|{LAYOUT}|{SET}|{SLOT}
-CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"{FUNCTION} |"/"{IF} |"/"{LAYOUT} |"/"{SET} |"/"{SLOT}
+KEYWORDS =  {DEFAULT}|{ECHO}|{ELSE}|{ELSEIF}|{EXPORT}|{FOR}|{FRAGMENT}|{ASYNC}{WHITESPACE}{FUNCTION}|{FUNCTION}|{IF}|{IMPORT}|{INCLUDE}|{LAYOUT}|{SET}|{SLOT}
+CLOSING_KEYWORDS = "/"{DEFAULT}|"/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"{FUNCTION} |"/"{IF} |"/"{LAYOUT} |"/"{SET} |"/"{SLOT}
 
 // BLOCK 2 - END
 %%
@@ -55,11 +57,11 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"{FUNCTION} |"
     {INCLUDE} { enter(INCLUDE); return LexerTokens.INCLUDE_KEY; }
     {LAYOUT} {enter(LAYOUT); return LexerTokens.LAYOUT_KEY; }
     {SET} { enter(SET); return LexerTokens.SET_KEY; }
+    {DEFAULT} { enter(DEFAULT); return LexerTokens.DEFAULT_KEY; }
     {SLOT} { enter(SLOT); return LexerTokens.LAYOUT_SLOT_KEY; }
     {ELSEIF} { pushbackall(); enter(IF); }
     {ELSE} { pushbackall(); enter(IF);}
     {IF} { pushbackall(); enter(IF); }
-
 
 }
 
@@ -72,6 +74,7 @@ CLOSING_KEYWORDS = "/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"{FUNCTION} |"
     "/"{IF} { return LexerTokens.IF_CLOSE_KEY;}
     "/"{LAYOUT} { return LexerTokens.LAYOUT_CLOSE_KEY;}
     "/"{SET} { return LexerTokens.SET_CLOSE_KEY;}
+    "/"{DEFAULT} { return LexerTokens.DEFAULT_CLOSE_KEY;}
     "/"{SLOT} { return LexerTokens.LAYOUT_SLOT_CLOSE_KEY;}
     {CBLOCK}  {
           yypushback(yylength());

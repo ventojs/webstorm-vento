@@ -1,0 +1,49 @@
+{{ default myVar = "Hello World of \"vento\"!" }}
+{{ default myVar = 'Hello to the "World\'s People"!' }}
+{{ default myVar = `Hello ${user}!` }}
+{{ default myVar = /[Hh].*\/.*[}]/ }}
+{{ default myVar = "[Hello]/{World!}".match(/[Hh].*\/.*[}]/)  }}
+{{ default myVar = myTextVariable }}
+{{ default myVar = JSON.stringify(data) }}
+{{ default myVar = {a: 1, b: true, c:{d:"hello"}} }}
+{{ default myVar = {"a": 1, "b": true, "c":{"d":"hello"}} }}
+{{ default myVar = [1, 2, 3, 4] }}
+{{ default myVar = [{a:1,b:2},{c:3,d:4}] }}
+{{ default myVar = ["a","b","c","d"] }}
+{{ default myVar = (function() { return 'Hello World!' })() }}
+{{ default myVar = () => { return 'Hello World!' } }}
+{{ default myVar = () => 'Hello World!' |> JSON.stringify }}
+
+{{ default myVar = "Hello World of \"vento\"!" |> JSON.stringify }}
+{{ default myVar = 'Hello to the "World\'s People"!' |> JSON.stringify }}
+{{ default myVar = `Hello ${user}!` |> JSON.stringify }}
+{{ default myVar = /[Hh].*\/.*[}]/ |> JSON.stringify }}
+{{ default myVar = "[Hello]/{World!}".match(/[Hh].*\/.*[}]/)  |> JSON.stringify }}
+{{ default myVar = myTextVariable |> JSON.stringify }}
+{{ default myVar = JSON.stringify(data) |> JSON.stringify }}
+{{ default myVar = {a: 1, b: true, c:{d:"hello"}} |> JSON.stringify }}
+{{ default myVar = {"a": 1, "b": true, "c":{"d":"hello"}} |> JSON.stringify }}
+{{ default myVar = [1, 2, 3, 4] |> JSON.stringify }}
+{{ default myVar = [{a:1,b:2},{c:3,d:4}] |> JSON.stringify }}
+{{ default myVar = ["a","b","c","d"] |> JSON.stringify }}
+{{ default myVar = function(foo,bar) { return 'Hello World!' } }}
+
+{{ default myVar }}
+    <h1>Hello, world!</h1>
+{{ /default }}
+
+{{ default css }}
+    body::after {
+        content: "Hello, the CSS world!";
+    }
+{{ /default }}
+
+<!-- ERRORS -->
+
+{{ default foo =  }}
+{{ default foo  "default" }}
+{{ default  =  "default" }}
+{{ se foo = "bar" }}
+{{ default myVar = /[Hh].*/.*[}]/ }}
+{{ default myVar = "Hello World of "vento\"!" }}
+{{ default myVar = JSON stringify(data) }}

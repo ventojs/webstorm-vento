@@ -98,7 +98,7 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
-    fun `test literal string with interpolation`() {
+    fun `test literal string with interpolation and data`() {
         lexAndTest(
             $$"""{{ include `${'$'}{file}.vto` { name: name } }}""",
             arrayOf(
@@ -120,9 +120,9 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
-    fun `test function`() {
+    fun `test include with data literal`() {
         lexAndTest(
-            $$"""{{ include resolve({ path: "/my-file.vto" }) { name } }}""",
+            """{{ include resolve({ path: "/my-file.vto" }) { name } }}""",
             arrayOf(
                 "{{",
                 "include",
@@ -139,6 +139,19 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
                 "{",
                 "name",
                 "}",
+                "}}",
+            ),
+        )
+    }
+
+    fun `test include with data reference`() {
+        lexAndTest(
+            """{{ include "/my-file.vto" dataRef }}""",
+            arrayOf(
+                "{{",
+                "include",
+                "\"/my-file.vto\"",
+                "dataRef",
                 "}}",
             ),
         )

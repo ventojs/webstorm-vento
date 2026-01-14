@@ -46,12 +46,26 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
         doCodeTest(code)
     }
 
+    fun testSetBlockWithSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a } = obj }}""")
+
+    fun testSetBlockWithSimpleDestructuredArrayVar() = doCodeTest("""{{ set [ a ] = obj }}""")
+
+//    fun testSetBlockWithInvalidSimpleDestructuredObjectVar() = doCodeTest("""{{ set { a  = obj }}""")
+
+//    fun testSetBlockWithDestructuredObjectVar() =
+//        doCodeTest("""{{ set { a, b: b1 = bDefault, c = cDefault, ...rest } = obj }}""")
+
+    fun testSetBlockWithInvalidDestructuredObjectVar() =
+        doCodeTest("""{{ set { a, b: b1 bDefault, c = cDefault, ...rest } = obj }}""")
+
+    fun testSetBlockWithMissingComma() = doCodeTest("""{{ set { a, b, c d } = obj }}""")
+
     // Error Cases - Invalid Syntax
 
     /**
      * Tests parsing error when assignment operator is missing between variable name and value.
      */
-    fun testSetError_MissingAssignmentOperator() = doCodeTest("""{{ set myVar  "Hello, world!" }}""")
+    fun testSetError_MissingAssignmentOperator() = doCodeTest("""{{ set myVar "Hello, world!" }}""")
 
     /**
      * Tests parsing error when value is missing after assignment operator.
@@ -108,7 +122,7 @@ class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     /**
      * @return path to test data file directory relative to root of this module.
      */
-    override fun getTestDataPath(): String = "src/test/resources/testdata/set"
+    override fun getTestDataPath(): String = "src/test/resources/testdata/set/"
 
     override fun includeRanges(): Boolean = true
 }

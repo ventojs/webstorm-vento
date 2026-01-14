@@ -51,6 +51,18 @@ fun closingKeywords(result: CompletionResultSet) {
     result.addElement(
         PrioritizedLookupElement.withPriority(
             LookupElementBuilder
+                .create("/default")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
                 .create("/function")
                 .withIcon(Vento.ICON)
                 .withTailText("}}")
