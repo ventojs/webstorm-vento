@@ -15,7 +15,7 @@ import org.js.vento.plugin.VentoParserDefinition
  * and various error conditions such as malformed tags, missing identifiers,
  * and invalid string escaping.
  */
-class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition(true)) {
+class SetTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
     // Valid Cases
 
     /**

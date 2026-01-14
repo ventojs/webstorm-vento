@@ -33,6 +33,8 @@ import org.js.vento.plugin.lexer.LexerTokens.COMMENT_END
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
 import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_KEY
+import org.js.vento.plugin.lexer.LexerTokens.DESTRUCTURE_BRACE
+import org.js.vento.plugin.lexer.LexerTokens.DESTRUCTURE_BRACKET
 import org.js.vento.plugin.lexer.LexerTokens.DOT
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_KEY
@@ -118,11 +120,14 @@ open class SyntaxHighlighter : SyntaxHighlighterBase() {
                 COMMENT_START -> CBLOCK
                 DEFAULT_KEY -> KEYWORDS
                 DEFAULT_CLOSE_KEY -> KEYWORDS
+                DESTRUCTURE_BRACE -> BRACES
+                DESTRUCTURE_BRACKET -> BRACKETS
                 DOT -> DOTS
                 ECHO_CLOSE_KEY -> VENTO_KEYWORDS
                 ECHO_KEY -> VENTO_KEYWORDS
                 ELSEIF_KEY -> VENTO_KEYWORDS
                 ELSE_KEY -> VENTO_KEYWORDS
+                EXPAND -> DOTS
                 EQUAL -> OPERATIONS
                 EXPORT_CLOSE_KEY -> VENTO_KEYWORDS
                 EXPORT_KEY -> VENTO_KEYWORDS

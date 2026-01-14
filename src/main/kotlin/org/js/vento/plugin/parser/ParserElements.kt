@@ -13,18 +13,21 @@ import com.intellij.psi.tree.IElementType
  * and any custom element types for the PSI structure.
  */
 object ParserElements {
+    // Basic Vento elements
+    @JvmField
+    val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
+
     @JvmField
     val FRONTMATTER_BLOCK = ParserElement("FRONTMATTER_BLOCK")
 
     @JvmField
     val FRONTMATTER_LINE = ParserElement("FRONTMATTER_LINE")
 
-    // Basic Vento elements
-    @JvmField
-    val COMMENT_BLOCK = ParserElement("COMMENT_BLOCK")
-
     @JvmField
     val HTML_CONTENT = ParserElement("HTML_CONTENT")
+
+    @JvmField
+    val JAVASCRIPT_DATA_OBJECT_ELEMENT = ParserElement("JAVASCRIPT_DATA_OBJECT_ELEMENT")
 
     @JvmField
     val JAVASCRIPT_ELEMENT = ParserElement("JAVASCRIPT_ELEMENT")
@@ -33,18 +36,33 @@ object ParserElements {
     val JAVASCRIPT_EXPRESSION_ELEMENT = ParserElement("JAVASCRIPT_EXPRESSION_ELEMENT")
 
     @JvmField
-    val JAVASCRIPT_DATA_OBJECT_ELEMENT = ParserElement("JAVASCRIPT_DATA_OBJECT_ELEMENT")
+    val VENTO_BLOCK: IElementType = ParserElement("VENTO_ELEMENT")
 
     // Control flow elements
     @JvmField
-    val FOR_ELEMENT: IElementType = ParserElement("FOR_ELEMENT")
+    val ELSE_ELEMENT: IElementType = ParserElement("ELSE_ELEMENT")
+
+    @JvmField
+    val ELSEIF_ELEMENT: IElementType = ParserElement("ELSEIF_ELEMENT")
 
     @JvmField
     val FOR_CLOSE_ELEMENT: IElementType = ParserElement("FOR_CLOSE_ELEMENT")
 
-    // Import elements
     @JvmField
-    val IMPORT_ELEMENT: IElementType = ParserElement("IMPORT_ELEMENT")
+    val FOR_ELEMENT: IElementType = ParserElement("FOR_ELEMENT")
+
+    @JvmField
+    val IF_CLOSE_ELEMENT: IElementType = ParserElement("IF_CLOSE_ELEMENT")
+
+    @JvmField
+    val IF_ELEMENT: IElementType = ParserElement("IF_ELEMENT")
+
+    // Echo elements
+    @JvmField
+    val ECHO_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
+
+    @JvmField
+    val ECHO_ELEMENT: IElementType = ParserElement("ECHO_ELEMENT")
 
     // Export elements
     @JvmField
@@ -59,64 +77,66 @@ object ParserElements {
     @JvmField
     val EXPORT_OPEN_ELEMENT: IElementType = ParserElement("EXPORT_OPEN_ELEMENT")
 
+    // Fragment elements
     @JvmField
-    val FUNCTION_SIGNATURE_ELEMENT: IElementType = ParserElement("FUNCTION_SIGNATURE_ELEMENT")
+    val FRAGMENT_CLOSE_ELEMENT: IElementType = ParserElement("FRAGMENT_CLOSE_ELEMENT")
+
+    @JvmField
+    val FRAGMENT_ELEMENT: IElementType = ParserElement("FRAGMENT_ELEMENT")
+
+    // Function elements
+    @JvmField
+    val FUNCTION_ARG_ELEMENT: IElementType = ParserElement("FUNCTION_ARG_ELEMENT")
 
     @JvmField
     val FUNCTION_ARGUMENTS_ELEMENT: IElementType = ParserElement("FUNCTION_ARGUMENTS_ELEMENT")
 
     @JvmField
-    val FUNCTION_ARG_ELEMENT: IElementType = ParserElement("FUNCTION_ARG_ELEMENT")
-
-    @JvmField
     val FUNCTION_BODY_ELEMENT: IElementType = ParserElement("FUNCTION_BODY_ELEMENT")
 
+    @JvmField
+    val FUNCTION_CLOSE_ELEMENT: IElementType = ParserElement("FUNCTION_CLOSE_ELEMENT")
+
+    @JvmField
+    val FUNCTION_ELEMENT: IElementType = ParserElement("FUNCTION_ELEMENT")
+
+    @JvmField
+    val FUNCTION_SIGNATURE_ELEMENT: IElementType = ParserElement("FUNCTION_SIGNATURE_ELEMENT")
+
+    // Import/Include elements
+    @JvmField
+    val IMPORT_ELEMENT: IElementType = ParserElement("IMPORT_ELEMENT")
+
+    @JvmField
+    val INCLUDE_ELEMENT: IElementType = ParserElement("INCLUDE_ELEMENT")
+
+    // Layout elements
+    @JvmField
+    val LAYOUT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_CLOSE_ELEMENT")
+
+    @JvmField
+    val LAYOUT_ELEMENT: IElementType = ParserElement("LAYOUT_ELEMENT")
+
+    @JvmField
+    val LAYOUT_SLOT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_CLOSE_ELEMENT")
+
+    @JvmField
+    val LAYOUT_SLOT_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_ELEMENT")
+
+    // Set elements
     @JvmField
     val DEFAULT_CLOSE_ELEMENT: IElementType = ParserElement("DEFAULT_CLOSE_ELEMENT")
 
     @JvmField
     val DEFAULT_ELEMENT: IElementType = ParserElement("DEFAULT_ELEMENT")
 
-    // Set elements
     @JvmField
     val SET_CLOSE_ELEMENT: IElementType = ParserElement("SET_CLOSE_ELEMENT")
 
     @JvmField
     val SET_ELEMENT: IElementType = ParserElement("SET_ELEMENT")
 
-    @JvmField
-    val LAYOUT_ELEMENT: IElementType = ParserElement("LAYOUT_ELEMENT")
-
-    @JvmField
-    val LAYOUT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_CLOSE_ELEMENT")
-
-    @JvmField
-    val FRAGMENT_ELEMENT: IElementType = ParserElement("FRAGMENT_ELEMENT")
-
-    @JvmField
-    val FRAGMENT_CLOSE_ELEMENT: IElementType = ParserElement("FRAGMENT_CLOSE_ELEMENT")
-
-    @JvmField
-    val LAYOUT_SLOT_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_ELEMENT")
-
-    @JvmField
-    val LAYOUT_SLOT_CLOSE_ELEMENT: IElementType = ParserElement("LAYOUT_SLOT_CLOSE_ELEMENT")
-
-    @JvmField
-    val OBJECT_ELEMENT: IElementType = ParserElement("OBJECT_ELEMENT")
-
-    @JvmField
-    val INCLUDE_ELEMENT: IElementType = ParserElement("INCLUDE_ELEMENT")
-
-    @JvmField
-    val VENTO_BLOCK: IElementType = ParserElement("VENTO_ELEMENT")
-
-    @JvmField
-    val STRING_ELEMENT: IElementType = ParserElement("STRING_ELEMENT")
-
-    @JvmField
-    val REGEX_ELEMENT: IElementType = ParserElement("REGEX_ELEMENT")
-
+    // Utility elements
     @JvmField
     val ARRAY_ELEMENT: IElementType = ParserElement("ARRAY_ELEMENT")
 
@@ -124,57 +144,42 @@ object ParserElements {
     val EXPRESSION_ELEMENT: IElementType = ParserElement("EXPRESSION_ELEMENT")
 
     @JvmField
+    val OBJECT_ELEMENT: IElementType = ParserElement("OBJECT_ELEMENT")
+
+    @JvmField
+    val REGEX_ELEMENT: IElementType = ParserElement("REGEX_ELEMENT")
+
+    @JvmField
+    val STRING_ELEMENT: IElementType = ParserElement("STRING_ELEMENT")
+
+    @JvmField
     val UNKNOWN_ELEMENT: IElementType = ParserElement("UNKNOWN_ELEMENT")
-
-    @JvmField
-    val FUNCTION_ELEMENT: IElementType = ParserElement("FUNCTION_ELEMENT")
-
-    @JvmField
-    val FUNCTION_CLOSE_ELEMENT: IElementType = ParserElement("FUNCTION_CLOSE_ELEMENT")
-
-    @JvmField
-    val ECHO_ELEMENT: IElementType = ParserElement("ECHO_ELEMENT")
-
-    @JvmField
-    val ECHO_CLOSE_ELEMENT: IElementType = ParserElement("ECHO_CLOSE_ELEMENT")
-
-    @JvmField
-    val IF_ELEMENT: IElementType = ParserElement("IF_ELEMENT")
-
-    @JvmField
-    val ELSE_ELEMENT: IElementType = ParserElement("ELSE_ELEMENT")
-
-    @JvmField
-    val ELSEIF_ELEMENT: IElementType = ParserElement("ELSEIF_ELEMENT")
-
-    @JvmField
-    val IF_CLOSE_ELEMENT: IElementType = ParserElement("IF_CLOSE_ELEMENT")
 
     @JvmField
     val VENTO_ELEMENTS =
         com.intellij.psi.tree.TokenSet.create(
-            IF_ELEMENT,
-            FOR_ELEMENT,
-            SET_ELEMENT,
-            EXPORT_ELEMENT,
-            LAYOUT_ELEMENT,
-            FRAGMENT_ELEMENT,
-            LAYOUT_SLOT_ELEMENT,
             ECHO_ELEMENT,
+            EXPORT_ELEMENT,
+            FOR_ELEMENT,
+            FRAGMENT_ELEMENT,
             FUNCTION_ELEMENT,
+            IF_ELEMENT,
+            LAYOUT_ELEMENT,
+            LAYOUT_SLOT_ELEMENT,
+            SET_ELEMENT,
         )
 
     @JvmField
     val VENTO_CLOSE_ELEMENTS =
         com.intellij.psi.tree.TokenSet.create(
-            IF_CLOSE_ELEMENT,
-            FOR_CLOSE_ELEMENT,
-            SET_CLOSE_ELEMENT,
-            EXPORT_CLOSE_ELEMENT,
-            LAYOUT_CLOSE_ELEMENT,
-            FRAGMENT_CLOSE_ELEMENT,
-            LAYOUT_SLOT_CLOSE_ELEMENT,
             ECHO_CLOSE_ELEMENT,
+            EXPORT_CLOSE_ELEMENT,
+            FOR_CLOSE_ELEMENT,
+            FRAGMENT_CLOSE_ELEMENT,
             FUNCTION_CLOSE_ELEMENT,
+            IF_CLOSE_ELEMENT,
+            LAYOUT_CLOSE_ELEMENT,
+            LAYOUT_SLOT_CLOSE_ELEMENT,
+            SET_CLOSE_ELEMENT,
         )
 }
