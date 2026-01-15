@@ -10,7 +10,11 @@ import org.js.vento.plugin.lexer.VentoLexer.*
 import java.util.ArrayDeque
 import kotlin.math.max
 
-class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) : LexerStrategy {
+class LexerStrategyImpl(
+    val lexer: VentoLexer,
+    var debugConfig: Boolean = true,
+    override var loopTolerance: Int = 100,
+) : LexerStrategy {
     var stateNames: Map<Int, String> = mapOf()
 
     /** Current token type — the skeleton expects us to return it from actions.  */
@@ -21,6 +25,11 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) 
 
     private val stateStack = ArrayDeque<LexerState>()
     private var debug = false
+
+    private var lastEnterState: Int = -1
+    private var lastCurrentState: Int = -1
+    private var lastPosition: Int = -1
+    private var loopCount: Int = 100
 
     init {
         debug = debugConfig
@@ -78,6 +87,23 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) 
     /** Enter 'nextState', remembering where we came from (the caller).  */
     override fun enter(nextState: Int) {
         val currentState: Int = lexer.yystate()
+        val currentPos = lexer.getzzCurrentPos()
+
+        if (currentState == lastCurrentState && nextState == lastEnterState && currentPos == lastPosition) {
+            loopCount++
+            if (loopCount >= loopTolerance) {
+                val message =
+                    "Infinite loop detected: entering ${stName(nextState)} from ${stName(currentState)} at position $currentPos repeated $loopCount times"
+                dumpDiag(message)
+                throw IllegalStateException(message)
+            }
+        } else {
+            lastCurrentState = currentState
+            lastEnterState = nextState
+            lastPosition = currentPos
+            loopCount = 0
+        }
+
         stateStack.push(LexerState(currentState, stName(currentState), this.objectDepth))
         if (debug) {
             println(

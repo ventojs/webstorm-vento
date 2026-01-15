@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
+class ErrorTestCase(name: String) : BaseLexerTestCase(name, true) {
     fun `test no keyword`() {
         lexAndTest(
             "\n{{ notkeyword something }}\n",
@@ -52,7 +52,8 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test broken regex with unescaped forward slash`() = countVentoBlocks("{{ set myVar = /[Hh].*/.*[}]/ }}", 0)
 
-    fun `test failing include`() = countVentoBlocks("""{{ include "/sub/my-file.vto" { salute: "Very" + "" + "Welcome" } }}""", 1)
+    fun `test failing include`() =
+        countVentoBlocks("""{{ include "/sub/my-file.vto" { salute: "Very" + "" + "Welcome" } }}""", 1)
 
     fun `test failing block crashes next one`() {
         countVentoBlocks(
@@ -62,4 +63,27 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
             2,
         )
     }
+
+    /*
+     {{ set menu = alternates?.length ? `/menu-${lang}.json` : "/menu.json" }}
+     <tree-menu
+      class="menu"
+      base='{{ "/" |> url }}'
+      url="{{ menu |> url }}"
+     >
+     */
+//    fun `test hanging in 0 dot 7 dot 0`() {
+//        lexAndTest(
+//            """{{ set menu = 10 }}<div class="menu">""".trimMargin(),
+//            arrayOf(
+//                "{{",
+//                "set",
+//                "menu",
+//                "=",
+//                "10",
+//                "}}",
+//                "<div class=\"menu\">",
+//            ),
+//        )
+//    }
 }
