@@ -17,22 +17,9 @@ class VentoMergingLexer : MergingLexerAdapterBase(LexerAdapter()) {
         private val MERGE_FUNCTION: MergeFunction =
             object : MergeFunction {
                 override fun merge(type: IElementType?, originalLexer: Lexer): IElementType? {
-//                if (LexerTokens.COMMENT_START !== type) {
-//                    return type
-//                }
-//
-//                if (originalLexer.getTokenType() === LexerTokens.COMMENT_CONTENT) {
-//                    originalLexer.advance()
-//                }
-//
-//                if (originalLexer.getTokenType() === LexerTokens.COMMENT_END) {
-//                    originalLexer.advance()
-//                    return LexerTokens.COMMENT
-//                }
-
-//                if (originalLexer.getTokenType() == null) {
-//                    return LexerTokens.UNKNOWN
-//                }
+                    if (type === LexerTokens.UNKNOWN) {
+                        return LexerTokens.UNKNOWN
+                    }
 
                     if (originalLexer.getTokenType() === LexerTokens.UNKNOWN) {
                         originalLexer.advance()

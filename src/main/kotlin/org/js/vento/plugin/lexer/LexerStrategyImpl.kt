@@ -10,12 +10,13 @@ import org.js.vento.plugin.lexer.VentoLexer.*
 import java.util.ArrayDeque
 import kotlin.math.max
 
-class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false) : LexerStrategy {
+class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) : LexerStrategy {
     var stateNames: Map<Int, String> = mapOf()
 
     /** Current token type — the skeleton expects us to return it from actions.  */
     private var myTokenType: IElementType? = null
 
+    // BRACE, BRACKET, PARENTHESIS
     private var objectDepth = Triple<Int, Int, Int>(0, 0, 0)
 
     private val stateStack = ArrayDeque<LexerState>()
@@ -57,6 +58,7 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = false)
                 Pair(SET, "SET"),
                 Pair(SET_BLOCK_MODE, "SET_BLOCK_MODE"),
                 Pair(SET_VALUE, "SET_VALUE"),
+                Pair(SET_DESTRUCTURE_VARS, "SET_DESTRUCTURE_VARS"),
                 Pair(SLOT, "SLOT"),
                 Pair(STRING, "STRING"),
                 Pair(STRING_BKTK, "STRING_BKTK"),

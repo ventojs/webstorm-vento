@@ -53,6 +53,15 @@
         <lang.formatter language="Vento" implementationClass="org.js.vento.plugin.formatting.FormattingModelBuilder"/>
         <lang.refactoringSupport language="Vento" implementationClass="org.js.vento.plugin.editor.RefactoringSupportProvider"/>
 
+        <!-- Inspections -->
+        <localInspection language="Vento"
+                         displayName="Unresolved file reference"
+                         groupName="Vento"
+                         enabledByDefault="true"
+                         level="WARNING"
+                         implementationClass="org.js.vento.plugin.inspections.UnresolvedFileReferenceInspection"
+                         shortName="UnresolvedFileReferenceInspection"/>
+
     </extensions>
 
     <actions>
@@ -60,9 +69,9 @@
                 class="org.js.vento.plugin.actions.ToggleCommentAction"
                 text="Toggle Vento Comment"
                 description="Toggle Vento comment markers ({{# #}}) around selection">
-            <keyboard-shortcut keymap="$default" first-keystroke="ctrl SLASH"/>
-            <keyboard-shortcut keymap="Mac OS X" first-keystroke="meta SLASH"/>
-            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="meta SLASH"/>
+            <keyboard-shortcut keymap="$default" first-keystroke="alt shift ctrl SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X" first-keystroke="alt shift meta SLASH"/>
+            <keyboard-shortcut keymap="Mac OS X 10.5+" first-keystroke="alt shift meta SLASH"/>
         </action>
 
         <action id="Vento.CreateFile"

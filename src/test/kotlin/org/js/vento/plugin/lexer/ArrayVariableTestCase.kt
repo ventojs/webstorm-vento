@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class ArrayVariableTestCase(name: String) : BaseLexerTestCase(name) {
+class ArrayVariableTestCase(name: String) : BaseLexerTestCase(name, true) {
     fun `test empty object`() = lexAndTest("{{[]}}", arrayOf("{{", "[", "]", "}}"))
 
     fun `test empty object with spaces`() = lexAndTest("{{ [] }}", arrayOf("{{", "[", "]", "}}"))

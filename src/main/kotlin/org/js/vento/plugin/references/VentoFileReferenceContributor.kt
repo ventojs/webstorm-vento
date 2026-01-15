@@ -15,13 +15,15 @@ import com.intellij.psi.PsiReferenceProvider
 import com.intellij.psi.PsiReferenceRegistrar
 import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet
 import com.intellij.util.ProcessingContext
+import org.js.vento.plugin.ImportElement
 import org.js.vento.plugin.IncludeElement
 import org.js.vento.plugin.LayoutElement
 import org.js.vento.plugin.lexer.LexerTokens
 
 /**
- * Provides file references for Vento layout and include elements.
- * Enables navigation to files referenced in {{ layout "path/to/file.vto" }} and {{ include "path/to/file.vto" }} blocks.
+ * Provides file references for Vento layout, include, and import elements.
+ * Enables navigation to files referenced in {{ layout "path/to/file.vto" }},
+ * {{ include "path/to/file.vto" }}, and {{ import ... from "path/to/file.js" }} blocks.
  */
 class VentoFileReferenceContributor : PsiReferenceContributor() {
     override fun registerReferenceProviders(registrar: PsiReferenceRegistrar) {
@@ -36,11 +38,17 @@ class VentoFileReferenceContributor : PsiReferenceContributor() {
             PlatformPatterns.psiElement(IncludeElement::class.java),
             VentoFileReferenceProvider(),
         )
+
+        // Register for import elements
+        registrar.registerReferenceProvider(
+            PlatformPatterns.psiElement(ImportElement::class.java),
+            VentoFileReferenceProvider(),
+        )
     }
 }
 
 /**
- * Reference provider that extracts file path from layout and include elements.
+ * Reference provider that extracts file path from layout, include, and import elements.
  */
 class VentoFileReferenceProvider : PsiReferenceProvider() {
     override fun getReferencesByElement(element: PsiElement, context: ProcessingContext): Array<PsiReference> {

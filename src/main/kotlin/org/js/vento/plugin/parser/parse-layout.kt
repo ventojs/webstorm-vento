@@ -12,9 +12,8 @@ fun parseLayout(builder: PsiBuilder) {
     val m = builder.mark()
     expect(builder, LexerTokens.LAYOUT_KEY, "Expected layout keyword")
     expect(builder, LexerTokens.FILE, "Expected filepath")
-    if (builder.tokenType == LexerTokens.BRACE) {
-        parseJsDataObject(builder)
-    }
+    if (nextTokenIs(builder, LexerTokens.BRACE, "{")) parseJsDataObject(builder)
+    if (nextTokenIs(builder, LexerTokens.SYMBOL)) expect(builder, LexerTokens.SYMBOL, "Expected data reference")
     parsePipe(builder)
     closeOrError(builder, "syntax error: layout 'path/to/file.js' | data | pipe")
     m.done(ParserElements.LAYOUT_ELEMENT)

@@ -9,6 +9,9 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state SET_VALUE
 %state SET_BLOCK_MODE
 %state SET_IIFE
+%state SET_DESTRUCTURE_VARS
+
+DESTRUCTURE_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
 
 // BLOCK 2 - END
 %%
@@ -19,12 +22,16 @@ import org.js.vento.plugin.lexer.LexerTokens;
 
     [/]{SET} { leave(); return LexerTokens.SET_CLOSE_KEY; }
 
-    .+"=" {
+    \{ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.DESTRUCTURE_BRACE; }
+
+    \[ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.DESTRUCTURE_BRACKET; }
+
+    [^{\[]+"=" {
           pushbackall();
           enter(SET_VALUE);
       }
 
-    {WHITESPACE}[^=]+{OWS}{CBLOCK} {
+    {SYMBOL}{OWS}{CBLOCK} | {SYMBOL}{WHITESPACE}{PIPE}{WHITESPACE}.+{OWS}{CBLOCK} {
           pushbackall();
           enter(SET_BLOCK_MODE);
       }
@@ -73,7 +80,7 @@ import org.js.vento.plugin.lexer.LexerTokens;
       }
 
 
-    {SYMBOL} { return LexerTokens.SYMBOL; }
+    {SYMBOL} {return LexerTokens.SYMBOL; }
 
 
     "=" {
@@ -121,6 +128,30 @@ import org.js.vento.plugin.lexer.LexerTokens;
     \( {pushbackall(); enter(FUNCTION_ARGS);}
 
     [^\)\(] {pushbackall(); leave();}
+}
+
+<SET_DESTRUCTURE_VARS> {
+    {WHITESPACE}   {  }
+
+    {DESTRUCTURE_ID} { return LexerTokens.SYMBOL; }
+
+    \[{SYMBOL}\] {return LexerTokens.DESTRUCTURE_KEY;}
+
+    , { return LexerTokens.COMMA; }
+
+    : { return LexerTokens.COLON; }
+
+    = { enter(EXPRESSION); return LexerTokens.EQUAL; }
+
+    "..." { return  LexerTokens.EXPAND; }
+
+    \{ { enter(SET_DESTRUCTURE_VARS); return  LexerTokens.DESTRUCTURE_BRACE; }
+
+    \[ { enter(SET_DESTRUCTURE_VARS); return  LexerTokens.DESTRUCTURE_BRACKET; }
+
+    \} { leave(); return LexerTokens.DESTRUCTURE_BRACE; }
+
+    \] { leave(); return LexerTokens.DESTRUCTURE_BRACKET; }
 }
 
 

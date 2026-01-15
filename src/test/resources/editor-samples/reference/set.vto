@@ -12,8 +12,19 @@
 {{ set myVar = ["a","b","c","d"] }}
 {{ set myVar = (function() { return 'Hello World!' })() }}
 {{ set myVar = () => { return 'Hello World!' } }}
-{{ set myVar = () => 'Hello World!' |> JSON.stringify }}
 
+{{ set { alice, bob } = obj }}
+{{ set { a: a1, b: b1 } = obj }}
+{{ set { a: a1 = "hi", b = bDefault } = obj }}
+{{ set { a: a1 = find(10).toText(), b = 100 } = obj }}
+{{ set { a: a1 = true, b = new Date() } = obj }}
+{{ set { a, b, ...rest } = obj }}
+{{ set { a: a1, b: b1, ...rest } = obj }}
+{{ set { a, b: b1 = "hi" , c = cDefault, ...rest } = obj }}
+{{ set [a, b] = array }}
+{{ set [a, b, ...{ pop, push }] = array }}
+
+{{ set myVar = () => 'Hello World!' |> JSON.stringify }}
 {{ set myVar = "Hello World of \"vento\"!" |> JSON.stringify }}
 {{ set myVar = 'Hello to the "World\'s People"!' |> JSON.stringify }}
 {{ set myVar = `Hello ${user}!` |> JSON.stringify }}
@@ -41,9 +52,15 @@
 <!-- ERRORS -->
 
 {{ set foo =  }}
-{{ set foo  "set" }}
 {{ set  =  "set" }}
 {{ se foo = "bar" }}
-{{ set myVar = /[Hh].*/.*[}]/ }}
+{{ set { a = obj }}
+{{ set { a, b, c d } = obj }}
+{{ set { a, b, . ..rest } = obj }}
+{{ set { a, b: b1 , c  cDefault, ...rest } = obj }}
+{{ set { a, b: b1 = , c = cDefault, ...rest } = obj }}
+{{ set { a, b: b 1  , c = cDefault, ...rest } = obj }}
 {{ set myVar = "Hello World of "vento\"!" }}
 {{ set myVar = JSON stringify(data) }}
+{{ set myVar = /[Hh].*/.*[}]/ }}
+{{ set foo  "set" }}

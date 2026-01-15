@@ -41,7 +41,7 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
 
     "=>" { return LexerTokens.LAMBDA_ARROW; }
 
-    "="  { return LexerTokens.SYMBOL; }
+    "="  { return LexerTokens.EQUAL; }
     "=="  { return LexerTokens.SYMBOL; }
     "==="  { return LexerTokens.SYMBOL; }
     "!="  { return LexerTokens.SYMBOL; }
@@ -50,7 +50,14 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
     "<="  { return LexerTokens.SYMBOL; }
     ">="  { return LexerTokens.SYMBOL; }
    [.]  { return LexerTokens.DOT; }
-   [,]  { return LexerTokens.COMMA; }
+   [,]  {
+            if (currentDepth().getFirst() < 1 && currentDepth().getSecond() < 1 && currentDepth().getThird() < 1) {
+                pushbackall();
+                leave();
+            } else {
+              return LexerTokens.COMMA;
+            }
+      }
    [+]  { return LexerTokens.PLUS; }
    [*]  { return LexerTokens.SYMBOL; }
    [-]  { return LexerTokens.MINUS; }
@@ -88,7 +95,7 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
 
     \}/{OWS}[^}] {
           decObjDepth();
-          return LexerTokens.BRACE;
+          if(parentStateIs(SET_DESTRUCTURE_VARS)) { return LexerTokens.DESTRUCTURE_BRACE;} else {return LexerTokens.BRACE;}
     }
 
     \[ {

@@ -155,4 +155,19 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
             ),
         )
     }
+
+    fun `test layout with data reference`() {
+        lexAndTest(
+            """
+            {{ layout "myfile.vto" dataSymbol }}
+            """.trimIndent(),
+            arrayOf(
+                "{{",
+                "layout",
+                "\"myfile.vto\"",
+                "dataSymbol",
+                "}}",
+            ),
+        )
+    }
 }

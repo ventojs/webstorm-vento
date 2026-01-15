@@ -35,6 +35,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         println(lookupStrings)
         assertContainsElements(
             lookupStrings!!,
+            "default",
             "echo",
             "else",
             "else if",
@@ -65,6 +66,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertNotNull("Completion suggestions should be available", lookupStrings)
         assertContainsElements(
             lookupStrings!!,
+            "/default",
             "/if",
             "/for",
             "/function",
@@ -91,6 +93,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         // Vento keywords should not appear outside blocks
         assertDoesntContain(
             lookupStrings,
+            "default",
             "echo",
             "else",
             "else if",

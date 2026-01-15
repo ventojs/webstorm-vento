@@ -7,18 +7,26 @@ package org.js.vento.plugin.parser
 
 import com.intellij.lang.PsiBuilder
 import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.lexer.LexerTokens.PARENTHESIS
 
 fun parseStrictJavaScriptExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
     val m = builder.mark()
 
     // starts with (,[,{, symbol, string, number, boolean, regex
 
-    var hasExpression: Boolean
+    var hasExpression: Boolean = false
 
     when {
-        optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" } -> {
-            parseStrictJavaScriptExpression(builder)
-            expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+        nextTokenIs(builder, LexerTokens.DESTRUCTURE_BRACE) ||
+            nextTokenIs(builder, LexerTokens.DESTRUCTURE_BRACKET) -> {
+            // do nothing
+        }
+
+        optional(builder, PARENTHESIS, "1.Expected '('") { it.trim() == "(" } -> {
+            if (!nextTokenIs(builder, PARENTHESIS, ")")) {
+                parseStrictJavaScriptExpression(builder)
+            }
+            expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
             hasExpression = true
         }
 
@@ -64,18 +72,30 @@ fun parseStrictJavaScriptExpression(builder: PsiBuilder, required: Boolean = tru
             hasExpression = true
         }
 
-        nextTokenIs(builder, LexerTokens.SYMBOL) -> {
+        nextTokenIs(builder, LexerTokens.NEW) -> {
+            expect(builder, LexerTokens.NEW, "Expected 'new'")
             expect(builder, LexerTokens.SYMBOL, "Expected symbol")
             parseInvocation(builder)
             if (optional(builder, LexerTokens.DOT, "Expected '.'")) {
-                builder.advanceLexer()
                 expect(builder, LexerTokens.SYMBOL, "Expected symbol")
                 parseInvocation(builder)
             }
             hasExpression = true
         }
 
-        else -> hasExpression = false
+        nextTokenIs(builder, LexerTokens.SYMBOL) -> {
+            expect(builder, LexerTokens.SYMBOL, "Expected symbol")
+            parseInvocation(builder)
+            if (optional(builder, LexerTokens.DOT, "Expected '.'")) {
+                expect(builder, LexerTokens.SYMBOL, "Expected symbol")
+                parseInvocation(builder)
+            }
+            hasExpression = true
+        }
+
+        else -> {
+            hasExpression = false
+        }
     }
 //        closeOrError(builder, "syntax error: expression")
     if (!hasExpression && required) builder.error("Expected expression")
@@ -84,29 +104,29 @@ fun parseStrictJavaScriptExpression(builder: PsiBuilder, required: Boolean = tru
 }
 
 fun parseInvocation(builder: PsiBuilder) {
-    if (optional(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" }) {
+    if (optional(builder, PARENTHESIS, "Expected '('") { it.trim() == "(" }) {
         parseArgument(builder)
         while (!builder.eof() && builder.tokenType == LexerTokens.COMMA) {
             builder.advanceLexer()
             parseArgument(builder)
         }
-        expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+        expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
     }
 }
 
 fun parseArgument(builder: PsiBuilder) {
     when {
-        nextTokenIs(builder, LexerTokens.PARENTHESIS, "(") -> {
+        nextTokenIs(builder, PARENTHESIS, "(") -> {
             parseInvocation(builder)
             if (optional(builder, LexerTokens.LAMBDA_ARROW, "Expected '=>'") { it.trim() == "=>" }) {
                 var parenthesis = 0
                 while (
-                    builder.tokenType != LexerTokens.PARENTHESIS ||
-                    (builder.tokenType == LexerTokens.PARENTHESIS && builder.tokenText?.trim() == ")" && parenthesis > 0)
+                    builder.tokenType != PARENTHESIS ||
+                    (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == ")" && parenthesis > 0)
                 ) {
-                    if (builder.tokenType == LexerTokens.PARENTHESIS && builder.tokenText?.trim() == "(") {
+                    if (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == "(") {
                         parenthesis++
-                    } else if (builder.tokenType == LexerTokens.PARENTHESIS && builder.tokenText?.trim() == ")") {
+                    } else if (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == ")") {
                         parenthesis--
                     }
                     builder.advanceLexer()
@@ -114,15 +134,30 @@ fun parseArgument(builder: PsiBuilder) {
             }
         }
 
+        nextTokenIs(builder, PARENTHESIS, ")") -> {
+            // do nothing
+        }
+
         nextTokenIs(builder, LexerTokens.SYMBOL) -> {
             optional(builder, LexerTokens.NEW, "Expected 'new'")
             parseStrictJavaScriptExpression(builder)
         }
 
-        nextTokenIs(builder, LexerTokens.BRACE) -> parseObject(builder)
-        nextTokenIs(builder, LexerTokens.BRACKET) -> parseArray(builder)
-        nextTokenIs(builder, LexerTokens.STRING) -> parseString(builder)
-        else -> parseStrictJavaScriptExpression(builder)
+        nextTokenIs(builder, LexerTokens.BRACE) -> {
+            parseObject(builder)
+        }
+
+        nextTokenIs(builder, LexerTokens.BRACKET) -> {
+            parseArray(builder)
+        }
+
+        nextTokenIs(builder, LexerTokens.STRING) -> {
+            parseString(builder)
+        }
+
+        else -> {
+            parseStrictJavaScriptExpression(builder)
+        }
     }
 }
 
@@ -139,7 +174,7 @@ fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
             (builder.tokenType == LexerTokens.BRACE && builder.tokenText?.trim() == "{") ||
                 (builder.tokenType == LexerTokens.BRACE && builder.tokenText?.trim() == "{") ||
                 (builder.tokenType == LexerTokens.BRACKET && builder.tokenText?.trim() == "[") ||
-                (builder.tokenType == LexerTokens.PARENTHESIS) ||
+                (builder.tokenType == PARENTHESIS) ||
                 builder.tokenType == LexerTokens.ASTERISK ||
                 builder.tokenType == LexerTokens.AWAIT_KEY ||
                 builder.tokenType == LexerTokens.BOOLEAN ||
@@ -150,7 +185,7 @@ fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
                 builder.tokenType == LexerTokens.MINUS ||
                 builder.tokenType == LexerTokens.NEW ||
                 builder.tokenType == LexerTokens.NUMBER ||
-                builder.tokenType == LexerTokens.PARENTHESIS ||
+                builder.tokenType == PARENTHESIS ||
                 builder.tokenType == LexerTokens.PLUS ||
                 builder.tokenType == LexerTokens.REGEX ||
                 builder.tokenType == LexerTokens.STRING ||
@@ -172,9 +207,9 @@ fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
         ) {
             parseRegex(builder)
             hasExpression = true
-        } else if (builder.tokenType == LexerTokens.PARENTHESIS) {
+        } else if (builder.tokenType == PARENTHESIS) {
             if (builder.tokenText?.trim() == "(") {
-                expect(builder, LexerTokens.PARENTHESIS, "Expected '('") { it.trim() == "(" }
+                expect(builder, PARENTHESIS, "Expected '('") { it.trim() == "(" }
                 isParenOpen++
             }
 
@@ -182,7 +217,7 @@ fun parseExpression(builder: PsiBuilder, required: Boolean = true): Boolean {
                 exit = true
                 isParenOpen = 0
             } else if (builder.tokenText?.trim() == ")") {
-                expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
+                expect(builder, PARENTHESIS, "Expected ')'") { it.trim() == ")" }
                 isParenOpen--
             }
         } else if (

@@ -95,7 +95,7 @@ fun parseFunctionArguments(builder: PsiBuilder) {
         }
         if (isOpen) expect(builder, LexerTokens.BRACE, "Expected '}'") { it.trim() == "}" }
     }
-    if (optional(builder, LexerTokens.SYMBOL, "Expected '='")) {
+    if (optional(builder, LexerTokens.EQUAL, "Expected '='")) {
         parseExpression(builder)
     }
     expect(builder, LexerTokens.PARENTHESIS, "Expected ')'") { it.trim() == ")" }
