@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.7.0](https://github.com/ventojs/webstorm-vento/compare/v0.6.1...v0.7.0) (2026-01-14)
+
+
+### Features
+
+* **parser:** add support for new features in Vento 2.2 and 2.3 ([#189](https://github.com/ventojs/webstorm-vento/issues/189)) ([#191](https://github.com/ventojs/webstorm-vento/issues/191)) ([a407bde](https://github.com/ventojs/webstorm-vento/commit/a407bdeb39db4d136f72e50bf147f5d8afe6a72f))
+
+
+### Bug Fixes
+
+* **editing:** fix formatting corner cases with `set` and `if` blocks ([#190](https://github.com/ventojs/webstorm-vento/issues/190)) ([71229af](https://github.com/ventojs/webstorm-vento/commit/71229aff5e1213367d22c04109db0d4790a2d977))
+
 ## [0.6.1](https://github.com/ventojs/webstorm-vento/compare/v0.6.0...v0.6.1) (2026-01-03)
 
 
