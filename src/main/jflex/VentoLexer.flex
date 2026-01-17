@@ -152,7 +152,7 @@ CVAR = -?{CBLOCK}
           return LexerTokens.UNKNOWN;
       }
 
-
+    [^]   { return LexerTokens.UNKNOWN; }
 }
 
 <UNKNOWN> {

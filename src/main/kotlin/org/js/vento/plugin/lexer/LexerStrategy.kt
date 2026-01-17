@@ -19,7 +19,6 @@ import com.intellij.psi.tree.IElementType
  * - Debug functionality for lexer operations
  */
 interface LexerStrategy {
-    var loopTolerance: Int
     fun stName(s: Int): String
 
     fun enter(nextState: Int)

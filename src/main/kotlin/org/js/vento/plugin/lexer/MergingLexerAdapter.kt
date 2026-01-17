@@ -10,7 +10,7 @@ import com.intellij.lexer.MergeFunction
 import com.intellij.lexer.MergingLexerAdapterBase
 import com.intellij.psi.tree.IElementType
 
-class VentoMergingLexer : MergingLexerAdapterBase(LexerAdapter()) {
+class VentoMergingLexer(debug: Boolean = false) : MergingLexerAdapterBase(LexerAdapter(debug)) {
     override fun getMergeFunction(): MergeFunction = MERGE_FUNCTION
 
     companion object {

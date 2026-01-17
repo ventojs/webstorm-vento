@@ -10,9 +10,7 @@ import com.intellij.psi.codeStyle.CodeStyleManager
 import com.intellij.psi.codeStyle.CodeStyleSettingsManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
-import org.junit.Ignore
 
-@Ignore("This test only runs locally, not in CI/GitHub workflows")
 class VentoFormattingTest : BasePlatformTestCase() {
     fun testIndentBlock() {
         val input =

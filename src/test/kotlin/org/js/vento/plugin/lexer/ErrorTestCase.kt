@@ -72,18 +72,47 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name, true) {
       url="{{ menu |> url }}"
      >
      */
-//    fun `test hanging in 0 dot 7 dot 0`() {
-//        lexAndTest(
-//            """{{ set menu = 10 }}<div class="menu">""".trimMargin(),
-//            arrayOf(
-//                "{{",
-//                "set",
-//                "menu",
-//                "=",
-//                "10",
-//                "}}",
-//                "<div class=\"menu\">",
-//            ),
-//        )
-//    }
+    fun `test hanging in 0 dot 7 dot 0`() {
+        lexAndTest(
+            """{{ set menu = 10 }}<div class="menu">""".trimMargin(),
+            arrayOf(
+                "{{",
+                "set",
+                "menu",
+                "=",
+                "10",
+                "}}",
+                "<div class=\"menu\">",
+            ),
+        )
+    }
+
+    /*
+     {{
+
+        Use ` ⌥`+`⇧`+`⌘`+`/` on OSX,
+        or `⌥`+`⇧`+`ctrl`+`/` on Windows
+        to toggle vento comments.
+
+        {{> console.log('test') }}
+
+    }}
+     */
+    fun `test hanging in 0 dot 7 dot 0 because of a comma at the end of the block`() {
+        lexAndTest(
+            """{{
+                something before a comma,
+            }}
+            """.trimMargin(),
+            arrayOf(
+                "{{",
+                "something",
+                "before",
+                "a",
+                "comma",
+                ",",
+                "}}",
+            ),
+        )
+    }
 }
