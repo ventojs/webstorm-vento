@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class EchoTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class EchoTestCase : ParsingTestCase() {
     fun `test echo`() = doCodeTest("{{ echo }} Hello World {{ /echo }}")
 
     fun `test echo string`() = doCodeTest("{{ echo \"Hello World\" }}")

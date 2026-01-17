@@ -10,6 +10,7 @@ import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.application.ReadAction
 import com.intellij.openapi.fileTypes.CharsetUtil
 import com.intellij.openapi.fileTypes.LanguageFileType
+import com.intellij.openapi.fileTypes.PlainTextFileType
 import com.intellij.openapi.fileTypes.TemplateLanguageFileType
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.NlsContexts
@@ -19,6 +20,7 @@ import com.intellij.psi.templateLanguages.TemplateDataLanguageMappings
 import org.jetbrains.annotations.NonNls
 import org.js.vento.plugin.Vento
 import org.js.vento.plugin.VentoLanguage
+import org.js.vento.plugin.settings.Settings
 import java.nio.charset.Charset
 import javax.swing.Icon
 
@@ -45,7 +47,7 @@ object VentoFileType : XmlLikeFileType(VentoLanguage), TemplateLanguageFileType 
         return CharsetUtil.extractCharsetFromFileContent(project, file, associatedFileType, content)
     }
 
-    private fun getAssociatedFileType(file: VirtualFile?, project: Project?): LanguageFileType? {
+    internal fun getAssociatedFileType(file: VirtualFile?, project: Project?): LanguageFileType? {
         if (project == null || project.isDisposed) {
             return null
         }
@@ -65,7 +67,13 @@ object VentoFileType : XmlLikeFileType(VentoLanguage), TemplateLanguageFileType 
         var associatedFileType: LanguageFileType? = language?.associatedFileType
 
         if (language == null || associatedFileType == null) {
-            associatedFileType = VentoLanguage.getDefaultTemplateLang()
+            val settings = Settings.getInstance(project)
+            associatedFileType =
+                if (settings.isHtmlHighlightingEnabled) {
+                    VentoLanguage.getDefaultTemplateLang()
+                } else {
+                    PlainTextFileType.INSTANCE
+                }
         }
 
         return associatedFileType

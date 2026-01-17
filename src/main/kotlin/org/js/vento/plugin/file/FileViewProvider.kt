@@ -126,7 +126,7 @@ class FileViewProvider : MultiplePsiFilesPerDocumentFileViewProvider, Configurab
             val mappings = TemplateDataLanguageMappings.getInstance(manager.project)
             var dataLang = mappings?.getMapping(file)
             if (dataLang == null) {
-                dataLang = guessTemplateLanguage(file)
+                dataLang = guessTemplateLanguage(manager.project, file)
             }
 
             val substituteLang =

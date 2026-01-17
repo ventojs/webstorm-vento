@@ -17,33 +17,43 @@ import javax.swing.JPanel
  */
 class SettingsConfigurable(project: Project) : Configurable {
     private var enableFrontmatterCheckBox: JBCheckBox? = null
+    private var enableHtmlHighlightingCheckBox: JBCheckBox? = null
     private val settings = Settings.getInstance(project)
 
     override fun getDisplayName(): String = "Vento"
 
     override fun createComponent(): JComponent {
         enableFrontmatterCheckBox = JBCheckBox("Enable frontmatter highlighting")
+        enableHtmlHighlightingCheckBox = JBCheckBox("Enable HTML highlighting (outside Vento blocks)")
 
         return FormBuilder
             .createFormBuilder()
             .addComponent(enableFrontmatterCheckBox!!)
+            .addComponent(enableHtmlHighlightingCheckBox!!)
             .addComponentFillVertically(JPanel(), 0)
             .panel
     }
 
-    override fun isModified(): Boolean = enableFrontmatterCheckBox?.isSelected != settings.isFrontmatterHighlightingEnabled
+    override fun isModified(): Boolean =
+        enableFrontmatterCheckBox?.isSelected != settings.isFrontmatterHighlightingEnabled ||
+            enableHtmlHighlightingCheckBox?.isSelected != settings.isHtmlHighlightingEnabled
 
     override fun apply() {
         enableFrontmatterCheckBox?.let {
             settings.isFrontmatterHighlightingEnabled = it.isSelected
         }
+        enableHtmlHighlightingCheckBox?.let {
+            settings.isHtmlHighlightingEnabled = it.isSelected
+        }
     }
 
     override fun reset() {
         enableFrontmatterCheckBox?.isSelected = settings.isFrontmatterHighlightingEnabled
+        enableHtmlHighlightingCheckBox?.isSelected = settings.isHtmlHighlightingEnabled
     }
 
     override fun disposeUIResources() {
         enableFrontmatterCheckBox = null
+        enableHtmlHighlightingCheckBox = null
     }
 }

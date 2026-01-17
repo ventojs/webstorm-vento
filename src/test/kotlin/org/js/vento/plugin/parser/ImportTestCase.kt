@@ -5,13 +5,10 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
 /**
  * Tests for parsing Vento import statements.
  */
-class ImportTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class ImportTestCase : ParsingTestCase() {
     // Valid import syntax tests
 
     /**

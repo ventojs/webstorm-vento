@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class VariablePipeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class VariablePipeTestCase : ParsingTestCase() {
     fun testStringAndPipeVariable() {
         val code = "{{ \"Hello, world!\" |> toUpperCase  }}"
         doCodeTest(code)

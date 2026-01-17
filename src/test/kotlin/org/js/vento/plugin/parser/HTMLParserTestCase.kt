@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class HTMLParserTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class HTMLParserTestCase : ParsingTestCase() {
     fun testParsingTestData() {
         doCodeTest("""<div>{{ content }}</div>""")
     }
