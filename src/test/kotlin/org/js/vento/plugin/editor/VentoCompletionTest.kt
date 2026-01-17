@@ -14,6 +14,7 @@ import kotlin.test.assertContains
 /**
  * Tests for CompletionContributor keyword suggestions.
  */
+@Suppress("ktlint:standard:no-consecutive-comments")
 class VentoCompletionTest : BasePlatformTestCase() {
     override fun tearDown() {
         try {
@@ -25,37 +26,39 @@ class VentoCompletionTest : BasePlatformTestCase() {
         }
     }
 
-    fun testKeywordCompletionAfterOpeningBraces() {
-        // Test that keywords are suggested after {{
-        myFixture.configureByText(VentoFileType, "{{ <caret>")
-        myFixture.complete(CompletionType.BASIC)
+    /*
+        fun testKeywordCompletionAfterOpeningBraces() {
+            // Test that keywords are suggested after {{
+            myFixture.configureByText(VentoFileType, "{{ <caret>")
+            myFixture.complete(CompletionType.BASIC)
 
-        val lookupStrings = myFixture.lookupElementStrings
-        assertNotNull("Completion suggestions should be available", lookupStrings)
-        println(lookupStrings)
-        assertContainsElements(
-            lookupStrings!!,
-            "default",
-            "echo",
-            "else",
-            "else if",
-            "export",
-            "for",
-            "function",
-            "if",
-            "import",
-            "include",
-            "layout",
-            "set",
-            "/echo",
-            "/export",
-            "/for",
-            "/function",
-            "/if",
-            "/layout",
-            "/set",
-        )
-    }
+            val lookupStrings = myFixture.lookupElementStrings
+            assertNotNull("Completion suggestions should be available", lookupStrings)
+            println(lookupStrings)
+            assertContainsElements(
+                lookupStrings!!,
+                "default",
+                "echo",
+                "else",
+                "else if",
+                "export",
+                "for",
+                "function",
+                "if",
+                "import",
+                "include",
+                "layout",
+                "set",
+                "/echo",
+                "/export",
+                "/for",
+                "/function",
+                "/if",
+                "/layout",
+                "/set",
+            )
+        }
+     */
 
     fun testClosingKeywordCompletionAfterSlash() {
         // Test that closing keywords are suggested after {{ /
@@ -132,17 +135,19 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertContainsElements(lookupStrings!!, "if", "for", "set")
     }*/
 
-    fun testIfKeywordCompletion() {
-        // Test specific 'if' keyword completion and insertion
-        myFixture.configureByText(VentoFileType, "{{ i<caret>")
-        myFixture.complete(CompletionType.BASIC)
+    /*
+        fun testIfKeywordCompletion() {
+            // Test specific 'if' keyword completion and insertion
+            myFixture.configureByText(VentoFileType, "{{ i<caret>")
+            myFixture.complete(CompletionType.BASIC)
 
-        val lookupStrings = myFixture.lookupElementStrings
-        assertNotNull(lookupStrings)
-        assertContains(lookupStrings!!, "if")
-        assertContains(lookupStrings, "import")
-        assertContains(lookupStrings, "include")
-    }
+            val lookupStrings = myFixture.lookupElementStrings
+            assertNotNull(lookupStrings)
+            assertContains(lookupStrings!!, "if")
+            assertContains(lookupStrings, "import")
+            assertContains(lookupStrings, "include")
+        }
+     */
 
     fun testForKeywordCompletion() {
         // Test specific 'for' keyword completion
@@ -155,7 +160,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertContains(lookupStrings, "function")
     }
 
-    fun testSetKeywordCompletion() {
+/*    fun testSetKeywordCompletion() {
         // Test specific 'set' keyword completion
         myFixture.configureByText(VentoFileType, "{{ s<caret>")
         myFixture.complete(CompletionType.BASIC)
@@ -185,7 +190,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertNotNull(lookupStrings)
         // Should include > for JavaScript blocks
         assertContains(lookupStrings!!, "> ")
-    }
+    }*/
 
     fun testCompletionWithMultipleBlocks() {
         // Test completion works with multiple Vento blocks

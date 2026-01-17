@@ -52,8 +52,9 @@ import org.js.vento.plugin.lexer.LexerTokens;import org.js.vento.plugin.lexer.Ve
    [.]  { return LexerTokens.DOT; }
    [,]  {
             if (currentDepth().getFirst() < 1 && currentDepth().getSecond() < 1 && currentDepth().getThird() < 1) {
-                pushbackall();
+//                pushbackall();
                 leave();
+                return LexerTokens.COMMA;
             } else {
               return LexerTokens.COMMA;
             }

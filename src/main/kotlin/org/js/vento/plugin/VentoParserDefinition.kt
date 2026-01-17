@@ -56,7 +56,7 @@ class VentoParserDefinition(val debug: Boolean = false) : ParserDefinition {
 
     override fun getFileNodeType(): IFileElementType = FILE
 
-    override fun createLexer(project: Project?): Lexer = VentoMergingLexer()
+    override fun createLexer(project: Project?): Lexer = VentoMergingLexer(debug)
 
     override fun createParser(project: Project?): PsiParser = Parser()
 

@@ -78,6 +78,7 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) 
     /** Enter 'nextState', remembering where we came from (the caller).  */
     override fun enter(nextState: Int) {
         val currentState: Int = lexer.yystate()
+
         stateStack.push(LexerState(currentState, stName(currentState), this.objectDepth))
         if (debug) {
             println(

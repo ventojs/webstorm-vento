@@ -13,14 +13,22 @@ import com.intellij.lexer.FlexLexer
  * It assumes there's a generated Java class named VentoLexer
  * from a corresponding .flex file (VentoLexer.flex).
  */
-class LexerAdapter(val debug: Boolean = false) : FlexAdapter(createLexer(debug)) {
-    companion object {
-        fun createLexer(debug: Boolean = false): FlexLexer {
-            val lexer = VentoLexer(null)
-            lexer.setStrategy(LexerStrategyImpl(lexer, debug))
-            return lexer as FlexLexer
-        }
+class LexerAdapter
+    @JvmOverloads
+    constructor(debug: Boolean = false) : FlexAdapter(createLexer(debug)) {
+        companion object {
+            @JvmStatic
+            @JvmOverloads
+            fun createLexer(debug: Boolean = false): FlexLexer {
+                val lexer = VentoLexer(null)
+                lexer.setStrategy(LexerStrategyImpl(lexer, debug))
+                return lexer as FlexLexer
+            }
 
-        fun createTestLexer(debug: Boolean = false): FlexLexer = createLexer(debug)
+            @JvmStatic
+            @JvmOverloads
+            fun createTestLexer(
+                debug: Boolean = false,
+            ): FlexLexer = createLexer(debug)
+        }
     }
-}

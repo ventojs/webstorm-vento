@@ -7,6 +7,6 @@ VentoFile:a.vto(0,20)
       PsiElement(EQUAL_TOKEN)(' =')(13,15)
       Element: JAVASCRIPT_EXPRESSION_ELEMENT(15,20)
         PsiElement(STRING_TOKEN)(' "')(15,17)
-        PsiElement(UNKNOWN_TOKEN)(' }}')(17,20)
+        PsiElement(STRING_TOKEN)(' }}')(17,20)
     PsiErrorElement:Expected '}}' (20,20)
       <empty list>

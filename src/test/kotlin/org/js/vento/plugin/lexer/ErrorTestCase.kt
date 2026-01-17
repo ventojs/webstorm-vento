@@ -52,7 +52,8 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test broken regex with unescaped forward slash`() = countVentoBlocks("{{ set myVar = /[Hh].*/.*[}]/ }}", 0)
 
-    fun `test failing include`() = countVentoBlocks("""{{ include "/sub/my-file.vto" { salute: "Very" + "" + "Welcome" } }}""", 1)
+    fun `test failing include`() =
+        countVentoBlocks("""{{ include "/sub/my-file.vto" { salute: "Very" + "" + "Welcome" } }}""", 1)
 
     fun `test failing block crashes next one`() {
         countVentoBlocks(
@@ -60,6 +61,100 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
             |{{ include "/my-file.vto" {salute: "Good bye", size: 10 } |> toUpperCase }}
             """.trimMargin(),
             2,
+        )
+    }
+
+    /*
+     {{ set menu = alternates?.length ? `/menu-${lang}.json` : "/menu.json" }}
+     <tree-menu
+      class="menu"
+      base='{{ "/" |> url }}'
+      url="{{ menu |> url }}"
+     >
+     */
+    fun `test hanging in 0 dot 7 dot 0`() {
+        lexAndTest(
+            """{{ set menu = 10 }}<div class="menu">""".trimMargin(),
+            arrayOf(
+                "{{",
+                "set",
+                "menu",
+                "=",
+                "10",
+                "}}",
+                "<div class=\"menu\">",
+            ),
+        )
+    }
+
+    /*
+     {{
+
+        Use ` ⌥`+`⇧`+`⌘`+`/` on OSX,
+        or `⌥`+`⇧`+`ctrl`+`/` on Windows
+        to toggle vento comments.
+
+        {{> console.log('test') }}
+
+    }}
+     */
+    fun `test hanging in 0 dot 7 dot 0 because of a comma at the end of the block`() {
+        lexAndTest(
+            """{{
+                something before a comma,
+            }}
+            """.trimMargin(),
+            arrayOf(
+                "{{",
+                "something",
+                "before",
+                "a",
+                "comma",
+                ",",
+                "}}",
+            ),
+        )
+    }
+
+    /*
+      {{ set menu = alternates?.length ? `/menu-${lang}.json` : "/menu.json" }}
+        <tree-menu
+          url="{{ url }}"
+        >
+     */
+    fun `test hanging in 0 dot 7 dot 0 because of capturing second equal instead of first`() {
+        lexAndTest(
+            $$"""{{ set menu = alternates?.length ? `/menu-${'$'}{lang}.json` : "/menu.json" }}
+    <tree-menu url="{{ url }}" >
+            """.trimMargin(),
+            arrayOf(
+                "{{",
+                "set",
+                "menu",
+                "=",
+                "alternates",
+                "?",
+                ".",
+                "length",
+                "?",
+                "`",
+                "/menu-",
+                "$",
+                "{'",
+                "$",
+                "'}{lang}.json",
+                "`",
+                ":",
+                "\"",
+                "/menu.json",
+                "\"",
+                "}}",
+                "\n    <tree-menu url=\"",
+                "{{",
+                "url",
+                "}}",
+                "\" >",
+            ),
         )
     }
 }
