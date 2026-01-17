@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.1](https://github.com/ventojs/webstorm-vento/compare/v0.7.0...v0.7.1) (2026-01-17)
+
+
+### Bug Fixes
+
+* **deps:** update junit-framework monorepo to v6.0.2 ([#193](https://github.com/ventojs/webstorm-vento/issues/193)) ([#194](https://github.com/ventojs/webstorm-vento/issues/194)) ([1074e83](https://github.com/ventojs/webstorm-vento/commit/1074e8320713fec912ef68b867675860153bea64))
+* **lexer:** 0.7.0  hanging ([#196](https://github.com/ventojs/webstorm-vento/issues/196)) ([#198](https://github.com/ventojs/webstorm-vento/issues/198)) ([df8031a](https://github.com/ventojs/webstorm-vento/commit/df8031adc14d92c0feabc1d4320dc3bf6745ad8a))
+
 ## [0.7.0](https://github.com/ventojs/webstorm-vento/compare/v0.6.1...v0.7.0) (2026-01-14)
 
 
