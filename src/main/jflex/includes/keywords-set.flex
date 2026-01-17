@@ -26,7 +26,7 @@ DESTRUCTURE_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9
 
     \[ / [^=]*= { yypushback(yylength()-1); enter(SET_DESTRUCTURE_VARS); return LexerTokens.DESTRUCTURE_BRACKET; }
 
-    [^{\[]+"=".+{CBLOCK} {
+    [^{\[=}]+ / "="|{OWS}{CBLOCK} {
           pushbackall();
           enter(SET_VALUE);
       }

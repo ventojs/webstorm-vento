@@ -5,7 +5,7 @@
 
 package org.js.vento.plugin.lexer
 
-class ErrorTestCase(name: String) : BaseLexerTestCase(name, true) {
+class ErrorTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test no keyword`() {
         lexAndTest(
             "\n{{ notkeyword something }}\n",
@@ -112,6 +112,48 @@ class ErrorTestCase(name: String) : BaseLexerTestCase(name, true) {
                 "comma",
                 ",",
                 "}}",
+            ),
+        )
+    }
+
+    /*
+      {{ set menu = alternates?.length ? `/menu-${lang}.json` : "/menu.json" }}
+        <tree-menu
+          url="{{ url }}"
+        >
+     */
+    fun `test hanging in 0 dot 7 dot 0 because of capturing second equal instead of first`() {
+        lexAndTest(
+            $$"""{{ set menu = alternates?.length ? `/menu-${'$'}{lang}.json` : "/menu.json" }}
+    <tree-menu url="{{ url }}" >
+            """.trimMargin(),
+            arrayOf(
+                "{{",
+                "set",
+                "menu",
+                "=",
+                "alternates",
+                "?",
+                ".",
+                "length",
+                "?",
+                "`",
+                "/menu-",
+                "$",
+                "{'",
+                "$",
+                "'}{lang}.json",
+                "`",
+                ":",
+                "\"",
+                "/menu.json",
+                "\"",
+                "}}",
+                "\n    <tree-menu url=\"",
+                "{{",
+                "url",
+                "}}",
+                "\" >",
             ),
         )
     }
