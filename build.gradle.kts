@@ -12,7 +12,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.4.10"
     id("org.jetbrains.intellij.platform") version "2.11.0"
-    id("org.jetbrains.grammarkit") version "2023.3.0.3"
+    id("org.jetbrains.grammarkit") version "2023.3.0.4"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
     id("org.jetbrains.changelog") version "2.5.0"
 }
