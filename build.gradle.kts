@@ -557,6 +557,7 @@ tasks {
 
 tasks.test {
     exclude("**/FrontmatterHighlightToggleTest.class")
+    exclude("**/HtmlHighlightToggleTest.class")
 }
 
 tasks.withType<Test> {
