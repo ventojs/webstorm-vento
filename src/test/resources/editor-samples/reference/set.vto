@@ -12,6 +12,7 @@
 {{ set myVar = ["a","b","c","d"] }}
 {{ set myVar = (function() { return 'Hello World!' })() }}
 {{ set myVar = () => { return 'Hello World!' } }}
+{{ set currentPathParts = (url || '/').split('/').filter((part) => part.length > 0) }}
 
 {{ set { alice, bob } = obj }}
 {{ set { a: a1, b: b1 } = obj }}

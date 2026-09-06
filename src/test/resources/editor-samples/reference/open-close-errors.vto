@@ -1,0 +1,29 @@
+<!-- Syntax checking flags unclosed and mismatched block tags. Only `if` and `for` -->
+<!-- are checked: `set`, `export`, `default`, `layout`, `function` and `fragment` -->
+<!-- have self-closing or optional-close forms in Vento. -->
+
+<!-- orphan: no matching if -->
+{{ /if }}
+
+<!-- orphan: no matching for -->
+{{ /for }}
+
+<!-- mismatched: closed by /for instead of /if - this leaves the if open, so it is -->
+<!-- also reported below, at EOF, as an unclosed block -->
+{{ if condition }}
+  {{ "content" }}
+{{ /for }}
+
+<!-- mismatched: closed by /if instead of /for - same as above, leaves the for open -->
+{{ for item of items }}
+  {{ item }}
+{{ /if }}
+
+<!-- unclosed: no /if anywhere below -->
+{{ if it.user }}
+  The user is {{ it.user }}.
+
+<!-- unclosed: no /for anywhere below either - everything still open at this point -->
+<!-- gets reported together in one combined error at EOF -->
+{{ for number of [1,2,3] }}
+  {{ number }}
