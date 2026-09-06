@@ -8,3 +8,5 @@ VentoFile:a.vto(0,23)
       Element: JAVASCRIPT_EXPRESSION_ELEMENT(14,20)
         PsiElement(SYMBOL_TOKEN)(' items')(14,20)
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(20,23)
+  PsiErrorElement:Missing closing tag '/for'(23,23)
+    <empty list>

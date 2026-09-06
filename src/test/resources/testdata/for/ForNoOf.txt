@@ -8,3 +8,5 @@ VentoFile:a.vto(0,22)
       PsiErrorElement:Expected 'of' keyword(19,19)
         <empty list>
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(19,22)
+  PsiErrorElement:Missing closing tag '/for'(22,22)
+    <empty list>

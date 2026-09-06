@@ -1,0 +1,8 @@
+VentoFile:a.vto(0,9)
+  Element: VENTO_ELEMENT(0,9)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    PsiErrorElement:Unexpected closing tag '/if': no matching 'if' block is open here(2,2)
+      <empty list>
+    Element: IF_CLOSE_ELEMENT(2,6)
+      PsiElement(IF_CLOSE_KEY_TOKEN)(' /if')(2,6)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(6,9)

@@ -24,3 +24,5 @@ VentoFile:a.vto(0,40)
         PsiElement(STRING_TOKEN)('"')(35,36)
         PsiElement(BRACKET_TOKEN)(']')(36,37)
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(37,40)
+  PsiErrorElement:Missing closing tag '/for'(40,40)
+    <empty list>
