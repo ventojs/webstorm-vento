@@ -49,7 +49,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testIndentHtmlInsideIf() {
@@ -69,7 +69,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testSetSingleLine() {
@@ -87,7 +87,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testSetUnpaired() {
@@ -109,7 +109,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testSimpleIf() {
@@ -129,7 +129,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testSimpleIfElse() {
@@ -153,7 +153,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
+        myFixture.checkResult(expected)
     }
 
     fun testFullIfElse() {
@@ -181,21 +181,7 @@ class VentoFormattingTest : BasePlatformTestCase() {
 
         myFixture.configureByText(VentoFileType, input)
         configure()
-        checkResult(expected)
-    }
-
-    private fun checkResult(expected: String) {
-        try {
-            myFixture.checkResult(expected)
-        } catch (t: Throwable) {
-            val cls = t.javaClass
-            val actual = runCatching { cls.getMethod("getActualStringPresentation").invoke(t) }.getOrNull()
-            val exp = runCatching { cls.getMethod("getExpectedStringPresentation").invoke(t) }.getOrNull()
-            System.err.println("=== DIAG: ${t.javaClass.name}: ${t.message} ===")
-            System.err.println("--- DIAG EXPECTED ---\n$exp\n--- END ---")
-            System.err.println("--- DIAG ACTUAL   ---\n$actual\n--- END ---")
-            throw t
-        }
+        myFixture.checkResult(expected)
     }
 
     private fun configure() {
