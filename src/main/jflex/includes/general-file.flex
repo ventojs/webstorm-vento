@@ -17,7 +17,18 @@ import org.js.vento.plugin.lexer.LexerTokens;
           return LexerTokens.FILE;
       }
 
+    ['][.]?[/]?[^{}]*['] / {WHITESPACE} | {OWS}"}}" | " {" {
+          leave();
+          return LexerTokens.FILE;
+      }
+
     [\"][.]?[/]?[^\"]*"}}" {
+          yypushback(2);
+          leave();
+          return LexerTokens.UNKNOWN;
+      }
+
+    ['][.]?[/]?[^']*"}}" {
           yypushback(2);
           leave();
           return LexerTokens.UNKNOWN;

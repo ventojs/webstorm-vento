@@ -47,6 +47,15 @@ class ImportTestCase : ParsingTestCase() {
         doCodeTest(code)
     }
 
+    /**
+     * Tests import with a single-quoted source path.
+     * Example: {{ import foo from './afile.vto' }}
+     */
+    fun testDefaultImportSingleQuote() {
+        val code = "{{ import foo from './afile.vto' }}"
+        doCodeTest(code)
+    }
+
     // Invalid import syntax tests
 
     /**

@@ -19,6 +19,18 @@ class IncludeTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
+    fun `test simple include with single quotes`() {
+        lexAndTest(
+            """{{ include '../theme-toggle.vto' }}""".trimIndent(),
+            arrayOf(
+                "{{",
+                "include",
+                "'../theme-toggle.vto'",
+                "}}",
+            ),
+        )
+    }
+
     fun `test include with pipe`() {
         lexAndTest(
             """{{ include "myfile.vto" |> toUpperCase }}""".trimIndent(),

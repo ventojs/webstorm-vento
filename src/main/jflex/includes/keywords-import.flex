@@ -29,7 +29,7 @@ IMP_ID = [a-zA-Z_$]+[a-zA-Z_$0-9]*([ \t]+as[ \t]+[a-zA-Z_$]+[a-zA-Z_$0-9]*)?
           return LexerTokens.IMPORT_FROM;
       }
 
-    \" {
+    \"|\' {
           yypushback(yylength());
           enter(FILE);
       }
