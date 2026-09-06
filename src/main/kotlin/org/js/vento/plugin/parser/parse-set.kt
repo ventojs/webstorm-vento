@@ -37,7 +37,7 @@ fun parsSet(builder: PsiBuilder) {
                 isFunctionOrIife(builder)
             }
 
-            builder.tokenType == PARENTHESIS -> {
+            builder.tokenType == PARENTHESIS && isArrowFunctionAhead(builder) -> {
                 parseFunctionArguments(builder)
                 expect(builder, LAMBDA_ARROW, "Expected '=>'")
                 if (builder.tokenType == BRACE) {
@@ -61,6 +61,35 @@ fun parsSet(builder: PsiBuilder) {
     closeOrError(builder, "syntax error: set symbol | set symbol = expression")
 
     m.done(ParserElements.SET_ELEMENT)
+}
+
+/**
+ * Looks ahead, without consuming any tokens, to check whether the parenthesized
+ * group starting at the current token is followed by '=>' (i.e. is arrow-function
+ * argument syntax such as `(a, b) => ...`) rather than a plain parenthesized
+ * expression such as `(url || '/').split(...)`.
+ */
+private fun isArrowFunctionAhead(builder: PsiBuilder): Boolean {
+    val lookahead = builder.mark()
+    var isArrow = false
+
+    if (builder.tokenType == PARENTHESIS && builder.tokenText?.trim() == "(") {
+        var depth = 1
+        builder.advanceLexer()
+        while (depth > 0 && !builder.eof()) {
+            if (builder.tokenType == PARENTHESIS) {
+                when (builder.tokenText?.trim()) {
+                    "(" -> depth++
+                    ")" -> depth--
+                }
+            }
+            builder.advanceLexer()
+        }
+        isArrow = depth == 0 && builder.tokenType == LAMBDA_ARROW
+    }
+
+    lookahead.rollbackTo()
+    return isArrow
 }
 
 fun isFunctionOrIife(builder: PsiBuilder): Boolean {

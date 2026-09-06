@@ -86,6 +86,13 @@ class SetTestCase : ParsingTestCase() {
      */
     fun testSetError_InvalidFunctionCall() = doCodeTest("""{{ set myVar = JSON stringify(data) }}""")
 
+    /**
+     * A parenthesized expression on the right-hand side (not an arrow function) must
+     * not be mistaken for arrow-function argument syntax.
+     */
+    fun testSetParenthesizedExpressionChain() =
+        doCodeTest("""{{ set currentPathParts = (url || '/').split('/').filter((part) => part.length > 0) }}""")
+
     fun testObject() =
         doCodeTest(
             """
