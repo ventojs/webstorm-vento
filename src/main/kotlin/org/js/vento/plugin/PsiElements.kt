@@ -115,18 +115,16 @@ class JavaScriptElement(node: ASTNode) : BaseJsElement<JavaScriptElement>(node) 
     }
 
     /**
-     * Splices [text] into this element's own content range (i.e. what's between `{{>` and
-     * `}}`) and re-parses the result as a standalone Vento file, replacing this element with
-     * the freshly parsed one. This is what lets injected-JS edits - including inserted
-     * newlines, e.g. from the "Introduce Variable" refactoring - actually reach the host
-     * `.vto` document instead of being silently dropped (see issue #170).
+     * Re-parses [text] as a standalone Vento file and replaces this element with the freshly
+     * parsed one. [text] is already the complete new raw text for this element (the platform
+     * reconstructs it from the injected/decoded edit using [getContentRange] and
+     * [createLiteralTextEscaper] before calling this method) - it must NOT be re-wrapped with
+     * `{{>`/`}}` here, or they end up duplicated. This is what lets injected-JS edits -
+     * including inserted newlines, e.g. from the "Introduce Variable" refactoring - actually
+     * reach the host `.vto` document instead of being silently dropped (see issue #170).
      */
     override fun updateText(text: String): PsiLanguageInjectionHost {
-        val range = getContentRange()
-        val oldText = this.text
-        val newElementText = oldText.substring(0, range.startOffset) + text + oldText.substring(range.endOffset)
-
-        val newFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.vto", VentoFileType, newElementText)
+        val newFile = PsiFileFactory.getInstance(project).createFileFromText("dummy.vto", VentoFileType, text)
         val ventoPsi = newFile.viewProvider.getPsi(VentoLanguage) ?: return this
         val newElement = PsiTreeUtil.findChildOfType(ventoPsi, JavaScriptElement::class.java) ?: return this
 
