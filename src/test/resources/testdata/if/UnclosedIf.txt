@@ -1,0 +1,12 @@
+VentoFile:a.vto(0,33)
+  Element: VENTO_ELEMENT(0,18)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: IF_ELEMENT(2,15)
+      PsiElement(IF_KEY_TOKEN)(' if')(2,5)
+      Element: JAVASCRIPT_EXPRESSION_ELEMENT(5,15)
+        PsiElement(SYMBOL_TOKEN)(' condition')(5,15)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(15,18)
+  HtmlElement: HTML_CONTENT(18,33)
+    PsiElement(HTML_TOKEN)('\n<p>content</p>')(18,33)
+  PsiErrorElement:Missing closing tag '/if'(33,33)
+    <empty list>

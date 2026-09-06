@@ -72,16 +72,19 @@ import org.js.vento.plugin.parser.ParserElements.VENTO_BLOCK
 class Parser : PsiParser {
     override fun parse(root: IElementType, builder: PsiBuilder): ASTNode {
         val rootMarker = builder.mark()
+        val openBlocks = ArrayDeque<IElementType>()
 
         while (!builder.eof()) {
-            parseElement(builder)
+            parseElement(builder, openBlocks)
         }
+
+        reportUnclosedBlocks(builder, openBlocks)
 
         rootMarker.done(root)
         return builder.treeBuilt
     }
 
-    fun parseElement(builder: PsiBuilder) {
+    fun parseElement(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {
         val tokenType = builder.tokenType
         builder.setDebugMode(true)
 
@@ -101,7 +104,7 @@ class Parser : PsiParser {
             VBLOCK_OPEN -> {
                 val m = builder.mark()
                 expect(builder, VBLOCK_OPEN, "Expected '{{' ")
-                parseVentoElemenet(builder)
+                parseVentoElemenet(builder, openBlocks)
                 expect(builder, VBLOCK_CLOSE, "Expected '}}' ")
                 m.done(VENTO_BLOCK)
             }
@@ -114,7 +117,37 @@ class Parser : PsiParser {
         }
     }
 
-    fun parseVentoElemenet(builder: PsiBuilder) {
+    /**
+     * Verifies that a closing tag (e.g. '/for') matches the innermost open block
+     * (e.g. 'for'). Only 'if' and 'for' are tracked here - other block-shaped tags
+     * (set, export, default, layout, function, fragment, slot) have self-closing or
+     * optional-close forms in Vento and are intentionally left unchecked.
+     */
+    private fun checkCloseTag(
+        builder: PsiBuilder,
+        openBlocks: ArrayDeque<IElementType>,
+        expectedOpen: IElementType,
+        tagName: String,
+    ) {
+        if (openBlocks.lastOrNull() == expectedOpen) {
+            openBlocks.removeLast()
+        } else {
+            builder.error("Unexpected closing tag '/$tagName': no matching '$tagName' block is open here")
+        }
+    }
+
+    private fun reportUnclosedBlocks(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {
+        while (openBlocks.isNotEmpty()) {
+            val tagName =
+                when (openBlocks.removeLast()) {
+                    FOR_KEY -> "for"
+                    else -> "if"
+                }
+            builder.error("Missing closing tag '/$tagName'")
+        }
+    }
+
+    fun parseVentoElemenet(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {
         when (builder.tokenType) {
             ASYNC_KEY -> {
                 parseFunctionSignature(builder)
@@ -153,11 +186,13 @@ class Parser : PsiParser {
             }
 
             FOR_CLOSE_KEY -> {
+                checkCloseTag(builder, openBlocks, FOR_KEY, "for")
                 parseForClose(builder)
             }
 
             FOR_KEY -> {
                 parseFor(builder)
+                openBlocks.addLast(FOR_KEY)
             }
 
             FRAGMENT_KEY -> {
@@ -177,11 +212,13 @@ class Parser : PsiParser {
             }
 
             IF_CLOSE_KEY -> {
+                checkCloseTag(builder, openBlocks, IF_KEY, "if")
                 parseIfClose(builder)
             }
 
             IF_KEY -> {
                 parseIf(builder)
+                openBlocks.addLast(IF_KEY)
             }
 
             IMPORT_KEY -> {
