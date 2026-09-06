@@ -43,7 +43,7 @@ FMBLOCKCLOSE = "---"[ \t\f]*([\r\n]|[\n])
 <FMVALUE> {
     [ \t] { }
     [\"'`]~[\"'`] { pushbackall(); enter(STRING); }
-    [^ \t\"'`\r\n][^\"'`\r\n]+  { return LexerTokens.FRONTMATTER_VALUE;}
+    [^ \t\"'`\r\n][^\"'`\r\n]*  { return LexerTokens.FRONTMATTER_VALUE;}
     [\r\n] { pushbackall(); yybegin(FMLINE); }
 }
 

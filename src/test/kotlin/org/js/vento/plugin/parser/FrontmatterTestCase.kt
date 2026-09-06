@@ -27,6 +27,16 @@ class FrontmatterTestCase : ParsingTestCase("frontmatter") {
             """.trimIndent(),
         )
 
+    fun testFrontmatterWithSingleCharacterValue() =
+        doCodeTest(
+            """
+            ---
+            renderOrder: 1
+            ---
+
+            """.trimIndent(),
+        )
+
     fun testFrontmatterComplexExample() =
         doCodeTest(
             """
