@@ -136,15 +136,26 @@ class Parser : PsiParser {
         }
     }
 
+    /**
+     * Reports any blocks still open at EOF, innermost first. All of them are folded into a
+     * single error: PsiBuilder collapses repeated zero-width error() calls at the same
+     * position, so calling it once per unclosed tag would silently drop all but the first.
+     */
     private fun reportUnclosedBlocks(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {
-        while (openBlocks.isNotEmpty()) {
-            val tagName =
-                when (openBlocks.removeLast()) {
-                    FOR_KEY -> "for"
-                    else -> "if"
-                }
-            builder.error("Missing closing tag '/$tagName'")
-        }
+        if (openBlocks.isEmpty()) return
+
+        val tagNames =
+            generateSequence { openBlocks.removeLastOrNull() }
+                .map { if (it == FOR_KEY) "for" else "if" }
+                .toList()
+
+        val message =
+            if (tagNames.size == 1) {
+                "Missing closing tag '/${tagNames[0]}'"
+            } else {
+                "Missing closing tags: ${tagNames.joinToString(", ") { "'/$it'" }}"
+            }
+        builder.error(message)
     }
 
     fun parseVentoElemenet(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {

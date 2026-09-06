@@ -66,6 +66,18 @@ class IfTestCase : ParsingTestCase() {
         doCodeTest(code)
     }
 
+    /**
+     * Two blocks left open at EOF should both be flagged, innermost first.
+     */
+    fun testMultipleUnclosedBlocks() {
+        val code =
+            """
+            |{{ if a }}
+            |{{ for item of items }}
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/if"
 
     override fun includeRanges(): Boolean = true
