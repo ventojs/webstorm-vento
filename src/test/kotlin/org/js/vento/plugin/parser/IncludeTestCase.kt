@@ -8,6 +8,8 @@ package org.js.vento.plugin.parser
 class IncludeTestCase : ParsingTestCase() {
     fun testIncludeFilenameString() = doCodeTest("""{{ include "filename.vto" }}""".trimIndent())
 
+    fun testIncludeFilenameStringSingleQuote() = doCodeTest("""{{ include 'filename.vto' }}""".trimIndent())
+
     fun testIncludeFilenameVariable() = doCodeTest("""{{ include filename }}""".trimIndent())
 
     fun testIncludeLookup() = doCodeTest("""{{ include resolve( pathname, true) }}""".trimIndent())

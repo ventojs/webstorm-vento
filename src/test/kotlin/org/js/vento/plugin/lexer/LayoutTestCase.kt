@@ -18,6 +18,17 @@ class LayoutTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
+    fun `test simple layout with single quotes`() {
+        lexAndTest(
+            """
+            {{ layout 'myfile.vto' }}
+            <h1>Hello Worlds</h1>
+            {{ /layout }}
+            """.trimIndent(),
+            arrayOf("{{", "layout", "'myfile.vto'", "}}", "\n<h1>Hello Worlds</h1>\n", "{{", "/layout", "}}"),
+        )
+    }
+
     fun `test layout with data`() {
         lexAndTest(
             """

@@ -25,7 +25,7 @@ SLOT = "slot"
 
     {SYMBOL} { return LexerTokens.SYMBOL; }
 
-    \" { pushbackall(); enter(FILE); }
+    \"|\' { pushbackall(); enter(FILE); }
 
     {PIPE} { enter(EXPRESSION); return LexerTokens.PIPE; }
 

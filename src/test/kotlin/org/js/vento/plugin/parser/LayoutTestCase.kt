@@ -57,6 +57,14 @@ class LayoutTestCase : ParsingTestCase() {
         doCodeTest(code)
     }
 
+    fun testLayoutWithSingleQuote() {
+        val code =
+            """
+            {{ layout 'myfile.vto' }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
     fun testLayoutWithDataRef() {
         val code =
             """

@@ -13,6 +13,12 @@ class ImportTestCase(name: String) : BaseLexerTestCase(name) {
             arrayOf("{{", "import", "{ foo }", "from", "\"./afile.vto\"", "}}"),
         )
 
+    fun `test import with single quoted file`() =
+        lexAndTest(
+            "{{ import { foo } from '../afile.vto' }}",
+            arrayOf("{{", "import", "{ foo }", "from", "'../afile.vto'", "}}"),
+        )
+
     fun `test multiple imports`() =
         lexAndTest(
             "{{ import { foo as f, bar,    _,\t$ } from \"./afile.vto\" }}",
