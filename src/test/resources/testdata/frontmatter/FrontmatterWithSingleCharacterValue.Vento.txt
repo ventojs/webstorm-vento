@@ -1,0 +1,8 @@
+VentoFile:a.vto(0,23)
+  Element: FRONTMATTER_BLOCK(0,23)
+    PsiElement(FRONTMATTER_OPEN_TOKEN)('---')(0,3)
+    Element: FRONTMATTER_LINE(3,18)
+      PsiElement(FRONTMATTER_KEY_TOKEN)('\nrenderOrder')(3,15)
+      PsiElement(COLON_TOKEN)(':')(15,16)
+      PsiElement(FRONTMATTER_VALUE_TOKEN)(' 1')(16,18)
+    PsiElement(FRONTMATTER_CLOSE_TOKEN)('\n---\n')(18,23)

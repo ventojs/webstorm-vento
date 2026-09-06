@@ -144,6 +144,24 @@ class FrontmatterTestCase(name: String) : BaseLexerTestCase(name) {
         )
     }
 
+    fun `test frontmatter with single character value `() {
+        lexAndTest(
+            """
+            ---
+            renderOrder: 1
+            ---
+
+            """.trimIndent(),
+            arrayOf(
+                "---",
+                "renderOrder",
+                ":",
+                "1",
+                "---\n",
+            ),
+        )
+    }
+
     fun `test error frontmatter `() {
         lexAndTest(
             """
