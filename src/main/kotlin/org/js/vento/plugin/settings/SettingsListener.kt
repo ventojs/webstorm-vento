@@ -12,7 +12,9 @@ import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.fileEditor.TextEditor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.startup.ProjectActivity
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiManager
+import com.intellij.util.FileContentUtil
 import org.js.vento.plugin.file.VentoFileType
 
 /**
@@ -28,9 +30,12 @@ class VentoSettingsListener(private val project: Project) : Settings.SettingsLis
     private fun rehighlightOpenVentoFiles() {
         val fileEditorManager = FileEditorManager.getInstance(project)
         val psiManager = PsiManager.getInstance(project)
+        val filesToReparse = mutableListOf<VirtualFile>()
 
         fileEditorManager.openFiles.forEach { virtualFile ->
             if (virtualFile.fileType == VentoFileType) {
+                filesToReparse.add(virtualFile)
+
                 // 1) Replace the EditorHighlighter so it reflects the latest settings
                 fileEditorManager.getEditors(virtualFile).forEach { editor ->
                     if (editor is TextEditor) {
@@ -54,6 +59,10 @@ class VentoSettingsListener(private val project: Project) : Settings.SettingsLis
                     }
                 }
             }
+        }
+
+        if (filesToReparse.isNotEmpty()) {
+            FileContentUtil.reparseFiles(project, filesToReparse, true)
         }
     }
 }

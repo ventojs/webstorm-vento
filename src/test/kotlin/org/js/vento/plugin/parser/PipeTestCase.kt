@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class PipeTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class PipeTestCase : ParsingTestCase() {
     fun `test escape pipe with string`() {
         val code = "{{ \"<h1>Hello, world!</h1>\" |> escape }}"
         doCodeTest(code)

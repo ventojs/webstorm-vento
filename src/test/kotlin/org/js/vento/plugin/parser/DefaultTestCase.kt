@@ -5,10 +5,7 @@
 
 package org.js.vento.plugin.parser
 
-import com.intellij.testFramework.ParsingTestCase
-import org.js.vento.plugin.VentoParserDefinition
-
-class DefaultTestCase : ParsingTestCase("", "vto", VentoParserDefinition()) {
+class DefaultTestCase : ParsingTestCase() {
     // Valid Cases
 
     fun testDefaultBlockWithContent() {
