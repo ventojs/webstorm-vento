@@ -555,14 +555,39 @@ tasks {
     register<DefaultTask>("formatKotlin") { dependsOn("ktlintFormat") }
 }
 
+tasks.withType<Test> {
+    jvmArgs("-Xshare:off")
+}
+
+// FrontmatterHighlightToggleTest uses BasePlatformTestCase (a heavy IDE fixture) and
+// pumps EDT events to observe editor rehighlighting. Running it in the same JVM as the
+// ParsingTestCase-based light-fixture suite leaves the shared platform's
+// project/write-intent-lock state corrupted for whichever ParsingTestCase runs next,
+// causing unrelated test failures (see issue #166). Give it its own JVM/sandbox by
+// running it via a dedicated testIde task instead.
+//
+// HtmlHighlightToggleTest has the same fixture-mixing hazard but also fails on its own
+// merits (testToggleHtmlHighlightingChangesTemplateDataLanguage) even in isolation, which
+// is a separate, pre-existing bug outside the scope of #166 - it stays excluded from
+// both `test` and `settingsTest` until that's investigated.
+intellijPlatformTesting.testIde.register("settingsTest") {
+    testFramework(TestFrameworkType.Platform)
+
+    task {
+        group = "verification"
+        description = "Runs settings toggle tests that require their own JVM (see issue #166)."
+        useJUnitPlatform()
+        include("**/FrontmatterHighlightToggleTest.class")
+        dependsOn("prepareFlexFiles")
+    }
+}
+
 tasks.test {
     exclude("**/FrontmatterHighlightToggleTest.class")
     exclude("**/HtmlHighlightToggleTest.class")
 }
 
-tasks.withType<Test> {
-    jvmArgs("-Xshare:off")
-}
+tasks.check { dependsOn("settingsTest") }
 
 fun ext(name: String): String =
     rootProject.extensions[name] as? String
