@@ -1,0 +1,17 @@
+VentoFile:a.vto(0,30)
+  Element: VENTO_ELEMENT(0,20)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: FUNCTION_SIGNATURE_ELEMENT(2,17)
+      PsiElement(FUNCTION_KEY_TOKEN)(' function')(2,11)
+      PsiElement(FUNCTION_NAME_TOKEN)(' hello')(11,17)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(17,20)
+  PsiWhiteSpace('\n')(20,21)
+  Element: VENTO_ELEMENT(21,30)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(21,23)
+    PsiErrorElement:Unexpected closing tag '/if': no matching 'if' block is open here(23,23)
+      <empty list>
+    Element: IF_CLOSE_ELEMENT(23,27)
+      PsiElement(IF_CLOSE_KEY_TOKEN)(' /if')(23,27)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(27,30)
+  PsiErrorElement:Missing closing tag '/function'(30,30)
+    <empty list>

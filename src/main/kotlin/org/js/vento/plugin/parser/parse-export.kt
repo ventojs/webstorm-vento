@@ -44,6 +44,7 @@ fun parseExportClose(builder: PsiBuilder) {
     val m = builder.mark()
 
     expect(builder, LexerTokens.EXPORT_CLOSE_KEY, "Expected '/export' keyword")
+    closeOrError(builder, "syntax error: /export")
 
     m.done(ParserElements.EXPORT_CLOSE_ELEMENT)
 }

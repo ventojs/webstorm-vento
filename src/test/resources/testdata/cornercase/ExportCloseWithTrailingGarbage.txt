@@ -1,0 +1,11 @@
+VentoFile:a.vto(0,21)
+  Element: VENTO_ELEMENT(0,21)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    Element: EXPORT_CLOSE_ELEMENT(2,18)
+      PsiElement(EXPORT_CLOSE_KEY_TOKEN)(' /export')(2,10)
+      Element: UNKNOWN_ELEMENT(10,12)
+        PsiElement(UNKNOWN_TOKEN)(' g')(10,12)
+        PsiErrorElement:Unexpected token(1)(12,12)
+          <empty list>
+      PsiElement(SYMBOL_TOKEN)('arbage')(12,18)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(18,21)

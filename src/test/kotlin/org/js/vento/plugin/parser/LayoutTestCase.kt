@@ -73,6 +73,52 @@ class LayoutTestCase : ParsingTestCase() {
         doCodeTest(code)
     }
 
+    // Error Cases
+
+    /**
+     * A `slot` block with no matching `/slot` before EOF should be flagged.
+     */
+    fun testUnclosedSlot() {
+        val code =
+            """
+            {{ layout "section.vto" }}
+             {{ slot header }}
+                <h1>Section title</h1>
+             {{ /layout }}
+            """.trimIndent()
+        doCodeTest(code)
+    }
+
+    /**
+     * A stray `/slot` with no matching open `slot` block should be flagged.
+     */
+    fun testOrphanSlotClose() {
+        val code = "{{ /slot }}"
+        doCodeTest(code)
+    }
+
+    /**
+     * A closing tag that doesn't match the innermost open block (e.g. `/layout` closing a
+     * `slot`) should be flagged, and the still-unclosed `slot` should also be flagged.
+     */
+    fun testMismatchedSlotCloseTag() {
+        val code =
+            """
+            |{{ slot header }}
+            |{{ /layout }}
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
+    /**
+     * Stray tokens after `/layout` should be resynced to the next `}}` as a single grouped
+     * error, rather than leaking out as top-level HTML content once `}}` is eventually reached.
+     */
+    fun testLayoutCloseWithTrailingGarbage() {
+        val code = "{{ /layout garbage }}"
+        doCodeTest(code)
+    }
+
     /**
      * @return path to test data file directory relative to root of this module.
      */

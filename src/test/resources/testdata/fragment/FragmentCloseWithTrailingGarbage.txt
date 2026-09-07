@@ -1,0 +1,13 @@
+VentoFile:a.vto(0,23)
+  Element: VENTO_ELEMENT(0,23)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    PsiErrorElement:Unexpected closing tag '/fragment': no matching 'fragment' block is open here(2,2)
+      <empty list>
+    Element: FRAGMENT_CLOSE_ELEMENT(2,20)
+      PsiElement(FRAGMENT_CLOSE_KEY_TOKEN)(' /fragment')(2,12)
+      Element: UNKNOWN_ELEMENT(12,14)
+        PsiElement(UNKNOWN_TOKEN)(' g')(12,14)
+        PsiErrorElement:Unexpected token(1)(14,14)
+          <empty list>
+      PsiElement(SYMBOL_TOKEN)('arbage')(14,20)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(20,23)

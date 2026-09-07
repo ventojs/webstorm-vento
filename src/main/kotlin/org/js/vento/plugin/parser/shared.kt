@@ -70,7 +70,18 @@ fun expect(
             true
         }
     } else {
-        // TODO: not sure why I am only handling unknown tokens here. I should handle anything that is not expected
+        // Only UNKNOWN tokens are consumed here - the lexer only ever emits UNKNOWN as a
+        // last resort, so nothing else will ever recognize and skip it. Any other token
+        // type is deliberately left in place: many callers probe optimistically (e.g. an
+        // `optional(EQUAL, ...)` check right after a failed `expect`) and expect the token
+        // to still be there, and constructs that don't have such a follow-up check still
+        // rely on `closeOrError`/the enclosing `expect(VBLOCK_CLOSE, ...)` to resync to the
+        // next `}}` - advancing past a structurally significant token here (e.g. `}}` itself,
+        // or `(` right before `parseFunctionArguments` looks for it) corrupts the tree instead
+        // of recovering it. See parseFragmentClose/parseLayoutClose/parseSlotClose/
+        // parseExportClose for the actual no-resync gap this construct can hide: those close-tag
+        // parsers now call closeOrError themselves after the keyword `expect()`, rather than
+        // relying on `expect()` to somehow do it.
         if (builder.tokenType == LexerTokens.UNKNOWN) {
             builder.advanceLexer()
         }

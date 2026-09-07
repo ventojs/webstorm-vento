@@ -22,6 +22,7 @@ fun parseLayout(builder: PsiBuilder) {
 fun parseLayoutClose(builder: PsiBuilder) {
     val m = builder.mark()
     expect(builder, LexerTokens.LAYOUT_CLOSE_KEY, "Expected /layout keyword")
+    closeOrError(builder, "syntax error: /layout")
     m.done(ParserElements.LAYOUT_CLOSE_ELEMENT)
 }
 
@@ -37,5 +38,6 @@ fun parseSlot(builder: PsiBuilder) {
 fun parseSlotClose(builder: PsiBuilder) {
     val m = builder.mark()
     expect(builder, LexerTokens.LAYOUT_SLOT_CLOSE_KEY, "Expected slot keyword")
+    closeOrError(builder, "syntax error: /slot")
     m.done(ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT)
 }
