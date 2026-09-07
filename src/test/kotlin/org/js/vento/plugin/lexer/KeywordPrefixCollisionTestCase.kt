@@ -17,6 +17,8 @@ package org.js.vento.plugin.lexer
  * with no matching rule and no fallback, producing a lexer/parser error (or, worse, a *silent*
  * mis-parse for constructs like `set`/`include`/`slot`/`function`/`break`/`continue`, whose
  * grammar happened to still accept the leftover characters as if they were legitimate content).
+ *
+ * See #239.
  */
 @Suppress("ktlint:standard:blank-line-before-declaration")
 class KeywordPrefixCollisionTestCase(name: String) : BaseLexerTestCase(name) {
@@ -60,6 +62,17 @@ class KeywordPrefixCollisionTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test identifier starting with function`() =
         lexAndTest("{{ functional }}", arrayOf("{{", "functional", "}}"))
 
+    /**
+     * `break`/`continue` are new in this branch (#142) and have no inner `<KEYWORDS>` lookahead
+     * guard of their own (they `return` directly on a bare literal match), so an identifier like
+     * "breakpoint"/"continueOn" is exactly the class of input #239 guards against.
+     */
+    fun `test identifier starting with break`() =
+        lexAndTest("{{ breakpoint }}", arrayOf("{{", "breakpoint", "}}"))
+
+    fun `test identifier starting with continue`() =
+        lexAndTest("{{ continueOn }}", arrayOf("{{", "continueOn", "}}"))
+
     fun `test real for keyword still lexes correctly`() =
         lexAndTest(
             "{{ for item of items }}",
@@ -68,4 +81,10 @@ class KeywordPrefixCollisionTestCase(name: String) : BaseLexerTestCase(name) {
 
     fun `test real if keyword still lexes correctly`() =
         lexAndTest("{{ if x }}", arrayOf("{{", "if", "x", "}}"))
+
+    fun `test real break keyword still lexes correctly`() =
+        lexAndTest("{{ break }}", arrayOf("{{", "break", "}}"))
+
+    fun `test real continue keyword still lexes correctly`() =
+        lexAndTest("{{ continue }}", arrayOf("{{", "continue", "}}"))
 }

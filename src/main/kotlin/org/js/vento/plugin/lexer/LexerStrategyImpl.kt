@@ -11,6 +11,10 @@ import java.util.ArrayDeque
 import kotlin.math.max
 
 class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) : LexerStrategy {
+    companion object {
+        private const val MAX_STATE_DEPTH = 1000
+    }
+
     var stateNames: Map<Int, String> = mapOf()
 
     /** Current token type — the skeleton expects us to return it from actions.  */
@@ -78,6 +82,17 @@ class LexerStrategyImpl(val lexer: VentoLexer, var debugConfig: Boolean = true) 
     /** Enter 'nextState', remembering where we came from (the caller).  */
     override fun enter(nextState: Int) {
         val currentState: Int = lexer.yystate()
+
+        // Real Vento templates never nest anywhere close to this deep. A depth this large means
+        // some rule is bouncing between states without ever consuming input or returning a token
+        // (a zero-progress enter()/pushbackall() cycle) - failing fast here turns what would
+        // otherwise be an unbounded spin (observed as a genuine IDE freeze, not just a slow
+        // parse - see #244) into a clear, immediate diagnostic instead.
+        check(stateStack.size < MAX_STATE_DEPTH) {
+            "Lexer state stack exceeded $MAX_STATE_DEPTH entries entering ${stName(nextState)} from " +
+                "${stName(currentState)} at position ${lexer.getzzCurrentPos()} - likely a zero-progress " +
+                "enter()/pushbackall() cycle in the grammar"
+        }
 
         stateStack.push(LexerState(currentState, stName(currentState), this.objectDepth))
         if (debug) {
