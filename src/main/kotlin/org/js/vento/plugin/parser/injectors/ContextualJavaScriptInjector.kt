@@ -31,7 +31,15 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         if (allJsElements.isNotEmpty()) {
             registrar.startInjecting(JavascriptLanguage)
 
-            // Add common Vento context at the beginning using the first element
+            // Add common Vento context at the beginning using the first element. Both parts
+            // must be passed as the PREFIX (not the suffix) of this zero-width addPlace: content
+            // registered as a suffix here is fragile under completion - IntelliJ's completion
+            // machinery inserts a temporary "dummy identifier" at the caret and reparses to
+            // compute candidates, then reverts; if any declared name here happens to match what
+            // the user is typing, a JS smart pointer created against the temporary reparsed
+            // state fails to resolve once the real state is restored ("Cannot restore JSVariable
+            // ... from injected"), crashing completion. The same content placed in the prefix
+            // does not exhibit this - verified empirically (see #240), not just theorized.
             val firstElement = allJsElements.first()
             if (firstElement is JavaScriptElement ||
                 firstElement is JavaScriptExpressionElement ||
@@ -39,8 +47,8 @@ class ContextualJavaScriptInjector : MultiHostInjector {
             ) {
                 val emptyRange = TextRange(0, 0)
                 registrar.addPlace(
-                    getVentoContextPrefix(),
-                    getVariableDeclarations(allJsElements, file),
+                    getVentoContextPrefix() + getVariableDeclarations(allJsElements, file),
+                    "",
                     firstElement as PsiElement as PsiLanguageInjectionHost,
                     emptyRange,
                 )
