@@ -10,7 +10,9 @@ import com.intellij.lang.PsiBuilder
 import com.intellij.lang.PsiParser
 import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.lexer.LexerTokens.ASYNC_KEY
+import org.js.vento.plugin.lexer.LexerTokens.BREAK_KEY
 import org.js.vento.plugin.lexer.LexerTokens.COMMENT_START
+import org.js.vento.plugin.lexer.LexerTokens.CONTINUE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_CLOSE_KEY
 import org.js.vento.plugin.lexer.LexerTokens.DEFAULT_KEY
 import org.js.vento.plugin.lexer.LexerTokens.ECHO_CLOSE_KEY
@@ -175,6 +177,14 @@ class Parser : PsiParser {
             ASYNC_KEY -> {
                 parseFunctionSignature(builder)
                 openBlocks.addLast(FUNCTION_KEY)
+            }
+
+            BREAK_KEY -> {
+                parseBreak(builder)
+            }
+
+            CONTINUE_KEY -> {
+                parseContinue(builder)
             }
 
             DEFAULT_KEY -> {

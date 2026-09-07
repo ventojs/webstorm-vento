@@ -62,6 +62,42 @@ fun openingKeywords(result: CompletionResultSet) {
     result.addElement(
         PrioritizedLookupElement.withPriority(
             LookupElementBuilder
+                .create("break")
+                .withIcon(Vento.ICON)
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addClosingBraceIfMissing(context)
+                    template.addEndVariable()
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("continue")
+                .withIcon(Vento.ICON)
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addClosingBraceIfMissing(context)
+                    template.addEndVariable()
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
                 .create("echo")
                 .withIcon(Vento.ICON)
                 .withTailText(" \"text\" }}")
@@ -143,6 +179,31 @@ fun openingKeywords(result: CompletionResultSet) {
             priority,
         ),
     )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("export function")
+                .withIcon(Vento.ICON)
+                .withTailText(" name(arg) }}")
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addVariable("name", ConstantNode("name"), true)
+                    template.addTextSegment("(")
+                    template.addVariable("arg", ConstantNode("arg"), true)
+                    template.addTextSegment(")")
+                    template.addClosingBraceIfMissing(context)
+                    template.addTextSegment("\n")
+                    template.addEndVariable()
+                    template.addTextSegment("\n{{ /export }}")
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
     result.addElement(
         PrioritizedLookupElement.withPriority(
             LookupElementBuilder
@@ -154,6 +215,32 @@ fun openingKeywords(result: CompletionResultSet) {
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
+                    template.addVariable("value", ConstantNode("value"), true)
+                    template.addTextSegment(" of ")
+                    template.addVariable("collection", ConstantNode("collection"), true)
+                    template.addClosingBraceIfMissing(context)
+                    template.addTextSegment("\n")
+                    template.addEndVariable()
+                    template.addTextSegment("\n{{ /for }}")
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("for")
+                .withTailText(" key, value of collection }}", true)
+                .withTypeText("Vento")
+                .withIcon(Vento.ICON)
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addVariable("key", ConstantNode("key"), true)
+                    template.addTextSegment(", ")
                     template.addVariable("value", ConstantNode("value"), true)
                     template.addTextSegment(" of ")
                     template.addVariable("collection", ConstantNode("collection"), true)
@@ -274,6 +361,28 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment("\n")
                     template.addEndVariable()
                     template.addTextSegment("\n{{ /layout }}")
+                    templateManager.startTemplate(context.editor, template)
+                }.bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("slot")
+                .withIcon(Vento.ICON)
+                .withTailText(" name }} content {{ /slot }}")
+                .withTypeText("Vento")
+                .withInsertHandler { context, _ ->
+                    val templateManager = TemplateManager.getInstance(context.project)
+                    val template = templateManager.createTemplate("", "")
+                    template.addTextSegment(" ")
+                    template.addVariable("name", ConstantNode("name"), true)
+                    template.addClosingBraceIfMissing(context)
+                    template.addTextSegment("\n")
+                    template.addEndVariable()
+                    template.addTextSegment("\n{{ /slot }}")
                     templateManager.startTemplate(context.editor, template)
                 }.bold(),
             priority,

@@ -146,6 +146,12 @@ object LexerTokens {
 
     // Other keyword tokens
     @JvmField
+    val BREAK_KEY = LexerToken("BREAK_KEY")
+
+    @JvmField
+    val CONTINUE_KEY = LexerToken("CONTINUE_KEY")
+
+    @JvmField
     val DEFAULT_CLOSE_KEY = LexerToken("DEFAULT_CLOSE_KEY")
 
     @JvmField

@@ -76,6 +76,8 @@ class VentoCompletionTest : BasePlatformTestCase() {
             "/export",
             "/layout",
             "/set",
+            "/slot",
+            "/fragment",
         )
     }
 
@@ -226,6 +228,43 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertNotNull(lookupStrings)
         assertContains(lookupStrings!!, "/if")
     }
+
+    fun testSlotKeywordCompletion() {
+        // Test specific 'slot' keyword completion
+        myFixture.configureByText(VentoFileType, "{{ sl<caret> }}")
+        myFixture.complete(CompletionType.BASIC)
+
+        val lookupStrings = myFixture.lookupElementStrings
+        assertNotNull(lookupStrings)
+        assertContains(lookupStrings!!, "slot")
+    }
+
+    fun testExportFunctionKeywordCompletion() {
+        // Test specific 'export function' keyword completion
+        myFixture.configureByText(VentoFileType, "{{ export f<caret>")
+        myFixture.complete(CompletionType.BASIC)
+
+        val lookupStrings = myFixture.lookupElementStrings
+        assertNotNull(lookupStrings)
+        assertContains(lookupStrings!!, "export function")
+    }
+
+    fun testBreakKeywordCompletion() {
+        // "br" uniquely matches "break", so completion auto-inserts it directly instead of
+        // showing a lookup popup - assert on the resulting text instead of
+        // lookupElementStrings, which is null in that case.
+        myFixture.configureByText(VentoFileType, "{{ br<caret> }}")
+        myFixture.complete(CompletionType.BASIC)
+        assertContains(myFixture.editor.document.text, "break")
+    }
+
+    // No editor-level test for "continue" completion: it reliably crashes test setup with
+    // "Cannot restore JSVariable ... from injected" (TestLoggerFactory$TestLoggerAssertionError)
+    // regardless of prefix length or a fresh daemon, while the otherwise-identical "break" case
+    // (testBreakKeywordCompletion above) is fine - this looks like the bundled JavaScript
+    // plugin's own "continue" keyword completion hitting a loop-context smart-pointer lookup
+    // against our synthetic injected content, not something in this plugin's control. The
+    // grammar/parser side is covered by BreakContinueTestCase.testSimpleContinue instead.
 
     fun testClosingForCompletion() {
         // Test that /for is suggested for closing
