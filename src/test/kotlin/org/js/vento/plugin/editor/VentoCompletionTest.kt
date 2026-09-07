@@ -7,6 +7,7 @@ package org.js.vento.plugin.editor
 
 import com.intellij.codeInsight.completion.CompletionType
 import com.intellij.openapi.application.impl.NonBlockingReadActionImpl
+import com.intellij.testFramework.LoggedErrorProcessor
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import org.js.vento.plugin.file.VentoFileType
 import kotlin.test.assertContains
@@ -30,7 +31,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         fun testKeywordCompletionAfterOpeningBraces() {
             // Test that keywords are suggested after {{
             myFixture.configureByText(VentoFileType, "{{ <caret>")
-            myFixture.complete(CompletionType.BASIC)
+            completeBasic()
 
             val lookupStrings = myFixture.lookupElementStrings
             assertNotNull("Completion suggestions should be available", lookupStrings)
@@ -63,7 +64,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testClosingKeywordCompletionAfterSlash() {
         // Test that closing keywords are suggested after {{ /
         myFixture.configureByText(VentoFileType, "{{ /<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull("Completion suggestions should be available", lookupStrings)
@@ -89,7 +90,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
 
         // Test that keywords are NOT suggested outside Vento blocks
         myFixture.configureByText(VentoFileType, "hello <caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         // Wait for async completion to finish
         NonBlockingReadActionImpl.waitForAsyncTaskCompletion()
@@ -130,7 +131,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
             </div>
             """.trimIndent(),
         )
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull("Completion suggestions should be available", lookupStrings)
@@ -141,7 +142,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         fun testIfKeywordCompletion() {
             // Test specific 'if' keyword completion and insertion
             myFixture.configureByText(VentoFileType, "{{ i<caret>")
-            myFixture.complete(CompletionType.BASIC)
+            completeBasic()
 
             val lookupStrings = myFixture.lookupElementStrings
             assertNotNull(lookupStrings)
@@ -154,7 +155,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testForKeywordCompletion() {
         // Test specific 'for' keyword completion
         myFixture.configureByText(VentoFileType, "{{ f<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -165,7 +166,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
 /*    fun testSetKeywordCompletion() {
         // Test specific 'set' keyword completion
         myFixture.configureByText(VentoFileType, "{{ s<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -175,7 +176,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testCommentCompletion() {
         // Test comment syntax completion
         myFixture.configureByText(VentoFileType, "{{<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -186,7 +187,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testJavaScriptBlockCompletion() {
         // Test JavaScript block completion
         myFixture.configureByText(VentoFileType, "{{<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -205,7 +206,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
             {{ <caret>
             """.trimIndent(),
         )
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -222,7 +223,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
             {{ /i<caret>
             """.trimIndent(),
         )
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -232,7 +233,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testSlotKeywordCompletion() {
         // Test specific 'slot' keyword completion
         myFixture.configureByText(VentoFileType, "{{ sl<caret> }}")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -242,7 +243,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
     fun testExportFunctionKeywordCompletion() {
         // Test specific 'export function' keyword completion
         myFixture.configureByText(VentoFileType, "{{ export f<caret>")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -254,7 +255,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
         // showing a lookup popup - assert on the resulting text instead of
         // lookupElementStrings, which is null in that case.
         myFixture.configureByText(VentoFileType, "{{ br<caret> }}")
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
         assertContains(myFixture.editor.document.text, "break")
     }
 
@@ -276,7 +277,7 @@ class VentoCompletionTest : BasePlatformTestCase() {
             {{ /f<caret>
             """.trimIndent(),
         )
-        myFixture.complete(CompletionType.BASIC)
+        completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
         assertNotNull(lookupStrings)
@@ -285,4 +286,34 @@ class VentoCompletionTest : BasePlatformTestCase() {
     }
 
     override fun getTestDataPath(): String = "src/test/resources/testdata"
+
+    /**
+     * `myFixture.complete()`, guarded against a known IntelliJ Platform bug rather than a bug
+     * in this plugin: `MutableLookupStorage.shouldComputeFeatures()` always runs the bundled ML
+     * completion ranking pipeline in unit-test mode, and that pipeline's
+     * `LocationFeaturesUtil.linesDiff()` (plugins/completion-ml-ranking in intellij-community)
+     * occasionally computes a stale/out-of-range document offset and reports it via
+     * `LOG.error()`, which the test framework promotes to a hard failure. None of the frames
+     * in that crash touch Vento code. Only that one message is swallowed, so a real regression
+     * here still fails the test.
+     */
+    private fun completeBasic() {
+        LoggedErrorProcessor.executeWith<Throwable>(IgnoreLinesDiffMlBug()) {
+            myFixture.complete(CompletionType.BASIC)
+        }
+    }
+
+    private class IgnoreLinesDiffMlBug : LoggedErrorProcessor() {
+        override fun processError(
+            category: String,
+            message: String,
+            details: Array<String>,
+            t: Throwable?,
+        ): Set<Action> =
+            if (message == "Error while calculating lines diff") {
+                setOf(Action.LOG, Action.STDERR)
+            } else {
+                super.processError(category, message, details, t)
+            }
+    }
 }
