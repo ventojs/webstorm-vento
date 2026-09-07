@@ -133,18 +133,13 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" }} content {{ /echo }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.ECHO_ELEMENT, ParserElements.ECHO_CLOSE_ELEMENT, ::isBlockEcho)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.ECHO_ELEMENT,
-                        ParserElements.ECHO_CLOSE_ELEMENT,
-                        "{{ /echo }}",
-                        ::isBlockEcho,
-                    )
+                    template.addClosingTagIfMissing("{{ /echo }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -181,6 +176,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name }} content {{ /export }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.EXPORT_OPEN_ELEMENT, ParserElements.EXPORT_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -188,12 +184,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.EXPORT_OPEN_ELEMENT,
-                        ParserElements.EXPORT_CLOSE_ELEMENT,
-                        "{{ /export }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /export }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -208,6 +199,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name(arg) }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.EXPORT_OPEN_ELEMENT, ParserElements.EXPORT_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -218,12 +210,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.EXPORT_OPEN_ELEMENT,
-                        ParserElements.EXPORT_CLOSE_ELEMENT,
-                        "{{ /export }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /export }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -237,6 +224,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTypeText("Vento")
                 .withIcon(Vento.ICON)
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.FOR_ELEMENT, ParserElements.FOR_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -246,12 +234,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.FOR_ELEMENT,
-                        ParserElements.FOR_CLOSE_ELEMENT,
-                        "{{ /for }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /for }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -266,6 +249,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTypeText("Vento")
                 .withIcon(Vento.ICON)
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.FOR_ELEMENT, ParserElements.FOR_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -277,12 +261,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.FOR_ELEMENT,
-                        ParserElements.FOR_CLOSE_ELEMENT,
-                        "{{ /for }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /for }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -297,6 +276,8 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name(arg) }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser =
+                        alreadyHasCloser(context, ParserElements.FUNCTION_SIGNATURE_ELEMENT, ParserElements.FUNCTION_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -307,12 +288,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.FUNCTION_SIGNATURE_ELEMENT,
-                        ParserElements.FUNCTION_CLOSE_ELEMENT,
-                        "{{ /function }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /function }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -326,6 +302,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTypeText("Vento", true)
                 .withIcon(Vento.ICON)
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.IF_ELEMENT, ParserElements.IF_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -333,12 +310,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.IF_ELEMENT,
-                        ParserElements.IF_CLOSE_ELEMENT,
-                        "{{ /if }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /if }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -397,6 +369,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" \"file\" }} content {{ /layout }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.LAYOUT_ELEMENT, ParserElements.LAYOUT_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" \"")
@@ -405,12 +378,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.LAYOUT_ELEMENT,
-                        ParserElements.LAYOUT_CLOSE_ELEMENT,
-                        "{{ /layout }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /layout }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -425,6 +393,8 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name }} content {{ /slot }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser =
+                        alreadyHasCloser(context, ParserElements.LAYOUT_SLOT_ELEMENT, ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -432,12 +402,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.LAYOUT_SLOT_ELEMENT,
-                        ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT,
-                        "{{ /slot }}",
-                    )
+                    template.addClosingTagIfMissing("{{ /slot }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -452,6 +417,7 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name }} content {{ /set }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser = alreadyHasCloser(context, ParserElements.SET_ELEMENT, ParserElements.SET_CLOSE_ELEMENT, ::isBlockForm)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -459,13 +425,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.SET_ELEMENT,
-                        ParserElements.SET_CLOSE_ELEMENT,
-                        "{{ /set }}",
-                        ::isBlockForm,
-                    )
+                    template.addClosingTagIfMissing("{{ /set }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -502,6 +462,8 @@ fun openingKeywords(result: CompletionResultSet) {
                 .withTailText(" name }} content {{ /default }}")
                 .withTypeText("Vento")
                 .withInsertHandler { context, _ ->
+                    val hasCloser =
+                        alreadyHasCloser(context, ParserElements.DEFAULT_ELEMENT, ParserElements.DEFAULT_CLOSE_ELEMENT, ::isBlockForm)
                     val templateManager = TemplateManager.getInstance(context.project)
                     val template = templateManager.createTemplate("", "")
                     template.addTextSegment(" ")
@@ -509,13 +471,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addBlockCloserIfMissing(
-                        context,
-                        ParserElements.DEFAULT_ELEMENT,
-                        ParserElements.DEFAULT_CLOSE_ELEMENT,
-                        "{{ /default }}",
-                        ::isBlockForm,
-                    )
+                    template.addClosingTagIfMissing("{{ /default }}", hasCloser)
                     templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
@@ -549,7 +505,7 @@ fun openingKeywords(result: CompletionResultSet) {
  * Adds the space-plus-closing-brace text that ends this entry's opening tag, as the template's
  * own segment - always, regardless of whether a `}}` already sits just ahead (only whitespace in
  * between). A template inserts every subsequent segment sequentially at the caret, so anything
- * this entry adds afterward (e.g. `addBlockCloserIfMissing`'s `{{ /for }}`) ends up *before* an
+ * this entry adds afterward (e.g. `addClosingTagIfMissing`'s `{{ /for }}`) ends up *before* an
  * already-existing `}}` left in the document rather than after it - stranding it at the very end
  * (`{{ /for }}}}` instead of closing the opening tag right after "collection"). Deleting a
  * pre-existing `}}` first and always emitting a fresh one as part of this template keeps the
@@ -666,15 +622,16 @@ private fun alreadyHasCloserOrThrow(
     return false
 }
 
-/** Appends [closerText] unless [alreadyHasCloser] finds this block already has one. */
-private fun Template.addBlockCloserIfMissing(
-    context: InsertionContext,
-    openType: IElementType,
-    closeType: IElementType,
-    closerText: String,
-    isBlockShaped: (ASTNode) -> Boolean = { true },
-) {
-    if (!alreadyHasCloser(context, openType, closeType, isBlockShaped)) {
+/**
+ * Appends [closerText] unless [hasCloser] is true. [hasCloser] must come from a call to
+ * [alreadyHasCloser] made *before* [addClosingBraceIfMissing] ran - that function can delete the
+ * current block's own inline `}}` from the live document, and re-checking PSI afterward sees
+ * that temporarily-malformed state (the parser can no longer recognize a later `{{ /if }}` as a
+ * proper sibling close, since the opening tag it belongs to looks unclosed), which previously
+ * made this wrongly conclude no closer existed and add a duplicate one.
+ */
+private fun Template.addClosingTagIfMissing(closerText: String, hasCloser: Boolean) {
+    if (!hasCloser) {
         addTextSegment("\n$closerText")
     }
 }
