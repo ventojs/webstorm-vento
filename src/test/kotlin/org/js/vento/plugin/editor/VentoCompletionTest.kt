@@ -325,6 +325,25 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertContains(hostDocument.text, "{{ /if }}")
     }
 
+    fun testForKeywordCompletionExpandsFullTemplateFromEmptyBlock() {
+        // Completing "for" with nothing typed yet (an empty block, no value/collection filled
+        // in) exercises the same PSI-based closer check with genuinely malformed/partial PSI
+        // (parseFor can't build a normal FOR_ELEMENT without an expression) - the check must
+        // fall back gracefully instead of throwing and aborting the rest of the template,
+        // which previously left only the bare "for" behind with none of its placeholders.
+        myFixture.configureByText(VentoFileType, "<caret>{{  }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(3)
+        completeBasic()
+        val forItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "for" }
+        assertNotNull(forItem)
+        myFixture.lookup.currentItem = forItem
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "value of collection")
+        assertContains(hostDocument.text, "{{ /for }}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 
     /**

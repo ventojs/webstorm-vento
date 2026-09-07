@@ -16,6 +16,7 @@ import com.intellij.injected.editor.EditorWindow
 import com.intellij.lang.ASTNode
 import com.intellij.lang.injection.InjectedLanguageManager
 import com.intellij.openapi.editor.Editor
+import com.intellij.openapi.progress.ProcessCanceledException
 import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiElement
 import com.intellij.psi.tree.IElementType
@@ -614,6 +615,26 @@ private fun alreadyHasCloser(
     openType: IElementType,
     closeType: IElementType,
     isBlockShaped: (ASTNode) -> Boolean = { true },
+): Boolean =
+    try {
+        alreadyHasCloserOrThrow(context, openType, closeType, isBlockShaped)
+    } catch (e: ProcessCanceledException) {
+        throw e
+    } catch (e: Exception) {
+        // Best-effort optimization: mid-typing PSI (e.g. "{{ for}}" before "value of
+        // collection" is filled in) can be malformed enough that PsiElement.getNode() returns
+        // null partway through the walk (it carries no @NotNull contract - see FakePsiElement
+        // and friends), or some other assumption here doesn't hold. Falling back to "no closer
+        // found" just means the caller adds one, same as before this check existed - never
+        // worse, and never lets a bug here abort the rest of the template.
+        false
+    }
+
+private fun alreadyHasCloserOrThrow(
+    context: InsertionContext,
+    openType: IElementType,
+    closeType: IElementType,
+    isBlockShaped: (ASTNode) -> Boolean,
 ): Boolean {
     val manager = InjectedLanguageManager.getInstance(context.project)
     val hostFile = manager.getTopLevelFile(context.file)
@@ -626,16 +647,16 @@ private fun alreadyHasCloser(
     val anchor = (hostOffset - 1).coerceIn(0, hostFile.textLength - 1)
 
     var element: PsiElement? = hostFile.findElementAt(anchor)
-    while (element != null && element.node.elementType != ParserElements.VENTO_BLOCK) {
+    while (element != null && element.node?.elementType != ParserElements.VENTO_BLOCK) {
         element = element.parent
     }
 
     var sibling = element?.nextSibling
     var depth = 0
     while (sibling != null) {
-        if (sibling.node.elementType == ParserElements.VENTO_BLOCK) {
+        if (sibling.node?.elementType == ParserElements.VENTO_BLOCK) {
             val contentNode =
-                sibling.node.getChildren(null).firstOrNull {
+                sibling.node?.getChildren(null)?.firstOrNull {
                     it.elementType != LexerTokens.VBLOCK_OPEN && it.elementType != LexerTokens.VBLOCK_CLOSE
                 }
             when (contentNode?.elementType) {
