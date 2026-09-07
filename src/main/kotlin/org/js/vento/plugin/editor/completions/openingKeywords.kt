@@ -12,8 +12,16 @@ import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.codeInsight.template.Template
 import com.intellij.codeInsight.template.TemplateManager
 import com.intellij.codeInsight.template.impl.ConstantNode
+import com.intellij.injected.editor.EditorWindow
+import com.intellij.lang.ASTNode
 import com.intellij.lang.injection.InjectedLanguageManager
+import com.intellij.openapi.editor.Editor
+import com.intellij.psi.PsiDocumentManager
+import com.intellij.psi.PsiElement
+import com.intellij.psi.tree.IElementType
 import org.js.vento.plugin.Vento
+import org.js.vento.plugin.lexer.LexerTokens
+import org.js.vento.plugin.parser.ParserElements
 
 fun openingKeywords(result: CompletionResultSet) {
     val priority = 75.0
@@ -31,7 +39,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -53,7 +61,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -71,7 +79,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment(" ")
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -89,7 +97,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment(" ")
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -110,7 +118,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment("\"")
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -129,8 +137,14 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /echo }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.ECHO_ELEMENT,
+                        ParserElements.ECHO_CLOSE_ELEMENT,
+                        "{{ /echo }}",
+                        ::isBlockEcho,
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -152,7 +166,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addVariable("value", ConstantNode("value"), true)
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -173,8 +187,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /export }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.EXPORT_OPEN_ELEMENT,
+                        ParserElements.EXPORT_CLOSE_ELEMENT,
+                        "{{ /export }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -198,8 +217,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /export }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.EXPORT_OPEN_ELEMENT,
+                        ParserElements.EXPORT_CLOSE_ELEMENT,
+                        "{{ /export }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -221,8 +245,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /for }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.FOR_ELEMENT,
+                        ParserElements.FOR_CLOSE_ELEMENT,
+                        "{{ /for }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -247,8 +276,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /for }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.FOR_ELEMENT,
+                        ParserElements.FOR_CLOSE_ELEMENT,
+                        "{{ /for }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -272,8 +306,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /function }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.FUNCTION_SIGNATURE_ELEMENT,
+                        ParserElements.FUNCTION_CLOSE_ELEMENT,
+                        "{{ /function }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -293,8 +332,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /if }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.IF_ELEMENT,
+                        ParserElements.IF_CLOSE_ELEMENT,
+                        "{{ /if }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -317,7 +361,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment("\"")
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -338,7 +382,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addTextSegment("\"")
                     template.addClosingBraceIfMissing(context)
                     template.addEndVariable()
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -360,8 +404,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /layout }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.LAYOUT_ELEMENT,
+                        ParserElements.LAYOUT_CLOSE_ELEMENT,
+                        "{{ /layout }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -382,8 +431,13 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /slot }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.LAYOUT_SLOT_ELEMENT,
+                        ParserElements.LAYOUT_SLOT_CLOSE_ELEMENT,
+                        "{{ /slot }}",
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -404,8 +458,14 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /set }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.SET_ELEMENT,
+                        ParserElements.SET_CLOSE_ELEMENT,
+                        "{{ /set }}",
+                        ::isBlockForm,
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -427,7 +487,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addVariable("value", ConstantNode("value"), true)
                     template.addTextSegment(" ")
                     template.addClosingBraceIfMissing(context)
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -448,8 +508,14 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addClosingBraceIfMissing(context)
                     template.addTextSegment("\n")
                     template.addEndVariable()
-                    template.addTextSegment("\n{{ /default }}")
-                    templateManager.startTemplate(context.editor, template)
+                    template.addBlockCloserIfMissing(
+                        context,
+                        ParserElements.DEFAULT_ELEMENT,
+                        ParserElements.DEFAULT_CLOSE_ELEMENT,
+                        "{{ /default }}",
+                        ::isBlockForm,
+                    )
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -471,7 +537,7 @@ fun openingKeywords(result: CompletionResultSet) {
                     template.addVariable("value", ConstantNode("value"), true)
                     template.addTextSegment(" ")
                     template.addClosingBraceIfMissing(context)
-                    templateManager.startTemplate(context.editor, template)
+                    templateManager.startTemplate(hostEditorOf(context), template)
                 }.bold(),
             priority,
         ),
@@ -522,3 +588,88 @@ private fun Template.addClosingBraceIfMissing(context: InsertionContext) {
         this.addTextSegment(" }}")
     }
 }
+
+/**
+ * The real host editor for [context], unwrapping an injected JS `EditorWindow` back to its
+ * delegate. Whenever the caret sits inside `{{ ... }}` content - which for a block keyword's
+ * condition/name/value placeholder is essentially always, since typing anything past the
+ * keyword itself lands in JS-injectable territory - the item was served by
+ * InjectedJsCompletionProvider, whose context.editor is the injected editor, not the real one.
+ * Starting a template against that leaves the injected PSI/document in a stale or invalid state
+ * once the user interacts with it further.
+ */
+private fun hostEditorOf(context: InsertionContext): Editor = (context.editor as? EditorWindow)?.delegate ?: context.editor
+
+/**
+ * Whether the block just typed at [context]'s insertion point already has a matching closer
+ * (`{{ /if }}`, `{{ /for }}`, ...) later in the document, so the caller shouldn't append
+ * another one. Mirrors Parser.kt's own open/close stack (`openBlocks`) but scoped forward from
+ * just this occurrence: Vento's PSI is flat (an open tag and its closer are siblings, not
+ * parent/child - see Parser.parse()'s single top-level loop), so this walks sibling
+ * `VENTO_BLOCK`s from the just-typed one, tracking nesting depth for [openType]/[closeType]
+ * pairs so a same-named block nested inside this one's body isn't mistaken for its own closer.
+ */
+private fun alreadyHasCloser(
+    context: InsertionContext,
+    openType: IElementType,
+    closeType: IElementType,
+    isBlockShaped: (ASTNode) -> Boolean = { true },
+): Boolean {
+    val manager = InjectedLanguageManager.getInstance(context.project)
+    val hostFile = manager.getTopLevelFile(context.file)
+    val hostDocument = PsiDocumentManager.getInstance(context.project).getDocument(hostFile) ?: return false
+    PsiDocumentManager.getInstance(context.project).commitDocument(hostDocument)
+    if (hostFile.textLength == 0) return false
+
+    val hostOffset =
+        if (hostFile === context.file) context.tailOffset else manager.injectedToHost(context.file, context.tailOffset)
+    val anchor = (hostOffset - 1).coerceIn(0, hostFile.textLength - 1)
+
+    var element: PsiElement? = hostFile.findElementAt(anchor)
+    while (element != null && element.node.elementType != ParserElements.VENTO_BLOCK) {
+        element = element.parent
+    }
+
+    var sibling = element?.nextSibling
+    var depth = 0
+    while (sibling != null) {
+        if (sibling.node.elementType == ParserElements.VENTO_BLOCK) {
+            val contentNode =
+                sibling.node.getChildren(null).firstOrNull {
+                    it.elementType != LexerTokens.VBLOCK_OPEN && it.elementType != LexerTokens.VBLOCK_CLOSE
+                }
+            when (contentNode?.elementType) {
+                openType -> if (isBlockShaped(contentNode)) depth++
+                closeType ->
+                    if (depth == 0) {
+                        return true
+                    } else {
+                        depth--
+                    }
+            }
+        }
+        sibling = sibling.nextSibling
+    }
+    return false
+}
+
+/** Appends [closerText] unless [alreadyHasCloser] finds this block already has one. */
+private fun Template.addBlockCloserIfMissing(
+    context: InsertionContext,
+    openType: IElementType,
+    closeType: IElementType,
+    closerText: String,
+    isBlockShaped: (ASTNode) -> Boolean = { true },
+) {
+    if (!alreadyHasCloser(context, openType, closeType, isBlockShaped)) {
+        addTextSegment("\n$closerText")
+    }
+}
+
+private fun hasChild(node: ASTNode, type: IElementType): Boolean = node.getChildren(null).any { it.elementType == type }
+
+/** `set`/`default` share one element type for both their inline (`= value`) and block forms. */
+private fun isBlockForm(node: ASTNode): Boolean = !hasChild(node, LexerTokens.EQUAL)
+
+/** `echo` share one element type for both its inline (`"text"`) and block forms. */
+private fun isBlockEcho(node: ASTNode): Boolean = !hasChild(node, ParserElements.STRING_ELEMENT)

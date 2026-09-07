@@ -285,6 +285,46 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertContains(lookupStrings, "/function")
     }
 
+    fun testIfKeywordCompletionDoesNotDuplicateExistingCloser() {
+        // Retriggering completion on an already-closed if-block's opening keyword (e.g. the
+        // user deletes and retypes "if" via completion instead of by hand) must not tack on a
+        // second "{{ /if }}" - one already closes the block a couple of lines down.
+        myFixture.configureByText(
+            VentoFileType,
+            """
+            <caret>{{ i }}
+            content
+            {{ /if }}
+            """.trimIndent(),
+        )
+        val hostDocument = myFixture.editor.document
+        // Move past "{{ " into the JS-injected expression region before completing, matching
+        // how a real "if<caret>" completion is actually resolved (see InjectedJsCompletionProvider).
+        myFixture.editor.caretModel.moveToOffset(4)
+        completeBasic()
+        val ifItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "if" }
+        assertNotNull(ifItem)
+        myFixture.lookup.currentItem = ifItem
+        myFixture.finishLookup('\n')
+
+        val closerCount = Regex("\\{\\{\\s*/if\\s*}}").findAll(hostDocument.text).count()
+        assertEquals(1, closerCount)
+    }
+
+    fun testIfKeywordCompletionStillAddsCloserWhenMissing() {
+        // The happy path (no existing closer anywhere) must still get one auto-inserted.
+        myFixture.configureByText(VentoFileType, "<caret>{{ i }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(4)
+        completeBasic()
+        val ifItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "if" }
+        assertNotNull(ifItem)
+        myFixture.lookup.currentItem = ifItem
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "{{ /if }}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 
     /**
