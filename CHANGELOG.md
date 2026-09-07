@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.8.0](https://github.com/ventojs/webstorm-vento/compare/v0.7.1...v0.8.0) (2026-09-07)
+
+
+### Features
+
+* **editing:** add missing completion snippets and break/continue support ([#142](https://github.com/ventojs/webstorm-vento/issues/142)) ([#244](https://github.com/ventojs/webstorm-vento/issues/244)) ([6742f59](https://github.com/ventojs/webstorm-vento/commit/6742f59b0e40fce17aff587367e57ce97481c15c))
+* **editing:** auto-insert closing tag when typing an opening block ([#238](https://github.com/ventojs/webstorm-vento/issues/238)) ([#243](https://github.com/ventojs/webstorm-vento/issues/243)) ([563da36](https://github.com/ventojs/webstorm-vento/commit/563da367060efdd3d444b9d8cea5bf0029e10e48))
+* **parser:** declare real variable names in the shared JS context ([#245](https://github.com/ventojs/webstorm-vento/issues/245)) ([d2c6b3c](https://github.com/ventojs/webstorm-vento/commit/d2c6b3ca0b4278d43c208ae02231584aed7e0625)), closes [#241](https://github.com/ventojs/webstorm-vento/issues/241)
+* **parser:** detect unclosed and mismatched if/for closing tags ([#110](https://github.com/ventojs/webstorm-vento/issues/110)) ([4340b1b](https://github.com/ventojs/webstorm-vento/commit/4340b1bb7794d56cb7e97e6f9d95a4a662295bbc))
+* **settings:** add setting to disable html highlighting ([#188](https://github.com/ventojs/webstorm-vento/issues/188)) ([618aec2](https://github.com/ventojs/webstorm-vento/commit/618aec2ceb006043541eb4a76511ede507df2503))
+
+
+### Bug Fixes
+
+* **editing:** fix small issues found while testing for 0.8.0 release ([#252](https://github.com/ventojs/webstorm-vento/issues/252)) ([8d88613](https://github.com/ventojs/webstorm-vento/commit/8d88613367c4666177c221c19238450a5d1d0e5a))
+* **lexer:** stop matching keywords as prefixes of longer identifiers ([#239](https://github.com/ventojs/webstorm-vento/issues/239)) ([#246](https://github.com/ventojs/webstorm-vento/issues/246)) ([14faa58](https://github.com/ventojs/webstorm-vento/commit/14faa58afcc3f125387a0e67edcf5f89eecdf32d))
+* **lexer:** support single quotes in include/import/layout paths ([#220](https://github.com/ventojs/webstorm-vento/issues/220)) ([8aa4a23](https://github.com/ventojs/webstorm-vento/commit/8aa4a23e1005f857c62da48506d92d3d650bb012))
+* **lexer:** support single-character frontmatter values ([#219](https://github.com/ventojs/webstorm-vento/issues/219)) ([3b3c89c](https://github.com/ventojs/webstorm-vento/commit/3b3c89cf45bd1aa9728b62d56cffeaf3b028287d))
+* **parser:** false positive syntax error for parenthesized set expressions ([#224](https://github.com/ventojs/webstorm-vento/issues/224)) ([84b041b](https://github.com/ventojs/webstorm-vento/commit/84b041b094fbc07aedb638f0655eddfae7baee86))
+* **parser:** report all unclosed blocks at EOF, not just the innermost ([#110](https://github.com/ventojs/webstorm-vento/issues/110)) ([646bf66](https://github.com/ventojs/webstorm-vento/commit/646bf6621f913f8822fe52ec1cb035b0b0a42b6c))
+* **parser:** validate close tags for function/fragment/slot, resync malformed closes ([#242](https://github.com/ventojs/webstorm-vento/issues/242)) ([dbc2cd4](https://github.com/ventojs/webstorm-vento/commit/dbc2cd45f1280b0c59a42505e80fb2ad9b4959ba))
+* **psi:** implement updateText() for JavaScriptElement injection host ([#170](https://github.com/ventojs/webstorm-vento/issues/170)) ([a2c49d6](https://github.com/ventojs/webstorm-vento/commit/a2c49d635b828395c031be270782bc38cd1ffd65))
+* **psi:** implement updateText() for JavaScriptElement injection host ([#170](https://github.com/ventojs/webstorm-vento/issues/170)) ([728fe17](https://github.com/ventojs/webstorm-vento/commit/728fe17b13e509e4f9b347e4d81fe9d3c123652e))
+* **test:** run FrontmatterHighlightToggleTest in its own JVM ([#166](https://github.com/ventojs/webstorm-vento/issues/166)) ([e2447c3](https://github.com/ventojs/webstorm-vento/commit/e2447c368f961a301c2e53bf61dde9786004fe53))
+
 ## [0.7.1](https://github.com/ventojs/webstorm-vento/compare/v0.7.0...v0.7.1) (2026-01-17)
 
 
