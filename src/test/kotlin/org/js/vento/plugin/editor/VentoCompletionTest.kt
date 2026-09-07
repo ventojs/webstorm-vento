@@ -214,20 +214,27 @@ class VentoCompletionTest : BasePlatformTestCase() {
     }
 
     fun testClosingIfCompletion() {
-        // Test that /if is suggested for closing
+        // Test that /if is suggested for closing. "/i" uniquely matches only "/if" among the
+        // closing keywords, so completion may auto-insert it directly instead of leaving a
+        // lookup open - either way the result should offer/contain "/if".
         myFixture.configureByText(
             VentoFileType,
             """
-            {{ if condition }}
+            <caret>{{ if condition }}
                 content
-            {{ /i<caret>
+            {{ /i
             """.trimIndent(),
         )
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(hostDocument.textLength)
         completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
-        assertNotNull(lookupStrings)
-        assertContains(lookupStrings!!, "/if")
+        if (lookupStrings != null) {
+            assertContains(lookupStrings, "/if")
+        } else {
+            assertContains(hostDocument.text, "/if")
+        }
     }
 
     fun testSlotKeywordCompletion() {
@@ -283,6 +290,104 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertNotNull(lookupStrings)
         assertContains(lookupStrings!!, "/for")
         assertContains(lookupStrings, "/function")
+    }
+
+    fun testIfKeywordCompletionDoesNotDuplicateExistingCloser() {
+        // Retriggering completion on an already-closed if-block's opening keyword (e.g. the
+        // user deletes and retypes "if" via completion instead of by hand) must not tack on a
+        // second "{{ /if }}" - one already closes the block a couple of lines down.
+        myFixture.configureByText(
+            VentoFileType,
+            """
+            <caret>{{ i }}
+            content
+            {{ /if }}
+            """.trimIndent(),
+        )
+        val hostDocument = myFixture.editor.document
+        // Move past "{{ " into the JS-injected expression region before completing, matching
+        // how a real "if<caret>" completion is actually resolved (see InjectedJsCompletionProvider).
+        myFixture.editor.caretModel.moveToOffset(4)
+        completeBasic()
+        val ifItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "if" }
+        assertNotNull(ifItem)
+        myFixture.lookup.currentItem = ifItem
+        myFixture.finishLookup('\n')
+
+        val closerCount = Regex("\\{\\{\\s*/if\\s*}}").findAll(hostDocument.text).count()
+        assertEquals(1, closerCount)
+    }
+
+    fun testIfKeywordCompletionStillAddsCloserWhenMissing() {
+        // The happy path (no existing closer anywhere) must still get one auto-inserted.
+        myFixture.configureByText(VentoFileType, "<caret>{{ i }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(4)
+        completeBasic()
+        val ifItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "if" }
+        assertNotNull(ifItem)
+        myFixture.lookup.currentItem = ifItem
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "{{ /if }}")
+    }
+
+    fun testForKeywordCompletionExpandsFullTemplateFromEmptyBlock() {
+        // Completing "for" with nothing typed yet (an empty block, no value/collection filled
+        // in) exercises the same PSI-based closer check with genuinely malformed/partial PSI
+        // (parseFor can't build a normal FOR_ELEMENT without an expression) - the check must
+        // fall back gracefully instead of throwing and aborting the rest of the template,
+        // which previously left only the bare "for" behind with none of its placeholders.
+        myFixture.configureByText(VentoFileType, "<caret>{{  }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(3)
+        completeBasic()
+        val forItem = myFixture.lookupElements?.firstOrNull { it.lookupString == "for" }
+        assertNotNull(forItem)
+        myFixture.lookup.currentItem = forItem
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "value of collection")
+        assertContains(hostDocument.text, "{{ /for }}")
+    }
+
+    fun testClosingFunctionCompletionDoesNotDuplicateSlash() {
+        // Accepting "/function" from a partially-typed "/functi" must replace the leading '/'
+        // too, not just the letters after it, or it leaves the original '/' behind and
+        // produces "//function".
+        myFixture.configureByText(VentoFileType, "<caret>{{ /functi }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset("{{ /functi".length)
+        completeBasic()
+        val lookup = myFixture.lookup
+        if (lookup != null) {
+            val item = myFixture.lookupElements?.firstOrNull { it.lookupString == "/function" }
+            assertNotNull(item)
+            lookup.currentItem = item
+            myFixture.finishLookup('\n')
+        }
+
+        assertContains(hostDocument.text, "{{ /function }}")
+        assertFalse(hostDocument.text.contains("//function"))
+    }
+
+    fun testForKeywordCompletionClosesOpeningTagNotStranded() {
+        // A pre-existing "}}" ahead (e.g. the block was already auto-closed) must end up
+        // closing the opening "for" tag itself, right after "collection" - not stranded after
+        // the appended "{{ /for }}" closer. Previously this produced
+        // "{{ for value of collection \n\n{{ /for }}}}" instead of
+        // "{{ for value of collection }}\n\n{{ /for }}".
+        myFixture.configureByText(VentoFileType, "<caret>{{ fo }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset("{{ fo".length)
+        completeBasic()
+        val item = myFixture.lookupElements?.firstOrNull { it.lookupString == "for" }
+        assertNotNull(item)
+        myFixture.lookup.currentItem = item
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "collection }}")
+        assertFalse(hostDocument.text.contains("}}}}"))
     }
 
     override fun getTestDataPath(): String = "src/test/resources/testdata"

@@ -209,5 +209,21 @@ class VentoTypedHandlerTest : BasePlatformTestCase() {
         )
     }
 
+    fun testNoAutoClosingWhenBracesExistWithSpaceBefore() {
+        // A real block always has a space before its closer (`{{ if x }}`) - only our own
+        // auto-close leaves the caret directly against `}}` with no gap. Typing `{{` right
+        // before an existing space-padded closer must reuse it, not double-close into
+        // `{{}} }}`.
+        myFixture.configureByText(VentoFileType, "<caret> }}")
+        myFixture.type("{{")
+        myFixture.checkResult("{{<caret> }}")
+    }
+
+    fun testNoAutoClosingWhenBracesExistWithTabBefore() {
+        myFixture.configureByText(VentoFileType, "<caret>\t}}")
+        myFixture.type("{{")
+        myFixture.checkResult("{{<caret>\t}}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 }

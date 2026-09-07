@@ -81,12 +81,21 @@ class VentoTypedHandler : TypedHandlerDelegate() {
         return nextIsClose || previousIsClose
     }
 
+    /**
+     * Looks past same-line spaces/tabs for an already-present `}}` closer, not just the two
+     * characters immediately at [offset]. Our own auto-close leaves the caret directly against
+     * `}}` (no gap), but a real block - hand-typed or from the completion snippets - always has
+     * a space before its closer (`{{ if x }}`), so typing `{{` right before one of those needs
+     * the same gap tolerance or it double-closes into `{{}} }}`. Stops at the first non-blank
+     * character (or a newline) so a `}}` on a later, unrelated line is never mistaken for this
+     * block's closer.
+     */
     private fun alreadyClosed(offset: Int, text: @NlsSafe CharSequence): Boolean {
-        val hasClosingAhead =
-            offset + 1 < text.length &&
-                text[offset] == '}' &&
-                text[offset + 1] == '}'
-        return hasClosingAhead
+        var index = offset
+        while (index < text.length && (text[index] == ' ' || text[index] == '\t')) {
+            index++
+        }
+        return index + 1 < text.length && text[index] == '}' && text[index + 1] == '}'
     }
 
     private fun previousIs(

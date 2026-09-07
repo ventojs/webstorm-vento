@@ -424,9 +424,7 @@ dependencies {
 
     intellijPlatform {
         intellijPlatform {
-            // Use latest IU EAP as the IDE to run against
-//            intellijIdeaUltimate("2025.2")
-            webstorm("2025.3")
+            webstorm("2026.2.2")
             // Platform plugins from gradle.properties
             bundledPlugins(
                 providers
@@ -476,6 +474,7 @@ intellijPlatform {
             // Webstorm
             create("WS", "2024.3")
             create("WS", "2025.2")
+            create("WS", "2026.2.2")
 
             // IntelliJ Ultimate
             create("IU", "2024.3")
