@@ -22,6 +22,8 @@ import org.js.vento.plugin.lexer.LexerTokens;
 %state DEFAULT
 %state SLOT
 
+BREAK = "break"
+CONTINUE = "continue"
 ECHO = "echo"
 ELSE = "else"
 ELSEIF = "elseif"
@@ -36,7 +38,7 @@ SET = "set"
 SLOT = "slot"
 DEFAULT = "default"
 
-KEYWORDS =  {DEFAULT}|{ECHO}|{ELSE}|{ELSEIF}|{EXPORT}|{FOR}|{FRAGMENT}|{ASYNC}{WHITESPACE}{FUNCTION}|{FUNCTION}|{IF}|{IMPORT}|{INCLUDE}|{LAYOUT}|{SET}|{SLOT}
+KEYWORDS =  {BREAK}|{CONTINUE}|{DEFAULT}|{ECHO}|{ELSE}|{ELSEIF}|{EXPORT}|{FOR}|{FRAGMENT}|{ASYNC}{WHITESPACE}{FUNCTION}|{FUNCTION}|{IF}|{IMPORT}|{INCLUDE}|{LAYOUT}|{SET}|{SLOT}
 CLOSING_KEYWORDS = "/"{DEFAULT}|"/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"{FUNCTION} |"/"{IF} |"/"{LAYOUT} |"/"{SET} |"/"{SLOT}
 
 // BLOCK 2 - END
@@ -48,6 +50,8 @@ CLOSING_KEYWORDS = "/"{DEFAULT}|"/"{ECHO}|"/"{EXPORT}|"/"{FOR}|"/"{FRAGMENT}|"/"
     {WHITESPACE} {  }
 
     {CBLOCK} { pushbackall(); leave(); }
+    {BREAK} { return LexerTokens.BREAK_KEY; }
+    {CONTINUE} { return LexerTokens.CONTINUE_KEY; }
     {ECHO} { enter(ECHO); return LexerTokens.ECHO_KEY; }
     {EXPORT} { enter(EXPORT); return LexerTokens.EXPORT_KEY; }
     {FOR} / {WHITESPACE} { enter(FOR); return LexerTokens.FOR_KEY; }

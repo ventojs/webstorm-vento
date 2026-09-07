@@ -107,4 +107,28 @@ fun closingKeywords(result: CompletionResultSet) {
             priority,
         ),
     )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/slot")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
+    )
+
+    result.addElement(
+        PrioritizedLookupElement.withPriority(
+            LookupElementBuilder
+                .create("/fragment")
+                .withIcon(Vento.ICON)
+                .withTailText("}}")
+                .withTypeText("Vento")
+                .bold(),
+            priority,
+        ),
+    )
 }

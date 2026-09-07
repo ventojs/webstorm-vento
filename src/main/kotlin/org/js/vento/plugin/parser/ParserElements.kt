@@ -40,6 +40,12 @@ object ParserElements {
 
     // Control flow elements
     @JvmField
+    val BREAK_ELEMENT: IElementType = ParserElement("BREAK_ELEMENT")
+
+    @JvmField
+    val CONTINUE_ELEMENT: IElementType = ParserElement("CONTINUE_ELEMENT")
+
+    @JvmField
     val ELSE_ELEMENT: IElementType = ParserElement("ELSE_ELEMENT")
 
     @JvmField
