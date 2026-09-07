@@ -116,10 +116,10 @@ Most of the following dependencies are provided automatically when Gradle is use
 
 * Vento <code> >= v2</code>
 * Deno <code> >= v2.3</code>
-* IntelliJ IDEA Community or Ultimate (for now only tested with <code>2025.2.*</code>)
+* IntelliJ IDEA Community or Ultimate (for now only tested with <code>2026.2.*</code>)
 * JDK <code>v21</code>
 * Gradle <code>v9</code>
-* Jetbrains JavaScript & TypeScript plug-in <code>v251.27812.49</code>
+* Bundled JetBrains JavaScript & TypeScript plug-in
 
 #### Recommended
 
