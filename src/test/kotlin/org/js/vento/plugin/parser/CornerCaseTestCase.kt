@@ -22,6 +22,14 @@ class CornerCaseTestCase : ParsingTestCase() {
         doCodeTest("{{ set myVar = /[Hh].*/.*[}]/ }}")
     }
 
+    /**
+     * Stray tokens after `/export` should be resynced to the next `}}` as a single grouped
+     * error, rather than leaking out as top-level HTML content once `}}` is eventually reached.
+     */
+    fun testExportCloseWithTrailingGarbage() {
+        doCodeTest("{{ /export garbage }}")
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/cornercase"
 
     override fun includeRanges(): Boolean = true

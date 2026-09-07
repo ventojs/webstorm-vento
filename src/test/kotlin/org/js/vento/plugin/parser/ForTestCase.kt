@@ -101,6 +101,18 @@ class ForTestCase : ParsingTestCase() {
         doCodeTest(code)
     }
 
+    /**
+     * A `for` block with no matching `/for` before EOF should be flagged.
+     */
+    fun testUnclosedFor() {
+        val code =
+            """
+            |{{ for item of items }}
+            |<p>content</p>
+            """.trimMargin()
+        doCodeTest(code)
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata/for"
 
     override fun includeRanges(): Boolean = true

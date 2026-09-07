@@ -1,0 +1,8 @@
+VentoFile:a.vto(0,11)
+  Element: VENTO_ELEMENT(0,11)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    PsiErrorElement:Unexpected closing tag '/slot': no matching 'slot' block is open here(2,2)
+      <empty list>
+    Element: LAYOUT_SLOT_CLOSE_ELEMENT(2,8)
+      PsiElement(LAYOUT_SLOT_CLOSE_TOKEN)(' /slot')(2,8)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(8,11)

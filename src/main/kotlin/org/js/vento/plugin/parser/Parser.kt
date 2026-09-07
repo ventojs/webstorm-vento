@@ -119,9 +119,12 @@ class Parser : PsiParser {
 
     /**
      * Verifies that a closing tag (e.g. '/for') matches the innermost open block
-     * (e.g. 'for'). Only 'if' and 'for' are tracked here - other block-shaped tags
-     * (set, export, default, layout, function, fragment, slot) have self-closing or
-     * optional-close forms in Vento and are intentionally left unchecked.
+     * (e.g. 'for'). Tracked here: 'if', 'for', 'function', 'fragment', 'slot' - these
+     * are always block-shaped in Vento's grammar. 'set', 'export', and 'default' are
+     * intentionally left unchecked because they have a self-closing inline form
+     * (e.g. `{{ set x = 1 }}`) alongside their block form. 'layout' is also left
+     * unchecked: `{{ layout "file.vto" data }}` with no closing tag is a valid,
+     * commonly-used form that sets the layout for the rest of the file.
      */
     private fun checkCloseTag(
         builder: PsiBuilder,
@@ -146,7 +149,7 @@ class Parser : PsiParser {
 
         val tagNames =
             generateSequence { openBlocks.removeLastOrNull() }
-                .map { if (it == FOR_KEY) "for" else "if" }
+                .map { tagNameFor(it) }
                 .toList()
 
         val message =
@@ -158,10 +161,20 @@ class Parser : PsiParser {
         builder.error(message)
     }
 
+    private fun tagNameFor(key: IElementType): String =
+        when (key) {
+            FOR_KEY -> "for"
+            FUNCTION_KEY -> "function"
+            FRAGMENT_KEY -> "fragment"
+            LAYOUT_SLOT_KEY -> "slot"
+            else -> "if"
+        }
+
     fun parseVentoElemenet(builder: PsiBuilder, openBlocks: ArrayDeque<IElementType>) {
         when (builder.tokenType) {
             ASYNC_KEY -> {
                 parseFunctionSignature(builder)
+                openBlocks.addLast(FUNCTION_KEY)
             }
 
             DEFAULT_KEY -> {
@@ -208,18 +221,22 @@ class Parser : PsiParser {
 
             FRAGMENT_KEY -> {
                 parseFragment(builder)
+                openBlocks.addLast(FRAGMENT_KEY)
             }
 
             FRAGMENT_CLOSE_KEY -> {
+                checkCloseTag(builder, openBlocks, FRAGMENT_KEY, "fragment")
                 parseFragmentClose(builder)
             }
 
             FUNCTION_CLOSE_KEY -> {
+                checkCloseTag(builder, openBlocks, FUNCTION_KEY, "function")
                 parseFunctionClose(builder)
             }
 
             FUNCTION_KEY -> {
                 parseFunctionSignature(builder, true)
+                openBlocks.addLast(FUNCTION_KEY)
             }
 
             IF_CLOSE_KEY -> {
@@ -249,11 +266,13 @@ class Parser : PsiParser {
             }
 
             LAYOUT_SLOT_CLOSE_KEY -> {
+                checkCloseTag(builder, openBlocks, LAYOUT_SLOT_KEY, "slot")
                 parseSlotClose(builder)
             }
 
             LAYOUT_SLOT_KEY -> {
                 parseSlot(builder)
+                openBlocks.addLast(LAYOUT_SLOT_KEY)
             }
 
             SET_CLOSE_KEY -> {

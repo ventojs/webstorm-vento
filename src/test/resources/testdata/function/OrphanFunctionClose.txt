@@ -1,0 +1,8 @@
+VentoFile:a.vto(0,15)
+  Element: VENTO_ELEMENT(0,15)
+    PsiElement(VBLOCK_OPEN_TOKEN)('{{')(0,2)
+    PsiErrorElement:Unexpected closing tag '/function': no matching 'function' block is open here(2,2)
+      <empty list>
+    Element: FUNCTION_CLOSE_ELEMENT(2,12)
+      PsiElement(FUNCTION_CLOSE_KEY_TOKEN)(' /function')(2,12)
+    PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(12,15)

@@ -19,5 +19,6 @@ fun parseFragment(builder: PsiBuilder) {
 fun parseFragmentClose(builder: PsiBuilder) {
     val m = builder.mark()
     expect(builder, LexerTokens.FRAGMENT_CLOSE_KEY, "Expected /fragment keyword")
+    closeOrError(builder, "syntax error: /fragment")
     m.done(ParserElements.FRAGMENT_CLOSE_ELEMENT)
 }
