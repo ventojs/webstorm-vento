@@ -545,49 +545,41 @@ fun openingKeywords(result: CompletionResultSet) {
     )
 }
 
+/**
+ * Adds the space-plus-closing-brace text that ends this entry's opening tag, as the template's
+ * own segment - always, regardless of whether a `}}` already sits just ahead (only whitespace in
+ * between). A template inserts every subsequent segment sequentially at the caret, so anything
+ * this entry adds afterward (e.g. `addBlockCloserIfMissing`'s `{{ /for }}`) ends up *before* an
+ * already-existing `}}` left in the document rather than after it - stranding it at the very end
+ * (`{{ /for }}}}` instead of closing the opening tag right after "collection"). Deleting a
+ * pre-existing `}}` first and always emitting a fresh one as part of this template keeps the
+ * whole entry's content in one correctly-ordered sequence.
+ *
+ * Resolves through the host document/offset: when this completion was served by
+ * InjectedJsCompletionProvider (i.e. context.file/context.document are the injected JS
+ * file/document), scanning context.document directly would look at the wrong text entirely.
+ */
 private fun Template.addClosingBraceIfMissing(context: InsertionContext) {
-    val project = context.project
-    val file = context.file
-    val manager = InjectedLanguageManager.getInstance(project)
+    val manager = InjectedLanguageManager.getInstance(context.project)
+    val hostFile = manager.getTopLevelFile(context.file)
+    val hostDocument = PsiDocumentManager.getInstance(context.project).getDocument(hostFile)
 
-    var hasClosing = false
-    var deleteWhitespace = false
-    var whitespaceEnd = context.tailOffset
+    if (hostDocument != null) {
+        val hostTailOffset =
+            if (hostFile === context.file) context.tailOffset else manager.injectedToHost(context.file, context.tailOffset)
 
-    if (manager.isInjectedFragment(file)) {
-        val host = manager.getInjectionHost(file)
-        // If we are injected, the host usually contains the braces.
-        // We check if the host text ends with }}
-        if (host != null && host.text.trimEnd().endsWith("}}")) {
-            hasClosing = true
-        }
-    } else {
-        // Not injected, look ahead in the document
-        val text = context.document.charsSequence
-        var offset = context.tailOffset
-        // Skip whitespace
+        val text = hostDocument.charsSequence
+        var offset = hostTailOffset
         while (offset < text.length && Character.isWhitespace(text[offset])) {
             offset++
         }
-        // Check for }}
+
         if (offset + 1 < text.length && text[offset] == '}' && text[offset + 1] == '}') {
-            hasClosing = true
-            deleteWhitespace = true
-            whitespaceEnd = offset
+            hostDocument.deleteString(hostTailOffset, offset + 2)
         }
     }
 
-    if (hasClosing) {
-        if (deleteWhitespace) {
-            // Remove the whitespace we skipped so the template is snug against the existing }}
-            context.document.deleteString(context.tailOffset, whitespaceEnd)
-        }
-        // Just add a space to separate the content from the existing }}
-        this.addTextSegment(" ")
-    } else {
-        // Add both space and braces
-        this.addTextSegment(" }}")
-    }
+    addTextSegment(" }}")
 }
 
 /**

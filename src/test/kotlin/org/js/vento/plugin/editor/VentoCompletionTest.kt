@@ -371,6 +371,25 @@ class VentoCompletionTest : BasePlatformTestCase() {
         assertFalse(hostDocument.text.contains("//function"))
     }
 
+    fun testForKeywordCompletionClosesOpeningTagNotStranded() {
+        // A pre-existing "}}" ahead (e.g. the block was already auto-closed) must end up
+        // closing the opening "for" tag itself, right after "collection" - not stranded after
+        // the appended "{{ /for }}" closer. Previously this produced
+        // "{{ for value of collection \n\n{{ /for }}}}" instead of
+        // "{{ for value of collection }}\n\n{{ /for }}".
+        myFixture.configureByText(VentoFileType, "<caret>{{ fo }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset("{{ fo".length)
+        completeBasic()
+        val item = myFixture.lookupElements?.firstOrNull { it.lookupString == "for" }
+        assertNotNull(item)
+        myFixture.lookup.currentItem = item
+        myFixture.finishLookup('\n')
+
+        assertContains(hostDocument.text, "collection }}")
+        assertFalse(hostDocument.text.contains("}}}}"))
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 
     /**
