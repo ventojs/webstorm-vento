@@ -92,5 +92,122 @@ class VentoTypedHandlerTest : BasePlatformTestCase() {
         myFixture.checkResult("{{ set foo = \"bar\" <caret>}}")
     }
 
+    fun testAutoInsertCloseForIf() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ if x }}")
+        myFixture.checkResult("{{ if x }}\n<caret>\n{{ /if }}")
+    }
+
+    fun testAutoInsertCloseForFor() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ for item of items }}")
+        myFixture.checkResult("{{ for item of items }}\n<caret>\n{{ /for }}")
+    }
+
+    fun testAutoInsertCloseForFunction() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ function hello }}")
+        myFixture.checkResult("{{ function hello }}\n<caret>\n{{ /function }}")
+    }
+
+    fun testAutoInsertCloseForFragment() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ fragment list }}")
+        myFixture.checkResult("{{ fragment list }}\n<caret>\n{{ /fragment }}")
+    }
+
+    fun testAutoInsertCloseForSlot() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ slot header }}")
+        myFixture.checkResult("{{ slot header }}\n<caret>\n{{ /slot }}")
+    }
+
+    fun testAutoInsertCloseForExportBlock() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ export message }}")
+        myFixture.checkResult("{{ export message }}\n<caret>\n{{ /export }}")
+    }
+
+    fun testAutoInsertCloseForEchoBlock() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ echo }}")
+        myFixture.checkResult("{{ echo }}\n<caret>\n{{ /echo }}")
+    }
+
+    fun testNoAutoInsertForSetInline() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ set foo = \"bar\" }}")
+        myFixture.checkResult("{{ set foo = \"bar\" }}<caret>")
+    }
+
+    fun testAutoInsertForSetBlock() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ set foo }}")
+        myFixture.checkResult("{{ set foo }}\n<caret>\n{{ /set }}")
+    }
+
+    fun testNoAutoInsertForDefaultInline() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ default foo = \"bar\" }}")
+        myFixture.checkResult("{{ default foo = \"bar\" }}<caret>")
+    }
+
+    fun testAutoInsertForDefaultBlock() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ default foo }}")
+        myFixture.checkResult("{{ default foo }}\n<caret>\n{{ /default }}")
+    }
+
+    fun testNoAutoInsertForEchoInline() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ echo \"hi\" }}")
+        myFixture.checkResult("{{ echo \"hi\" }}<caret>")
+    }
+
+    fun testNoAutoInsertForExportInline() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ export message = \"hi\" }}")
+        myFixture.checkResult("{{ export message = \"hi\" }}<caret>")
+    }
+
+    fun testNoAutoInsertForLayout() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ layout \"file.vto\" }}")
+        myFixture.checkResult("{{ layout \"file.vto\" }}<caret>")
+    }
+
+    fun testNoAutoInsertForImport() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ import { a } from \"file.vto\" }}")
+        myFixture.checkResult("{{ import { a } from \"file.vto\" }}<caret>")
+    }
+
+    fun testNoAutoInsertForInclude() {
+        myFixture.configureByText(VentoFileType, "<caret>")
+        myFixture.type("{{ include \"file.vto\" }}")
+        myFixture.checkResult("{{ include \"file.vto\" }}<caret>")
+    }
+
+    fun testAutoInsertRespectsIndentation() {
+        myFixture.configureByText(
+            VentoFileType,
+            """
+            <div>
+                <caret>
+            </div>
+            """.trimIndent(),
+        )
+        myFixture.type("{{ if x }}")
+        myFixture.checkResult(
+            """
+            <div>
+                {{ if x }}
+                <caret>
+                {{ /if }}
+            </div>
+            """.trimIndent(),
+        )
+    }
+
     override fun getTestDataPath(): String = "src/test/resources/testdata"
 }
