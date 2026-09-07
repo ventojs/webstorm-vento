@@ -20,6 +20,29 @@ import kotlin.test.assertContains
  * old hardcoded generic placeholder list.
  */
 class ContextualJavaScriptInjectorTest : BasePlatformTestCase() {
+    /**
+     * Regression test: the injector used to build one shared document but only ever register it
+     * from the callback for the *first* JS element in the file, so querying injection directly
+     * at any other element returned nothing - e.g. completion inside the second of two `for`
+     * loops, or in any expression after the first one in a file, silently saw no injected
+     * context at all. Every JS-injectable element now gets its own working injection.
+     */
+    fun testSecondElementAlsoResolvesInjection() {
+        val code =
+            """
+            {{ for post of posts }}
+            {{ post }}
+            {{ /for }}
+            """.trimIndent()
+        myFixture.configureByText(VentoFileType, code)
+        val hostFile = myFixture.file
+        val secondElementOffset = code.indexOf("post }}") + 1
+        val injected =
+            InjectedLanguageManager.getInstance(project).findInjectedElementAt(hostFile, secondElementOffset)
+        assertNotNull("Expected the second JS element to resolve its own injection", injected)
+        assertContains(injected!!.containingFile.text, "var post;")
+    }
+
     fun testForLoopVariableIsDeclared() {
         val code =
             """

@@ -12,86 +12,78 @@ import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
-import com.intellij.psi.util.PsiTreeUtil
 import org.js.vento.plugin.JavaScriptDataObjectElement
 import org.js.vento.plugin.JavaScriptElement
 import org.js.vento.plugin.JavaScriptExpressionElement
 
 /**
- * Contextual JavaScript injector that creates a shared scope with common
- * Vento context variables and functions available to all blocks.
+ * Contextual JavaScript injector that gives every `{{ }}` JS expression/statement in a file its
+ * own injected document, each prefixed with the same shared Vento context (common globals plus
+ * the real variable names bound by for/set/default/import blocks elsewhere in the file) so
+ * completion and resolution work consistently no matter which block the caret is in.
+ *
+ * Two non-obvious constraints shape this implementation - both verified empirically, not just
+ * theorized:
+ *
+ * 1. This used to build ONE injected document meant to be shared across every JS element in the
+ *    file, registered only from the callback for the first such element (via `addPlace` calls
+ *    anchored to each of the *other*, unrelated sibling elements too). That doesn't reliably
+ *    work: the injection framework only associates an injected document with whichever host
+ *    triggered `getLanguagesToInject`, so querying injection directly at any element other than
+ *    the first (`InjectedLanguageManager.findInjectedElementAt`/`getInjectedPsiFiles`) returned
+ *    nothing - e.g. a variable declared by an earlier `for` loop was invisible to completion
+ *    everywhere except inside that same first block. Giving each element its own self-contained
+ *    document (still carrying the same shared context) fixes that: every element is now its own
+ *    host, so every element gets a working injection (see #241).
+ *
+ * 2. The shared context must be passed as the *prefix* parameter of `addPlace`, not the suffix.
+ *    Content registered as a suffix at a zero-width range is unstable across completion's normal
+ *    "insert a temporary dummy identifier, reparse, compute candidates, revert" cycle: a JS smart
+ *    pointer created against the temporarily-reparsed injected document fails to resolve once the
+ *    real state is restored ("Cannot restore JSVariable ... from injected"), which aborts
+ *    completion with no results. The same content as a prefix does not exhibit this (see #240).
  */
 class ContextualJavaScriptInjector : MultiHostInjector {
     override fun getLanguagesToInject(registrar: MultiHostRegistrar, context: PsiElement) {
-        if (!isFirstJavaScriptElementInFile(context)) return
-
+        if (context !is JavaScriptElement && context !is JavaScriptExpressionElement && context !is JavaScriptDataObjectElement) {
+            return
+        }
+        val host = context as PsiLanguageInjectionHost
         val file = context.containingFile ?: return
-        val allJsElements = findAllJavaScriptElements(file)
 
-        if (allJsElements.isNotEmpty()) {
-            registrar.startInjecting(JavascriptLanguage)
+        registrar.startInjecting(JavascriptLanguage)
 
-            // Add common Vento context at the beginning using the first element. Both parts
-            // must be passed as the PREFIX (not the suffix) of this zero-width addPlace: content
-            // registered as a suffix here is fragile under completion - IntelliJ's completion
-            // machinery inserts a temporary "dummy identifier" at the caret and reparses to
-            // compute candidates, then reverts; if any declared name here happens to match what
-            // the user is typing, a JS smart pointer created against the temporary reparsed
-            // state fails to resolve once the real state is restored ("Cannot restore JSVariable
-            // ... from injected"), crashing completion. The same content placed in the prefix
-            // does not exhibit this - verified empirically (see #240), not just theorized.
-            val firstElement = allJsElements.first()
-            if (firstElement is JavaScriptElement ||
-                firstElement is JavaScriptExpressionElement ||
-                firstElement is JavaScriptDataObjectElement
-            ) {
-                val emptyRange = TextRange(0, 0)
-                registrar.addPlace(
-                    getVentoContextPrefix() + getVariableDeclarations(allJsElements, file),
-                    "",
-                    firstElement as PsiElement as PsiLanguageInjectionHost,
-                    emptyRange,
-                )
-            }
+        registrar.addPlace(
+            getVentoContextPrefix() + getVariableDeclarations(file),
+            "",
+            host,
+            TextRange(0, 0),
+        )
 
-            allJsElements.forEachIndexed { index, element ->
-                when (element) {
-                    is JavaScriptElement -> {
-                        val contentRange = element.getContentRange()
-                        if (contentRange.length > 0) {
-                            registrar.addPlace("\n// Variable $index evaluation\n", "\n", element, contentRange)
-                        }
-                    }
-
-                    is JavaScriptExpressionElement -> {
-                        val contentRange = element.getContentRange()
-                        if (contentRange.length > 0) {
-//                            println("\n// Variable $index evaluation\noutput_$index = "+element.text)
-                            registrar.addPlace(
-                                "\n// Variable $index evaluation\noutput_$index = ",
-                                ";\n",
-                                element,
-                                contentRange,
-                            )
-                        }
-                    }
-
-                    is JavaScriptDataObjectElement -> {
-                        val contentRange = element.getContentRange()
-                        if (contentRange.length > 0) {
-                            registrar.addPlace(
-                                "\n// Variable $index evaluation\noutput_$index = ",
-                                ";\n",
-                                element,
-                                contentRange,
-                            )
-                        }
-                    }
+        when (context) {
+            is JavaScriptElement -> {
+                val contentRange = context.getContentRange()
+                if (contentRange.length > 0) {
+                    registrar.addPlace("\n", "\n", context, contentRange)
                 }
             }
 
-            registrar.doneInjecting()
+            is JavaScriptExpressionElement -> {
+                val contentRange = context.getContentRange()
+                if (contentRange.length > 0) {
+                    registrar.addPlace("\noutput = ", ";\n", context, contentRange)
+                }
+            }
+
+            is JavaScriptDataObjectElement -> {
+                val contentRange = context.getContentRange()
+                if (contentRange.length > 0) {
+                    registrar.addPlace("\noutput = ", ";\n", context, contentRange)
+                }
+            }
         }
+
+        registrar.doneInjecting()
     }
 
     override fun elementsToInjectIn(): List<Class<out PsiElement>> =
@@ -118,53 +110,14 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         function slugify(text) { return ''; }
         """.trimIndent()
 
-    private fun isFirstJavaScriptElementInFile(context: PsiElement): Boolean {
-        val file = context.containingFile ?: return false
-        val allJsElements = findAllJavaScriptElements(file)
-        return allJsElements.firstOrNull() == context
-    }
-
-    private fun findAllJavaScriptElements(file: PsiFile): List<PsiElement> {
-        val jsElements = mutableListOf<PsiElement>()
-
-        PsiTreeUtil
-            .findChildrenOfType(file, JavaScriptElement::class.java)
-            .forEach { jsElements.add(it) }
-
-        PsiTreeUtil
-            .findChildrenOfType(file, JavaScriptExpressionElement::class.java)
-            .forEach { jsElements.add(it) }
-
-        PsiTreeUtil
-            .findChildrenOfType(file, JavaScriptDataObjectElement::class.java)
-            .forEach { jsElements.add(it) }
-
-        return jsElements.sortedBy { it.textOffset }
-    }
-
-    private fun getVariableDeclarations(allJsElements: List<PsiElement>, file: PsiFile): String {
-        val declarations = StringBuilder()
-
-        // Pre-declare variables that might be used across blocks
-        allJsElements.forEachIndexed { index, element ->
-            when (element) {
-                is JavaScriptExpressionElement -> {
-                    declarations.append("\nlet output_$index;")
-                }
-            }
-        }
-
+    private fun getVariableDeclarations(file: PsiFile): String {
         // Declare the real variables bound by for/set/default/import blocks elsewhere in the
         // file, so an expression block can resolve them - e.g. `item` in `{{ for item of items
         // }}`. `var` (not `let`/`const`) is deliberate: the same name can legitimately repeat
         // across independent sequential blocks (two separate `for item of x` loops), and `var`
         // tolerates redeclaration in this flat synthetic scope where `let`/`const` would throw.
         val names = VentoVariableExtractor.collectAllVariableNames(file)
-        if (names.isNotEmpty()) {
-            declarations.append("\n// Template variables declared by for/set/default/import blocks\n")
-            declarations.append("var ${names.joinToString(", ")};")
-        }
-
-        return declarations.toString()
+        if (names.isEmpty()) return ""
+        return "\n// Template variables declared by for/set/default/import blocks\nvar ${names.joinToString(", ")};"
     }
 }
