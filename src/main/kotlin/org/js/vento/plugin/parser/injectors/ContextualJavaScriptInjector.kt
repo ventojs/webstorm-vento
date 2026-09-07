@@ -10,6 +10,7 @@ import com.intellij.lang.injection.MultiHostRegistrar
 import com.intellij.lang.javascript.JavascriptLanguage
 import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
+import com.intellij.psi.PsiFile
 import com.intellij.psi.PsiLanguageInjectionHost
 import org.js.vento.plugin.JavaScriptDataObjectElement
 import org.js.vento.plugin.JavaScriptElement
@@ -109,9 +110,14 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         function slugify(text) { return ''; }
         """.trimIndent()
 
-    private fun getVariableDeclarations(): String =
-        """
-        // Common template variables (will be hoisted if declared in blocks)
-        var result, temp, value, item, items, i, j, key, content;
-        """.trimIndent()
+    private fun getVariableDeclarations(file: PsiFile): String {
+        // Declare the real variables bound by for/set/default/import blocks elsewhere in the
+        // file, so an expression block can resolve them - e.g. `item` in `{{ for item of items
+        // }}`. `var` (not `let`/`const`) is deliberate: the same name can legitimately repeat
+        // across independent sequential blocks (two separate `for item of x` loops), and `var`
+        // tolerates redeclaration in this flat synthetic scope where `let`/`const` would throw.
+        val names = VentoVariableExtractor.collectAllVariableNames(file)
+        if (names.isEmpty()) return ""
+        return "\n// Template variables declared by for/set/default/import blocks\nvar ${names.joinToString(", ")};"
+    }
 }
