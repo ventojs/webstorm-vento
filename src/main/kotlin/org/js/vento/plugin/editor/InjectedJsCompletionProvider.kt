@@ -78,6 +78,13 @@ open class InjectedJsCompletionProvider : CompletionProvider<CompletionParameter
         while (start > 0 && text[start - 1].isJavaIdentifierPart()) {
             start--
         }
+        // Closing keywords (/if, /function, ...) all start with '/', which isn't a Java
+        // identifier char, so the scan above stops right after it. Pull it into the prefix too,
+        // or accepting a suggestion only replaces the letters and leaves the original '/'
+        // behind, producing "//function" instead of "/function".
+        if (start > 0 && text[start - 1] == '/') {
+            start--
+        }
         return text.substring(start, offset)
     }
 

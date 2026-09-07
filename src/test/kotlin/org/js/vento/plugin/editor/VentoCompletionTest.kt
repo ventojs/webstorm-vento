@@ -214,20 +214,27 @@ class VentoCompletionTest : BasePlatformTestCase() {
     }
 
     fun testClosingIfCompletion() {
-        // Test that /if is suggested for closing
+        // Test that /if is suggested for closing. "/i" uniquely matches only "/if" among the
+        // closing keywords, so completion may auto-insert it directly instead of leaving a
+        // lookup open - either way the result should offer/contain "/if".
         myFixture.configureByText(
             VentoFileType,
             """
-            {{ if condition }}
+            <caret>{{ if condition }}
                 content
-            {{ /i<caret>
+            {{ /i
             """.trimIndent(),
         )
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset(hostDocument.textLength)
         completeBasic()
 
         val lookupStrings = myFixture.lookupElementStrings
-        assertNotNull(lookupStrings)
-        assertContains(lookupStrings!!, "/if")
+        if (lookupStrings != null) {
+            assertContains(lookupStrings, "/if")
+        } else {
+            assertContains(hostDocument.text, "/if")
+        }
     }
 
     fun testSlotKeywordCompletion() {
@@ -342,6 +349,26 @@ class VentoCompletionTest : BasePlatformTestCase() {
 
         assertContains(hostDocument.text, "value of collection")
         assertContains(hostDocument.text, "{{ /for }}")
+    }
+
+    fun testClosingFunctionCompletionDoesNotDuplicateSlash() {
+        // Accepting "/function" from a partially-typed "/functi" must replace the leading '/'
+        // too, not just the letters after it, or it leaves the original '/' behind and
+        // produces "//function".
+        myFixture.configureByText(VentoFileType, "<caret>{{ /functi }}")
+        val hostDocument = myFixture.editor.document
+        myFixture.editor.caretModel.moveToOffset("{{ /functi".length)
+        completeBasic()
+        val lookup = myFixture.lookup
+        if (lookup != null) {
+            val item = myFixture.lookupElements?.firstOrNull { it.lookupString == "/function" }
+            assertNotNull(item)
+            lookup.currentItem = item
+            myFixture.finishLookup('\n')
+        }
+
+        assertContains(hostDocument.text, "{{ /function }}")
+        assertFalse(hostDocument.text.contains("//function"))
     }
 
     override fun getTestDataPath(): String = "src/test/resources/testdata"
