@@ -76,6 +76,11 @@ EQUAL = [=]
 SYMBOL = [a-zA-Z_$]+[a-zA-Z_$0-9]*
 PIPE = "|>"
 
+// Anything that isn't a valid identifier-continuation character. Used as a lookahead guard so a
+// keyword match (e.g. "for") isn't accepted as a prefix of a longer identifier (e.g.
+// "formatDate") that merely happens to start with that keyword's text.
+KEYWORD_END = [^a-zA-Z_$0-9]
+
 OBLOCK = "{{"
 JSBLOCK = "{{>"
 OTBLOCK = "{{-"
@@ -133,8 +138,8 @@ CVAR = -?{CBLOCK}
     {WHITESPACE} { }
     {CBLOCK} { leave(); return LexerTokens.VBLOCK_CLOSE;}
     {CTBLOCK} { leave(); return LexerTokens.VBLOCK_CLOSE;}
-    {KEYWORDS} { pushbackall(); enter(KEYWORDS); }
-    {CLOSING_KEYWORDS} { pushbackall(); enter(KEYWORDS_CLOSE); }
+    {KEYWORDS} / {KEYWORD_END} { pushbackall(); enter(KEYWORDS); }
+    {CLOSING_KEYWORDS} / {KEYWORD_END} { pushbackall(); enter(KEYWORDS_CLOSE); }
 
     "|>" { return LexerTokens.PIPE; }
 

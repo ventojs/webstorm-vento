@@ -431,11 +431,12 @@ class ForTestCase(name: String) : BaseLexerTestCase(name) {
     fun `test for of with missing of `() = lexAndTest("{{ for value values }}", arrayOf("{{", "for", "value", "values", "}}"))
 
     /**
-     * Tests missing "of" keyword between variable and collection.
-     * Invalid syntax: {{ for variable collection }}
+     * "forletter" is just an identifier that happens to start with "for" - it must not be
+     * mistaken for the "for" keyword plus a mangled remainder. The whole block lexes as a
+     * plain expression instead (`forletter`, `of`, and the string are all ordinary tokens).
      */
     fun `test for missing space`() =
-        lexAndTest("{{ forletter of \"abcd\" }}", arrayOf("{{", "f", "orletter", "of", "\"", "abcd", "\"", "}}"), false)
+        lexAndTest("{{ forletter of \"abcd\" }}", arrayOf("{{", "forletter", "of", "\"", "abcd", "\"", "}}"))
 
     /**
      * Tests malformed closing tag with incorrect keyword.
