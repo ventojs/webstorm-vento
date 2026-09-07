@@ -11,3 +11,5 @@ VentoFile:a.vto(0,21)
           PsiElement(FUNCTION_ARG_TOKEN)('name')(13,17)
         PsiElement(PARENTHESIS_TOKEN)(')')(17,18)
     PsiElement(VBLOCK_CLOSE_TOKEN)(' }}')(18,21)
+  PsiErrorElement:Missing closing tag '/function'(21,21)
+    <empty list>
