@@ -40,7 +40,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
                 val emptyRange = TextRange(0, 0)
                 registrar.addPlace(
                     getVentoContextPrefix(),
-                    getVariableDeclarations(allJsElements),
+                    getVariableDeclarations(allJsElements, file),
                     firstElement as PsiElement as PsiLanguageInjectionHost,
                     emptyRange,
                 )
@@ -134,7 +134,7 @@ class ContextualJavaScriptInjector : MultiHostInjector {
         return jsElements.sortedBy { it.textOffset }
     }
 
-    private fun getVariableDeclarations(allJsElements: List<PsiElement>): String {
+    private fun getVariableDeclarations(allJsElements: List<PsiElement>, file: PsiFile): String {
         val declarations = StringBuilder()
 
         // Pre-declare variables that might be used across blocks
@@ -146,13 +146,16 @@ class ContextualJavaScriptInjector : MultiHostInjector {
             }
         }
 
-        // Add common variables that might be declared in JS blocks
-        declarations.append(
-            """
-            // Common template variables (will be hoisted if declared in blocks)
-            var result, temp, value, item, items, i, j, key, content;
-            """.trimIndent(),
-        )
+        // Declare the real variables bound by for/set/default/import blocks elsewhere in the
+        // file, so an expression block can resolve them - e.g. `item` in `{{ for item of items
+        // }}`. `var` (not `let`/`const`) is deliberate: the same name can legitimately repeat
+        // across independent sequential blocks (two separate `for item of x` loops), and `var`
+        // tolerates redeclaration in this flat synthetic scope where `let`/`const` would throw.
+        val names = VentoVariableExtractor.collectAllVariableNames(file)
+        if (names.isNotEmpty()) {
+            declarations.append("\n// Template variables declared by for/set/default/import blocks\n")
+            declarations.append("var ${names.joinToString(", ")};")
+        }
 
         return declarations.toString()
     }
